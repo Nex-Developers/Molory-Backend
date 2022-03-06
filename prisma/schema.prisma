@@ -37,6 +37,7 @@ model User {
   phoneNumberVerifiedAt DateTime?
   firstName  String
   lastName String
+  gender String?
   birthDay DateTime?
   status Int @default(1)
   role String
@@ -122,7 +123,7 @@ model Vehicle {
   userId Int
   type String
   color String
-  numberplate String
+  numberPlate String
   registrationDoc String
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt

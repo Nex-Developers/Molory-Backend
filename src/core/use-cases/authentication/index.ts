@@ -22,11 +22,17 @@ import makeSignUp from "./sign-up"
 import makeUpdateAvatar from "./update-avatar"
 import makeUpdateProfile from "./update-profile"
 import makeRemoveAccount from "./remove-account"
+import makeAddEmailAuth from "./add-email-auth"
+import makeCheckEmail from "./check-email"
+import makeCheckPassword from "./check-password"
 
 const prisma = new PrismaClient()
 const userDb = new UserDb()
 const deviceDb = new DeviceDb()
 
+const addEmailAuth =  makeAddEmailAuth({ userDb, generateToken, saveTmpToken, askToConfirmEmail, isValidEmail, hashPassword })
+const checkEmail = makeCheckEmail({ userDb, generateToken, saveTmpToken })
+const checkPassword = makeCheckPassword({  userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, comparePasswords })
 const signInWithEmailAndPassword = makeSignInWithEmailAndPassword({ userDb, comparePasswords, generateToken, saveToken })
 const signInWithPhoneNumber = makeSignInWithPhoneNumber({ generateOtp, saveOtp, sendOtp, generateToken, saveTmpToken })
 const confirmOtp = makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken })
@@ -34,7 +40,7 @@ const signUp = makeSignUp({ userDb, askToConfirmEmail, isValidEmail, hashPasswor
 const confirmEmail = makeConfirmEmail({ removeTmpToken, verifyToken, emailConfirmationView, userDb })
 const removePassword = makeRemovePassword({ removeTmpToken, verifyToken, resetPasswordView, userDb })
 const changePassword = makeChangePassword({ removeToken, comparePasswords, hashPassword, userDb })
-const setProfile = makeSetProfile({ userDb, generateToken, saveTmpToken, askToConfirmEmail, isValidEmail, hashPassword })
+const setProfile = makeSetProfile({ userDb })
 const getProfile = makeGetProfile({ userDb })
 const updateProfile = makeUpdateProfile({ userDb })
 const updateAvatar = makeUpdateAvatar({ userDb, deleteAvatarFile})
@@ -45,6 +51,7 @@ const changeEmail = makeChangeEmail({ userDb, generateToken, removeToken, saveTm
 const changePhoneNumber = makeChangePhoneNumber({ userDb, generateOtp, saveOtp, sendOtp, generateToken, removeToken, saveTmpToken })
 
 export {
+    addEmailAuth,
     signInWithEmailAndPassword,
     signInWithPhoneNumber,
     confirmOtp,
@@ -60,5 +67,7 @@ export {
     signOut,
     removeAccount,
     changeEmail,
-    changePhoneNumber
+    changePhoneNumber,
+    checkEmail,
+    checkPassword
 }

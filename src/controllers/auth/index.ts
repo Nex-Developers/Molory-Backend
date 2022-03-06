@@ -14,13 +14,17 @@ import {
     changeEmail,
     changePhoneNumber,
     removeAccount,
-    updateAvatar
+    updateAvatar,
+    addEmailAuth,
+    checkEmail,
+    checkPassword
 } from "../../core/use-cases/authentication"
 import makeCompleteInfosController from "./complete-infos"
 import makeConfirmEmailController from "./confirm-email"
 import makeDeleteAccountController from "./delete-account"
 import makeEditAvatarController from "./edit-avatar"
 import makeEditProfileController from "./edit-profile"
+import makeEnableEmailAuthController from "./enable-email-auth"
 import makeForgotPasswordController from "./forgot-password"
 import makeLoginController from "./login"
 import makeLogoutController from "./logout"
@@ -31,12 +35,17 @@ import makeProfileController from "./profile"
 import makeRegisterController from "./register"
 import makeResetPasswordController from "./reset-password"
 import makeSendOtpController from "./send-otp"
+import makeVerifyEmailController from "./verify-email"
 import makeVerifyOtpController from "./verify-otp"
+import makeVerifyPasswordController from "./verify-password"
 
+const enableEmailAuthController = makeEnableEmailAuthController({ addEmailAuth })
 const sendOtpController = makeSendOtpController({ signInWithPhoneNumber })
 const verifyOtpController = makeVerifyOtpController({ confirmOtp })
 const completeInfosController = makeCompleteInfosController({ setProfile })
 const confirmEmailController = makeConfirmEmailController({ confirmEmail })
+const verifyEmailController = makeVerifyEmailController({ checkEmail })
+const verifyPasswordController = makeVerifyPasswordController({ checkPassword })
 const loginController = makeLoginController({ signInWithEmailAndPassword })
 const registerController = makeRegisterController({ signUp })
 const logoutController = makeLogoutController({  signOut })
@@ -55,6 +64,8 @@ export {
     verifyOtpController,
     completeInfosController,
     confirmEmailController,
+    verifyEmailController,
+    verifyPasswordController,
     loginController,
     registerController,
     logoutController,
@@ -66,5 +77,6 @@ export {
     resetPasswordController,
     newEmailController,
     newPhoneNumberController,
-    deleteAccountController
+    deleteAccountController,
+    enableEmailAuthController
 }

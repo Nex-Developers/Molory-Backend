@@ -2,21 +2,14 @@ import { ServerError, InvalidParamError, MissingParamError } from "../../../util
 
 export default function makeSetProfile ({
     userDb,
-    generateToken,
-    saveTmpToken,
-    askToConfirmEmail,
-    isValidEmail,
-    hashPassword
 }: any = {}) {
-    if (!userDb || !generateToken || !saveTmpToken || !askToConfirmEmail || ! isValidEmail || !hashPassword) throw new ServerError()
+    if (!userDb) throw new ServerError()
     return async function setProfile({
         id ,
         lang,
         firstName,
         lastName,
-        birthDay,
-        email,
-        password
+        birthDay
     }: any = {}) {
         if (! id ) throw new InvalidParamError('token')
         if (!firstName) throw new MissingParamError('firstName')
@@ -29,15 +22,6 @@ export default function makeSetProfile ({
             return { message }
         }
         const data: any = { firstName, lastName, birthDay, profileCompletedAt: new Date(), language: lang }
-        if (email) {
-            if (!isValidEmail({ email }))  throw new InvalidParamError('email')
-            if (!password) throw new MissingParamError('password')
-            data.email = email
-            const token = await generateToken({ email })
-            await saveTmpToken({ token })
-            await askToConfirmEmail({ email, token, firstName, lang })
-            data.password = await hashPassword({ password })
-        }
         
         await userDb.updateOne({ where: { id }, data })
         const message = { text: 'auth.message.profileUpdated'}
