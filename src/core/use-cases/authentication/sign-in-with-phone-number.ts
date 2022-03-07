@@ -12,7 +12,8 @@ export default function makeSignInWithPhoneNumber({
         phoneNumber
     }: any = {}) {
         if (!phoneNumber) throw new MissingParamError('phoneNumber')
-        if (phoneNumber.chartAt(0) != '+') throw new InvalidParamError('phoneNumber')
+        if (phoneNumber.charAt(0) == '+') throw new InvalidParamError('phoneNumber')
+        if (phoneNumber.length < 9) throw new InvalidParamError('phoneNumber')
         const otp = await generateOtp()
         const token = await generateToken({ phoneNumber })
         await saveTmpToken({ token })

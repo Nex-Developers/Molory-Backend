@@ -8,16 +8,19 @@ export default class SmsServer{
     static sender = env.sms.sender
 
     static async send(phoneNumbers: string[], message) {
+        console.log(message)
         const { data } = await axios.post(
-            this.apiUrl, 
+            SmsServer.apiUrl, 
             { 
                 senderId: SmsServer.sender,
                 ApiKey: SmsServer.apiKey,
                 ClientId: SmsServer.apiToken,  
-                MobileNumbers: phoneNumbers,
-                message 
+                MobileNumbers: phoneNumbers[0],
+                message,
+                groupId: '' 
             }
         )
+        console.log(data)
         return data
     }
 }
