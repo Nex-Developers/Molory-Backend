@@ -21,7 +21,7 @@ export default function makeVerifyPasswordController({
                 description: `${id}  ${Action.LOGIN}`
             }
         try {
-            const data = await checkPassword({ id, password: request.body.password, token: request.token });
+            const data = await checkPassword({ id, password: request.body.password, device: request.body.device, token: request.token });
             reqLog.status = LogStatus.SUCCEEDED
             LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)
