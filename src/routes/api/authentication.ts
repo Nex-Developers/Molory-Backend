@@ -25,7 +25,8 @@ import {
     resetPasswordController,
     sendOtpController,
     verifyEmailController,
-    verifyOtpController 
+    verifyOtpController, 
+    verifyPasswordController
 } from "../../controllers/auth"
 
 export default () => {
@@ -33,9 +34,9 @@ export default () => {
     router.post('/send-otp', langCheck, expressRouterAdapter(sendOtpController))
     router.post('/verify-otp', langCheck, tmpAuthCheck, expressRouterAdapter(verifyOtpController))
     router.post('/complete-profile', langCheck, authCheck, expressRouterAdapter(completeInfosController))
-    router.get('/add-email-auth', langCheck, queryParser, expressRouterAdapter(enableEmailAuthController))
+    router.post('/add-email-auth', langCheck, authCheck, expressRouterAdapter(enableEmailAuthController))
     router.post('/verify-email', langCheck, expressRouterAdapter(verifyEmailController))
-    router.post('/verify-password', langCheck, expressRouterAdapter(verifyOtpController))
+    router.post('/verify-password', langCheck,tmpAuthCheck, expressRouterAdapter(verifyPasswordController))
     router.get('/confirm-email', langCheck, queryParser, expressRouterAdapter(confirmEmailController, 'html'))
     router.post('/login', langCheck, expressRouterAdapter(loginController))
     router.post('/register', langCheck, expressRouterAdapter(registerController))

@@ -7,21 +7,20 @@ export default function makeConfirmEmailController({
 }: any = {}) {
     if (!confirmEmail) throw new ServerError()
     return async function confirmEmailController(request: IHttpRequest): Promise<IHttpResponse> {
-        const { id, lastName, firstName } = request.ref,
+        const { email } = request.ref,
         lang = request.lang,
         date = new Date(),
         reqLog: Log = {
             date: date.toDateString(), 
             time: date.toTimeString(),
-            userId: id, 
-            lastName,
-            firstName,
+            userId: null, 
+            email,
             model: 'User',
             path: '/api/auth/confirm-email',
-            modelId: id.toString(),
+            modelId: '',
             action: Action.ACTIVATE,
             status: LogStatus.FAILED,
-            description: `${lastName}  ${firstName}  ${Action.ACTIVATE} his account email`
+            description: `${email} ${Action.ACTIVATE} his account`
         } 
         try {
             const token = request.token,

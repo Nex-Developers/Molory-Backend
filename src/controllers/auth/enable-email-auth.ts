@@ -25,7 +25,7 @@ export default function makeEnableEmailAuthController({
             }
         try {
             const body = request.body,
-                data = await addEmailAuth({ id, ...body, lang })
+            data = await addEmailAuth({ id, ...body })
             reqLog.status = LogStatus.SUCCEEDED
             LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)

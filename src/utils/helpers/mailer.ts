@@ -9,8 +9,8 @@ export default class Mailer {
             host: env.mail.host,
             port: env.mail.port,
             secure: true,
-            logger: true,
-            debug: true,
+            logger: false,
+            debug: false,
             secureConnection: false,
             auth: {
                 user: env.mail.email,

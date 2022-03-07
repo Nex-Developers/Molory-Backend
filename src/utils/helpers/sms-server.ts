@@ -20,7 +20,6 @@ export default class SmsServer{
                 groupId: '' 
             }
         )
-        console.log(data)
         return data
     }
 }

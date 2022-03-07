@@ -23,6 +23,6 @@ export default function makeConfirmEmail({
             await userDb.updateOne({ where: { email }, data: { emailVerifiedAt } })
             removeTmpToken({ token })
         }
-        return emailConfirmationView({ lang, firstName: user.firstName })
+        return { view: emailConfirmationView({ lang, firstName: user.firstName })}
     }
 }

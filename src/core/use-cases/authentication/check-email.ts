@@ -11,6 +11,7 @@ export default function makeCheckEmail({
     }: any = {}) {
         if (!email) throw new MissingParamError('email')
         const user = await userDb.findFirst({ where: { email }, select: { id: true, emailVerifiedAt: true }})
+        console.log(user)
         if (!user) throw new InvalidParamError('email')
         if (!user.emailVerifiedAt) throw new UnauthorizedError()
         const token =  await generateToken({ id: user.id })

@@ -48,6 +48,7 @@
             "otpVerified": "Votre numéro de téléphone a été vérifié avec succès.",
             "profileUpdated": "Votre profil a été mis à jour avec succès.",
             "login": "Vous êtes connecté avec succès",
+            "checkEmail": "Votre compte est actif,Entrez votre mot de passe pour vous connecter.",
             "register": "Un lien de confirmation a été envoyé sur votre email :email",
             "logout": "Vous êtes déconnecté avec succès",
             "changePassword": "Votre mot de passe a été changé avec succès",

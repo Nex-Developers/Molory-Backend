@@ -47,6 +47,7 @@
       "signinWithPhone": "A 6-digit code has been sent to your phone number :phoneNumber",
       "otpVerified": "Your phone number has been verified successfully.",
       "profileUpdated": "Your profile have been updated successfully.",
+      "checkEmail": "Your account is active, please complete password to login",
       "login": "You are logged in successfully",
       "register": "A confirmation link has been send on your email :email",
       "logout": "You are logged out successfully!",
