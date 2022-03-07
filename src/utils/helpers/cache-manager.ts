@@ -6,7 +6,9 @@ export default class CacheManager {
     static client
 
    static connect() {
-    CacheManager.client = redis.createClient({ host: env.redis.host, password: env.redis.password, port: env.redis.port})
+     const config: any = { host: env.redis.host,  port: env.redis.port}
+     if (env.redis.password) config.password = env.redis.password
+    CacheManager.client = redis.createClient(config)
     CacheManager.client.on("error", function(error) {
         console.error('redis connection failed ', error);
       })    

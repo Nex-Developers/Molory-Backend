@@ -17,7 +17,7 @@ export default function makeSignInWithPhoneNumber({
         const token = await generateToken({ phoneNumber })
         await saveTmpToken({ token })
         await saveOtp({ phoneNumber, otp })
-        // await sendOtp({ phoneNumber, otp })
+        await sendOtp({ phoneNumber, otp })
         const message = { text: 'auth.message.signinWithPhone', params: { phoneNumber }}
         return { token, message }
     }

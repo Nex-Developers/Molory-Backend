@@ -20,7 +20,10 @@ export default {
         path: 'public/uploads/'
     },
     sms : {
-        url: process.env.SMS_API_URL
+        url: process.env.SMS_API_URL,
+        token: process.env.SMS_CLIENT_ID,
+        key: process.env.SMS_API_KEY,
+        sender: process.env.SMS_SENDER_ID
     },
     mail: {
         host:  process.env.SENDER_EMAIL_HOST,
