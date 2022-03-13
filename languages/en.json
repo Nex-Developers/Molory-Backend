@@ -44,7 +44,7 @@
       "thanks": "Thanks"
     },
     "message": {
-      "signinWithPhone": "A 6-digit code has been sent to your phone number :phoneNumber",
+      "signinWithPhone": "A 4-digit code has been sent to your phone number :phoneNumber",
       "otpVerified": "Your phone number has been verified successfully.",
       "profileUpdated": "Your profile have been updated successfully.",
       "checkEmail": "Your account is active, please complete password to login",

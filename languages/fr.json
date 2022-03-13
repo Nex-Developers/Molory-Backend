@@ -44,7 +44,7 @@
             "thanks": "Merci"
         },
         "message": {
-            "signinWithPhone": "Un code à 6 chiffres a été envoyé à votre numéro de téléphone :phoneNumber",
+            "signinWithPhone": "Un code à 4 chiffres a été envoyé à votre numéro de téléphone :phoneNumber",
             "otpVerified": "Votre numéro de téléphone a été vérifié avec succès.",
             "profileUpdated": "Votre profil a été mis à jour avec succès.",
             "login": "Vous êtes connecté avec succès",
