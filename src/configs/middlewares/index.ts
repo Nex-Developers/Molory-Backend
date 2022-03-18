@@ -2,6 +2,7 @@ import adminCheck from './admin-check'
 import authCheck from './auth-check'
 import contentType from './content-type'
 import cors from './cors'
+import driverCheck from './driver-check'
 import fileUpload from './file-upload'
 import jsonParser from './json-parser'
 import langCheck from './lang-check'
@@ -10,6 +11,7 @@ import tmpAuthCheck from './tmp-auth-check'
 
 export {
     adminCheck,
+    driverCheck,
     authCheck,
     contentType,
     cors,

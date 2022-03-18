@@ -71,6 +71,10 @@ export default class Query <T> {
         return await this.collection.update({ where, data})
     }
 
+    async insertOrUpdate({ where, create, update }): Promise<T> {
+        return await this.collection.upsert({ where, create, update})
+    }
+
     async deleteOne({ where }) {
         if (env.db.softDelete) return this.softDeleteOne({ where })
         else return await this.collection.delete({ where })
