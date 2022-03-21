@@ -14,15 +14,15 @@ export default function makeDeleteController({
             firstName: request.ref.firstName,
             model: 'VehicleType',
             path: '/api/vehicle-type',
-            modelId: request.ref.id,
+            modelId: request.body.name,
             action: Action.DELETE,
             status: LogStatus.FAILED,
-            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.DELETE} vehicle type ${request.body.id}`
+            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.DELETE} vehicle type ${request.body.name}`
         } 
         try {
             const lang = request.lang,
-                { id } = request.body,
-                data = await removeVehicleType({ id })
+                { name } = request.body,
+                data = await removeVehicleType({ name })
                 reqLog.status = LogStatus.SUCCEEDED
                 LogManager.save(reqLog)
                 return HttpResponse.ok(data, lang)
