@@ -11,7 +11,7 @@ export default function makeRemove({
 
         await vehicleTypeDb.deleteOne({ 
             where: {
-                name: true
+                name
             }
         })
         const message = { text: 'response.remove' }
