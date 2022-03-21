@@ -18,7 +18,7 @@ export default function makeAdd({
         if (!address) throw new MissingParamError('address')
 
         const { id } = await routeDb.insertOne({ data: { tripId, longitude, latitude, address, description, activateAt }})
-        const message = "response.add"
+        const message = { text:"response.add" }
         return { message, id }
     } 
 }

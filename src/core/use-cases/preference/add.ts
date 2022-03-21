@@ -11,7 +11,7 @@ export default function makeAdd({
         if (!title) throw new MissingParamError('title')
         if (!description) throw new MissingParamError('description')
         const { id } = await preferenceDb.insertOne({ data: { title, description }})
-        const message = "response.add"
+        const message = { text: "response.add"}
         return { message, id }
     } 
-}
+}   

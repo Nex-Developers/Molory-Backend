@@ -69,7 +69,7 @@ export default function makeAdd({
             }
         })
 
-        const message = "response.add"
+        const message = { text: "response.add" }
         return { message, data: trip }
     } 
 }

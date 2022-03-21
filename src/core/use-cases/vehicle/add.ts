@@ -16,7 +16,7 @@ export default function makeAdd({
         if (!registrationDoc) throw new MissingParamError('registrationDoc')
 
         const { id } = await vehicleDb.insertOne({ data: { type, color, numberPlate, registrationDoc }})
-        const message = "response.add"
+        const message = { text: "response.add" }
         return { message, id }
     } 
 }

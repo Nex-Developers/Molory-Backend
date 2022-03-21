@@ -30,7 +30,7 @@ export default function makeAdd({
         const { id } = await travelDb.insertOne({ data: { userId, routeId, seats }})
 
         const operation = await operationDb.insertOne({ data: { travelId: id, userId, type: 'payment', amount: price }})
-        const message = "response.add"
+        const message = {text: "response.add" }
         return { message, id , operation }
     } 
 }

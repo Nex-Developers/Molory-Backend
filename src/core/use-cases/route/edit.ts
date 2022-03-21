@@ -17,7 +17,7 @@ export default function makeEdit({
 
         if( Object.keys(data).length === 0) throw new MissingParamError('all')
         await routeDb.updateOne({ where: { id}, data })
-        const message = "response.edit"
+        const message = { text: "response.edit" }
         return { message }
     } 
 }

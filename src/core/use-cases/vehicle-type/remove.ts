@@ -14,7 +14,7 @@ export default function makeRemove({
                 name: true
             }
         })
-        const message = 'response.remove'
+        const message = { text: 'response.remove' }
         return { message }
     } 
 }

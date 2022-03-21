@@ -16,7 +16,7 @@ export default function makeAdd({
         if (!unitPrice) throw new MissingParamError('unitPrice')
 
         const { id } = await pricingDb.insertOne({ data: { vehicleTypeName, lowerDistance }})
-        const message = "response.add"
+        const message = { text: "response.add"}
         return { message, id }
     } 
 }

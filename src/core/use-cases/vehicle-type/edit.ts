@@ -15,7 +15,7 @@ export default function makeEdit({
         
         if( Object.keys(data).length === 0) throw new MissingParamError('all')
         await vehicleTypeDb.updateOne({ where: { name }, data })
-        const message = "response.edit"
+        const message = { text: "response.edit" }
         return { message }
     } 
 }
