@@ -11,7 +11,7 @@ coverage
 
 # Transpiled files
 dist/
-public/
+public/assets/
 
 # VS Code
 .vscode

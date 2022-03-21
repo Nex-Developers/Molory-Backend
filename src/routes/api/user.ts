@@ -26,7 +26,7 @@ export default () => {
     router.route('/user')
     .get(langCheck, authCheck, expressRouterAdapter(getUsersController))
     .post(langCheck, authCheck, adminCheck, expressRouterAdapter(postUserController))
-    .patch(langCheck, authCheck, expressRouterAdapter(patchUserController))
+    .patch(langCheck, authCheck, adminCheck, expressRouterAdapter(patchUserController))
     .delete(langCheck, authCheck, adminCheck, expressRouterAdapter(deleteUserController))
     router.patch('/block-user', langCheck, authCheck, adminCheck, expressRouterAdapter(blockUserController))
     router.patch('/unblock-user', langCheck, authCheck, adminCheck, expressRouterAdapter(unblockUserController))
