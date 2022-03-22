@@ -16,7 +16,7 @@ export default function makeUpdateIdCard ({
         if (!user) throw new InvalidParamError('token')
         // if (user.idCard) deleteAvatarFile(user.idCard)
         const idCard = file.path.substring(file.path .indexOf("/"));
-        userDb.updateOne({ where: { id },  data: { idCard }})
+        userDb.updateOne({ where: { id },  data: { idCard, idCardStatus: 2 }})
         const message = { text: 'response.update' }
         return { message, data: { idCard }}
     }

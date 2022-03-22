@@ -16,7 +16,7 @@ export default function makeUpdateDriverLicense ({
         if (!user) throw new InvalidParamError('token')
         // if (user.driverLicence) deleteAvatarFile(user.driverLicence)
         const driverLicense = file.path.substring(file.path .indexOf("/"));
-        userDb.updateOne({ where: { id },  data: { driverLicense }})
+        userDb.updateOne({ where: { id },  data: { driverLicense, diverLicenseStatus: 2 }})
         const message = { text: 'response.update' }
         return { message, data: { driverLicense }}
     }
