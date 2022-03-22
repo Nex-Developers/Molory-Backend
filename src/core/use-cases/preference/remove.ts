@@ -11,7 +11,7 @@ export default function makeRemove({
 
         await preferenceDb.deleteOne({ 
             where: {
-                id: true
+                id
             }
         })
         const message = { text: 'response.remove'}
