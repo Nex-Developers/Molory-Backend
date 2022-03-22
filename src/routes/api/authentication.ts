@@ -12,6 +12,8 @@ import {
     confirmEmailController,
     deleteAccountController,
     editAvatarController,
+    editDriverLicense,
+    editIdCardController,
     editProfileController,
     enableEmailAuthController,
     forgotPasswordController,
@@ -46,6 +48,8 @@ export default () => {
     router.post('/forgot-password', langCheck, expressRouterAdapter(forgotPasswordController))
     router.post('/edit-profile', langCheck, authCheck, expressRouterAdapter(editProfileController))
     router.post('/edit-avatar', langCheck, authCheck, fileUpload.single('avatar'), expressRouterAdapter(editAvatarController))
+    router.post('/id-card', langCheck, authCheck, fileUpload.single('idCard'), expressRouterAdapter(editIdCardController))
+    router.post('/driver-license', langCheck, authCheck, fileUpload.single('driverLicense'), expressRouterAdapter(editDriverLicense))
     router.get('/reset-password', langCheck, queryParser, expressRouterAdapter(resetPasswordController))
     router.post('/new-email', langCheck, authCheck, expressRouterAdapter(newEmailController))
     router.post('/new-phonenumber', langCheck, authCheck, expressRouterAdapter(newPhoneNumberController))

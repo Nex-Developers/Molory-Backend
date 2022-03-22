@@ -43,7 +43,11 @@ model User {
   role String
   language String
   idCard String?
-  driverLicence String?
+  idCardStatus Int @default(0)
+  idCardModifiedAt DateTime?
+  driverLicense String?
+  diverLicenseStatus Int @default(0)
+  diverLicenseModifiedAt DateTime?
   password String
   rating Float?
   createdAt DateTime @default(now())

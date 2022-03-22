@@ -25,6 +25,8 @@ import makeRemoveAccount from "./remove-account"
 import makeAddEmailAuth from "./add-email-auth"
 import makeCheckEmail from "./check-email"
 import makeCheckPassword from "./check-password"
+import makeUpdateIdCard from "./update-id-card"
+import makeUpdateDriverLicense from "./update-driver-license"
 
 const prisma = new PrismaClient()
 const userDb = new UserDb()
@@ -44,6 +46,8 @@ const setProfile = makeSetProfile({ userDb })
 const getProfile = makeGetProfile({ userDb })
 const updateProfile = makeUpdateProfile({ userDb })
 const updateAvatar = makeUpdateAvatar({ userDb, deleteAvatarFile})
+const updateIdCard = makeUpdateIdCard({ userDb })
+const updateDriverLicense = makeUpdateDriverLicense({ userDb })
 const recoverPassword = makeRecoverPassword({ userDb, generateToken, saveTmpToken, askToResetPassword })
 const signOut = makeSignOut({ removeToken })
 const removeAccount = makeRemoveAccount({ userDb, removeToken})
@@ -63,6 +67,8 @@ export {
     getProfile,
     updateProfile,
     updateAvatar,
+    updateIdCard,
+    updateDriverLicense,
     recoverPassword,
     signOut,
     removeAccount,

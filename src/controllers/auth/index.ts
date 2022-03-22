@@ -17,12 +17,16 @@ import {
     updateAvatar,
     addEmailAuth,
     checkEmail,
-    checkPassword
+    checkPassword,
+    updateIdCard,
+    updateDriverLicense
 } from "../../core/use-cases/authentication"
 import makeCompleteInfosController from "./complete-infos"
 import makeConfirmEmailController from "./confirm-email"
 import makeDeleteAccountController from "./delete-account"
 import makeEditAvatarController from "./edit-avatar"
+import makeEditDriverLicenseController from "./edit-driver-license"
+import makeEditIdCardController from "./edit-id-card"
 import makeEditProfileController from "./edit-profile"
 import makeEnableEmailAuthController from "./enable-email-auth"
 import makeForgotPasswordController from "./forgot-password"
@@ -53,6 +57,8 @@ const profileController = makeProfileController({ getProfile })
 const newPasswordController = makeNewPasswordController({ changePassword })
 const editProfileController = makeEditProfileController({ updateProfile })
 const editAvatarController = makeEditAvatarController({ updateAvatar })
+const editIdCardController = makeEditIdCardController({ updateIdCard })
+const editDriverLicense = makeEditDriverLicenseController({ updateDriverLicense })
 const forgotPasswordController = makeForgotPasswordController({ recoverPassword })
 const resetPasswordController = makeResetPasswordController({ removePassword })
 const newEmailController = makeNewEmailController({ changeEmail })
@@ -73,6 +79,8 @@ export {
     newPasswordController,
     editProfileController,
     editAvatarController,
+    editIdCardController,
+    editDriverLicense,
     forgotPasswordController,
     resetPasswordController,
     newEmailController,
