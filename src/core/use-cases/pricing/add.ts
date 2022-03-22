@@ -11,11 +11,11 @@ export default function makeAdd({
         unitPrice
     }: any = {}) => {
         if (!vehicleTypeName) throw new MissingParamError('vehicleTypeName')
-        if (!lowerDistance) throw new MissingParamError('lowerDistance')
+        if (!lowerDistance) lowerDistance = 0
         if (!upperDistance) throw new MissingParamError('upperDistance')
         if (!unitPrice) throw new MissingParamError('unitPrice')
 
-        const { id } = await pricingDb.insertOne({ data: { vehicleTypeName, lowerDistance }})
+        const { id } = await pricingDb.insertOne({ data: { vehicleTypeName, lowerDistance, upperDistance, unitPrice }})
         const message = { text: "response.add"}
         return { message, id }
     } 
