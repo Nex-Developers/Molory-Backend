@@ -31,7 +31,7 @@ model User {
   id Int @id @default(autoincrement())
   countryId Int?
   avatar String?
-  email String  @unique
+  email String?  @unique
   phoneNumber String @unique
   emailVerifiedAt DateTime?
   phoneNumberVerifiedAt DateTime?

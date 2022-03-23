@@ -41,7 +41,6 @@ export default function makeConfirmOtp({
                         firstName: "",
                         lastName: "",
                         language: lang,
-                        email: "",
                         password: ""
                     }
                 })
