@@ -9,6 +9,7 @@ import makeEditUser from "./edit-user"
 import makeEditUserAvatar from "./edit-user-avatar"
 import makeListRemovedUserInfos from "./list-removed-user-infos"
 import makeListRemovedUsers from "./list-removed-users"
+import makeListToValidateUsers from "./list-to-validate-users"
 import makeListUserInfos from "./list-user-infos"
 import makeListUsers from "./list-users"
 import makeRemoveUser from "./remove-user"
@@ -18,6 +19,7 @@ import makeUnblockUser from "./unblock-user"
 const userDb = new UserDb
 
 const listUsers = makeListUsers({ userDb })
+const listTovalidateUsers = makeListToValidateUsers({ userDb })
 const listUserInfos = makeListUserInfos({ userDb })
 const addUser = makeAddUser({ userDb, isValidEmail, hashPassword })
 const editUser = makeEditUser({ userDb, isValidEmail, hashPassword })
@@ -32,6 +34,7 @@ const editUserAvatar = makeEditUserAvatar({ userDb, deleteAvatarFile })
 export {
     listUserInfos,
     listUsers,
+    listTovalidateUsers,
     addUser,
     editUser,
     removeUser,

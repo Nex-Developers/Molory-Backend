@@ -11,6 +11,7 @@ import {
     deletedUserController,
     deletedUsersController,
     deleteUserController,
+    getToValidateUsersController,
     getUserController, 
     getUsersController,
     patchUserAvatarController,
@@ -23,6 +24,7 @@ import {
 export default () => {
     const router = express.Router()
     router.get('/user/:id', langCheck, authCheck, expressRouterAdapter(getUserController))
+    router.get('/to-validate-user', langCheck, authCheck, adminCheck, expressRouterAdapter(getToValidateUsersController))
     router.route('/user')
     .get(langCheck, authCheck, expressRouterAdapter(getUsersController))
     .post(langCheck, authCheck, adminCheck, expressRouterAdapter(postUserController))
