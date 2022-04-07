@@ -1,5 +1,6 @@
 import { Request, Response} from 'express'
 import { IHttpRequest, IHttpResponse } from '../../core/conventions'
+import { DbConnection } from "../../utils/helpers"
 
 
 export default function makeExpressRouterAdapter() {
@@ -27,6 +28,7 @@ export default function makeExpressRouterAdapter() {
       } else {
         res.status(httpResponse.statusCode).json(httpResponse.body)
       }
+      DbConnection.disconnect()
     }
   }
 }

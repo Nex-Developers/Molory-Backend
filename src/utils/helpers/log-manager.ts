@@ -31,13 +31,13 @@ export default class LogManager {
          sheets.forEach(  sheetName => {
            const data: Log[] =  reader.utils.sheet_to_json<Log>(file.Sheets[sheetName])
             data.forEach(item => {
-                if(item.userId === userId)  result.push(item)
+                if(item.userId === userId)  result.unshift(item)
             })
        })
         return result
     }
 
-    static async read() {
+    static async read(limit = 20) {
         const file = reader.readFile(env.logs.file)
         if (!file) return []
         const data = []
@@ -46,12 +46,13 @@ export default class LogManager {
             const temp = reader.utils.sheet_to_json(
                 file.Sheets[file.SheetNames[i]])
             temp.forEach((res) => {
-                data.push(res)
+                data.unshift(res)
+                if (data.length == limit) return
             })
         }
         // Printing data
-        console.log(data)
-        return data
+        
+        return { length: data.length, data }
     }
 
     // static async download() {

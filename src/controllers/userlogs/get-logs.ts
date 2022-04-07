@@ -19,7 +19,7 @@ export default function makeGetLogsController() {
                 description: `${lastName}  ${firstName}  ${Action.READ} all logs`
             }
         try {
-            const data = await LogManager.read()
+            const data = await LogManager.read(request.body.limit)
             reqLog.status = LogStatus.SUCCEEDED
             reqLog.description += ` (${data.length}) rows`
             LogManager.save(reqLog)

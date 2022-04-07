@@ -70,7 +70,7 @@ model User {
 }
 
 model Device {
-    id String @id
+    id String
     userId Int
     platform String
     token String
@@ -78,6 +78,7 @@ model Device {
     updatedAt DateTime? @updatedAt  
     deletedAt DateTime?
     user   User   @relation(fields: [userId], references: [id])
+    @@id([id, userId])
 }
 
 model Wallet {
