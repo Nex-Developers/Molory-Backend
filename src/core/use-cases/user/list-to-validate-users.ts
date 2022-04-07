@@ -10,7 +10,7 @@ export default function makeListToValidateUsers({
     }: any ={}) {
         if (!startAt) startAt = 0
         if (!limit) limit = 100
-        const data = await userDb.findMany({ startAt, limit, where: { OR: [{ diverLicenseStatus: 2 }, { idCardStatus: 2 }], select:{
+        const data = await userDb.findMany({ startAt, limit, where: { OR: [{ diverLicenseStatus: 2 }, { idCardStatus: 2 }]}, select:{
             id: true,
             avatar: true,
             lastName: true,
