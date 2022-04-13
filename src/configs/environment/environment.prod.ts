@@ -37,5 +37,8 @@ export default {
     token: {
         expireTime: process.env.TOKEN_EXPIRE_TIME,
         secret: process.env.JWT_SECRET,
+    },
+    google: {
+        apiKey: process.env.GOOGLE_API_KEY,
     }
 }

@@ -1,11 +1,10 @@
-import { PrismaClient } from "@prisma/client"
 import { env } from "../configs/environment";
+import { DbConnection } from "../utils/helpers";
 
 export default class Query <T> {
     collection
     constructor(collectionName) {
-        const prisma = new PrismaClient()
-        this.collection = prisma[collectionName];
+        this.collection = DbConnection.prisma[collectionName];
     }
 
     async findMany({ 
@@ -63,8 +62,8 @@ export default class Query <T> {
     }
 
 
-    async insertOne({ data }): Promise<T> {
-        return await this.collection.create({ data })
+    async insertOne({ data, include }): Promise<T> {
+        return await this.collection.create({ data, include })
     }
 
     async updateOne({ where, data }): Promise<T> {

@@ -22,6 +22,6 @@ export default function makeListItems({
                 createdAt: true
             }
         })
-        return { data }
+        return { count: data.length, startAt, limit, data }
     } 
 }

@@ -21,10 +21,18 @@ export default function makeListItems({
                 id: true,
                 seats: true,
                 status: true,
-                routes: true,
+                departureDate: true,
+                routes: {
+                    select: {
+                        distance: true,
+                        duration: true,
+                        price: true,
+                        stops: true
+                    }
+                },
                 createdAt: true
             }
         })
-        return { data }
+        return { count: data.length, startAt, limit, data }
     } 
 }

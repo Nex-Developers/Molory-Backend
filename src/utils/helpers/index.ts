@@ -11,6 +11,7 @@ import SmsServer from "./sms-server"
 import TokenManager from "./token-manager"
 import FileManager from "./file-manager"
 import LogManager from "./log-manager"
+import  GoogleMap from "./google-map"
 
 export {
     Encrypter,
@@ -25,5 +26,6 @@ export {
     FileManager,
     LanguageManager,
     DataFormatter,
-    LogManager
+    LogManager,
+    GoogleMap
 }

@@ -1,31 +1,29 @@
 import { Action, IHttpRequest, IHttpResponse, Log, LogStatus } from "../../core/conventions";
 import { HttpResponse, LogManager } from "../../utils/helpers";
 
-export default function makePostController({
-    addVehicle
+export default function makePostValidateIdCardController({
+    validateUserIdCard
 }) {
     // use translations
-    return async function(request: IHttpRequest): Promise<IHttpResponse> {
+    return async function (request: IHttpRequest): Promise<IHttpResponse> {
         const reqLog: Log = {
             date: new Date().toDateString(), 
             time: new Date().toTimeString(),
             userId: request.ref.id, 
             lastName: request.ref.lastName,
             firstName: request.ref.firstName,
-            model: 'Vehicle',
-            path: '/api/vehicle',
-            modelId: '',
-            action: Action.WRITE,
+            model: 'User',
+            path: '/api/validate-id-card',
+            modelId: request.body.userId.toString(),
+            action: Action.EDIT,
             status: LogStatus.FAILED,
-            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.WRITE} vehicle `
+            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.EDIT} user ${request.body.userId}`
         } 
         try {
             const lang = request.lang,
                 body = request.body,
-                data = await addVehicle({userId: request.ref.id,...body})
+                data = await validateUserIdCard({...body})
                 reqLog.status = LogStatus.SUCCEEDED
-                reqLog.modelId = data.id
-                reqLog.description += data.id
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)
         } catch (err) {

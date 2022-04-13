@@ -15,11 +15,13 @@ import makeListUsers from "./list-users"
 import makeRemoveUser from "./remove-user"
 import makeRestoreUser from "./restore-user"
 import makeUnblockUser from "./unblock-user"
+import makeValidateDriverLicense from "./validate-driver-license"
+import makeValidateUserIdCard from "./validate-user-id-card"
 
-const userDb = new UserDb
+const userDb = new UserDb()
 
 const listUsers = makeListUsers({ userDb })
-const listTovalidateUsers = makeListToValidateUsers({ userDb })
+const listToValidateUsers = makeListToValidateUsers({ userDb })
 const listUserInfos = makeListUserInfos({ userDb })
 const addUser = makeAddUser({ userDb, isValidEmail, hashPassword })
 const editUser = makeEditUser({ userDb, isValidEmail, hashPassword })
@@ -30,11 +32,13 @@ const unblockUser = makeUnblockUser({ userDb })
 const listRemovedUsers = makeListRemovedUsers({ userDb })
 const listRemovedUserInfos = makeListRemovedUserInfos({ userDb })
 const editUserAvatar = makeEditUserAvatar({ userDb, deleteAvatarFile })
+const validateUserIdCard = makeValidateUserIdCard({ userDb })
+const validateDriverLicense = makeValidateDriverLicense({ userDb })
 
 export {
     listUserInfos,
     listUsers,
-    listTovalidateUsers,
+    listToValidateUsers,
     addUser,
     editUser,
     removeUser,
@@ -43,5 +47,8 @@ export {
     unblockUser,
     listRemovedUsers,
     listRemovedUserInfos,
-    editUserAvatar
+    editUserAvatar,
+    validateUserIdCard,
+    validateDriverLicense
 }
+

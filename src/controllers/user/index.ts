@@ -7,11 +7,13 @@ import {
     listRemovedUsers,
     listUserInfos,
     listUsers,
+    listToValidateUsers,
     removeUser,
     restoreUser, 
-    unblockUser
+    unblockUser,
+    validateUserIdCard,
+    validateDriverLicense
 } from "../../core/use-cases/user"
-import listToValidateUsers from "../../core/use-cases/user/list-to-validate-users"
 import makeBlockUserController from "./block-user"
 import makeDeleteUserController from "./delete-user"
 import makeDeletedUserController from "./deleted-user"
@@ -22,6 +24,8 @@ import makeGetUsersController from "./get-users"
 import makePatchUserController from "./patch-user"
 import makePatchUserAvatarController from "./patch-user-avatar"
 import makePostUserController from "./post-user"
+import makePostValidateLicenseController from "./post-validate-driver-license"
+import makePostValidateIdCardController from "./post-validate-id-card"
 import makeRestoreUserController from "./restore-user"
 import makeUnblockUserController from "./unblock-user"
 
@@ -38,7 +42,8 @@ const deletedUsersController = makeDeletedUsersController({ listRemovedUsers })
 const blockUserController = makeBlockUserController({ blockUser })
 const unblockUserController = makeUnblockUserController({ unblockUser })
 const patchUserAvatarController = makePatchUserAvatarController({ editUserAvatar })
-
+const postValidateIdCardController = makePostValidateIdCardController({ validateUserIdCard })
+const postValidateLicenseController = makePostValidateLicenseController({ validateDriverLicense })
 
 export {
     getUsersController,
@@ -51,7 +56,9 @@ export {
     deletedUserController,
     deletedUsersController,
     blockUserController,
-    unblockUserController ,
-    patchUserAvatarController
+    unblockUserController,
+    patchUserAvatarController,
+    postValidateIdCardController,
+    postValidateLicenseController
 }
 

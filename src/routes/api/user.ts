@@ -17,6 +17,8 @@ import {
     patchUserAvatarController,
     patchUserController,
     postUserController,
+    postValidateIdCardController,
+    postValidateLicenseController,
     restoreUserController,
     unblockUserController
 } from "../../controllers/user"
@@ -36,5 +38,7 @@ export default () => {
     router.get('/deleted-user/:id', langCheck, authCheck, adminCheck, expressRouterAdapter(deletedUserController))
     router.patch('/restore-user', langCheck, authCheck, adminCheck, expressRouterAdapter(restoreUserController))
     router.patch('/user-avatar', langCheck, authCheck, adminCheck, fileUpload.single('avatar'), expressRouterAdapter(patchUserAvatarController))
+    router.post('/validate-id-card', langCheck, authCheck, adminCheck, expressRouterAdapter(postValidateIdCardController))
+    router.post('/validate-driver-license', langCheck, authCheck, adminCheck, expressRouterAdapter(postValidateLicenseController))
     return router
 }

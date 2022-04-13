@@ -2,7 +2,7 @@ import { Action, IHttpRequest, IHttpResponse, Log, LogStatus } from "../../core/
 import { HttpResponse, LogManager } from "../../utils/helpers";
 
 export default function makePostController({
-    addVehicle
+    addTrip
 }) {
     // use translations
     return async function(request: IHttpRequest): Promise<IHttpResponse> {
@@ -12,17 +12,17 @@ export default function makePostController({
             userId: request.ref.id, 
             lastName: request.ref.lastName,
             firstName: request.ref.firstName,
-            model: 'Vehicle',
-            path: '/api/vehicle',
+            model: 'Trip',
+            path: '/api/trip',
             modelId: '',
             action: Action.WRITE,
             status: LogStatus.FAILED,
-            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.WRITE} vehicle `
+            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.WRITE} trip `
         } 
         try {
             const lang = request.lang,
                 body = request.body,
-                data = await addVehicle({userId: request.ref.id,...body})
+                data = await addTrip({userId: request.ref.id,...body})
                 reqLog.status = LogStatus.SUCCEEDED
                 reqLog.modelId = data.id
                 reqLog.description += data.id

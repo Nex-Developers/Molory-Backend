@@ -12,11 +12,15 @@ export default function makeAdd({
         userId,
         vehicleId,
         seats,
+        date,
+        time,
         stops
     }: any = {}) => {
         if (!userId) throw new MissingParamError('userId')
         if (!vehicleId) throw new MissingParamError('vehicleId')
         if (!seats) throw new MissingParamError('seats')
+        if (!date) throw new MissingParamError('date')
+        if (!time) throw new MissingParamError('time')
         if (!stops && !stops.length) throw new MissingParamError('stops')
        
         const departures = stops.filter(stop => stop.type === 'departure' ||  stop.type === 'both')
@@ -26,37 +30,46 @@ export default function makeAdd({
         if(!arrivals.length) throw new MissingParamError('arrival')
         
         const vehicle = await vehicleDb.findFirst({ where: { id: vehicleId }})
-        const pricing = await pricingDb.findMany({ where: { vehicleTypeName: vehicle.type }, select: { lowerDistance: true, upperDistance: true, price: true}})
-
+        const pricing = await pricingDb.findMany({ where: { vehicleTypeName: vehicle.type }, select: { lowerDistance: true, upperDistance: true, unitPrice: true}})
         const routes = []
-        await departures.forEach( departure => {
-            arrivals.forEach( async arrival => {
-                if (departure.address == arrival.address) return
+         for (const departure of departures ) {
+             for ( const arrival of arrivals) {
+                if (departure.address == arrival.address) break
+                if (departure.type === 'both') {
+                    departure.type = 'departure'
+                    departure.principal = false
+                }
+                if (arrival.type === 'both') {
+                    arrival.type = 'arrival'
+                    arrival.principal = false
+                }
                 const {distance, duration} = await calculMatrix({ departure,  arrival })
                 const price = calculPrice({ distance, pricing })
+                console.log(distance, duration, price)
                 routes.push(
                     {
                         distance,
                         duration,
                         price,
-                        create: {
-                            departure,
-                            arrival
+                        stops: {
+                            create: [departure, arrival]
                         }
                     }
                 )
-            })
-        })
+            }
+        }
+
         
+        const departureDate = new Date(date + ' ' + time)
+
         const trip = await tripDb.insertOne({ 
             data: {
                 userId,
                 vehicleId,
                 seats,
+                departureDate,
                 routes: {
-                    create: {
-                        routes
-                    }
+                    create: routes
                 }
             },
             include: {

@@ -5,8 +5,8 @@ export default function makeCalculPrice({
         distance,
         pricing
     }) => {
-        let { unitPrice } = pricing.find(item => item.lowerDistance >=  distance && item.upperDistance >  distance )
+        let { unitPrice } = pricing.find(item => item.lowerDistance <=  distance && item.upperDistance >  distance )
         if (!unitPrice) unitPrice = 0
-        return distance * unitPrice
+        return  Math.round(distance * unitPrice)
     }
 }

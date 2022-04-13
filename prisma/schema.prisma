@@ -46,8 +46,8 @@ model User {
   idCardStatus Int @default(0)
   idCardModifiedAt DateTime?
   driverLicense String?
-  diverLicenseStatus Int @default(0)
-  diverLicenseModifiedAt DateTime?
+  driverLicenseStatus Int @default(0)
+  driverLicenseModifiedAt DateTime?
   password String
   rating Float?
   createdAt DateTime @default(now())
@@ -138,67 +138,67 @@ model VehicleType {
 }
 
 model Vehicle {
-  id    BigInt @id @default(autoincrement())
+  id    Int @id @default(autoincrement())
   userId Int
   type String
   color String
-  numberPlate String
-  registrationDoc String
+  numberPlate String @unique
+  registrationDoc String?
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
   deletedAt DateTime?
   trip Trip[]
   user   User   @relation(fields: [userId], references: [id])
-  vehicles   VehicleType   @relation(fields: [type], references: [name])
+  vehicleType   VehicleType   @relation(fields: [type], references: [name])
 }
 
 model Trip {
-    id    BigInt @id @default(autoincrement())
+    id    Int @id @default(autoincrement())
     userId     Int
-    vehiculeId BigInt
+    vehicleId Int
     seats Int
-    status Int @default(3)
+    status Int @default(4)
+    departureDate DateTime
     createdAt DateTime @default(now())
+    deletedAt DateTime?
     startedAt DateTime?
     finishedAt DateTime?
     // stops Stop[]
     routes Route[]
     user   User   @relation(fields: [userId], references: [id])
-    vehicule  Vehicle   @relation(fields: [vehiculeId], references: [id])
+    vehicule  Vehicle   @relation(fields: [vehicleId], references: [id])
 
 }
 
 model Stop {
-  id    BigInt @id @default(autoincrement())
-  // tripId BigInt
+  id    Int @id @default(autoincrement())
+  routeId Int
+  principal Boolean @default(true)
+  type String
   longitude Float
   latitude Float
   address String
   activateAt DateTime?
-  departureRoute Route? @relation("departure")
-  arrivalRoute Route? @relation("arrival")
+  route Route? @relation(fields: [routeId], references: [id])
   // trip   Trip   @relation(fields: [tripId], references: [id])
 }
 
 model Route {
-  id    BigInt @id @default(autoincrement())
-  tripId BigInt
-  departureStopId BigInt
-  arrivalStopId BigInt
-  distance Float
+  id    Int @id @default(autoincrement())
+  tripId Int
+  distance Int
   duration Int
   price Int
   deletedAt DateTime?
   travels Travel[]
-  departure   Stop   @relation(name: "departure", fields: [departureStopId], references: [id])
-  arrival   Stop   @relation(name: "arrival", fields: [arrivalStopId], references: [id])
+  stops   Stop[]
   trip   Trip   @relation(fields: [tripId], references: [id])
 }
 
 model Travel {
-  id     BigInt @id @default(autoincrement())
+  id     Int @id @default(autoincrement())
   userId     Int
-  routeId BigInt
+  routeId Int
   seats Int
   status Int @default(4)
   createdAt DateTime
@@ -212,8 +212,8 @@ model Travel {
 }
 
 model Operation {
-    id     BigInt @id @default(autoincrement())
-    travelId BigInt 
+    id     Int @id @default(autoincrement())
+    travelId Int 
     userId Int
     type String
     method String
@@ -235,9 +235,9 @@ model Status {
 }
 
 model Historic {
-    id     BigInt @id @default(autoincrement())
+    id     Int @id @default(autoincrement())
     model String
-    rowId BigInt
+    rowId Int
     action String
     userId Int
     createdAt DateTime @default(now())
@@ -245,7 +245,7 @@ model Historic {
 }
 
 model Publication {
-    id     BigInt @id @default(autoincrement())
+    id     Int @id @default(autoincrement())
     title String
     message String
     icon String?
@@ -259,7 +259,7 @@ model Publication {
 }
 
 model  Notification{
-  publicationId BigInt
+  publicationId Int
   receiverId Int
   createdAt DateTime @default(now())
   seenAt DateTime?
