@@ -5,7 +5,7 @@ export default function makeSendOtpController({
     signInWithPhoneNumber
 }) {
     return async function sendOtpController(request: IHttpRequest): Promise<IHttpResponse> {
-        const { phoneNumber } = request.body,
+        const { phoneNumber, action } = request.body,
         lang = request.lang,
         date = new Date(),
         reqLog: Log = {
@@ -21,7 +21,7 @@ export default function makeSendOtpController({
             description: `${phoneNumber} ${Action.REQUEST} to receive otp`
         }
         try {
-            const data = await signInWithPhoneNumber({ phoneNumber });
+            const data = await signInWithPhoneNumber({ phoneNumber, action });
             reqLog.status = LogStatus.SUCCEEDED
             LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)
