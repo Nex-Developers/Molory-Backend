@@ -25,7 +25,7 @@ export default function makeExpressRouterAdapter() {
         res.type(responseFormat)
         res.status(httpResponse.statusCode).send(httpResponse.body)
       } else {
-        res.status(httpResponse.statusCode).json(httpResponse.body)
+        res.json(httpResponse.body)
       }
     }
   }

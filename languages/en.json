@@ -6,7 +6,14 @@
     "missing": "Missing :parameter",
     "unauthorized": "you have not the accreditation to make this request",
     "expired": ":parameter expired",
-    "alreadyDone": "Operation you are trying to make is already done since :date"
+    "alreadyDone": "Operation you are trying to make is already done since :date",
+    "userNotFound": "User with this :parameter not found",
+    "userAlreadyExists": "User with this :parameter already exists",
+    "userNotActive": "User with this :parameter is not active",
+    "userNotVerified": "User with this :parameter is not verified",
+    "passwordNotValid": "Password is not valid",
+    "passwordIncorrect": "Password is incorrect",
+    "otpIncorrect": "The Otp you provided is incorrect"
   },
   "response": {
     "add": "Added successfully!",

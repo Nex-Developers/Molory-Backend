@@ -11,6 +11,7 @@ export default function makeGetProfile ({
         const data = await userDb.findFirst({
             where: { id }, 
             select: { 
+                avatar: true,
                 firstName: true,
                 lastName: true,
                 birthDay: true,

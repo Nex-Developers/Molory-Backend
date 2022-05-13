@@ -1,4 +1,4 @@
-import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
+import { InvalidParamError, MissingParamError, OtpIncorrectError, ServerError } from "../../../utils/errors"
 
 export default function makeConfirmOtp({
     prisma,
@@ -24,7 +24,7 @@ export default function makeConfirmOtp({
         if (!token || !lang) throw new ServerError()
 
         const otpIndex = await getOtp({ phoneNumber, otp })
-        if (otpIndex === null || otpIndex === undefined) throw new InvalidParamError('otp')
+        if (otpIndex === null || otpIndex === undefined) throw new OtpIncorrectError('')
 
         let user = await userDb.findFirst({ where: { phoneNumber } })
         const phoneNumberVerifiedAt = new Date()

@@ -6,7 +6,10 @@
         "missing": ":parameter manquant",
         "unauthorized": "vous n'avez pas l'accréditation pour effectuer cette opération",
         "expired": ":parameter expiré",
-        "alreadyDone": "L'opération que vous essayez d'effectuer a été déjà effectuée depuis :date"
+        "alreadyDone": "L'opération que vous essayez d'effectuer a été déjà effectuée depuis :date",
+        "userNotFound": "L'utilisateur avec ce :parameter n'a pas été trouvé.",
+        "passwordIncorrect": "Le mot de passe est incorrect.",
+        "otpIncorrect": "Le code que vous avez entré est incorrect."
     },
     "response": {
         "add": "Ajouté avec succès!",
