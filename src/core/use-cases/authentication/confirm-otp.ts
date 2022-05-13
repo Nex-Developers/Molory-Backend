@@ -1,4 +1,4 @@
-import { InvalidParamError, MissingParamError, OtpIncorrectError, ServerError } from "../../../utils/errors"
+import { MissingParamError, OtpIncorrectError, ServerError } from "../../../utils/errors"
 
 export default function makeConfirmOtp({
     prisma,
