@@ -1,4 +1,4 @@
-import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
+import { InvalidParamError, MissingParamError, PasswordIncorrectError, ServerError } from "../../../utils/errors"
 
 export default function makeCheckPassword({
     userDb,
@@ -20,7 +20,7 @@ export default function makeCheckPassword({
         if (!device) throw new MissingParamError('device')
 
         let user = await userDb.findFirst({ where: { id } })
-        if (! await comparePasswords({ hash: user.password, password })) throw new InvalidParamError('password')
+        if (! await comparePasswords({ hash: user.password, password })) throw new PasswordIncorrectError('password')
         const savedDevice = await deviceDb.findFirst({ where: { id: device.id, userId: user.id } })
         if (!savedDevice) await deviceDb.insertOne({
             data: {
