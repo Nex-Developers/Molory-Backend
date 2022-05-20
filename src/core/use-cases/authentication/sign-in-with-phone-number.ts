@@ -1,4 +1,4 @@
-import { ServerError, MissingParamError, InvalidParamError, AccountNotFoundError } from "../../../utils/errors"
+import { ServerError, MissingParamError, InvalidParamError, AccountNotFoundError, AccountAllReadyExistError } from "../../../utils/errors"
 
 export default function makeSignInWithPhoneNumber({
     generateOtp,
@@ -17,9 +17,11 @@ export default function makeSignInWithPhoneNumber({
         if (phoneNumber.charAt(0) == '+') throw new InvalidParamError('phoneNumber')
         if (phoneNumber.length < 9) throw new InvalidParamError('phoneNumber')
         if (!action) action = 'signin'
+        const user = await userDb.findFirst({ where: { phoneNumber }, select: { id: true } })
         if (action == 'signin') {
-           const user = await userDb.findFirst({ where: { phoneNumber }, select: { id: true } })
             if (!user) throw new AccountNotFoundError('phoneNumber')
+        } else {
+            if (user) throw new AccountAllReadyExistError('phoneNumber')
         }
         const otp = await generateOtp()
         const token = await generateToken({ phoneNumber })
