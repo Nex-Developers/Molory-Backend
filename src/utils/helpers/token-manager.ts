@@ -1,4 +1,4 @@
-import { MissingParamError } from "../errors"
+import { InvalidParamError, MissingParamError } from "../errors"
 import jwt  from 'jsonwebtoken'
 import { env } from "../../configs/environment"
 
@@ -16,6 +16,12 @@ export default class TokenManager {
   }
 
   static async verify(token) {
-    return await jwt.verify(token, TokenManager.secret)
+    if (token) throw new MissingParamError('token')
+    if (!TokenManager.secret) throw new MissingParamError('secret')
+    try {
+      return jwt.verify(token, TokenManager.secret)
+    } catch(err) {
+      throw new InvalidParamError('token')
+    }
   }
 }
