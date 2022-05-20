@@ -3,7 +3,7 @@ import { ExpiredParamError, InvalidParamError, MissingParamError } from "../../u
 import { CacheManager, HttpResponse, TokenManager } from "../../utils/helpers"
 
 export default async (req, res, next) => {
-    const authHeader = req.headers['authorization']
+    const authHeader = req.headers['Authorization']
     const token = authHeader && authHeader.split(' ')[1]
     let httpResponse 
 

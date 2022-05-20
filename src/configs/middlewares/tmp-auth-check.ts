@@ -2,7 +2,9 @@ import { CacheManager, TokenManager } from "../../utils/helpers"
 
 export default async (req, res, next) => {
     const authHeader = req.headers['authorization']
+    console.log('token', authHeader)
     const token = authHeader && authHeader.split(' ')[1]
+    console.log('token', token)
     if (!token) return res.status(403).json({ error: "Token not provided!"})   
     const ref = await TokenManager.verify(token)
     if (!ref) res.status(403).send({ message: 'Access denied' })         
