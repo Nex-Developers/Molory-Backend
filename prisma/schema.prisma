@@ -268,3 +268,12 @@ model  Notification{
   user   User   @relation(fields: [receiverId], references: [id])
   @@id([publicationId, receiverId])
 }
+
+model Newsletter {
+  email String @id
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+  DeletedAt DateTime?
+}
+

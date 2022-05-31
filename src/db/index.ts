@@ -1,5 +1,6 @@
 import ConfigurationDb from "./configuration-db"
 import DeviceDb from "./device-db"
+import NewsletterDb from "./newsletter-db"
 import PreferenceDb from "./preference-db"
 import PricingDb from "./pricing-db"
 import RouteDb from "./route-db"
@@ -21,5 +22,6 @@ export {
     StopDb,
     RouteDb,
     TravelDb,
-    PricingDb
+    PricingDb,
+    NewsletterDb
 }
