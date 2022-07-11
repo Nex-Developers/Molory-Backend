@@ -1,0 +1,19 @@
+$ ==================================
+
+[ ] Add api initialiser tasks!
+   [ ] Create default admin account
+[x] Add Tavel functionalities
+   [ ] Search for a trip
+   [ ] Get a trip infos
+   [ ] Get trip driver infos
+   [ ] Get trip vehicle infos
+   [ ] Get trip stops infos
+   [ ] Choose/join a trip
+   [ ] Report departure
+   [ ] Report arrival
+   [ ] Report problem
+   [ ] Client rating
+   [ ] driver rating
+   [ ] get by user
+   
+$ =========================

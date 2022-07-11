@@ -9,17 +9,23 @@ export default class SmsServer{
 
     static async send(phoneNumbers: string[], message) {
         console.log(message)
-        const { data } = await axios.post(
-            SmsServer.apiUrl, 
-            { 
-                senderId: SmsServer.sender,
-                ApiKey: SmsServer.apiKey,
-                ClientId: SmsServer.apiToken,  
-                MobileNumbers: phoneNumbers[0],
-                message,
-                groupId: '' 
-            }
-        )
-        return data
+        try {
+            const { data } = await axios.post(
+                SmsServer.apiUrl, 
+                { 
+                    senderId: SmsServer.sender,
+                    ApiKey: SmsServer.apiKey,
+                    ClientId: SmsServer.apiToken,  
+                    MobileNumbers: phoneNumbers[0],
+                    message,
+                    groupId: '' 
+                }
+            )
+            return data
+        } catch(e) {
+            console.log(e.message)
+            return
+        }
+       
     }
 }

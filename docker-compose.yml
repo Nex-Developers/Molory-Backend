@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - postgre-db:/var/lib/postgresql/data
+      - /var/lib/postgresql/data/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: forza12
+    networks:
+      default:
+        ipv4_address: 172.20.0.3
+  
+  cache:
+    image: redis
+    restart: always
+    networks:
+      default:
+        ipv4_address: 172.20.0.4
+      
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8082:8080
+    networks:
+      default:
+        ipv4_address: 172.20.0.2
+
+volumes:
+  postgre-db: 
+    driver: local
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
+          aux_addresses:
+            adminer: 172.20.0.2
+            db: 172.20.0.3
+            cache: 172.20.0.4

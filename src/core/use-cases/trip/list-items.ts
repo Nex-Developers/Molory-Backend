@@ -7,12 +7,16 @@ export default function makeListItems({
     return async ({
         startAt,
         limit,
-        userId
+        userId,
+        query
     }: any = {}) => {
         if (!startAt) startAt = 0
         if (!limit) limit = 100
         const where: any = {}
         if (userId) where.userId = userId
+        if (query) {
+            where.routes.stops.address = query
+        }
         const data = await tripDb.findMany({ 
             startAt, 
             limit,

@@ -3,6 +3,7 @@ dotenv.config()
 
 
 export default {
+    production: false,
     url: 'http://localhost:8080/',
     port: process.env.PORT || 8080,
     lang: {

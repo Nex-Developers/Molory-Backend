@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "User" ALTER COLUMN "status" SET DEFAULT 1,
-ALTER COLUMN "birthDay" DROP NOT NULL;

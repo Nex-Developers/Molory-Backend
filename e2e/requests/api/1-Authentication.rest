@@ -1,0 +1,221 @@
+@hostname = 0.0.0.0
+@port = 8086
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+
+
+###
+
+# Sign up with phone number
+# @name signup
+POST http://{{host}}/api/auth/send-otp HTTP/1.1
+content-type: application/json
+
+{
+    "phoneNumber": "22892942601",
+    "action": "signup"
+}
+###
+@authTmpToken = {{signup.response.body.token}}
+
+# Login with phone number
+# @name login
+POST http://{{host}}/api/auth/send-otp HTTP/1.1
+content-type: application/json
+
+{
+    "phoneNumber": "22892942601",
+    "action": "signin"
+}
+###
+
+@authTmpToken = {{login.response.body.token}}
+
+
+
+# Confirm OTP
+# @name confirmOtp
+POST http://{{host}}/api/auth/verify-otp HTTP/1.1
+Authorization: Bearer {{authTmpToken}}
+content-type: application/json
+
+{
+    "otp": "2162",
+    "device": {
+        "id": "502A26A3-497E-41B9-9F64-E728AAFFF547",
+        "platform": "web",
+        "token": "c_bmxTMHs0iQtrXcznWirlAPA91bHto8JLS3zGixD0kvXYyklZDVC1wssC9fRPFmJY1j0q7dgtu7FKLbdQRMJxC5kAImXqW-Eu7Nv4OUVhKYKuOF73mzCP7cj_v5srckOojnpCU5ve4FFpRCj3w0iNQj0i66_6mxB7"
+    }
+}
+### 
+
+@authToken = {{confirmOtp.response.body.token}}
+
+
+# Complete infos
+
+POST http://{{host}}/api/auth/complete-profile HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "firstName": "Kode",
+    "lastName": "Sonik",
+    "birthDay":  "1996-01-23",
+    "password": "azertyui"
+}
+
+
+
+### Activate email and password auth 
+POST http://{{host}}/api/auth/add-email-auth HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "email": "k0d3.s0n1k@gmail.com",
+    "password": "azertyui"
+}
+
+
+### Get profile
+GET  http://{{host}}/api/auth/profile HTTP/1.1
+Authorization: Bearer {{authToken}}
+
+### Editing Profile
+POST http://{{host}}/api/auth/edit-profile HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "firstName": "Ko",
+    "lastName": "Sonik",
+    "birthDay":  "1996-01-23"
+}
+
+### Email verification (Sign in)
+POST http://{{host}}/api/auth/verify-email HTTP/1.1
+content-type: application/json
+
+{
+    "email": "k0d3.s0n1k@gmail.com",
+}
+
+### Password verification (Sign in)
+POST http://{{host}}/api/auth/verify-password HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "password": "azertyui"
+}
+
+#### Upload avatar
+POST /api/auth/edit-avatar HTTP/1.1
+Host: {{host}}
+Accept: application/json
+Content-Type: multipart/form-data; boundary=MyBoundary
+Authorization: Bearer {{authToken}}
+
+--MyBoundary
+Content-Disposition: form-data; name="avatar"; filename="1.png"
+Content-Type: image/png
+
+< ./logo.png
+--MyBoundary
+Content-Disposition: form-data; name="ProspectId"
+
+1
+--MyBoundary--
+
+#### Upload ID Card
+POST /api/auth/id-card HTTP/1.1
+Host: {{host}}
+Accept: application/json
+Content-Type: multipart/form-data; boundary=MyBoundary
+Authorization: Bearer {{authToken}}
+
+--MyBoundary
+Content-Disposition: form-data; name="idCard"; filename="1.png"
+Content-Type: image/jpeg
+
+< ./idcard.png
+--MyBoundary
+Content-Disposition: form-data; name="ProspectId"
+
+1
+--MyBoundary--
+
+
+#### Upload driver license
+POST /api/auth/driver-license HTTP/1.1
+Host: {{host}}
+Accept: application/json
+Content-Type: multipart/form-data; boundary=MyBoundary
+Authorization: Bearer {{authToken}}
+
+--MyBoundary
+Content-Disposition: form-data; name="driverLicense"; filename="license.jpg"
+Content-Type: image/jpeg
+
+< ./license.jpg
+--MyBoundary
+Content-Disposition: form-data; name="ProspectId"
+
+1
+--MyBoundary--
+
+
+### Logout
+POST http://{{host}}/api/auth/logout HTTP/1.1
+Authorization: Bearer {{authToken}}
+
+
+
+### Change password
+POST http://{{host}}/api/auth/new-password HTTP/1.1
+Authorization: Bearer {{authToken}}
+content-type: application/json
+
+{
+    "password": "azertyui"
+}
+
+
+### Forgot password
+POST http://{{host}}/api/auth/forgot-password HTTP/1.1
+content-type: application/json
+
+{
+    "email": "k0d3.s0n1k@gmail.com"
+}
+
+
+
+### Change email
+POST http://{{host}}/api/auth/new-email HTTP/1.1
+Authorization: Bearer {{authToken}}
+content-type: application/json
+
+{
+    "email": "k0d3.s0n1k@gmail.com"
+}
+
+### Change phoneNUmber
+POST http://{{host}}/api/auth/new-phonenumber HTTP/1.1
+Authorization: Bearer {{authToken}}
+content-type: application/json
+
+{
+        "phoneNumber": "+22892942601"
+}
+
+
+### Delete account
+POST http://{{host}}/api/auth/delete-account HTTP/1.1
+Authorization: Bearer {{authToken}}
+content-type: application/json
+
+{
+        "deletionReport": "Your application is very bad!!!! I can't use this sh*t!"
+}

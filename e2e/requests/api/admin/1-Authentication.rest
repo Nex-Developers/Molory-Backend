@@ -1,0 +1,9 @@
+
+#### Login with email and password
+POST http://0.0.0.0:8086/api/auth/login HTTP/1.1
+content-type: application/json
+
+{
+    "email": "k0d3.s0n1k@gmail.com",
+    "password": "azertyui" 
+}

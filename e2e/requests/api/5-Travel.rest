@@ -1,0 +1,13 @@
+#   Add Travel - Choose/join a trip
+
+#    Report departure
+
+#    Report arrival
+
+#    Report problem
+
+#    Client rating
+
+#    driver rating (In trip)
+
+#    get by user

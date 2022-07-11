@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 dotenv.config()
 export default {
+    production: true,
     url: 'http://localhost:8080/',
     port: process.env.PORT,
     lang: {

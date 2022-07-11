@@ -1,8 +1,7 @@
 import environment from "./environment"
 import environmentProd from "./environment.prod"
 
-const production = false
-const env = production?environment:environmentProd
+const env = process.env.NOD_ENV=='development'?environment:environmentProd
 
 export {
     env
