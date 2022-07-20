@@ -37,7 +37,7 @@ export default class LogManager {
         return result
     }
 
-    static async read(limit = 10, where?) {
+    static async read(limit = 20, where?) {
         const file = reader.readFile(env.logs.file)
         if (!file) return []
         const data = []
@@ -45,20 +45,15 @@ export default class LogManager {
         for (let i = 0; i < sheets.length; i++) {
             const temp = reader.utils.sheet_to_json(
                 file.Sheets[file.SheetNames[i]])
-            for (i = 0; i < temp.length; i++) {
-                if (!where) data.unshift(temp[i])
+            temp.forEach((res) => {
+                if (!where) data.unshift(res)
                 else {
                     const keys = Object.keys(where)
-                    const matches = keys.filter(key => temp[i][key] == where[key])
-                    if (matches.length === keys.length) data.unshift(temp[i])
+                    const matches = keys.filter(key => res[key] == where[key])
+                    if (matches.length === keys.length) data.unshift(res)
                 }
-                // if (data.length == limit) {
-                //     break
-                // }
-            }
-            // if (data.length == limit) {
-            //     break
-            // }
+            })
+            if (data.length >= limit) break
         }
         // Printing data
 
