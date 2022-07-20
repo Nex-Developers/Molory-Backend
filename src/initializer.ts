@@ -3,7 +3,6 @@ import { Role } from "./core/conventions"
 // import { generateToken } from "./core/services/token"
 import { addUser } from "./core/use-cases/user"
 import { UserDb } from "./db"
-import user from "./routes/api/user"
 
 export default async () => {
     const userDb = new UserDb()
