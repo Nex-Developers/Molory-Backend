@@ -1,7 +1,8 @@
 
 import { UserDb } from "../../../db"
-import { isValidEmail } from "../../services/email"
+import { askToConfirmEmail, isValidEmail } from "../../services/email"
 import { hashPassword } from "../../services/password"
+import { generateToken, saveTmpToken } from "../../services/token"
 import { deleteAvatarFile } from "../../services/upload"
 import makeAddUser from "./add-user"
 import makeBlockUser from "./block-user"
@@ -23,7 +24,7 @@ const userDb = new UserDb()
 const listUsers = makeListUsers({ userDb })
 const listToValidateUsers = makeListToValidateUsers({ userDb })
 const listUserInfos = makeListUserInfos({ userDb })
-const addUser = makeAddUser({ userDb, isValidEmail, hashPassword })
+const addUser = makeAddUser({ userDb, isValidEmail, hashPassword, generateToken, askToConfirmEmail, saveTmpToken })
 const editUser = makeEditUser({ userDb, isValidEmail, hashPassword })
 const removeUser = makeRemoveUser({ userDb })
 const restoreUser = makeRestoreUser({ userDb })

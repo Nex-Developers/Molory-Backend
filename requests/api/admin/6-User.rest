@@ -1,0 +1,158 @@
+@hostname = http://0.0.0.0
+@port = 8086
+@host = {{hostname}}:{{port}}
+@contentTypeJson = application/json
+@email = developer@nex-softwares.com
+@password = Nex@2022
+
+###
+
+# Login with email and password
+# @name login
+POST {{host}}/api/auth/login HTTP/1.1
+content-type: {{contentTypeJson}}
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+###
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjU3NTYyNjYxfQ.we22mqClp-xrlYTPUIwvcc6WsrV-TxNOpfn4FhhGgFM
+
+
+# Get All 
+GET {{host}}/api/user
+Authorization: Bearer {{authToken}}
+
+###
+
+# Get by id
+GET {{host}}/api/user/1
+Authorization: Bearer {{authToken}}
+###
+
+# Get Users to validate
+# @name usersToValidate
+GET {{host}}/api/to-validate-user
+Authorization: Bearer {{authToken}}
+###
+
+# Validate User Id Card
+# @name validateUserIdCard
+POST {{host}}/api/validate-id-card
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentTypeJson}}
+
+{
+    "userId": 1,
+    "response": "validated"
+}
+###
+
+# Validate Driver License
+# @name validateDriverLicense
+POST {{host}}/api/validate-driver-license
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentTypeJson}}
+
+{
+    "userId": 1,
+    "response": "validated"
+}
+###
+
+
+### Add
+POST {{host}}/api/user HTTP/1.1
+Authorization: Bearer {{authToken}}
+content-type: {{contentTypeJson}}
+
+{
+    "email": "josephtagba@gmail.com",
+    "phoneNumber": "+22890902601",
+    "firstName": "Tagba",
+    "lastName": "Joseph",
+    "birthDay":  "1994-05-01", 
+    "role": "admin"
+}
+
+### edit
+PATCH {{host}}/api/user
+Authorization: Bearer {{authToken}}
+content-type: {{contentTypeJson}}
+
+{
+    "id": 6,
+    "lastName": "Kode",
+    "firstName":  "Sonik" 
+}
+
+
+### Block account
+PATCH {{host}}/api/block-user 
+Authorization: Bearer {{authToken}}
+content-type: {{contentTypeJson}}
+
+{
+    "id": 4
+}
+
+
+### Unlock user account
+PATCH {{host}}/api/unblock-user 
+Authorization: Bearer {{authToken}}
+content-type: {{contentTypeJson}}
+
+{
+    "id": 4
+}
+
+### delete
+DELETE {{host}}/api/user
+Authorization: Bearer {{authToken}}
+content-type: {{contentTypeJson}}
+
+{
+    "id": 8
+}
+
+
+### Get in trash 
+GET {{host}}/api/deleted-user
+Authorization: Bearer {{authToken}}
+
+
+### Get in trash 
+GET {{host}}/api/deleted-user/8
+Authorization: Bearer {{authToken}}
+
+### Restore
+PATCH {{host}}/api/restore-user HTTP/1.1
+Authorization: Bearer {{authToken}}
+content-type: {{contentTypeJson}}
+lang: fr
+
+{
+    "id": 8
+}
+
+####
+
+PATCH /api/user-avatar HTTP/1.1
+Host: {{host}}
+Accept: {{contentTypeJson}}
+Content-Type: multipart/form-data; boundary=MyBoundary
+Authorization: Bearer {{authToken}}
+
+--MyBoundary
+Content-Disposition: form-data; name="avatar"; filename="1.png"
+Content-Type: image/png
+
+< ./logo.png
+--MyBoundary
+Content-Disposition: form-data; name="id"
+Content-Type: number
+
+8
+--MyBoundary--
+

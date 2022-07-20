@@ -16,16 +16,15 @@ export default function makeAdd({
         if (!routeId) throw new MissingParamError('routeId')
         if (!seats) throw new MissingParamError('seats')
 
-        const { price, trip, travels } = await routeDb.findFirst({ 
+        const { price, trip } = await routeDb.findFirst({ 
             where: { id: routeId }, 
-            select: {price: true, trip: { seats: true}, travels: { seats: true}}
+            select: {price: true, trip: { remaningSeats: true}}
         })
         
-        const availableSeats = trip.seats - travels.reduce((a,b) =>a + b.seats , 0)
 
-        if (!availableSeats) throw new Error('Unvailable Resource')
+        if (!trip.remaningSeats) throw new Error('Unvailable Resource')
 
-        if (seats < availableSeats) throw new Error('Missing ' + (seats - availableSeats) + 'resource')
+        if (seats > trip.remaningSeats) throw new Error('Missing ' + (seats - trip.remaningSeats) + 'resource')
 
         const { id } = await travelDb.insertOne({ data: { userId, routeId, seats }})
 

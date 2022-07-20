@@ -2,7 +2,9 @@
 @port = 8086
 @host = {{hostname}}:{{port}}
 @contentType = application/json
-
+@avatarPath = ../assets/img/avatar.png
+@idCardpath = ../assets/img/id-card.jpeg
+@driverLicensepath = ../assets/img/driver-license.jpeg
 
 ###
 
@@ -12,7 +14,7 @@ POST http://{{host}}/api/auth/send-otp HTTP/1.1
 content-type: application/json
 
 {
-    "phoneNumber": "22892942601",
+    "phoneNumber": "22890000000",
     "action": "signup"
 }
 ###
@@ -29,18 +31,19 @@ content-type: application/json
 }
 ###
 
-@authTmpToken = {{login.response.body.token}}
+# @authTmpToken = {{login.response.body.token}}
 
 
 
 # Confirm OTP
+# @prompt otp
 # @name confirmOtp
 POST http://{{host}}/api/auth/verify-otp HTTP/1.1
 Authorization: Bearer {{authTmpToken}}
 content-type: application/json
 
 {
-    "otp": "2162",
+    "otp": "{{otp}}",
     "device": {
         "id": "502A26A3-497E-41B9-9F64-E728AAFFF547",
         "platform": "web",
@@ -49,7 +52,7 @@ content-type: application/json
 }
 ### 
 
-@authToken = {{confirmOtp.response.body.token}}
+@authToken = {{confirmOtp.response.body.token}} || eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjU3ODQ4NDk2fQ.d9iic9WSRQFoGoIV6oZlPBURGyud9ZoyfyyN6GMTuok
 
 
 # Complete infos
@@ -59,8 +62,8 @@ content-type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "firstName": "Kode",
-    "lastName": "Sonik",
+    "firstName": "DOE",
+    "lastName": "John",
     "birthDay":  "1996-01-23",
     "password": "azertyui"
 }
@@ -118,10 +121,10 @@ Content-Type: multipart/form-data; boundary=MyBoundary
 Authorization: Bearer {{authToken}}
 
 --MyBoundary
-Content-Disposition: form-data; name="avatar"; filename="1.png"
+Content-Disposition: form-data; name="avatar"; filename="avatar.png"
 Content-Type: image/png
 
-< ./logo.png
+< {{avatarPath}}
 --MyBoundary
 Content-Disposition: form-data; name="ProspectId"
 
@@ -136,10 +139,10 @@ Content-Type: multipart/form-data; boundary=MyBoundary
 Authorization: Bearer {{authToken}}
 
 --MyBoundary
-Content-Disposition: form-data; name="idCard"; filename="1.png"
+Content-Disposition: form-data; name="idCard"; filename="id-card.jpeg"
 Content-Type: image/jpeg
 
-< ./idcard.png
+< {{idCardpath}}
 --MyBoundary
 Content-Disposition: form-data; name="ProspectId"
 
@@ -155,10 +158,10 @@ Content-Type: multipart/form-data; boundary=MyBoundary
 Authorization: Bearer {{authToken}}
 
 --MyBoundary
-Content-Disposition: form-data; name="driverLicense"; filename="license.jpg"
+Content-Disposition: form-data; name="driverLicense"; filename="driver-license.jpeg"
 Content-Type: image/jpeg
 
-< ./license.jpg
+< {{driverLicensepath}}
 --MyBoundary
 Content-Disposition: form-data; name="ProspectId"
 

@@ -1,0 +1,17 @@
+@hostname = http://0.0.0.0
+@port = 8086
+@host = {{hostname}}:{{port}}
+@contentTypeJson = application/json
+@email = developer@nex-softwares.com
+@password = Nex@2022
+#### Login with email and password
+# @name login
+POST {{host}}/api/auth/login HTTP/1.1
+content-type: {{contentTypeJson}}
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+###
+@authToken = {{login.response.body.token}} || eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjU3NTYyNjYxfQ.we22mqClp-xrlYTPUIwvcc6WsrV-TxNOpfn4FhhGgFM

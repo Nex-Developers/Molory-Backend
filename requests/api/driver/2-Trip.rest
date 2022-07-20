@@ -1,0 +1,88 @@
+@hostname = http://0.0.0.0
+@port = 8086
+@host = {{hostname}}:{{port}}
+@contentTypeJson = application/json
+###
+
+# Login with phone number
+# @prompt phoneNumber
+# @name login
+POST {{host}}/api/auth/send-otp HTTP/1.1
+content-type: application/json
+
+{
+    "phoneNumber": "{{phoneNumber}}",
+    "action": "signin"
+}
+###
+
+@authTmpToken = {{login.response.body.token}}
+
+
+
+# Confirm OTP
+# @prompt otp
+# @name confirmOtp
+POST {{host}}/api/auth/verify-otp HTTP/1.1
+Authorization: Bearer {{authTmpToken}}
+content-type: application/json
+
+{
+    "otp": "{{otp}}",
+    "device": {
+        "id": "502A26A3-497E-41B9-9F64-E728AAFFF547",
+        "platform": "web",
+        "token": "c_bmxTMHs0iQtrXcznWirlAPA91bHto8JLS3zGixD0kvXYyklZDVC1wssC9fRPFmJY1j0q7dgtu7FKLbdQRMJxC5kAImXqW-Eu7Nv4OUVhKYKuOF73mzCP7cj_v5srckOojnpCU5ve4FFpRCj3w0iNQj0i66_6mxB7"
+    }
+}
+### 
+
+
+@authToken =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRyaXZlciIsImlhdCI6MTY1NzczNTk2MX0.2LlYCE1bEL9Wl0uAsSRBf85AhEhmggkAedRy3twJYbU
+
+# Get All 
+GET {{host}}/api/trip
+Authorization: Bearer {{authToken}}
+
+###
+
+#    Search for a trip
+# @prompt date
+# @prompt departure
+# @prompt arrival
+# @name searchTrip
+GET {{host}}/api/trip?date={{date}}&departure={{departure}}&arrival={{arrival}} HTTP/1.1
+Authorization: Bearer {{authToken}}
+###
+
+
+# { "type": "departure", "address": "Lome, Togo", "longitude": 1.222186, "latitude": 6.136629},
+# { "type": "arrival", "address": "Dapaong, Togo", "longitude": 0.20762, "latitude": 10.86225}
+### Add
+
+# @name add
+POST {{host}}/api/trip HTTP/1.1
+Authorization: Bearer {{authToken}}
+content-type: {{contentTypeJson}}
+
+{
+    "date": "2022-04-18",
+    "time": "11:30",
+    "vehicleId": 1, 
+    "seats": 3,
+    "stops": [
+        { "type": "departure", "address": "Dapaong, Togo", "longitude": 1.222186, "latitude": 6.136629},
+        { "type": "arrival", "address": "Lome, Togo", "longitude": 0.20762, "latitude": 10.86225}
+    ]
+}
+###
+
+#Confirm Trip
+# @name confirmTrip
+POST {{host}}/api/confirm-trip HTTP/1.1
+Authorization: Bearer {{authToken}}
+content-type: {{contentTypeJson}}
+
+{
+    "id": {{add.response.body.data.id}}
+}

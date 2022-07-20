@@ -4,6 +4,7 @@ import IHttpRequest from "./http-request";
 import IHttpResponse from "./http-response";
 import Log from "./log";
 import { LogStatus } from "./log-status";
+import { Role } from "./role";
 
 export {
     IHttpRequest,
@@ -11,5 +12,6 @@ export {
     CustomError,
     Action,
     Log,
-    LogStatus
+    LogStatus,
+    Role
 }

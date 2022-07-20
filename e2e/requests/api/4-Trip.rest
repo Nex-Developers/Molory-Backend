@@ -1,9 +1,0 @@
-#    Search for a trip
-
-#    Get a trip infos
-
-#    Get trip driver infos
-
-#    Get trip vehicle infos
-
-#    Get trip stops infos

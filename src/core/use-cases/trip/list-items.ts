@@ -8,35 +8,50 @@ export default function makeListItems({
         startAt,
         limit,
         userId,
-        query
+        departure,
+        arrival,
+        date
     }: any = {}) => {
         if (!startAt) startAt = 0
         if (!limit) limit = 100
         const where: any = {}
         if (userId) where.userId = userId
-        if (query) {
-            where.routes.stops.address = query
+        else where.status = 3
+        if (date) {
+            where.departureDate = date
         }
-        const data = await tripDb.findMany({ 
-            startAt, 
+        let data = await tripDb.findMany({
+            startAt,
             limit,
-            where, 
+            where,
             select: {
                 id: true,
                 seats: true,
+                reamingSeats: true,
                 status: true,
                 departureDate: true,
+                departureTime: true,
                 routes: {
                     select: {
+                        id: true,
                         distance: true,
                         duration: true,
                         price: true,
-                        stops: true
+                        stops: true,
+                        // travels: true
                     }
                 },
                 createdAt: true
             }
         })
+        if (departure && arrival) {
+           data = data.filter( trip => trip.routes.find(route => route.stops.find(stop =>  stop.address.toLowerCase().includes(departure.toLowerCase()) && stop.type === 'departure')) && trip.routes.find(route => route.stops.find(stop =>  stop.address.toLowerCase().includes(arrival.toLowerCase()) && stop.type === 'arrival')))
+        } else if (departure) {
+           data = data.filter( trip => trip.routes.find(route => route.stops.find(stop => stop.address.toLowerCase().includes(departure.toLowerCase())  && stop.type === 'departure')))            
+        } else  if (arrival) {
+           data = data.filter( trip => trip.routes.find(route => route.stops.find(stop =>  stop.address.toLowerCase().includes(departure.toLowerCase()) && stop.type === 'arrival')))
+        }
+
         return { count: data.length, startAt, limit, data }
-    } 
+    }
 }

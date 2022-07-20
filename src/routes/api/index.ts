@@ -4,6 +4,8 @@ import logs from "./logs"
 import newsletter from "./newsletter"
 import preference from "./preference"
 import pricing from "./pricing"
+import route from "./route"
+import travel from "./travel"
 import trip from "./trip"
 import user from "./user"
 import vehicle from "./vehicle"
@@ -19,6 +21,8 @@ export default (router) => {
     router.use(vehicle())
     router.use(configuration())
     router.use(trip())
+    router.use(route())
+    router.use(travel())
     router.use(newsletter())
     return router
 }

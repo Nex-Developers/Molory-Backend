@@ -14,12 +14,39 @@ export default function makeListItemInfos({
                 id
             }, 
             select: {
-                longitude: true,
-                latitude: true,
-                address: true,
-                description: true,
-                activateAt: true,
-                createdAt: true
+                trip:{
+                    select: {
+                        id: true,
+                        seats: true,
+                        reamingSeats: true,
+                        status: true,
+                        departureDate: true,
+                        departureTime: true,
+                        user: {
+                            select: {
+                                id: true,
+                                avatar:true,
+                                lastName: true,
+                                firstName: true,
+                                gender: true,
+                                idCardStatus: true,
+                                driverLicenseStatus: true,
+                                rating: true,
+                                preferences: true
+                            }
+                        },
+                        vehicle: {
+                            select: {
+                                id: true,
+                                type: true,
+                                color: true,
+                                numberPlate: true,
+                                registrationDoc: true
+                            }
+                        }
+                    }
+                }, 
+                stops: true
             }
         })
         return { data }

@@ -1,0 +1,118 @@
+@hostname = http://0.0.0.0
+@port = 8086
+@host = {{hostname}}:{{port}}
+@contentTypeJson = application/json
+@registrationDocPath = ../../assets/registration.jpg 
+###
+
+# Login with phone number
+# @prompt phoneNumber
+# @name login
+POST {{host}}/api/auth/send-otp HTTP/1.1
+content-type: application/json
+
+{
+    "phoneNumber": "{{phoneNumber}}",
+    "action": "signin"
+}
+###
+
+@authTmpToken = {{login.response.body.token}}
+
+
+
+# Confirm OTP
+# @prompt otp
+# @name confirmOtp
+POST {{host}}/api/auth/verify-otp HTTP/1.1
+Authorization: Bearer {{authTmpToken}}
+content-type: application/json
+
+{
+    "otp": "{{otp}}",
+    "device": {
+        "id": "502A26A3-497E-41B9-9F64-E728AAFFF547",
+        "platform": "web",
+        "token": "c_bmxTMHs0iQtrXcznWirlAPA91bHto8JLS3zGixD0kvXYyklZDVC1wssC9fRPFmJY1j0q7dgtu7FKLbdQRMJxC5kAImXqW-Eu7Nv4OUVhKYKuOF73mzCP7cj_v5srckOojnpCU5ve4FFpRCj3w0iNQj0i66_6mxB7"
+    }
+}
+### 
+
+# Get All 
+GET {{host}}/api/vehicle
+Authorization: Bearer {{authToken}}
+
+###
+
+# Get Vehicle Types 
+GET {{host}}/api/vehicle-type
+Authorization: Bearer {{authToken}}
+
+###
+
+@authToken = {{confirmOtp.response.body.token}} || eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRyaXZlciIsImlhdCI6MTY1NzczNTk2MX0.2LlYCE1bEL9Wl0uAsSRBf85AhEhmggkAedRy3twJYbU
+
+### Add
+# @prompt type
+# @prompt color
+# @prompt numberPlate
+# @name add
+POST {{host}}/api/vehicle HTTP/1.1
+Authorization: Bearer {{authToken}}
+content-type: {{contentTypeJson}}
+
+{
+    "type": "{{type}}",
+    "color": "{{color}}",
+    "numberPlate": "{{numberPlate}}"
+}
+###
+
+
+#### Upload driver license
+POST /api/vehicle-registration-doc HTTP/1.1
+Host: {{host}}
+Accept: application/json
+Content-Type: multipart/form-data; boundary=MyBoundary
+Authorization: Bearer {{authToken}}
+
+--MyBoundary
+Content-Disposition: form-data; name="registrationDoc"; filename="registration-doc.jpg"
+Content-Type: image/jpeg
+
+< {{registrationDocPath}}
+--MyBoundary
+Content-Disposition: form-data; name="ProspectId"
+
+1
+--MyBoundary--
+###
+
+### Edit
+# @prompt id
+# @prompt type
+# @prompt color
+# @prompt numberPlate
+# @name edit
+PATCH {{host}}/api/vehicle HTTP/1.1
+Authorization: Bearer {{authToken}}
+content-type: {{contentTypeJson}}
+
+{
+    "id": {{id}},
+    "type": "{{type}}",
+    "color": "{{color}}",
+    "numberPlate": "{{numberPlate}}"
+}
+###
+
+### delete
+# @prompt id
+# @name delete
+DELETE {{host}}/api/vehicle HTTP/1.1
+Authorization: Bearer {{authToken}}
+content-type: {{contentTypeJson}}
+
+{
+    "id": {{id}}
+}

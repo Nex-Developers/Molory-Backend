@@ -1,5 +1,6 @@
 import app from "./configs/app"
 import { env } from "./configs/environment"
+import initializer from "./initializer"
 import { CacheManager, DbConnection, Mailer } from "./utils/helpers"
 
 
@@ -8,7 +9,9 @@ try {
         () => {
             CacheManager.connect()
             Mailer.connect()
-            app.listen(env.port, () => console.log(`Server running at http://localhost:${env.port}`))
+            initializer().then(_ => {
+                app.listen(env.port, () => console.log(`Server running at http://localhost:${env.port}`))
+            })
         }
     )
 } catch (err) {

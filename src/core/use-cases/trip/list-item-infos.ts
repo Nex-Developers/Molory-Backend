@@ -16,6 +16,7 @@ export default function makeListItemInfos({
             select: {
                 id: true,
                 seats: true,
+                reamingSeats: true,
                 status: true,
                 routes: true,
                 createdAt: true

@@ -1,0 +1,73 @@
+@hostname = http://0.0.0.0
+@port = 8086
+@host = {{hostname}}:{{port}}
+@contentTypeJson = application/json
+###
+
+# Login with phone number
+# @prompt phoneNumber
+# @name login
+POST {{host}}/api/auth/send-otp HTTP/1.1
+content-type: application/json
+
+{
+    "phoneNumber": "{{phoneNumber}}",
+    "action": "signin"
+}
+###
+
+@authTmpToken = {{login.response.body.token}}
+
+
+
+# Confirm OTP
+# @prompt otp
+# @name confirmOtp
+POST {{host}}/api/auth/verify-otp HTTP/1.1
+Authorization: Bearer {{authTmpToken}}
+content-type: application/json
+
+{
+    "otp": "{{otp}}",
+    "device": {
+        "id": "502A26A3-497E-41B9-9F64-E728AAFFF547",
+        "platform": "web",
+        "token": "c_bmxTMHs0iQtrXcznWirlAPA91bHto8JLS3zGixD0kvXYyklZDVC1wssC9fRPFmJY1j0q7dgtu7FKLbdQRMJxC5kAImXqW-Eu7Nv4OUVhKYKuOF73mzCP7cj_v5srckOojnpCU5ve4FFpRCj3w0iNQj0i66_6mxB7"
+    }
+}
+### 
+
+
+@authToken =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjU3ODQ4NDk2fQ.d9iic9WSRQFoGoIV6oZlPBURGyud9ZoyfyyN6GMTuok
+
+#get travels
+# @name getTravels
+GET {{host}}/api/travel HTTP/1.1
+Authorization: Bearer {{authToken}}
+content-type: application/json
+###
+
+# Add Travel - Choose/join a route
+# @prompt routeId
+# @prompt seats
+# @name addTravel
+POST {{host}}/api/travel HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentTypeJson}}
+
+{
+    "routeId": {{routeId}},
+    "seats": {{seats}}
+}
+###
+#    Report departure
+
+#    Report arrival
+
+#    Report problem
+
+#    Client rating
+
+#    driver rating (In trip)
+
+#    get by user

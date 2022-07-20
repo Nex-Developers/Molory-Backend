@@ -22,7 +22,7 @@ export default function makeGetItemsController({
 
         try {
             const lang = request.lang,
-                body = request.body;
+                body = request.params;
                 if (request.ref.role === 'driver') body.userId = request.ref.id
                   // if query
                 // body.qery = qery

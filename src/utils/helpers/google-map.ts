@@ -3,7 +3,6 @@ import {Client, DistanceMatrixRequest, TravelMode, UnitSystem} from "@googlemaps
 
 export default class GoogleMap {
 
-    static apiKey = env.google.apiKey
     static client = new Client({});
 
     static async calculMatrix (origin, destination) { 
@@ -14,11 +13,13 @@ export default class GoogleMap {
                 mode: TravelMode.driving,
                 language: 'fr-FR',
                 units: UnitSystem.metric,
-                key: GoogleMap.apiKey
+                key: env.google.apiKey
             }
         }
-        const res = await GoogleMap.client.distancematrix(request)  
-        return res.data.rows[0].elements[0]
+            const res = await GoogleMap.client.distancematrix(request)  
+            return res.data.rows[0].elements[0]
+        
+       
     }
 
 }

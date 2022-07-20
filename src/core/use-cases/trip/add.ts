@@ -60,23 +60,25 @@ export default function makeAdd({
         }
 
         
-        const departureDate = new Date(date + ' ' + time)
 
         const trip = await tripDb.insertOne({ 
             data: {
                 userId,
                 vehicleId,
                 seats,
-                departureDate,
+                departureDate: date,
+                departureTime: time,
                 routes: {
                     create: routes
                 }
             },
             include: {
                 routes: {
-                    include: {
-                        departure: true,
-                        arrival: true
+                    select: {
+                        distance: true,
+                        duration: true,
+                        price: true,
+                        stops: true
                     }
                 }
             }

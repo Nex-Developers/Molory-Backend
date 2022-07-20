@@ -4,9 +4,12 @@ import { InvalidParamError, MissingParamError, ServerError } from "../../../util
 export default function makeAddUser({
     userDb,
     isValidEmail,
-    hashPassword
+    hashPassword,
+    generateToken,
+    askToConfirmEmail,
+    saveTmpToken
 }: any = {}){
-    if (!userDb || !isValidEmail || !hashPassword) throw new ServerError()
+    if (!userDb || !isValidEmail || !hashPassword || !generateToken || !askToConfirmEmail || !saveTmpToken) throw new ServerError()
     return async function addUser({
         lastName,
         firstName,
@@ -38,7 +41,9 @@ export default function makeAddUser({
             language,
             password
         }})
-
+        const token = await generateToken({ email })
+        await saveTmpToken({ token  })
+        await askToConfirmEmail({ email, token, firstName, lastName, lang: language })
         const message = { text: "response.add"}
         return { message , id }
     } 
