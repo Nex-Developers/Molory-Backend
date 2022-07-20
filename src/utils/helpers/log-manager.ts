@@ -52,13 +52,13 @@ export default class LogManager {
                     const matches = keys.filter(key => temp[i][key] == where[key])
                     if (matches.length === keys.length) data.unshift(temp[i])
                 }
-                if (data.length == limit) {
-                    break
-                }
+                // if (data.length == limit) {
+                //     break
+                // }
             }
-            if (data.length == limit) {
-                break
-            }
+            // if (data.length == limit) {
+            //     break
+            // }
         }
         // Printing data
 
