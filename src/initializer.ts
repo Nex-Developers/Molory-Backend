@@ -1,8 +1,9 @@
 import { Role } from "./core/conventions"
-import { askToConfirmEmail } from "./core/services/email"
-import { generateToken } from "./core/services/token"
+// import { askToConfirmEmail } from "./core/services/email"
+// import { generateToken } from "./core/services/token"
 import { addUser } from "./core/use-cases/user"
 import { UserDb } from "./db"
+import user from "./routes/api/user"
 
 export default async () => {
     const userDb = new UserDb()
@@ -12,8 +13,9 @@ export default async () => {
             console.log('Admin already exists')
             return
         }
-        const token = await generateToken({ email: admin.email })
-        await askToConfirmEmail({ email: admin.email, firstName: admin.firstName, token, lang: admin.language })
+        // const token = await generateToken({ email: admin.email })
+        // await askToConfirmEmail({ email: admin.email, firstName: admin.firstName, token, lang: admin.language })
+        userDb.updateOne({ where: { id: admin.id}, data: { emailVerifiedAt: new Date()}})
         return
     }
     const data = {
@@ -24,7 +26,6 @@ export default async () => {
         lastName: 'NEX',
         phoneNumber: '22890909090',
         language: 'en',
-        emailVerifiedAt: new Date(),
         birthDay: new Date()
     }
     const response = await addUser(data)
