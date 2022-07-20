@@ -28,16 +28,16 @@ export default class LogManager {
         if (!file) return []
         const sheets = [...file.SheetNames, 'home']
         const result: Log[] = []
-         sheets.forEach(  sheetName => {
-           const data: Log[] =  reader.utils.sheet_to_json<Log>(file.Sheets[sheetName])
+        sheets.forEach(sheetName => {
+            const data: Log[] = reader.utils.sheet_to_json<Log>(file.Sheets[sheetName])
             data.forEach(item => {
-                if(item.userId === userId)  result.unshift(item)
+                if (item.userId === userId) result.unshift(item)
             })
-       })
+        })
         return result
     }
 
-    static async read(limit = 20) {
+    static async read(limit = 10, where?) {
         const file = reader.readFile(env.logs.file)
         if (!file) return []
         const data = []
@@ -45,13 +45,23 @@ export default class LogManager {
         for (let i = 0; i < sheets.length; i++) {
             const temp = reader.utils.sheet_to_json(
                 file.Sheets[file.SheetNames[i]])
-            temp.forEach((res) => {
-                data.unshift(res)
-                if (data.length == limit) return
-            })
+            for (i = 0; i < temp.length; i++) {
+                if (!where) data.unshift(temp[i])
+                else {
+                    const keys = Object.keys(where)
+                    const matches = keys.filter(key => temp[i][key] == where[key])
+                    if (matches.length === keys.length) data.unshift(temp[i])
+                }
+                if (data.length == limit) {
+                    break
+                }
+            }
+            if (data.length == limit) {
+                break
+            }
         }
         // Printing data
-        
+
         return { length: data.length, data }
     }
 
@@ -62,16 +72,16 @@ export default class LogManager {
     static async getDataFile() {
         try {
             return await reader.readFile(env.logs.file)
-        } catch(err) {
-          if(err.code === 'ENOENT') {
-             await LogManager.createDataFile()
-            return LogManager.getDataFile()
-          }
-          return
+        } catch (err) {
+            if (err.code === 'ENOENT') {
+                await LogManager.createDataFile()
+                return LogManager.getDataFile()
+            }
+            return
         }
     }
 
-    static async  createDataFile() {
+    static async createDataFile() {
         const file = reader.utils.book_new()
         await reader.utils.book_append_sheet(file, null, 'home')
         return await reader.writeFile(file, env.logs.file)
