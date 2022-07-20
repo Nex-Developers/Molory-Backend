@@ -5,17 +5,18 @@ import { CacheManager, DbConnection, Mailer } from "./utils/helpers"
 
 
 try {
-    DbConnection.connect().then(
-        () => {
-            CacheManager.connect()
-            Mailer.connect()
-            initializer().then(_ => {
-                app.listen(env.port, () => console.log(`Server running at http://localhost:${env.port}`))
-            })
-        }
-    )
+    const startApp = async () => {
+        await DbConnection.connect()
+        await CacheManager.connect()
+        await Mailer.connect()
+        await initializer()
+        app.listen(env.port, () => console.log(`Server running at http://localhost:${env.port}`))
+    }
+    startApp()
 } catch (err) {
     throw new Error(err.message)
 } finally {
     DbConnection.disconnect()
 }
+
+

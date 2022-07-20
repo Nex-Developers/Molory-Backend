@@ -12,9 +12,9 @@ export default async () => {
             console.log('Admin already exists')
             return
         }
-        const token = await generateToken({ email: admin.email})
-         await askToConfirmEmail({ email: admin.email, firstName: admin.firstName, token, lang: admin.language})
-         return
+        const token = await generateToken({ email: admin.email })
+        await askToConfirmEmail({ email: admin.email, firstName: admin.firstName, token, lang: admin.language })
+        return
     }
     const data = {
         email: 'developer@nex-softwares.com',

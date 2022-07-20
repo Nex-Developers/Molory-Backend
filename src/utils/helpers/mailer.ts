@@ -4,8 +4,8 @@ import { env } from '../../configs/environment'
 export default class Mailer {
     static transporter
 
-    static connect() {
-        Mailer.transporter = nodemailer.createTransport({
+    static async connect() {
+        Mailer.transporter = await nodemailer.createTransport({
             host: env.mail.host,
             port: env.mail.port,
             secure: true,
