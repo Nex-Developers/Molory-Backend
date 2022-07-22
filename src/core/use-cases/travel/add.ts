@@ -5,7 +5,7 @@ export default function makeAdd({
     routeDb,
     operationDb
 }: any = {}) {
-    if (!travelDb) throw new ServerError()
+    if (!travelDb || !routeDb || !operationDb) throw new ServerError()
     return async ({
         userId,
         routeId,
@@ -18,7 +18,7 @@ export default function makeAdd({
 
         const { price, trip } = await routeDb.findFirst({ 
             where: { id: routeId }, 
-            select: {price: true, trip: { remaningSeats: true}}
+            select: {price: true, trip: { select: { remainingSeats: true }}}
         })
         
 

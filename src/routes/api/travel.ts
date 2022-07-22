@@ -21,7 +21,7 @@ export default () => {
     router.get('/travel/:id', langCheck, authCheck, expressRouterAdapter(getTravelController))
     router.route('/travel')
     .get(langCheck, queryParser, authCheck, expressRouterAdapter(getTravelsController))
-    .post(langCheck, authCheck, driverCheck, expressRouterAdapter(postTravelController))
+    .post(langCheck, authCheck, expressRouterAdapter(postTravelController))
     .patch(langCheck, authCheck, driverCheck, expressRouterAdapter(patchTravelController))
     .delete(langCheck, authCheck, driverCheck, expressRouterAdapter(deleteTravelController))
     // router.post('/-travel', langCheck, authCheck, driverCheck, expressRouterAdapter(patchTravelController))

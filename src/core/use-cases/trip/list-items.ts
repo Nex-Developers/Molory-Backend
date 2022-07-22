@@ -27,7 +27,7 @@ export default function makeListItems({
             select: {
                 id: true,
                 seats: true,
-                reamingSeats: true,
+                remainingSeats: true,
                 status: true,
                 departureDate: true,
                 departureTime: true,
