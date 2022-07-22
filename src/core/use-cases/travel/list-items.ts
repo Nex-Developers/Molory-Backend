@@ -15,8 +15,20 @@ export default function makeListItems({
             limit, 
             select: {
                 id: true,
-                title: true,
-                description: true,
+                route: {
+                    select: {
+                        id: true,
+                        price: true,
+                        stops: true
+                    }
+                },
+                user: {
+                    select: {
+                        id: true,
+                        firstName: true,
+                        lastName: true
+                    }
+                },
                 createdAt: true
             }
         })

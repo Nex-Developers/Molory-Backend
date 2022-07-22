@@ -129,6 +129,7 @@ model Configuration {
 
 model VehicleType {
   name String @id
+  maxSeats Int @default(4)
   description String
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
@@ -157,6 +158,7 @@ model Trip {
     userId     Int
     vehicleId Int
     seats Int
+    remaningSeats Int @default(4)
     status Int @default(4)
     departureDate String
     departureTime String
@@ -201,11 +203,11 @@ model Travel {
   userId     Int
   routeId Int
   seats Int
-  reamingSeats Int @default(4)
   status Int @default(4)
   createdAt DateTime
   startedAt DateTime?
   finishedAt DateTime?
+  deletedAt DateTime?
   driverRating Int
   passengerRating Int
   operations Operation[]

@@ -2,7 +2,7 @@ version: "3.8"
 services:
   db:
     image: postgres
-    restart: always
+    # restart: always
     volumes:
       - postgre-db:/var/lib/postgresql/data
       - /var/lib/postgresql/data/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
@@ -11,23 +11,23 @@ services:
       POSTGRES_PASSWORD: forza12
     networks:
       default:
-        ipv4_address: 172.20.0.3
+        ipv4_address: 172.20.0.10
   
   cache:
     image: redis
-    restart: always
+    # restart: always
     networks:
       default:
-        ipv4_address: 172.20.0.4
+        ipv4_address: 172.20.0.12
       
   adminer:
     image: adminer
-    restart: always
+    # restart: always
     ports:
       - 8082:8080
     networks:
       default:
-        ipv4_address: 172.20.0.2
+        ipv4_address: 172.20.0.11
 
 volumes:
   postgre-db: 
@@ -41,6 +41,6 @@ networks:
         - subnet: 172.20.0.0/16
           gateway: 172.20.0.1
           aux_addresses:
-            adminer: 172.20.0.2
-            db: 172.20.0.3
-            cache: 172.20.0.4
+            adminer: 172.20.0.11
+            db: 172.20.0.10
+            cache: 172.20.0.12
