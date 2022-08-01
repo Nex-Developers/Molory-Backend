@@ -3,33 +3,47 @@ import { MissingParamError, ServerError } from "../../../utils/errors"
 export default function makeAdd({
     travelDb,
     routeDb,
-    operationDb
+    paymentDb
 }: any = {}) {
-    if (!travelDb || !routeDb || !operationDb) throw new ServerError()
+    if (!travelDb || !routeDb || !paymentDb) throw new ServerError()
     return async ({
         userId,
         routeId,
         seats
     }: any = {}) => {
-        
+
         if (!userId) throw new MissingParamError('userId')
         if (!routeId) throw new MissingParamError('routeId')
         if (!seats) throw new MissingParamError('seats')
 
-        const { price, trip } = await routeDb.findFirst({ 
-            where: { id: routeId }, 
-            select: {price: true, trip: { select: { remainingSeats: true }}}
+        const { price, trip } = await routeDb.findFirst({
+            where: { id: routeId },
+            select: { price: true, trip: { select: { remainingSeats: true } } }
         })
-        
 
-        if (!trip.remaningSeats) throw new Error('Unvailable Resource')
 
-        if (seats > trip.remaningSeats) throw new Error('Missing ' + (seats - trip.remaningSeats) + 'resource')
+        if (!trip.remainingSeats) throw new Error('Unvailable Resource')
 
-        const { id } = await travelDb.insertOne({ data: { userId, routeId, seats }})
+        if (seats > trip.remainingSeats) throw new Error('Missing ' + (seats - trip.remainingSeats) + 'resource')
 
-        const operation = await operationDb.insertOne({ data: { travelId: id, userId, type: 'payment', amount: price }})
-        const message = {text: "response.add" }
-        return { message, id , operation }
-    } 
+        const { id, payment } = await travelDb.insertOne({
+            data: {
+                userId,
+                routeId,
+                seats,
+                payment: {
+                    create: {
+                        userId,
+                        amount: price * seats
+                    }
+                }
+            },
+            include: {
+                payment: true
+            }
+        })
+
+        const message = { text: "response.add" }
+        return { message, id, payment }
+    }
 }

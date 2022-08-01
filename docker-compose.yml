@@ -9,38 +9,38 @@ services:
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_PASSWORD: forza12
-    # networks:
-    #   default:
-    #     ipv4_address: 172.20.0.10
+    networks:
+      default:
+        ipv4_address: 172.20.0.10
   
   cache:
     image: redis
     # restart: always
-    # networks:
-    #   default:
-    #     ipv4_address: 172.20.0.12
+    networks:
+      default:
+        ipv4_address: 172.20.0.12
       
   adminer:
     image: adminer
     # restart: always
     ports:
       - 8082:8080
-    # networks:
-    #   default:
-    #     ipv4_address: 172.20.0.11
+    networks:
+      default:
+        ipv4_address: 172.20.0.11
 
 volumes:
   postgre-db: 
     driver: local
 
-# networks:
-#   default:
-#     driver: bridge
-#     ipam:
-#       config:
-#         - subnet: 172.20.0.0/16
-#           gateway: 172.20.0.1
-#           aux_addresses:
-#             adminer: 172.20.0.11
-#             db: 172.20.0.10
-#             cache: 172.20.0.12
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
+          aux_addresses:
+            adminer: 172.20.0.11
+            db: 172.20.0.10
+            cache: 172.20.0.12

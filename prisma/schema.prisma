@@ -56,7 +56,6 @@ model User {
   profileCompletedAt DateTime?
   deletedAt DateTime?
   deletionReport String?
-  operations Operation[]
   preferences Configuration[]
   trips Trip[]
   travels Travel[]
@@ -66,6 +65,7 @@ model User {
   receivedNotifications Notification[]
   wallets Wallet[]
   devices Device[]
+  payments Payment[]
   country   Country?   @relation(fields: [countryId], references: [id])
 }
 
@@ -91,6 +91,7 @@ model Wallet {
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
   deletedAt DateTime?
+  withdrawals Withdrawal[] 
 }
 
 model Pricing {
@@ -204,29 +205,42 @@ model Travel {
   routeId Int
   seats Int
   status Int @default(4)
-  createdAt DateTime
+  createdAt DateTime @default(now())
   startedAt DateTime?
   finishedAt DateTime?
   deletedAt DateTime?
-  driverRating Int
-  passengerRating Int
-  operations Operation[]
+  driverRating Int?
+  passengerRating Int?
   user   User   @relation(fields: [userId], references: [id])
   route   Route   @relation(fields: [routeId], references: [id])
+  payment   Payment?
 }
 
-model Operation {
+model Payment {
     id     Int @id @default(autoincrement())
-    travelId Int 
-    userId Int
-    type String
-    method String
+    travelId Int  @unique
+    userId Int 
+    method String?
     amount Int
-    createdAt DateTime
+    accessNumber String?
+    createdAt DateTime @default(now())
     validatedAt DateTime?
-    status Int
-    travel Travel   @relation(fields: [travelId], references: [id])
+    status Int @default(2) //2-wating 1-success 0-canceled
+    travel  Travel @relation(fields: [travelId], references: [id])
     user   User   @relation(fields: [userId], references: [id])
+}
+
+model Withdrawal {
+    id     Int @id @default(autoincrement()) 
+    walletId Int
+    type String
+    method String?
+    amount Int
+    accessNumber String?
+    createdAt DateTime @default(now())
+    validatedAt DateTime?
+    status Int @default(2) //2-wating 1-success 0-canceled
+    wallet Wallet @relation(fields: [walletId], references: [id])
 }
 
 model Status {

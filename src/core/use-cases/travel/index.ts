@@ -1,4 +1,4 @@
-import { OperationDb, RouteDb, TravelDb } from "../../../db"
+import { PaymentDb, RouteDb, TravelDb } from "../../../db"
 import makeAdd from "./add"
 import makeEdit from "./edit"
 import makeListItemInfos from "./list-item-infos"
@@ -7,10 +7,10 @@ import makeRemove from "./remove"
 
 const travelDb = new TravelDb()
 const routeDb = new RouteDb()
-const operationDb = new OperationDb()
+const paymentDb = new PaymentDb()
 
 
-const addTravel = makeAdd({ travelDb, routeDb, operationDb })
+const addTravel = makeAdd({ travelDb, routeDb, paymentDb })
 const editTravel = makeEdit({ travelDb })
 const listTravels = makeListItems({ travelDb })
 const listTravelInfos = makeListItemInfos({ travelDb })
