@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  node-app-prod:
+    build: 
+      context: .
+      args: 
+        NODE_ENV: production
+        PORT: 8086
+    ports:
+      - "8086:8086"
+    restart: always
+    env_file:
+      - ./.env
+    # environment:
+    #   - NODE_ENV=development
+    command: bash -c "npx prisma generate && pm2-runtime dist"
+networks:
+  default:
+    external: true
+    name: oreonyx-backend-admin_default
+    driver: bridge     
