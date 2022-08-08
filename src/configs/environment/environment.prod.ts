@@ -41,5 +41,10 @@ export default {
     },
     google: {
         apiKey: process.env.GOOGLE_API_KEY,
+    },
+    cinetPay: {
+        apiKey: process.env.CINET_PAY_KEY,
+        siteId: process.env.CINET_PAY_ID,
+        checkPaymentUrl: 'https://api-checkout.cinetpay.com/v2/payment/check'
     }
 }

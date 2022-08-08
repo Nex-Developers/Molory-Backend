@@ -7,18 +7,23 @@ export default function makeUpdateIdCard ({
     if (!userDb) throw new ServerError()
     return async function ({
          id,
-        file
+        files
     }: any = {}) {
-        if (!file || file == {}) throw new MissingParamError('file')
-        console.log('file', file)
+        if (!files || files.length == 0) throw new MissingParamError('files')
+        console.log('files', files)
         // remove public/ in the avatar name
-        const user = await userDb.findFirst({ where: { id }, select: { idCard: true, idCardStatus: true}})
+        const user = await userDb.findFirst({ where: { id }, select: { idCardStatus: true}})
         if (!user) throw new InvalidParamError('token')
-        if (user.idCardStatus == 2 || user.idCardStatus == 1) throw new AlreadyDoneError('before')
+        if (user.idCardStatus == 2 ) throw new AlreadyDoneError('before')
         // if (user.idCard) deleteAvatarFile(user.idCard)
-        const idCard = file.path.substring(file.path .indexOf("/"));
-        userDb.updateOne({ where: { id },  data: { idCard, idCardStatus: 2 }})
+        const frontFile = files[0]
+        const idCardFront = frontFile.path.substring(frontFile.path .indexOf("/"));
+        const backFile = files[1]
+        let idCardBack = ''
+        if (backFile) idCardBack = backFile.path.substring(backFile.path .indexOf("/"));
+        // console.log(idCardFront, idCardBack)
+        userDb.updateOne({ where: { id },  data: { idCardBack, idCardFront, idCardStatus: 2 }})
         const message = { text: 'response.update' }
-        return { message, data: { idCard }}
+        return { message, data: { idCardFront, idCardBack }}
     }
 }

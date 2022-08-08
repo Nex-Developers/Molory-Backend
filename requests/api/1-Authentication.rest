@@ -31,7 +31,7 @@ content-type: application/json
 }
 ###
 
-# @authTmpToken = {{login.response.body.token}}
+@authTmpToken = {{login.response.body.token}}
 
 
 
@@ -52,7 +52,7 @@ content-type: application/json
 }
 ### 
 
-@authToken = {{confirmOtp.response.body.token}} || eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjU3ODQ4NDk2fQ.d9iic9WSRQFoGoIV6oZlPBURGyud9ZoyfyyN6GMTuok
+@authToken = {{confirmOtp.response.body.token}} || eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRyaXZlciIsImlhdCI6MTY1OTg3OTM3M30.YxdZ8KrxFw3jRDvQRZS-lS3p6wCXoJvYoyfHMZ_qkVw
 
 
 # Complete infos

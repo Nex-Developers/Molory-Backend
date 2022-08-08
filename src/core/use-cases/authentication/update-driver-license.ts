@@ -7,18 +7,23 @@ export default function makeUpdateDriverLicense ({
     if (!userDb ) throw new ServerError()
     return async function ({
          id,
-        file
+        files
     }: any = {}) {
-        if (!file || file == {}) throw new MissingParamError('file')
-        console.log('file', file)
+        if (!files || files.length == 0) throw new MissingParamError('files')
+        console.log('files', files)
         // remove public/ in the avatar name
-        const user = await userDb.findFirst({ where: { id }, select: { driverLicense: true, driverLicenseStatus: true}})
+        const user = await userDb.findFirst({ where: { id }, select: {  driverLicenseStatus: true}})
         if (!user) throw new InvalidParamError('token')
-        if (user.driverLicenseStatus == 2 || user.driverLicenseStatus == 1) throw new AlreadyDoneError('before')
+        if (user.driverLicenseStatus == 2 ) throw new AlreadyDoneError('before')
         // if (user.idCard) deleteAvatarFile(user.idCard)
-        const driverLicense = file.path.substring(file.path .indexOf("/"));
-        userDb.updateOne({ where: { id },  data: { driverLicense, driverLicenseStatus: 2 }})
+        const frontFile = files[0]
+        const driverLicenseFront = frontFile.path.substring(frontFile.path .indexOf("/"));
+        const backFile = files[1]
+        let driverLicenseBack = ''
+        if (backFile) driverLicenseBack = backFile.path.substring(backFile.path .indexOf("/"));
+        console.log(driverLicenseFront, driverLicenseBack)
+        userDb.updateOne({ where: { id },  data: { driverLicenseFront, driverLicenseBack, driverLicenseStatus: 2 }})
         const message = { text: 'response.update' }
-        return { message, data: { driverLicense }}
+        return { message, data: { driverLicenseFront, driverLicenseBack }}
     }
 }

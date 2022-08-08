@@ -39,6 +39,7 @@ import makeProfileController from "./profile"
 import makeRegisterController from "./register"
 import makeResetPasswordController from "./reset-password"
 import makeSendOtpController from "./send-otp"
+import makeUploadDocumentController from "./upload-document"
 import makeVerifyEmailController from "./verify-email"
 import makeVerifyOtpController from "./verify-otp"
 import makeVerifyPasswordController from "./verify-password"
@@ -64,7 +65,7 @@ const resetPasswordController = makeResetPasswordController({ removePassword })
 const newEmailController = makeNewEmailController({ changeEmail })
 const newPhoneNumberController = makeNewPhoneNumberController({ changePhoneNumber })
 const deleteAccountController = makeDeleteAccountController({ removeAccount })
-
+const uploadDocumentController = makeUploadDocumentController({ updateIdCard, updateDriverLicense })
 export {
     sendOtpController,
     verifyOtpController,
@@ -86,5 +87,6 @@ export {
     newEmailController,
     newPhoneNumberController,
     deleteAccountController,
-    enableEmailAuthController
+    enableEmailAuthController,
+    uploadDocumentController
 }

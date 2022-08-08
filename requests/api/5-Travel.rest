@@ -60,6 +60,20 @@ Content-Type: {{contentTypeJson}}
     "seats": {{seats}}
 }
 ###
+
+# Confirm payment onFrontend
+# @prompt paymentId
+# @prompt amount
+POST {{host}}/api/travel HTTP/1.1
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentTypeJson}}
+
+{
+    "paymentId": {{paymentId}},
+    "amount": {{amount}}
+}
+###
+
 #    Report departure
 
 #    Report arrival

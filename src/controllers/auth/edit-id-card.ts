@@ -24,8 +24,12 @@ export default function makeEditIdCardController({
             description: `${lastName}  ${firstName}  ${Action.ULPLOAD} his ID card`
         }
         try {
-                const file = request.file,
-                data = await updateIdCard({ id, file })
+                const files = request.files
+                // ['idCard']
+                // console.log('files', files)
+                // console.log('file', request.file)
+                
+                const data = await updateIdCard({ id, files })
                 reqLog.status = LogStatus.SUCCEEDED
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)

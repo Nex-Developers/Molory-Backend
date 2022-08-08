@@ -8,7 +8,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_STATIC_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Country {
@@ -42,10 +42,14 @@ model User {
   status Int @default(1)
   role String
   language String
-  idCard String?
+  idCardFront String?
+  idCardBack String?
   idCardStatus Int @default(0)
+  idCardRejectionMessage String?
   idCardModifiedAt DateTime?
-  driverLicense String?
+  driverLicenseFront String?
+  driverLicenseBack String?
+  driverLicenseRejectionMessage String?
   driverLicenseStatus Int @default(0)
   driverLicenseModifiedAt DateTime?
   password String
@@ -222,6 +226,8 @@ model Payment {
     userId Int 
     method String?
     amount Int
+    receivedAmount Int?
+    reference String?
     accessNumber String?
     createdAt DateTime @default(now())
     validatedAt DateTime?

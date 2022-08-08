@@ -24,8 +24,8 @@ export default function makeEditDriverLicenseController({
             description: `${lastName}  ${firstName}  ${Action.ULPLOAD} his driver license`
         }
         try {
-                const file = request.file,
-                data = await updateDriverLicense({ id, file })
+                const files= request.files,
+                data = await updateDriverLicense({ id, files })
                 reqLog.status = LogStatus.SUCCEEDED
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)

@@ -12,6 +12,7 @@ import TokenManager from "./token-manager"
 import FileManager from "./file-manager"
 import LogManager from "./log-manager"
 import  GoogleMap from "./google-map"
+import ApiCaller from "./api-caller"
 
 export {
     Encrypter,
@@ -27,5 +28,6 @@ export {
     LanguageManager,
     DataFormatter,
     LogManager,
-    GoogleMap
+    GoogleMap,
+    ApiCaller
 }

@@ -46,7 +46,8 @@
     "migrate:prod": "npx prisma migrate resolve",
     "model": "npx prisma db push",
     "pre-deploy": "sudo docker compose -f docker-compose.yml -p 'molory' up --build -d",
-    "deploy": "sudo docker compose -f docker-compose.dev.yml -p 'molory' up  --build -d"
+    "deploy": "sudo docker compose -f docker-compose.dev.yml -p 'molory' up  --build -d",
+    "deploy:prod": "sudo docker-compose -f docker-compose.prod.yml -p 'molory' up --build -d"
   },
   "author": "Kode Sonik <k0d3.s0n1k@gmail.com>",
   "license": "Apache-2.0",

@@ -13,6 +13,7 @@ import {
     getTravelsController,
     // patchConfirmTravelController,
     patchTravelController,
+    postNotifyController,
     postTravelController,
 } from "../../controllers/travel"
 
@@ -24,6 +25,6 @@ export default () => {
     .post(langCheck, authCheck, expressRouterAdapter(postTravelController))
     .patch(langCheck, authCheck, driverCheck, expressRouterAdapter(patchTravelController))
     .delete(langCheck, authCheck, driverCheck, expressRouterAdapter(deleteTravelController))
-    // router.post('/-travel', langCheck, authCheck, driverCheck, expressRouterAdapter(patchTravelController))
+    router.post('/confirm-payment', expressRouterAdapter(postNotifyController))
     return router
 }

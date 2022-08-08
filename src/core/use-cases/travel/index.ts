@@ -1,5 +1,7 @@
 import { PaymentDb, RouteDb, TravelDb } from "../../../db"
+import { getPaymentState } from "../../services/payment"
 import makeAdd from "./add"
+import makeConfirmPayment from "./confirm-payment"
 import makeEdit from "./edit"
 import makeListItemInfos from "./list-item-infos"
 import makeListItems from "./list-items"
@@ -15,11 +17,13 @@ const editTravel = makeEdit({ travelDb })
 const listTravels = makeListItems({ travelDb })
 const listTravelInfos = makeListItemInfos({ travelDb })
 const removeTravel = makeRemove({ travelDb })
+const confirmPayment = makeConfirmPayment({ getPaymentState })
 
 export {
     addTravel,
     editTravel,
     listTravels,
     listTravelInfos,
-    removeTravel
+    removeTravel,
+    confirmPayment
 }

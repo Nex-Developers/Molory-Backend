@@ -26,6 +26,7 @@ import {
     registerController,
     resetPasswordController,
     sendOtpController,
+    uploadDocumentController,
     verifyEmailController,
     verifyOtpController, 
     verifyPasswordController
@@ -48,12 +49,14 @@ export default () => {
     router.post('/forgot-password', langCheck, expressRouterAdapter(forgotPasswordController))
     router.post('/edit-profile', langCheck, authCheck, expressRouterAdapter(editProfileController))
     router.post('/edit-avatar', langCheck, authCheck, fileUpload.single('avatar'), expressRouterAdapter(editAvatarController))
-    router.post('/id-card', langCheck, authCheck, fileUpload.single('idCard'), expressRouterAdapter(editIdCardController))
-    router.post('/driver-license', langCheck, authCheck, fileUpload.single('driverLicense'), expressRouterAdapter(editDriverLicense))
+    router.post('/id-card', langCheck, authCheck, fileUpload.array('idCard', 2), expressRouterAdapter(editIdCardController))
+    router.post('/driver-license', langCheck, authCheck, fileUpload.array('driverLicense', 2), expressRouterAdapter(editDriverLicense))
+    router.post('/upload-document',langCheck, authCheck, fileUpload.fields([{ name: 'idCard', maxCount: 2}, { name: 'driverLicense', maxCount: 2}]), expressRouterAdapter(uploadDocumentController))
     router.get('/reset-password', langCheck, queryParser, expressRouterAdapter(resetPasswordController))
     router.post('/new-email', langCheck, authCheck, expressRouterAdapter(newEmailController))
     router.post('/new-phonenumber', langCheck, authCheck, expressRouterAdapter(newPhoneNumberController))
     router.post('/delete-account', langCheck, authCheck, expressRouterAdapter(deleteAccountController))
+    // 
     return router
     // complete profil
 }

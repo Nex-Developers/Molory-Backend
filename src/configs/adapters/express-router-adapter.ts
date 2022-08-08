@@ -11,7 +11,8 @@ export default function makeExpressRouterAdapter() {
         token: req.params.token,
         ref: req.params.ref,
         lang: req.params.lang,
-        file: req.file
+        file: req.file,
+        files: req.files
       }
       // console.log('adapt lang ', httpRequest.lang)
       const httpResponse: IHttpResponse = await controller(httpRequest)

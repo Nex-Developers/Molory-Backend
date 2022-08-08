@@ -1,0 +1,15 @@
+{
+    "code": "00",
+    "message": "SUCCES",
+    "data": {
+        "amount": "100",
+        "currency": "XOF",
+        "status": "ACCEPTED",
+        "payment_method": "OM",
+        "description": "GFGHHG",
+        "metadata": null,
+        "operator_id": "MP210930.1743.C36452",
+        "payment_date": "2021-09-30 17:43:30"
+    },
+    "api_response_id": "1633023959.8459"
+}
