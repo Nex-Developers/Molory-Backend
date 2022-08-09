@@ -9,7 +9,7 @@ export default class SmsServer{
 
     static async send(phoneNumbers: string[], message) {
         console.log(' production ', env.production)
-        if (env.production) {
+        // if (env.production) {
             try {
                 const { data } = await axios.post(
                     SmsServer.apiUrl, 
@@ -27,9 +27,9 @@ export default class SmsServer{
                 console.log(e.message)
                 return
             }
-        } else {
-            console.log(message)
-        }
+        // } else {
+        //     console.log(message)
+        // }
         
        
     }
