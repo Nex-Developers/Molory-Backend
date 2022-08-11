@@ -18,13 +18,19 @@ export default function makeListToValidateUsers({
             phoneNumber: true,
             email: true,
             birthDay: true,
+            role: true,
             createdAt: true,
             blockedAt: true,
-            driverLicense: true,
-            driverLicenseStatus: true,
-            idCard: true,
+            idCardFront: true,
+            idCardBack: true,
             idCardStatus: true,
-            role: true
+            idCardRejectionMessage: true,
+            idCardModifiedAt: true,
+            driverLicenseFront: true,
+            driverLicenseBack: true,
+            driverLicenseStatus: true,
+            driverLicenseRejectionMessage: true,
+            driverLicenseModifiedAt: true
         }})
         return { data, count: data.length, startAt, limit }
     }

@@ -18,7 +18,17 @@ export default function makeGetProfile ({
                 email: true,
                 role: true,
                 phoneNumber: true,
-                profileCompletedAt: true 
+                profileCompletedAt: true,
+                idCardFront: true,
+                idCardBack: true,
+                idCardStatus: true,
+                idCardRejectionMessage: true,
+                idCardModifiedAt: true,
+                driverLicenseFront: true,
+                driverLicenseBack: true,
+                driverLicenseStatus: true,
+                driverLicenseRejectionMessage: true,
+                driverLicenseModifiedAt: true
             }
             })
         return { data }
