@@ -6,7 +6,8 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         const extArray = file.mimetype.split("/");
-        const extension = extArray[extArray.length - 1];
+        let extension = extArray[extArray.length - 1];
+        if (extension === 'octet-stream') extension = file.originalname.split('.')[1];
       cb(null,  Date.now().toString() + '.' + extension)
     }
   })

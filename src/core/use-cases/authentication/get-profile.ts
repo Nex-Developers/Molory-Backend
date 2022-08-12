@@ -31,6 +31,31 @@ export default function makeGetProfile ({
                 driverLicenseModifiedAt: true
             }
             })
-        return { data }
+        return { data: {
+            avatar: data.avatar,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            birthDay: data.birthDay,
+            email: data.email,
+            role: data.role,
+            phoneNumber: data.phoneNumber,
+            profileCompletedAt: data.profileCompletedAt,
+            documents: [
+                {
+                    name: "ID Card",
+                    urlFront: data.idCardFront,
+                    urlBack: data.idCardBack,
+                    status: data.idCardStatus,
+                    rejectionMessage: data.idCardRejectionMessage,
+                },
+                {
+                    name: "Driver License",
+                    urlFront: data.driverLicenseFront,
+                    urlBack: data.driverLicenseBack,
+                    status: data.driverLicenseStatus,
+                    rejectionMessage: data.driverLicenseRejectionMessage,
+                }
+            ]
+        } }
     }
 }
