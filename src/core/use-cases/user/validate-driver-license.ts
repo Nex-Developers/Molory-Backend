@@ -7,25 +7,26 @@ export default function makeValidateDriverLicense({
     return async function ({
         userId,
         response,
-        failureReason
+        cardNumber
     }: any = {}){
         if (!userId) throw new MissingParamError('userId')
-        if (!failureReason && response == "rejected") throw new MissingParamError('failureReason')
+        if (!cardNumber && response == "validate") throw new MissingParamError('Card Number')
 
         const user = await userDb.findFirst({ where: { id: userId } })
         if (!user) throw new InvalidParamError('userId')
         if (user.driverLicenseStatus != 2) throw new AlreadyDoneError('before')
-        if (response == "rejected") {
-            await userDb.updateOne({ where: { id: userId} , data: { idCardStatus: 0 } })
+        if (response !== "validate") {
+            await userDb.updateOne({ where: { id: userId} , data: { driverLicenseStatus: 0, driverLicenseRejectionMessage: response,  driverLicenseModifiedAt: new Date()} })
             // if (user.email) sendMail({
             //     to: user.email,
             //     subject: "Your account has been rejected",
             //     text: `Your account has been rejected because: ${failureReason}`
             // })
             // else  sendSms({ to: user.phoneNumber, text: `Your account has been rejected because: ${failureReason}` })
-        } else if (response == "validated") {
-            const data: any = { driverLicenseStatus: 1}
-            if (user.idCardStatus == 1) data.role = "driver"
+        } else {
+            const data: any = { driverLicenseStatus: 1, driverLicenseNumber: cardNumber, driverLicenseModifiedAt: new Date()}
+            // if (user.idCardStatus == 1) data.role = "driver"
+             if (user.role === 'user') data.role = "driver"
             // else  sendMail({
             //         to: user.email,
             //         subject: "Complete Id Card",

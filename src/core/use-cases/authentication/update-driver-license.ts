@@ -22,7 +22,7 @@ export default function makeUpdateDriverLicense ({
         let driverLicenseBack = ''
         if (backFile) driverLicenseBack = backFile.path.substring(backFile.path .indexOf("/"));
         console.log(driverLicenseFront, driverLicenseBack)
-        userDb.updateOne({ where: { id },  data: { driverLicenseFront, driverLicenseBack, driverLicenseStatus: 2 }})
+        userDb.updateOne({ where: { id },  data: { driverLicenseFront, driverLicenseBack, driverLicenseStatus: 2, driverLicenseUploadedAt: new Date() } })
         const message = { text: 'response.update' }
         return { message, data: { driverLicenseFront, driverLicenseBack }}
     }

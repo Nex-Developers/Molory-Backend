@@ -46,11 +46,15 @@ model User {
   idCardBack String?
   idCardStatus Int @default(0)
   idCardRejectionMessage String?
+  idCardNumber String?
+  idCardUploadedAt DateTime?
   idCardModifiedAt DateTime?
   driverLicenseFront String?
   driverLicenseBack String?
   driverLicenseRejectionMessage String?
+  driverLicenseNumber String?
   driverLicenseStatus Int @default(0)
+  driverLicenseUploadedAt DateTime?
   driverLicenseModifiedAt DateTime?
   password String
   rating Float?

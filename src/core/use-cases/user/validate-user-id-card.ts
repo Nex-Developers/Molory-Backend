@@ -9,33 +9,33 @@ export default function makeValidateUserIdCard({
     return async function ({
         userId,
         response,
-        failureReason
+        cardNumber
     }: any = {}){
         if (!userId) throw new MissingParamError('userId')
-        if (!failureReason && response == "rejected") throw new MissingParamError('failureReason')
+        if (!cardNumber && response == "validate") throw new MissingParamError('Card Number')
 
         const user = await userDb.findFirst({ where: { id: userId } })
         if (!user) throw new InvalidParamError('userId')
         if (user.idCardStatus != 2) throw new AlreadyDoneError('before')
-        if (response == "rejected") {
-            await userDb.updateOne({ where: { id: userId} , data: { idCardStatus: 0 } })
+        if (response !== "validate") {
+            await userDb.updateOne({ where: { id: userId} , data: { idCardStatus: 0, idCardRejectionMessage: response, idCardModifiedAt: new Date() } })
         //    if (user.email) await sendMail({
         //         to: user.email,
         //         subject: "Your account has been rejected",
         //         text: `Your account has been rejected because: ${failureReason}`
         //     })
         //     else await sendSms({ to: user.phoneNumber, text: `Your account has been rejected because: ${failureReason}` })
-        } else if (response == "validated") {
-            const data: any = { idCardStatus: 1}
-            if (user.driverLicenseStatus == 1) data.role = "driver"
+        } else {
+            const data: any = { idCardStatus: 1,  idCardNumber: cardNumber, idCardModifiedAt: new Date()}
+            if (user.role === 'user') data.role = "driver"
             await userDb.updateOne({ where: { id: userId} , data })
-          
+
             // await sendMail({
             //     to: user.email,
             //     subject: "Your account has been validated",
             //     text: `Your account has been validated`
             // })
-        } else throw new InvalidParamError('response')
+        }
 
         const message = { text: "response.edit"}
         return { message }

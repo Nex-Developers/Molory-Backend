@@ -22,7 +22,7 @@ export default function makeUpdateIdCard ({
         let idCardBack = ''
         if (backFile) idCardBack = backFile.path.substring(backFile.path .indexOf("/"));
         // console.log(idCardFront, idCardBack)
-        userDb.updateOne({ where: { id },  data: { idCardBack, idCardFront, idCardStatus: 2 }})
+        userDb.updateOne({ where: { id },  data: { idCardBack, idCardFront, idCardStatus: 2, idCardUploadedAt: new Date() } })
         const message = { text: 'response.update' }
         return { message, data: { idCardFront, idCardBack }}
     }
