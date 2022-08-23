@@ -15,6 +15,7 @@ export default function makeListItems({
             limit, 
             select: {
                 name: true,
+                maxSeats: true,
                 description: true,
                 createdAt: true
             }

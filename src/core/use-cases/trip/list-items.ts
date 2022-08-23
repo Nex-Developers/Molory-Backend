@@ -31,6 +31,23 @@ export default function makeListItems({
                 status: true,
                 departureDate: true,
                 departureTime: true,
+                user: {
+                    select: {
+                        id: true,
+                        firstName: true,
+                        lastName: true,
+                        phoneNumber: true
+                    }
+                },
+                vehicle: {
+                    select: {
+                        id: true,
+                        type: true,
+                        color: true,
+                        numberPlate: true,
+                        registrationDoc: true
+                    }
+                },
                 routes: {
                     select: {
                         id: true,

@@ -1,25 +1,22 @@
 import { ServerError } from "../../../utils/errors"
 
 export default function makeListItems({
-    pricingDb
+    vehicleTypeDb
 }: any = {}) {
-    if (!pricingDb) throw new ServerError()
+    if (!vehicleTypeDb) throw new ServerError()
     return async ({
         startAt,
         limit
     }: any = {}) => {
         if (!startAt) startAt = 0
         if (!limit) limit = 100
-        const data = await pricingDb.findMany({ 
+        const data = await vehicleTypeDb.findMany({ 
             startAt, 
             limit, 
             select: {
                 id: true,
-                vehicleTypeName: true,
-                lowerDistance: true,
-                upperDistance: true,
-                unitPrice: true,
-                createdAt: true
+                name: true,
+                pricings: true
             }
         })
         return { data }

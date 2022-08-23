@@ -144,7 +144,7 @@ model VehicleType {
   updatedAt DateTime? @updatedAt
   deletedAt DateTime?
   vehicles Vehicle[]
-  pricing Pricing[]
+  pricings Pricing[]
 }
 
 model Vehicle {
