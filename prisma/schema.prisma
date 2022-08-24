@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
-    previewFeatures = ["interactiveTransactions"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -12,296 +12,309 @@ datasource db {
 }
 
 model Country {
-  id Int @id @default(autoincrement())
-  name String
-  language String
-  currency String
+  id        Int       @id @default(autoincrement())
+  name      String
+  language  String
+  currency  String
   phoneCode String
   longitude Float
-  latitude Float
-  flag String
-  createdAt DateTime @default(now())
+  latitude  Float
+  flag      String
+  createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   deletedAt DateTime?
-  users User[]
+  users     User[]
 }
 
-
 model User {
-  id Int @id @default(autoincrement())
-  countryId Int?
-  avatar String?
-  email String?  @unique
-  phoneNumber String @unique
-  emailVerifiedAt DateTime?
-  phoneNumberVerifiedAt DateTime?
-  firstName  String
-  lastName String
-  gender String?
-  birthDay DateTime?
-  status Int @default(1)
-  role String
-  language String
-  idCardFront String?
-  idCardBack String?
-  idCardStatus Int @default(0)
-  idCardRejectionMessage String?
-  idCardNumber String?
-  idCardUploadedAt DateTime?
-  idCardModifiedAt DateTime?
-  driverLicenseFront String?
-  driverLicenseBack String?
+  id                            Int             @id @default(autoincrement())
+  countryId                     Int?
+  avatar                        String?
+  email                         String?         @unique
+  phoneNumber                   String          @unique
+  emailVerifiedAt               DateTime?
+  phoneNumberVerifiedAt         DateTime?
+  firstName                     String
+  lastName                      String
+  gender                        String?
+  birthDay                      DateTime?
+  status                        Int             @default(1)
+  role                          String
+  language                      String
+  idCardFront                   String?
+  idCardBack                    String?
+  idCardStatus                  Int             @default(0)
+  idCardRejectionMessage        String?
+  idCardNumber                  String?
+  idCardUploadedAt              DateTime?
+  idCardModifiedAt              DateTime?
+  driverLicenseFront            String?
+  driverLicenseBack             String?
   driverLicenseRejectionMessage String?
-  driverLicenseNumber String?
-  driverLicenseStatus Int @default(0)
-  driverLicenseUploadedAt DateTime?
-  driverLicenseModifiedAt DateTime?
-  password String
-  rating Float?
-  createdAt DateTime @default(now())
-  blockedAt DateTime?
-  updatedAt DateTime? @updatedAt
-  profileCompletedAt DateTime?
+  driverLicenseNumber           String?
+  driverLicenseStatus           Int             @default(0)
+  driverLicenseUploadedAt       DateTime?
+  driverLicenseModifiedAt       DateTime?
+  password                      String
+  rating                        Float?
+  createdAt                     DateTime        @default(now())
+  blockedAt                     DateTime?
+  updatedAt                     DateTime?       @updatedAt
+  profileCompletedAt            DateTime?
+  deletedAt                     DateTime?
+  deletionReport                String?
+  preferences                   Configuration[]
+  trips                         Trip[]
+  travels                       Travel[]
+  vehicles                      Vehicle[]
+  historics                     Historic[]
+  sendedNotifications           Publication[]
+  receivedNotifications         Notification[]
+  wallets                       Wallet[]
+  devices                       Device[]
+  payments                      Payment[]
+  country                       Country?        @relation(fields: [countryId], references: [id])
+  reviewsReceived               Review[] @relation(name: "received")
+  reviewsDone                   Review[] @relation(name: "done")
+}
+
+model Review {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  doneBy    Int
+  rating    Float
+  review    String
+  createdAt DateTime  @default(now())
   deletedAt DateTime?
-  deletionReport String?
-  preferences Configuration[]
-  trips Trip[]
-  travels Travel[]
-  vehicles Vehicle[]
-  historics Historic[]
-  sendedNotifications Publication[]
-  receivedNotifications Notification[]
-  wallets Wallet[]
-  devices Device[]
-  payments Payment[]
-  country   Country?   @relation(fields: [countryId], references: [id])
+  user      User      @relation(name: "received", fields: [userId], references: [id])
+  doer      User      @relation(name: "done", fields: [doneBy], references: [id])
 }
 
 model Device {
-    id String
-    userId Int
-    platform String
-    token String
-    createdAt DateTime @default(now())
-    updatedAt DateTime? @updatedAt  
-    deletedAt DateTime?
-    user   User   @relation(fields: [userId], references: [id])
-    @@id([id, userId])
+  id        String
+  userId    Int
+  platform  String
+  token     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@id([id, userId])
 }
 
 model Wallet {
-  id Int @id @default(autoincrement())
-  type String
-  userId Int
-  currency String
-  balance Int @default(0)
-  user   User   @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime? @updatedAt
-  deletedAt DateTime?
-  withdrawals Withdrawal[] 
+  id          Int          @id @default(autoincrement())
+  type        String      @default("default")
+  userId      Int
+  currency    String      @default("XOF")
+  balance     Int          @default(0)
+  user        User         @relation(fields: [userId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?    @updatedAt
+  deletedAt   DateTime?
+  withdrawals Withdrawal[]
 }
 
 model Pricing {
-  id     Int @id @default(autoincrement())
+  id              Int         @id @default(autoincrement())
   vehicleTypeName String
-  lowerDistance Int
-  upperDistance Int
-  unitPrice Float
-  createdAt DateTime @default(now())
-  updatedAt DateTime? @updatedAt
-  deletedAt DateTime?
-  vehicleType   VehicleType   @relation(fields: [vehicleTypeName], references: [name])
+  lowerDistance   Int
+  upperDistance   Int
+  unitPrice       Float
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime?   @updatedAt
+  deletedAt       DateTime?
+  vehicleType     VehicleType @relation(fields: [vehicleTypeName], references: [name])
 }
 
-
 model Preference {
-  id     Int @id @default(autoincrement())
-  title String
+  id          Int             @id @default(autoincrement())
+  title       String
   description String
-  createdAt DateTime @default(now())
-  updatedAt DateTime? @updatedAt
-  deletedAt DateTime?
-  users Configuration[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime?       @updatedAt
+  deletedAt   DateTime?
+  users       Configuration[]
 }
 
 model Configuration {
-  userId     Int
+  userId       Int
   preferenceId Int
-  value Boolean
-  createdAt DateTime @default(now())
-  updatedAt DateTime? @updatedAt
-  user   User   @relation(fields: [userId], references: [id])
-  preference   Preference   @relation(fields: [preferenceId], references: [id])
+  value        Boolean
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?  @updatedAt
+  user         User       @relation(fields: [userId], references: [id])
+  preference   Preference @relation(fields: [preferenceId], references: [id])
+
   @@id([userId, preferenceId])
 }
 
 model VehicleType {
-  name String @id
-  maxSeats Int @default(4)
+  name        String    @id
+  maxSeats    Int       @default(4)
   description String
-  createdAt DateTime @default(now())
-  updatedAt DateTime? @updatedAt
-  deletedAt DateTime?
-  vehicles Vehicle[]
-  pricings Pricing[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  deletedAt   DateTime?
+  vehicles    Vehicle[]
+  pricings    Pricing[]
 }
 
 model Vehicle {
-  id    Int @id @default(autoincrement())
-  userId Int
-  type String
-  color String
-  numberPlate String @unique
+  id              Int         @id @default(autoincrement())
+  userId          Int
+  type            String
+  color           String
+  numberPlate     String      @unique
   registrationDoc String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime? @updatedAt
-  deletedAt DateTime?
-  trip Trip[]
-  user   User   @relation(fields: [userId], references: [id])
-  vehicleType   VehicleType   @relation(fields: [type], references: [name])
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime?   @updatedAt
+  deletedAt       DateTime?
+  trip            Trip[]
+  user            User        @relation(fields: [userId], references: [id])
+  vehicleType     VehicleType @relation(fields: [type], references: [name])
 }
 
 model Trip {
-    id    Int @id @default(autoincrement())
-    userId     Int
-    vehicleId Int
-    seats Int
-    remainingSeats Int @default(4)
-    status Int @default(4)
-    departureDate String
-    departureTime String
-    createdAt DateTime @default(now())
-    deletedAt DateTime?
-    startedAt DateTime?
-    finishedAt DateTime?
-    // stops Stop[]
-    routes Route[]
-    user   User   @relation(fields: [userId], references: [id])
-    vehicle  Vehicle   @relation(fields: [vehicleId], references: [id])
-
+  id             Int       @id @default(autoincrement())
+  userId         Int
+  vehicleId      Int
+  seats          Int
+  remainingSeats Int       @default(4)
+  status         Int       @default(4)
+  departureDate  String
+  departureTime  String
+  createdAt      DateTime  @default(now())
+  deletedAt      DateTime?
+  startedAt      DateTime?
+  finishedAt     DateTime?
+  // stops Stop[]
+  routes         Route[]
+  user           User      @relation(fields: [userId], references: [id])
+  vehicle        Vehicle   @relation(fields: [vehicleId], references: [id])
 }
 
 model Stop {
-  id    Int @id @default(autoincrement())
-  routeId Int
-  principal Boolean @default(true)
-  type String
-  longitude Float
-  latitude Float
-  address String
+  id         Int       @id @default(autoincrement())
+  routeId    Int
+  principal  Boolean   @default(true)
+  type       String
+  longitude  Float
+  latitude   Float
+  address    String
   activateAt DateTime?
-  route Route? @relation(fields: [routeId], references: [id])
+  route      Route?    @relation(fields: [routeId], references: [id])
   // trip   Trip   @relation(fields: [tripId], references: [id])
 }
 
 model Route {
-  id    Int @id @default(autoincrement())
-  tripId Int
-  distance Int
-  duration Int
-  price Int
+  id        Int       @id @default(autoincrement())
+  tripId    Int
+  distance  Int
+  duration  Int
+  price     Int
   deletedAt DateTime?
-  travels Travel[]
-  stops   Stop[]
-  trip   Trip   @relation(fields: [tripId], references: [id])
+  travels   Travel[]
+  stops     Stop[]
+  trip      Trip      @relation(fields: [tripId], references: [id])
 }
 
 model Travel {
-  id     Int @id @default(autoincrement())
-  userId     Int
-  routeId Int
-  seats Int
-  status Int @default(4)
-  createdAt DateTime @default(now())
-  startedAt DateTime?
-  finishedAt DateTime?
-  deletedAt DateTime?
-  driverRating Int?
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  routeId         Int
+  seats           Int
+  status          Int       @default(4)
+  createdAt       DateTime  @default(now())
+  startedAt       DateTime?
+  finishedAt      DateTime?
+  deletedAt       DateTime?
+  driverRating    Int?
   passengerRating Int?
-  user   User   @relation(fields: [userId], references: [id])
-  route   Route   @relation(fields: [routeId], references: [id])
-  payment   Payment?
+  user            User      @relation(fields: [userId], references: [id])
+  route           Route     @relation(fields: [routeId], references: [id])
+  payment         Payment?
 }
 
 model Payment {
-    id     Int @id @default(autoincrement())
-    travelId Int  @unique
-    userId Int 
-    method String?
-    amount Int
-    receivedAmount Int?
-    reference String?
-    accessNumber String?
-    createdAt DateTime @default(now())
-    validatedAt DateTime?
-    status Int @default(2) //2-wating 1-success 0-canceled
-    travel  Travel @relation(fields: [travelId], references: [id])
-    user   User   @relation(fields: [userId], references: [id])
+  id             Int       @id @default(autoincrement())
+  travelId       Int       @unique
+  userId         Int
+  method         String?
+  amount         Int
+  receivedAmount Int?
+  reference      String?
+  accessNumber   String?
+  createdAt      DateTime  @default(now())
+  validatedAt    DateTime?
+  status         Int       @default(2) //2-wating 1-success 0-canceled
+  travel         Travel    @relation(fields: [travelId], references: [id])
+  user           User      @relation(fields: [userId], references: [id])
 }
 
 model Withdrawal {
-    id     Int @id @default(autoincrement()) 
-    walletId Int
-    type String
-    method String?
-    amount Int
-    accessNumber String?
-    createdAt DateTime @default(now())
-    validatedAt DateTime?
-    status Int @default(2) //2-wating 1-success 0-canceled
-    wallet Wallet @relation(fields: [walletId], references: [id])
+  id           Int       @id @default(autoincrement())
+  walletId     Int
+  type         String
+  method       String?
+  amount       Int
+  accessNumber String?
+  createdAt    DateTime  @default(now())
+  validatedAt  DateTime?
+  status       Int       @default(2) //2-wating 1-success 0-canceled
+  wallet       Wallet    @relation(fields: [walletId], references: [id])
 }
 
 model Status {
-  number Int @id
-  value String
+  number      Int       @id
+  value       String
   description String
-  createdAt DateTime @default(now())
-  updatedAt DateTime? @updatedAt
-  deletedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  deletedAt   DateTime?
 }
 
 model Historic {
-    id     Int @id @default(autoincrement())
-    model String
-    rowId Int
-    action String
-    userId Int
-    createdAt DateTime @default(now())
-    user   User   @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  model     String
+  rowId     Int
+  action    String
+  userId    Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Publication {
-    id     Int @id @default(autoincrement())
-    title String
-    message String
-    icon String?
-    sound String?
-    picture String?
-    data Json?
-    senderId Int
-    createdAt DateTime @default(now())
-    user   User   @relation(fields: [senderId], references: [id])
-    notications Notification[]
+  id          Int            @id @default(autoincrement())
+  title       String
+  message     String
+  icon        String?
+  sound       String?
+  picture     String?
+  data        Json?
+  senderId    Int
+  createdAt   DateTime       @default(now())
+  user        User           @relation(fields: [senderId], references: [id])
+  notications Notification[]
 }
 
-model  Notification{
+model Notification {
   publicationId Int
-  receiverId Int
-  createdAt DateTime @default(now())
-  seenAt DateTime?
-  status Int
-  publication   Publication   @relation(fields: [publicationId], references: [id])
-  user   User   @relation(fields: [receiverId], references: [id])
+  receiverId    Int
+  createdAt     DateTime    @default(now())
+  seenAt        DateTime?
+  status        Int
+  publication   Publication @relation(fields: [publicationId], references: [id])
+  user          User        @relation(fields: [receiverId], references: [id])
+
   @@id([publicationId, receiverId])
 }
 
 model Newsletter {
-  email String @id
-  name String
-  createdAt DateTime @default(now())
+  email     String    @id
+  name      String
+  createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   deletedAt DateTime?
 }
-

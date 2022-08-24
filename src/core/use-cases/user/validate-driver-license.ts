@@ -1,9 +1,10 @@
 import { AlreadyDoneError, InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeValidateDriverLicense({
-    userDb
+    userDb,
+    walletDb
 }: any = {}){
-    if (!userDb ) throw new ServerError()
+    if (!userDb || !walletDb ) throw new ServerError()
     return async function ({
         userId,
         response,
@@ -33,7 +34,7 @@ export default function makeValidateDriverLicense({
             //         text: `Complete your Id Card to become a driver`
             //     })
             await userDb.updateOne({ where: { id: userId} , data })
-          
+            await walletDb.insertOne({ data: { userId }})
             // await sendMail({
             //     to: user.email,
             //     subject: "Your account has been validated",

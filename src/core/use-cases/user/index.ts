@@ -1,5 +1,5 @@
 
-import { UserDb } from "../../../db"
+import { ReviewDb, UserDb, WalletDb } from "../../../db"
 import { askToConfirmEmail, isValidEmail } from "../../services/email"
 import { hashPassword } from "../../services/password"
 import { generateToken, saveTmpToken } from "../../services/token"
@@ -13,6 +13,7 @@ import makeListRemovedUsers from "./list-removed-users"
 import makeListToValidateUsers from "./list-to-validate-users"
 import makeListUserInfos from "./list-user-infos"
 import makeListUsers from "./list-users"
+import makeRateUser from "./rate-user"
 import makeRemoveUser from "./remove-user"
 import makeRestoreUser from "./restore-user"
 import makeUnblockUser from "./unblock-user"
@@ -20,6 +21,8 @@ import makeValidateDriverLicense from "./validate-driver-license"
 import makeValidateUserIdCard from "./validate-user-id-card"
 
 const userDb = new UserDb()
+const reviewDb = new ReviewDb()
+const walletDb = new WalletDb()
 
 const listUsers = makeListUsers({ userDb })
 const listToValidateUsers = makeListToValidateUsers({ userDb })
@@ -33,8 +36,9 @@ const unblockUser = makeUnblockUser({ userDb })
 const listRemovedUsers = makeListRemovedUsers({ userDb })
 const listRemovedUserInfos = makeListRemovedUserInfos({ userDb })
 const editUserAvatar = makeEditUserAvatar({ userDb, deleteAvatarFile })
-const validateUserIdCard = makeValidateUserIdCard({ userDb })
-const validateDriverLicense = makeValidateDriverLicense({ userDb })
+const validateUserIdCard = makeValidateUserIdCard({ userDb, walletDb })
+const validateDriverLicense = makeValidateDriverLicense({ userDb, walletDb })
+const rateUser = makeRateUser({reviewDb, userDb })
 
 export {
     listUserInfos,
@@ -50,6 +54,7 @@ export {
     listRemovedUserInfos,
     editUserAvatar,
     validateUserIdCard,
-    validateDriverLicense
+    validateDriverLicense,
+    rateUser
 }
 

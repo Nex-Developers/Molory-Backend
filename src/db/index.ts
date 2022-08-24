@@ -4,6 +4,7 @@ import NewsletterDb from "./newsletter-db"
 import PaymentDb from "./payment-db"
 import PreferenceDb from "./preference-db"
 import PricingDb from "./pricing-db"
+import ReviewDb from "./review-db"
 import RouteDb from "./route-db"
 import StopDb from "./stop-db"
 import TravelDb from "./travel-db"
@@ -11,6 +12,8 @@ import TripDb from "./trip-db"
 import UserDb from "./user-db"
 import VehicleDb from "./vehicle-db"
 import VehicleTypeDb from "./vehicle-type-db"
+import WalletDb from "./wallet-db"
+import WithdrawalDb from "./withdrawal-db"
 
 export {
     UserDb,
@@ -25,5 +28,8 @@ export {
     TravelDb,
     PricingDb,
     NewsletterDb,
-    PaymentDb
+    PaymentDb,
+    WithdrawalDb,
+    ReviewDb,
+    WalletDb
 }

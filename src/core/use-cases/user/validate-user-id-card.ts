@@ -2,10 +2,11 @@ import { AlreadyDoneError, InvalidParamError, MissingParamError, ServerError } f
 
 export default function makeValidateUserIdCard({
     userDb,
+    walletDb
     // sendMail,
     // sendSms
 }: any = {}){
-    if (!userDb ) throw new ServerError()
+    if (!userDb || !walletDb ) throw new ServerError()
     return async function ({
         userId,
         response,
@@ -29,6 +30,7 @@ export default function makeValidateUserIdCard({
             const data: any = { idCardStatus: 1,  idCardNumber: cardNumber, idCardModifiedAt: new Date()}
             if (user.role === 'user') data.role = "driver"
             await userDb.updateOne({ where: { id: userId} , data })
+            await walletDb.insertOne({ data: { userId }})
 
             // await sendMail({
             //     to: user.email,

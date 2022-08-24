@@ -40,6 +40,8 @@ export default function makeGetProfile ({
             role: data.role,
             phoneNumber: data.phoneNumber,
             profileCompletedAt: data.profileCompletedAt,
+            rating: true,
+            reviewsReceived: true,
             documents: [
                 {
                     name: "ID Card",

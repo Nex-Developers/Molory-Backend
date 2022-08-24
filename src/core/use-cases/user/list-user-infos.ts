@@ -15,10 +15,20 @@ export default function makeListUserInfos({
             firstName: true,
             phoneNumber: true,
             email: true,
+            gender: true,
             birthDay: true,
             createdAt: true,
             blockedAt: true,
-            role: true
+            role: true,
+            rating: true,
+            reviewsReceived: true,
+            prefrences: true,
+            driverLicenseStatus: true,
+            driverLicenseFront: true,
+            driverLicenseBack: true,
+            idCardStatus: true,
+            idCardFront: true,
+            idCardBack: true
         }})
         return { data }
     }

@@ -34,6 +34,7 @@ export default function makeListItems({
                 user: {
                     select: {
                         id: true,
+                        avatar: true,
                         firstName: true,
                         lastName: true,
                         phoneNumber: true
