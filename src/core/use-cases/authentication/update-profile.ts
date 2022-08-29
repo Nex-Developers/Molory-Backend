@@ -8,13 +8,17 @@ export default function makeUpdateProfile ({
         id ,
         firstName,
         lastName,
-        birthDay
+        birthDay,
+        gender,
+        email
     }: any = {}) {
         const data: any = {}
         if (! id ) throw new InvalidParamError('token')
         if (firstName) data.firstName = firstName
         if (lastName) data.lastName = lastName
         if (birthDay) data.birthDay =  new Date(birthDay) 
+        if (gender) data.gender =  gender 
+        if (email) data.email =  email
         await userDb.updateOne({ where: { id }, data })
         const message = { text: 'auth.message.updateProfile' }
         return { message }
