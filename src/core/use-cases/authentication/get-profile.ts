@@ -17,6 +17,8 @@ export default function makeGetProfile ({
                 birthDay: true,
                 email: true,
                 role: true,
+                rating: true,
+                reviewsReceived: true,
                 phoneNumber: true,
                 profileCompletedAt: true,
                 idCardFront: true,
@@ -40,8 +42,8 @@ export default function makeGetProfile ({
             role: data.role,
             phoneNumber: data.phoneNumber,
             profileCompletedAt: data.profileCompletedAt,
-            rating: true,
-            reviewsReceived: true,
+            rating: data.rating,
+            reviewsReceived: data.reviewsReceived,
             documents: [
                 {
                     name: "ID Card",
