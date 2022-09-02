@@ -63,7 +63,7 @@ model User {
   profileCompletedAt            DateTime?
   deletedAt                     DateTime?
   deletionReport                String?
-  preferences                   Configuration[]
+  configurations                   Configuration[]
   trips                         Trip[]
   travels                       Travel[]
   vehicles                      Vehicle[]
@@ -135,7 +135,7 @@ model Preference {
   createdAt   DateTime        @default(now())
   updatedAt   DateTime?       @updatedAt
   deletedAt   DateTime?
-  users       Configuration[]
+  configurations Configuration[]
 }
 
 model Configuration {
