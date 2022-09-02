@@ -44,6 +44,7 @@ export default function makeGetProfile ({
             profileCompletedAt: data.profileCompletedAt,
             rating: data.rating,
             reviewsReceived: data.reviewsReceived,
+            prefrences: true,
             documents: [
                 {
                     name: "ID Card",
