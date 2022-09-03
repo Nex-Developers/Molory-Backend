@@ -1,4 +1,3 @@
-import ConfigurationDb from "./configuration-db"
 import DeviceDb from "./device-db"
 import NewsletterDb from "./newsletter-db"
 import PaymentDb from "./payment-db"
@@ -19,7 +18,6 @@ export {
     UserDb,
     DeviceDb,
     PreferenceDb,
-    ConfigurationDb,
     VehicleTypeDb,
     VehicleDb,
     TripDb,
