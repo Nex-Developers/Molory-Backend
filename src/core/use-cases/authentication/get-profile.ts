@@ -52,7 +52,7 @@ export default function makeGetProfile ({
             profileCompletedAt: data.profileCompletedAt,
             rating: data.rating,
             reviewsReceived: data.reviewsReceived,
-           
+            configurations: data.configurations,
             documents: [
                 {
                     name: "ID Card",
