@@ -11,7 +11,7 @@ export default function makeSet({
         if (!id) throw new MissingParamError('id')
         if (!preferences) throw new MissingParamError('preferences')
         preferences.forEach( async preference => await configurationDb.insertOrUpdate({ 
-            where: { userId: id, preferenceId: preference.id }, 
+            where: {  userId_preferenceId : { userId: id, preferenceId: preference.id }}, 
             update: { value: preference.value}, 
             create: { userId: id, preferenceId: preference.id,  value: preference.value }
         }))
