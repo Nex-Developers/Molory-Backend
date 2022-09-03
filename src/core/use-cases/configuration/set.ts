@@ -12,7 +12,7 @@ export default function makeSet({
         if (!preferences) throw new MissingParamError('preferences')
         
         const create = preferences.map( preference => ({ id: preference.id }))
-        await userDb.updtateOne({ where: { id }, data: { preferences: { set: []}}})
+        await userDb.updateOne({ where: { id }, data: { preferences: { set: []}}})
         await userDb.updateOne({ where:  { id }, data: { preferences: { connect: create }}})
         const message = { text: "response.edit" }
         return { message }
