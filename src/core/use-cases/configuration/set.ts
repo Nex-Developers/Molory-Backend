@@ -15,7 +15,7 @@ export default function makeSet({
             update: { value: preference.value}, 
             create: { userId: id, preferenceId: preference.id,  value: preference.value }
         }))
-        const message = "response.add"
+        const message = { text: "response.add" }
         return { message }
     } 
 }
