@@ -16,6 +16,6 @@ export default function makeSet({
             create: { userId: id, preferenceId: preference.id,  value: preference.value }
         }))
         const message = "response.add"
-        return { message, id }
+        return { message }
     } 
 }

@@ -17,15 +17,13 @@ export default function makePostController({
             modelId: '',
             action: Action.WRITE,
             status: LogStatus.FAILED,
-            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.WRITE} configuration `
+            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.WRITE} his configurations `
         } 
         try {
             const lang = request.lang,
                 body = request.body,
                 data = await setConfiguration({id: request.ref.id,...body})
                 reqLog.status = LogStatus.SUCCEEDED
-                reqLog.modelId = data.id
-                reqLog.description += data.id
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)
         } catch (err) {
