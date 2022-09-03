@@ -17,7 +17,7 @@ export default function makeListItems({
                 id: true,
                 question: true,
                 answer: true,
-                createdAt: true
+                // createdAt: true
             }
         })
         return { data }

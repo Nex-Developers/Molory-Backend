@@ -31,7 +31,11 @@ export default function makeGetProfile ({
                 driverLicenseStatus: true,
                 driverLicenseRejectionMessage: true,
                 driverLicenseModifiedAt: true,
-                preferences: true,
+                preferences: { select: {
+                    id: true,
+                    question: true,
+                    answer: true
+                }},
             }
             })
         return { data: {
