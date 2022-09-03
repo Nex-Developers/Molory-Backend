@@ -6,14 +6,14 @@ export default function makeEdit({
     if (!preferenceDb) throw new ServerError()
     return async ({
         id,
-        title,
-        description
+        question,
+        answer
     }: any = {}) => {
         if (!id) throw new MissingParamError('id')
 
         const data: any = {}
-        if (title) data.title = title
-        if (description) data.description = description
+        if (question) data.question = question
+        if (answer) data.answer = answer
         
         if( Object.keys(data).length === 0) throw new MissingParamError('all')
         await preferenceDb.updateOne({ where: { id}, data })
