@@ -27,23 +27,23 @@ model Country {
 }
 
 model User {
-  id                            Int             @id @default(autoincrement())
+  id                            Int            @id @default(autoincrement())
   countryId                     Int?
   avatar                        String?
-  email                         String?         @unique
-  phoneNumber                   String          @unique
+  email                         String?        @unique
+  phoneNumber                   String         @unique
   emailVerifiedAt               DateTime?
   phoneNumberVerifiedAt         DateTime?
   firstName                     String
   lastName                      String
   gender                        String?
   birthDay                      DateTime?
-  status                        Int             @default(1)
+  status                        Int            @default(1)
   role                          String
   language                      String
   idCardFront                   String?
   idCardBack                    String?
-  idCardStatus                  Int             @default(0)
+  idCardStatus                  Int            @default(0)
   idCardRejectionMessage        String?
   idCardNumber                  String?
   idCardUploadedAt              DateTime?
@@ -52,18 +52,18 @@ model User {
   driverLicenseBack             String?
   driverLicenseRejectionMessage String?
   driverLicenseNumber           String?
-  driverLicenseStatus           Int             @default(0)
+  driverLicenseStatus           Int            @default(0)
   driverLicenseUploadedAt       DateTime?
   driverLicenseModifiedAt       DateTime?
   password                      String
   rating                        Float?
-  createdAt                     DateTime        @default(now())
+  createdAt                     DateTime       @default(now())
   blockedAt                     DateTime?
-  updatedAt                     DateTime?       @updatedAt
+  updatedAt                     DateTime?      @updatedAt
   profileCompletedAt            DateTime?
   deletedAt                     DateTime?
   deletionReport                String?
-  configurations                   Configuration[]
+  preferences                   Preference[]
   trips                         Trip[]
   travels                       Travel[]
   vehicles                      Vehicle[]
@@ -73,9 +73,9 @@ model User {
   wallets                       Wallet[]
   devices                       Device[]
   payments                      Payment[]
-  country                       Country?        @relation(fields: [countryId], references: [id])
-  reviewsReceived               Review[] @relation(name: "received")
-  reviewsDone                   Review[] @relation(name: "done")
+  country                       Country?       @relation(fields: [countryId], references: [id])
+  reviewsReceived               Review[]       @relation(name: "received")
+  reviewsDone                   Review[]       @relation(name: "done")
 }
 
 model Review {
@@ -105,9 +105,9 @@ model Device {
 
 model Wallet {
   id          Int          @id @default(autoincrement())
-  type        String      @default("default")
+  type        String       @default("default")
   userId      Int
-  currency    String      @default("XOF")
+  currency    String       @default("XOF")
   balance     Int          @default(0)
   user        User         @relation(fields: [userId], references: [id])
   createdAt   DateTime     @default(now())
@@ -129,26 +129,26 @@ model Pricing {
 }
 
 model Preference {
-  id          Int             @id @default(autoincrement())
-  title       String
-  description String
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime?       @updatedAt
-  deletedAt   DateTime?
-  configurations Configuration[]
+  id        Int       @id @default(autoincrement())
+  question  String
+  answer    String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
+  users     User[]
 }
 
-model Configuration {
-  userId       Int
-  preferenceId Int
-  value        Boolean
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime?  @updatedAt
-  user         User       @relation(fields: [userId], references: [id])
-  preference   Preference @relation(fields: [preferenceId], references: [id])
+// model Configuration {
+//   userId       Int
+//   preferenceId Int
+// value Boolean
+//   createdAt    DateTime   @default(now())
+//   updatedAt    DateTime?  @updatedAt
+//   user         User       @relation(fields: [userId], references: [id])
+//   preference   Preference @relation(fields: [preferenceId], references: [id])
 
-  @@id([userId, preferenceId])
-}
+//   @@id([userId, preferenceId])
+// }
 
 model VehicleType {
   name        String    @id

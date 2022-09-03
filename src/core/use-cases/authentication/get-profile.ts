@@ -31,14 +31,7 @@ export default function makeGetProfile ({
                 driverLicenseStatus: true,
                 driverLicenseRejectionMessage: true,
                 driverLicenseModifiedAt: true,
-                configurations: {
-                    select: {
-                        value: true,
-                        createdAt: true,
-                        updatedAt: true,
-                        preference: true
-                    }
-                },
+                preferences: true,
             }
             })
         return { data: {
@@ -52,7 +45,7 @@ export default function makeGetProfile ({
             profileCompletedAt: data.profileCompletedAt,
             rating: data.rating,
             reviewsReceived: data.reviewsReceived,
-            configurations: data.configurations,
+            preferences: data.preferences,
             documents: [
                 {
                     name: "ID Card",

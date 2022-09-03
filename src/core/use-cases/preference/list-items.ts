@@ -15,8 +15,8 @@ export default function makeListItems({
             limit, 
             select: {
                 id: true,
-                title: true,
-                description: true,
+                question: true,
+                answer: true,
                 createdAt: true
             }
         })

@@ -15,8 +15,8 @@ export default function makeListItemInfos({
             }, 
             select: {
                 id: true,
-                title: true,
-                description: true,
+                question: true,
+                answer: true,
                 createdAt: true
             }
         })

@@ -1,21 +1,20 @@
 import { MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeSet({
-    configurationDb
+    userDb
 }: any = {}) {
-    if (!configurationDb) throw new ServerError()
+    if (!userDb) throw new ServerError()
     return async ({
         id,
         preferences
     }: any = {}) => {
         if (!id) throw new MissingParamError('id')
         if (!preferences) throw new MissingParamError('preferences')
-        preferences.forEach( async preference => await configurationDb.insertOrUpdate({ 
-            where: {  userId_preferenceId : { userId: id, preferenceId: preference.id }}, 
-            update: { value: preference.value}, 
-            create: { userId: id, preferenceId: preference.id,  value: preference.value }
-        }))
-        const message = { text: "response.add" }
+        
+        const create = preferences.map( preference => ({ id: preference.id }))
+        await userDb.updtateOne({ where: { id }, data: { preferences: { set: []}}})
+        await userDb.updateOne({ where:  { id }, data: { preferences: { connect: create }}})
+        const message = { text: "response.edit" }
         return { message }
     } 
 }
