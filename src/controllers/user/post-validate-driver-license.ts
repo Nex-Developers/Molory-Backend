@@ -14,7 +14,7 @@ export default function makePostValidateLicenseController({
             firstName: request.ref.firstName,
             model: 'User',
             path: '/api/validate-driver-license',
-            modelId: request.body.userId.toString(),
+            modelId: request.body.userId?.toString(),
             action: Action.EDIT,
             status: LogStatus.FAILED,
             description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.EDIT} user ${request.body.userId}`

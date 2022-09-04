@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 export default {
     production: true,
-    url: 'https://molory.herokuapp.com/',
+    url: process.env.BASE_URL,
     port: process.env.PORT,
     lang: {
         default: 'en',

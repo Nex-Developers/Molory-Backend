@@ -66,6 +66,7 @@ export default function makeAdd({
                 userId,
                 vehicleId,
                 seats,
+                remainingSeats: seats,
                 departureDate: date,
                 departureTime: time,
                 routes: {

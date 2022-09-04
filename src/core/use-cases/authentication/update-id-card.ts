@@ -1,3 +1,4 @@
+import { env } from "../../../configs/environment"
 import { AlreadyDoneError, InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeUpdateIdCard ({
@@ -17,10 +18,10 @@ export default function makeUpdateIdCard ({
         if (user.idCardStatus == 2 ) throw new AlreadyDoneError('before')
         // if (user.idCard) deleteAvatarFile(user.idCard)
         const frontFile = files[0]
-        const idCardFront = frontFile.path.substring(frontFile.path .indexOf("/"));
+        const idCardFront =  env.url + frontFile.path.substring(frontFile.path .indexOf("/"));
         const backFile = files[1]
         let idCardBack = ''
-        if (backFile) idCardBack = backFile.path.substring(backFile.path .indexOf("/"));
+        if (backFile) idCardBack =  env.url + backFile.path.substring(backFile.path .indexOf("/"));
         // console.log(idCardFront, idCardBack)
         userDb.updateOne({ where: { id },  data: { idCardBack, idCardFront, idCardStatus: 2, idCardUploadedAt: new Date() } })
         const message = { text: 'response.update' }

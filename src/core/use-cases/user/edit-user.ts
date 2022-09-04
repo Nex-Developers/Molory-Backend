@@ -11,6 +11,7 @@ export default function makeEditUser({
         lastName,
         firstName,
         phoneNumber,
+        gender,
         email,
         birthDay,
         role,
@@ -22,6 +23,7 @@ export default function makeEditUser({
         if (lastName) data.lastName = lastName
         if (firstName) data.firstName = firstName
         if (phoneNumber) data.phoneNumber = phoneNumber
+        if (gender) data.gender = gender
         if (email) {
             if (! await isValidEmail({ email })) throw new InvalidParamError('email')
             data.email = email

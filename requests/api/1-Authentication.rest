@@ -14,7 +14,7 @@ POST http://{{host}}/api/auth/send-otp HTTP/1.1
 content-type: application/json
 
 {
-    "phoneNumber": "22890000000",
+    "phoneNumber": "22892942601",
     "action": "signup"
 }
 ###
@@ -32,7 +32,7 @@ content-type: application/json
 ###
 
 @authTmpToken = {{login.response.body.token}}
-
+# @authTmpToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZU51bWJlciI6IjIyODkyOTQyNjAxIiwiaWF0IjoxNjYyMjYzMDAxfQ.WwThl8XBffxUGsf9RLl4xK2Dv8wbrmV8klD7iEh4-f0
 
 
 # Confirm OTP
@@ -52,7 +52,7 @@ content-type: application/json
 }
 ### 
 
-@authToken = {{confirmOtp.response.body.token}} || eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRyaXZlciIsImlhdCI6MTY1OTg3OTM3M30.YxdZ8KrxFw3jRDvQRZS-lS3p6wCXoJvYoyfHMZ_qkVw
+@authToken = {{confirmOtp.response.body.token}} || eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6ImRyaXZlciIsImlhdCI6MTY2MjI2NzE3NX0.nLGvYMLbS1tVzs8N_OxmhGqc13nMgljKoETuBDc9DFU
 
 
 # Complete infos
@@ -65,6 +65,7 @@ Authorization: Bearer {{authToken}}
     "firstName": "DOE",
     "lastName": "John",
     "birthDay":  "1996-01-23",
+    "gender": "M",
     "password": "azertyui"
 }
 
@@ -122,6 +123,24 @@ Authorization: Bearer {{authToken}}
 
 --MyBoundary
 Content-Disposition: form-data; name="avatar"; filename="avatar.png"
+Content-Type: image/png
+
+< {{avatarPath}}
+--MyBoundary
+Content-Disposition: form-data; name="ProspectId"
+
+1
+--MyBoundary--
+
+### Upload all documents
+POST /api/auth/upload-document HTTP/1.1
+Host: {{host}}
+Accept: application/json
+Content-Type: multipart/form-data; boundary=MyBoundary
+Authorization: Bearer {{authToken}}
+
+--MyBoundary
+Content-Disposition: form-data; name="avatar"; filename="idCartFront.png"
 Content-Type: image/png
 
 < {{avatarPath}}

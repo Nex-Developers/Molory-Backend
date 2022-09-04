@@ -16,6 +16,7 @@ export default function makeListToValidateUsers({
             lastName: true,
             firstName: true,
             phoneNumber: true,
+            gender: true,
             email: true,
             birthDay: true,
             role: true,

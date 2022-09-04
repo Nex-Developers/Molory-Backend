@@ -9,11 +9,15 @@ export default function makeSetProfile ({
         lang,
         firstName,
         lastName,
+        gender,
+        email,
         birthDay
     }: any = {}) {
         if (! id ) throw new InvalidParamError('token')
         if (!firstName) throw new MissingParamError('firstName')
         if (!lastName) throw new MissingParamError('lastName')
+        if (!gender) throw new MissingParamError('gender')
+        if (!email) throw new MissingParamError('email')
         if (!birthDay) throw new MissingParamError('birthDay')
         if (typeof birthDay == 'string') birthDay = new Date(birthDay)
         let user = await userDb.findFirst({ where: { id }, select: { firstName: true, lastName: true, birthDay: true, profileCompletedAt: true }})

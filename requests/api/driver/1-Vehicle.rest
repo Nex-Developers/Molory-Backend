@@ -38,6 +38,8 @@ content-type: application/json
 }
 ### 
 
+@authToken =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6ImRyaXZlciIsImlhdCI6MTY2MjI2NzE3NX0.nLGvYMLbS1tVzs8N_OxmhGqc13nMgljKoETuBDc9DFU
+
 # Get All 
 GET {{host}}/api/vehicle
 Authorization: Bearer {{authToken}}
@@ -50,7 +52,6 @@ Authorization: Bearer {{authToken}}
 
 ###
 
-@authToken = {{confirmOtp.response.body.token}} || eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRyaXZlciIsImlhdCI6MTY1NzczNTk2MX0.2LlYCE1bEL9Wl0uAsSRBf85AhEhmggkAedRy3twJYbU
 
 ### Add
 # @prompt type

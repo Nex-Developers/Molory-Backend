@@ -10,12 +10,13 @@ export default function makeListUsers({
     }: any ={}) {
         if (!startAt) startAt = 0
         if (!limit) limit = 100
-        const data = await userDb.findMany({ startAt, limit, select:{
+        const data = await userDb.findMany({ startAt, limit, orderBy: { role: 'asc'}, select:{
             id: true,
             avatar: true,
             lastName: true,
             firstName: true,
             phoneNumber: true,
+            gender: true,
             email: true,
             birthDay: true,
             createdAt: true,

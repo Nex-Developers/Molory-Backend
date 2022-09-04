@@ -1,3 +1,4 @@
+import { env } from "../../../configs/environment"
 import { AlreadyDoneError, InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeUpdateDriverLicense ({
@@ -17,10 +18,10 @@ export default function makeUpdateDriverLicense ({
         if (user.driverLicenseStatus == 2 ) throw new AlreadyDoneError('before')
         // if (user.idCard) deleteAvatarFile(user.idCard)
         const frontFile = files[0]
-        const driverLicenseFront = frontFile.path.substring(frontFile.path .indexOf("/"));
+        const driverLicenseFront =  env.url + frontFile.path.substring(frontFile.path .indexOf("/"));
         const backFile = files[1]
         let driverLicenseBack = ''
-        if (backFile) driverLicenseBack = backFile.path.substring(backFile.path .indexOf("/"));
+        if (backFile) driverLicenseBack =  env.url + backFile.path.substring(backFile.path .indexOf("/"));
         console.log(driverLicenseFront, driverLicenseBack)
         userDb.updateOne({ where: { id },  data: { driverLicenseFront, driverLicenseBack, driverLicenseStatus: 2, driverLicenseUploadedAt: new Date() } })
         const message = { text: 'response.update' }

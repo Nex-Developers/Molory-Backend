@@ -181,7 +181,7 @@ model Trip {
   userId         Int
   vehicleId      Int
   seats          Int
-  remainingSeats Int       @default(4)
+  remainingSeats Int   
   status         Int       @default(4)
   departureDate  String
   departureTime  String

@@ -16,6 +16,7 @@ export default function makeGetProfile ({
                 lastName: true,
                 birthDay: true,
                 email: true,
+                gender: true,
                 role: true,
                 rating: true,
                 reviewsReceived: true,
@@ -24,18 +25,25 @@ export default function makeGetProfile ({
                 idCardFront: true,
                 idCardBack: true,
                 idCardStatus: true,
+                idCardNumber: true,
                 idCardRejectionMessage: true,
                 idCardModifiedAt: true,
                 driverLicenseFront: true,
                 driverLicenseBack: true,
                 driverLicenseStatus: true,
+                driverLicenseNumber: true,
                 driverLicenseRejectionMessage: true,
                 driverLicenseModifiedAt: true,
+                vehicles: true,
                 preferences: { select: {
                     id: true,
                     question: true,
                     answer: true
                 }},
+                _count: { select: {
+                    trips: true,
+                    travels: true
+                }}
             }
             })
         return { data: {
@@ -44,15 +52,18 @@ export default function makeGetProfile ({
             lastName: data.lastName,
             birthDay: data.birthDay,
             email: data.email,
+            gender: data.gender,
             role: data.role,
             phoneNumber: data.phoneNumber,
             profileCompletedAt: data.profileCompletedAt,
             rating: data.rating,
             reviewsReceived: data.reviewsReceived,
             preferences: data.preferences,
+            vehicles: data.vehicles,
             documents: [
                 {
                     name: "ID Card",
+                    reference: data.idCardNumber,
                     urlFront: data.idCardFront,
                     urlBack: data.idCardBack,
                     status: data.idCardStatus,
@@ -60,12 +71,14 @@ export default function makeGetProfile ({
                 },
                 {
                     name: "Driver License",
+                    reference: data.driverLicenseNumber,
                     urlFront: data.driverLicenseFront,
                     urlBack: data.driverLicenseBack,
                     status: data.driverLicenseStatus,
                     rejectionMessage: data.driverLicenseRejectionMessage,
                 }
-            ]
+            ],
+            stats: data._count
         } }
     }
 }

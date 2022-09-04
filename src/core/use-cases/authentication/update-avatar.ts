@@ -1,3 +1,4 @@
+import { env } from "../../../configs/environment"
 import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeUpdateAvatar ({
@@ -15,7 +16,7 @@ export default function makeUpdateAvatar ({
         const user = await userDb.findFirst({ where: { id }, select: { avatar: true}})
         if (!user) throw new InvalidParamError('token')
         if (user.avatar) deleteAvatarFile(user.avatar)
-        const avatar = file.path.substring(file.path .indexOf("/"));
+        const avatar = env.url + file.path.substring(file.path .indexOf("/"));
         userDb.updateOne({ where: { id },  data: { avatar }})
         const message = { text: 'auth.message.updateAvatar' }
         return { message, data: { avatar }}
