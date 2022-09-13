@@ -15,9 +15,9 @@ export default function makeListItemInfos({
         if (!limit) limit = 100
         const where: any = { trip: { status: 3, remainingSeats: { gt: 0}}}
         if(date) where.trip.departureDate = date
-        if (departure && arrival) where.stops = {AND: [{ address: departure, type: 'departure' }, { address: arrival, type: 'arrival' }]}
-        else if (departure) where.stops = {address: departure, type: 'departure'}
-        else if (arrival) where.stops = {address: arrival, type: 'arrival'}
+        if (departure && arrival) where.trip.stops = {AND: [{ address: departure, type: 'departure' }, { address: arrival, type: 'arrival' }]}
+        else if (departure) where.trip.stops = {address: departure, type: 'departure'}
+        else if (arrival) where.trip.stops = {address: arrival, type: 'arrival'}
         
 
         const data = await routeDb.findMany({
