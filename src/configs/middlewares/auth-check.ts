@@ -19,7 +19,6 @@ export default async (req, res, next) => {
             } else {
                 const tokenIndex = await CacheManager.findInArray('tokens', token)
                 if (tokenIndex === undefined || tokenIndex === null) {
-                    console.log('---> token expired')
                     httpResponse = HttpResponse.forbiddenError(new ExpiredParamError('token'), req.params.lang)
                     res.status(httpResponse.statusCode).json(httpResponse.body) 
                 } else {  
@@ -27,8 +26,6 @@ export default async (req, res, next) => {
                     req.params.token = token
                     const userDb = new UserDb()
                     const { lastName, firstName, role,  blockedAt } = await userDb.findFirst({ where: { id: ref.id }, select: { lastName: true, firstName: true, role: true, blockedAt: true }})
-                    console.log('---> user role ', role, ref.role)
-
                     if (role !== ref.role) {
                         CacheManager.removetAt('tokens', token);
                         httpResponse = HttpResponse.forbiddenError(new ExpiredParamError('token'), req.params.lang)

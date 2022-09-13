@@ -45,7 +45,7 @@ export default function makeAdd({
                 }
                 const {distance, duration} = await calculMatrix({ departure,  arrival })
                 // calculPrice({ distance, pricing })
-                const price = distance * 40
+                const price = distance * 15
                 console.log(distance, duration, price)
                 routes.push(
                     {
@@ -60,7 +60,6 @@ export default function makeAdd({
             }
         }
 
-        
 
         const trip = await tripDb.insertOne({ 
             data: {
@@ -77,6 +76,7 @@ export default function makeAdd({
             include: {
                 routes: {
                     select: {
+                        id: true,
                         distance: true,
                         duration: true,
                         price: true,
@@ -85,7 +85,6 @@ export default function makeAdd({
                 }
             }
         })
-
         const message = { text: "response.add" }
         return { message, data: trip }
     } 
