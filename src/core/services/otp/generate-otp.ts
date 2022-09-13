@@ -1,7 +1,8 @@
 export default function makeGenerateOtp({
-    randomNum
+    // randomNum
 }: any = {}) {
     return async function generateOtp() {
-        return await randomNum(4)
+        // return await randomNum(4)
+        return 1234
     }
 }

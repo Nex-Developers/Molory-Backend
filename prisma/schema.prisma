@@ -179,7 +179,7 @@ model Vehicle {
 model Trip {
   id             Int       @id @default(autoincrement())
   userId         Int
-  vehicleId      Int
+  vehicleId      Int?
   seats          Int
   remainingSeats Int   
   status         Int       @default(4)
@@ -192,7 +192,7 @@ model Trip {
   // stops Stop[]
   routes         Route[]
   user           User      @relation(fields: [userId], references: [id])
-  vehicle        Vehicle   @relation(fields: [vehicleId], references: [id])
+  vehicle        Vehicle?   @relation(fields: [vehicleId], references: [id])
 }
 
 model Stop {

@@ -2,10 +2,10 @@ import { MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeAdd({
     tripDb,
-    vehicleDb,
-    pricingDb,
+    // vehicleDb,
+    // pricingDb,
     calculMatrix,
-    calculPrice
+    // calculPrice
 }: any = {}) {
     if (!tripDb) throw new ServerError()
     return async ({
@@ -17,7 +17,7 @@ export default function makeAdd({
         stops
     }: any = {}) => {
         if (!userId) throw new MissingParamError('userId')
-        if (!vehicleId) throw new MissingParamError('vehicleId')
+        // if (!vehicleId) throw new MissingParamError('vehicleId')
         if (!seats) throw new MissingParamError('seats')
         if (!date) throw new MissingParamError('date')
         if (!time) throw new MissingParamError('time')
@@ -29,8 +29,8 @@ export default function makeAdd({
         const arrivals = stops.filter(stop => stop.type === 'arrival'||  stop.type === 'both')
         if(!arrivals.length) throw new MissingParamError('arrival')
         
-        const vehicle = await vehicleDb.findFirst({ where: { id: vehicleId }})
-        const pricing = await pricingDb.findMany({ where: { vehicleTypeName: vehicle.type }, select: { lowerDistance: true, upperDistance: true, unitPrice: true}})
+        // const vehicle = await vehicleDb.findFirst({ where: { id: vehicleId }})
+        // const pricing = await pricingDb.findMany({ where: { vehicleTypeName: vehicle.type }, select: { lowerDistance: true, upperDistance: true, unitPrice: true}})
         const routes = []
          for (const departure of departures ) {
              for ( const arrival of arrivals) {
@@ -44,7 +44,8 @@ export default function makeAdd({
                     arrival.principal = false
                 }
                 const {distance, duration} = await calculMatrix({ departure,  arrival })
-                const price = calculPrice({ distance, pricing })
+                // calculPrice({ distance, pricing })
+                const price = distance * 40
                 console.log(distance, duration, price)
                 routes.push(
                     {
