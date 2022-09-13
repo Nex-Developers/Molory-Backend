@@ -13,7 +13,7 @@ export default function makeListItemInfos({
     }: any = {}) => {
         if (!startAt) startAt = 0
         if (!limit) limit = 100
-        const where: any = { trip: { status: 3, reamingSeats: { gt: 0}}}
+        const where: any = { trip: { status: 3, remainingSeats: { gt: 0}}}
         if(date) where.trip.departureDate = date
         if (departure && arrival) where.stops = {AND: [{ address: departure, type: 'departure' }, { address: arrival, type: 'arrival' }]}
         else if (departure) where.stops = {address: departure, type: 'departure'}
