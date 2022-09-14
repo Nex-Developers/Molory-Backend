@@ -203,6 +203,7 @@ model Stop {
   longitude  Float
   latitude   Float
   address    String
+  town       String?
   activateAt DateTime?
   route      Route?    @relation(fields: [routeId], references: [id])
   // trip   Trip   @relation(fields: [tripId], references: [id])
