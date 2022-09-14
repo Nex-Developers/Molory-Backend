@@ -84,5 +84,11 @@ Authorization: Bearer {{authToken}}
 content-type: {{contentTypeJson}}
 
 {
-    "id": {{add.response.body.data.id}}
+    "id": {{add.response.body.data.id}},
+    "routes": [
+        {
+            "id": {{add.response.body.data.routes[0].id}},
+            "price": {{add.response.body.data.routes[0].price}}
+        }
+    ]
 }
