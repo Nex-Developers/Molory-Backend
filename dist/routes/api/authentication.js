@@ -1,0 +1,34 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const express_1 = (0, tslib_1.__importDefault)(require("express"));
+const adapters_1 = require("../../configs/adapters");
+const middlewares_1 = require("../../configs/middlewares");
+const auth_1 = require("../../controllers/auth");
+exports.default = () => {
+    const router = express_1.default.Router();
+    router.post('/send-otp', middlewares_1.langCheck, (0, adapters_1.expressRouterAdapter)(auth_1.sendOtpController));
+    router.post('/verify-otp', middlewares_1.langCheck, middlewares_1.tmpAuthCheck, (0, adapters_1.expressRouterAdapter)(auth_1.verifyOtpController));
+    router.post('/complete-profile', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.completeInfosController));
+    router.post('/add-email-auth', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.enableEmailAuthController));
+    router.post('/verify-email', middlewares_1.langCheck, (0, adapters_1.expressRouterAdapter)(auth_1.verifyEmailController));
+    router.post('/verify-password', middlewares_1.langCheck, middlewares_1.tmpAuthCheck, (0, adapters_1.expressRouterAdapter)(auth_1.verifyPasswordController));
+    router.get('/confirm-email', middlewares_1.langCheck, middlewares_1.queryParser, (0, adapters_1.expressRouterAdapter)(auth_1.confirmEmailController, 'html'));
+    router.post('/login', middlewares_1.langCheck, (0, adapters_1.expressRouterAdapter)(auth_1.loginController));
+    router.post('/register', middlewares_1.langCheck, (0, adapters_1.expressRouterAdapter)(auth_1.registerController));
+    router.post('/logout', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.logoutController));
+    router.get('/profile', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.profileController));
+    router.post('/new-password', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.newPasswordController));
+    router.post('/forgot-password', middlewares_1.langCheck, (0, adapters_1.expressRouterAdapter)(auth_1.forgotPasswordController));
+    router.post('/edit-profile', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.editProfileController));
+    router.post('/edit-avatar', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.single('avatar'), (0, adapters_1.expressRouterAdapter)(auth_1.editAvatarController));
+    router.post('/id-card', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.array('idCard', 2), (0, adapters_1.expressRouterAdapter)(auth_1.editIdCardController));
+    router.post('/driver-license', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.array('driverLicense', 2), (0, adapters_1.expressRouterAdapter)(auth_1.editDriverLicense));
+    router.post('/upload-document', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.fields([{ name: 'idCard', maxCount: 2 }, { name: 'driverLicense', maxCount: 2 }]), (0, adapters_1.expressRouterAdapter)(auth_1.uploadDocumentController));
+    router.get('/reset-password', middlewares_1.langCheck, middlewares_1.queryParser, (0, adapters_1.expressRouterAdapter)(auth_1.resetPasswordController));
+    router.post('/new-email', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.newEmailController));
+    router.post('/new-phonenumber', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.newPhoneNumberController));
+    router.post('/delete-account', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.deleteAccountController));
+    return router;
+};
+//# sourceMappingURL=authentication.js.map

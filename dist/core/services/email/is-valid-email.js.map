@@ -1,0 +1,1 @@
+{"version":3,"file":"is-valid-email.js","sourceRoot":"","sources":["../../../../src/core/services/email/is-valid-email.ts"],"names":[],"mappings":";;;AAAA,SAAwB,gBAAgB,CAAC,EACrC,cAAc,KACT,EAAE;IACP,OAAO,SAAe,YAAY,CAAC,EAC/B,KAAK,KACA,EAAE;;YACP,OAAO,MAAM,cAAc,CAAC,KAAK,CAAC,CAAA;QACtC,CAAC;KAAA,CAAA;AACL,CAAC;AARD,mCAQC"}

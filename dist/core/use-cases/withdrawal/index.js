@@ -1,0 +1,23 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.listWidrawalInfos = exports.listWidrawals = exports.removeWithdrawal = exports.confirmWithdrawal = exports.addWithdrawal = void 0;
+const tslib_1 = require("tslib");
+const db_1 = require("../../../db");
+const list_1 = (0, tslib_1.__importDefault)(require("../newsletter/list"));
+const add_1 = (0, tslib_1.__importDefault)(require("./add"));
+const confirm_1 = (0, tslib_1.__importDefault)(require("./confirm"));
+const list_item_infos_1 = (0, tslib_1.__importDefault)(require("./list-item-infos"));
+const remove_1 = (0, tslib_1.__importDefault)(require("./remove"));
+const withdrawalDb = new db_1.WithdrawalDb();
+const walletDb = new db_1.WalletDb();
+const addWithdrawal = (0, add_1.default)({ withdrawalDb, walletDb });
+exports.addWithdrawal = addWithdrawal;
+const confirmWithdrawal = (0, confirm_1.default)({ withdrawalDb });
+exports.confirmWithdrawal = confirmWithdrawal;
+const removeWithdrawal = (0, remove_1.default)({ withdrawalDb });
+exports.removeWithdrawal = removeWithdrawal;
+const listWidrawals = (0, list_1.default)({ withdrawalDb });
+exports.listWidrawals = listWidrawals;
+const listWidrawalInfos = (0, list_item_infos_1.default)({ withdrawalDb });
+exports.listWidrawalInfos = listWidrawalInfos;
+//# sourceMappingURL=index.js.map

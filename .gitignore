@@ -12,7 +12,7 @@ uploads/
 coverage
 
 # Transpiled files
-dist/
+# dist/
 public/assets/
 
 # VS Code

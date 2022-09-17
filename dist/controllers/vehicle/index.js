@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getVehicleController = exports.getVehiclesController = exports.deleteVehicleController = exports.patchVehicleController = exports.postVehicleController = void 0;
+const tslib_1 = require("tslib");
+const vehicle_1 = require("../../core/use-cases/vehicle");
+const delete_1 = (0, tslib_1.__importDefault)(require("./delete"));
+const get_item_1 = (0, tslib_1.__importDefault)(require("./get-item"));
+const get_items_1 = (0, tslib_1.__importDefault)(require("./get-items"));
+const patch_1 = (0, tslib_1.__importDefault)(require("./patch"));
+const post_1 = (0, tslib_1.__importDefault)(require("./post"));
+const postVehicleController = (0, post_1.default)({ addVehicle: vehicle_1.addVehicle });
+exports.postVehicleController = postVehicleController;
+const patchVehicleController = (0, patch_1.default)({ editVehicle: vehicle_1.editVehicle });
+exports.patchVehicleController = patchVehicleController;
+const deleteVehicleController = (0, delete_1.default)({ removeVehicle: vehicle_1.removeVehicle });
+exports.deleteVehicleController = deleteVehicleController;
+const getVehiclesController = (0, get_items_1.default)({ listVehicles: vehicle_1.listVehicles });
+exports.getVehiclesController = getVehiclesController;
+const getVehicleController = (0, get_item_1.default)({ listVehicleInfos: vehicle_1.listVehicleInfos });
+exports.getVehicleController = getVehicleController;
+//# sourceMappingURL=index.js.map

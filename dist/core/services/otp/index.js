@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getOtp = exports.sendOtp = exports.saveOtp = exports.removeOtp = exports.generateOtp = void 0;
+const tslib_1 = require("tslib");
+const helpers_1 = require("../../../utils/helpers");
+const generate_otp_1 = (0, tslib_1.__importDefault)(require("./generate-otp"));
+const get_otp_1 = (0, tslib_1.__importDefault)(require("./get-otp"));
+const remove_otp_1 = (0, tslib_1.__importDefault)(require("./remove-otp"));
+const save_otp_1 = (0, tslib_1.__importDefault)(require("./save-otp"));
+const send_otp_1 = (0, tslib_1.__importDefault)(require("./send-otp"));
+const generateOtp = (0, generate_otp_1.default)({ randomNum: helpers_1.RandomChar.randomNum });
+exports.generateOtp = generateOtp;
+const removeOtp = (0, remove_otp_1.default)({ removeInCache: helpers_1.CacheManager.remove });
+exports.removeOtp = removeOtp;
+const saveOtp = (0, save_otp_1.default)({ addInCache: helpers_1.CacheManager.arrayPush, removeOtp });
+exports.saveOtp = saveOtp;
+const sendOtp = (0, send_otp_1.default)({ sendSms: helpers_1.SmsServer.send });
+exports.sendOtp = sendOtp;
+const getOtp = (0, get_otp_1.default)({ findInCache: helpers_1.CacheManager.findInArray });
+exports.getOtp = getOtp;
+//# sourceMappingURL=index.js.map

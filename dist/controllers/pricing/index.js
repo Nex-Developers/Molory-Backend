@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPricingController = exports.getPricingsController = exports.deletePricingController = exports.patchPricingController = exports.postPricingController = void 0;
+const tslib_1 = require("tslib");
+const pricing_1 = require("../../core/use-cases/pricing");
+const delete_1 = (0, tslib_1.__importDefault)(require("./delete"));
+const get_item_1 = (0, tslib_1.__importDefault)(require("./get-item"));
+const get_items_1 = (0, tslib_1.__importDefault)(require("./get-items"));
+const patch_1 = (0, tslib_1.__importDefault)(require("./patch"));
+const post_1 = (0, tslib_1.__importDefault)(require("./post"));
+const postPricingController = (0, post_1.default)({ addPricing: pricing_1.addPricing });
+exports.postPricingController = postPricingController;
+const patchPricingController = (0, patch_1.default)({ editPricing: pricing_1.editPricing });
+exports.patchPricingController = patchPricingController;
+const deletePricingController = (0, delete_1.default)({ removePricing: pricing_1.removePricing });
+exports.deletePricingController = deletePricingController;
+const getPricingsController = (0, get_items_1.default)({ listPricing: pricing_1.listPricing });
+exports.getPricingsController = getPricingsController;
+const getPricingController = (0, get_item_1.default)({ listPricingInfos: pricing_1.listPricingInfos });
+exports.getPricingController = getPricingController;
+//# sourceMappingURL=index.js.map

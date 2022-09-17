@@ -1,0 +1,31 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
+const authentication_1 = (0, tslib_1.__importDefault)(require("./authentication"));
+const configuration_1 = (0, tslib_1.__importDefault)(require("./configuration"));
+const logs_1 = (0, tslib_1.__importDefault)(require("./logs"));
+const newsletter_1 = (0, tslib_1.__importDefault)(require("./newsletter"));
+const preference_1 = (0, tslib_1.__importDefault)(require("./preference"));
+const pricing_1 = (0, tslib_1.__importDefault)(require("./pricing"));
+const route_1 = (0, tslib_1.__importDefault)(require("./route"));
+const travel_1 = (0, tslib_1.__importDefault)(require("./travel"));
+const trip_1 = (0, tslib_1.__importDefault)(require("./trip"));
+const user_1 = (0, tslib_1.__importDefault)(require("./user"));
+const vehicle_1 = (0, tslib_1.__importDefault)(require("./vehicle"));
+const vehicle_type_1 = (0, tslib_1.__importDefault)(require("./vehicle-type"));
+exports.default = (router) => {
+    router.use((0, logs_1.default)());
+    router.use('/auth', (0, authentication_1.default)());
+    router.use((0, user_1.default)());
+    router.use((0, preference_1.default)());
+    router.use((0, pricing_1.default)());
+    router.use((0, vehicle_type_1.default)());
+    router.use((0, vehicle_1.default)());
+    router.use((0, configuration_1.default)());
+    router.use((0, trip_1.default)());
+    router.use((0, route_1.default)());
+    router.use((0, travel_1.default)());
+    router.use((0, newsletter_1.default)());
+    return router;
+};
+//# sourceMappingURL=index.js.map
