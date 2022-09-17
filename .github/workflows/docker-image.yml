@@ -26,6 +26,9 @@ jobs:
       
     - name: Build the Docker image
       run: npm run build
+
+    - name: Check image
+      run: docker image ls
       
     - name: Push image to dockerhub
       run: npm run push
