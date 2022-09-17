@@ -1,6 +1,8 @@
 node_modules/
 logs/
 uploads/
+requets/
+e2e/
 src/
 Dockerfile
 docker-compose.*
@@ -8,3 +10,15 @@ docker-compose.*
 .git
 .github
 .gitignore
+.env
+.env.dev
+.eslintignore
+.eslintrc.json
+.prettierrc
+apiary.apib
+babel.config.js
+cinetpay.md
+jest*
+nodemon.json
+todo.todo
+tsconfig*
