@@ -32,7 +32,7 @@ jobs:
       with:
         push: true
         file: ./Dockerfile
-        tags: ${{secrets.DOCKER_USERNAME}}/${{secrets.REPOSITORY}}:latest
+        tags: kodesonik/molory-api:latest
       
     # - name: Build the Docker image
     #   run: npm run build
