@@ -25,6 +25,10 @@ export default function makeListItemInfos({
             limit, 
             where,
             select: {
+                id: true,
+                distance: true,
+                duration: true,
+                price: true,
                 trip:{
                     select: {
                         id: true,
@@ -32,10 +36,28 @@ export default function makeListItemInfos({
                         remainingSeats: true,
                         status: true,
                         departureDate: true,
-                        departureTime: true
+                        departureTime: true,
+                        user: {
+                            select: {
+                                id: true,
+                                avatar: true,
+                                firstName: true,
+                                lastName: true,
+                                phoneNumber: true
+                            }
+                        }
                     }
                 }, 
-                stops: true
+                stops: {
+                    select: {
+                        id: true,
+                        type: true,
+                        longitude: true,
+                        latitude: true,
+                        address: true,
+                        town: true
+                    }
+                }
             } 
         })
 

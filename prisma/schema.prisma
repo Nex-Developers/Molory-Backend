@@ -8,7 +8,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_STATIC_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Country {
@@ -182,7 +182,7 @@ model Trip {
   vehicleId      Int?
   seats          Int
   remainingSeats Int   
-  status         Int       @default(4)
+  status         Int       @default(3)
   departureDate  String
   departureTime  String
   createdAt      DateTime  @default(now())

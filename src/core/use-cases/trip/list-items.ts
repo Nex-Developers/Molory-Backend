@@ -55,7 +55,16 @@ export default function makeListItems({
                         distance: true,
                         duration: true,
                         price: true,
-                        stops: true,
+                        stops: {
+                            select: {
+                                id: true,
+                                type: true,
+                                longitude: true,
+                                latitude: true,
+                                address: true,
+                                town: true
+                            }
+                        },
                         // travels: true
                     }
                 },

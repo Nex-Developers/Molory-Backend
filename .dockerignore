@@ -1,7 +1,9 @@
 node_modules/
 logs/
+uploads/
 src/
 Dockerfile
+docker-compose.*
 .dockerignore
 .git
 .gitignore

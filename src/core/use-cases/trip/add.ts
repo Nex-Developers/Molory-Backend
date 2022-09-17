@@ -14,10 +14,12 @@ export default function makeAdd({
         seats,
         date,
         time,
+        price,
         stops
     }: any = {}) => {
         if (!userId) throw new MissingParamError('userId')
         // if (!vehicleId) throw new MissingParamError('vehicleId')
+        if (!price) throw new MissingParamError('price')
         if (!seats) throw new MissingParamError('seats')
         if (!date) throw new MissingParamError('date')
         if (!time) throw new MissingParamError('time')
@@ -35,17 +37,17 @@ export default function makeAdd({
          for (const departure of departures ) {
              for ( const arrival of arrivals) {
                 if (departure.address == arrival.address) break
-                if (departure.type === 'both') {
+                if (!departure.type) {
                     departure.type = 'departure'
                     departure.principal = false
                 }
-                if (arrival.type === 'both') {
+                if (!arrival.type) {
                     arrival.type = 'arrival'
                     arrival.principal = false
                 }
                 const {distance, duration} = await calculMatrix({ departure,  arrival })
                 // calculPrice({ distance, pricing })
-                const price = distance * 15
+                // const price = distance * 15
                 console.log(distance, duration, price)
                 routes.push(
                     {

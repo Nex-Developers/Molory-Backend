@@ -11,7 +11,7 @@ export default {
         path: 'languages/'
     },
     logs: {
-        file:  'user-logs/data.xlsx'
+        file:  'logs/data.xlsx'
     },
     db: {
         softDelete: true
