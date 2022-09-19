@@ -5,14 +5,14 @@ import { DbConnection } from "../../../utils/helpers"
 // import { PrismaClient } from "@prisma/client"
 
 export default function makeConfirmPayment({
-    // prisma,
+    prisma,
     getPaymentState
 }: any = {}) {
     // if (!prisma || !getPaymentState) throw new ServerError()
     return async ({
         id
     }: any = {}) => {
-        const prisma = DbConnection.prisma
+        // const prisma = DbConnection.prisma
         const { status, amount, travel } = await prisma.payment.findFirst({
             where: { id },
             select: {

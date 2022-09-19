@@ -25,8 +25,8 @@ export default function makeAddUser({
         if (!phoneNumber) throw new MissingParamError('phoneNumber')
         if (!email) throw new MissingParamError('email')
         if (! await isValidEmail({ email })) throw new InvalidParamError('email')
-        if (!birthDay) throw new MissingParamError('birthDay')
-        if (typeof birthDay === 'string') birthDay = new Date(birthDay)
+        // if (!birthDay) throw new MissingParamError('birthDay')
+        if (birthDay && typeof birthDay === 'string') birthDay = new Date(birthDay)
         if (!role) role = 'user'
         if (!language) language = env.lang.default
        password = password? await hashPassword({ password }) : '' 

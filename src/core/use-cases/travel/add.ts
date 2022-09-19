@@ -16,6 +16,9 @@ export default function makeAdd({
         if (!routeId) throw new MissingParamError('routeId')
         if (!seats) throw new MissingParamError('seats')
 
+        // avoid buying self ticket
+        // const { driverId } = await routeDb({ where: { } })
+
         const { price, trip } = await routeDb.findFirst({
             where: { id: routeId },
             select: { price: true, trip: { select: { remainingSeats: true } } }
