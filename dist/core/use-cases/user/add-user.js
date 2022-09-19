@@ -18,9 +18,7 @@ function makeAddUser({ userDb, isValidEmail, hashPassword, generateToken, askToC
                 throw new errors_1.MissingParamError('email');
             if (!(yield isValidEmail({ email })))
                 throw new errors_1.InvalidParamError('email');
-            if (!birthDay)
-                throw new errors_1.MissingParamError('birthDay');
-            if (typeof birthDay === 'string')
+            if (birthDay && typeof birthDay === 'string')
                 birthDay = new Date(birthDay);
             if (!role)
                 role = 'user';

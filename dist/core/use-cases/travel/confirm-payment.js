@@ -1,10 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const helpers_1 = require("../../../utils/helpers");
-function makeConfirmPayment({ getPaymentState } = {}) {
+function makeConfirmPayment({ prisma, getPaymentState } = {}) {
     return ({ id } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-        const prisma = helpers_1.DbConnection.prisma;
         const { status, amount, travel } = yield prisma.payment.findFirst({
             where: { id },
             select: {

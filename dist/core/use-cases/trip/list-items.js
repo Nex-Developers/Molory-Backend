@@ -22,6 +22,9 @@ function makeListItems({ tripDb } = {}) {
             startAt,
             limit,
             where,
+            orderBy: {
+                id: 'desc'
+            },
             select: {
                 id: true,
                 seats: true,

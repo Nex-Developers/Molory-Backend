@@ -1,6 +1,5 @@
 // import { ServerError } from "../../../utils/errors"
 
-import { DbConnection } from "../../../utils/helpers"
 
 // import { PrismaClient } from "@prisma/client"
 
