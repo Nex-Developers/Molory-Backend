@@ -8,7 +8,7 @@ class SmsServer {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             console.log(' production ', environment_1.env.production);
             try {
-                const { data } = yield axios_1.default.get(`${this.apiUrl}?key=${this.apiKey}&secret=${this.apiToken}&from=${this.sender}&to=${phoneNumbers[0]}&text=${message}`);
+                const { data } = yield axios_1.default.get(`${SmsServer.apiUrl}?key=${SmsServer.apiKey}&secret=${SmsServer.apiToken}&from=${SmsServer.sender}&to=${phoneNumbers[0]}&text=${message}`);
                 console.log(data);
                 return data;
             }
