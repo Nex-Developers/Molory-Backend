@@ -21,7 +21,7 @@ function makeGetItemsController({ listTrips }) {
             };
             try {
                 const lang = request.lang, body = request.params;
-                if (request.ref.role === 'driver')
+                if (request.ref.role !== 'admin')
                     body.userId = request.ref.id;
                 const data = yield listTrips(Object.assign({}, body));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
