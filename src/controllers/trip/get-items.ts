@@ -23,7 +23,7 @@ export default function makeGetItemsController({
         try {
             const lang = request.lang,
                 body = request.params;
-                if (request.ref.role === 'driver') body.userId = request.ref.id
+                if (request.ref.role !== 'admin') body.userId = request.ref.id
                   // if query
                 // body.qery = qery
                 const data = await listTrips({...body})
