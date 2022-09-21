@@ -30,21 +30,15 @@ exports.default = (req, res, next) => (0, tslib_1.__awaiter)(void 0, void 0, voi
                     req.params.token = token;
                     const userDb = new db_1.UserDb();
                     const { lastName, firstName, role, blockedAt } = yield userDb.findFirst({ where: { id: ref.id }, select: { lastName: true, firstName: true, role: true, blockedAt: true } });
-                    if (role !== ref.role) {
-                        helpers_1.CacheManager.removetAt('tokens', token);
-                        httpResponse = helpers_1.HttpResponse.forbiddenError(new errors_1.ExpiredParamError('token'), req.params.lang);
+                    ref.role = role;
+                    req.params.ref.lastName = lastName;
+                    req.params.ref.firstName = firstName;
+                    if (blockedAt) {
+                        httpResponse = helpers_1.HttpResponse.unauthorizedError(req.params.lang);
                         res.status(httpResponse.statusCode).json(httpResponse.body);
                     }
-                    else {
-                        req.params.ref.lastName = lastName;
-                        req.params.ref.firstName = firstName;
-                        if (blockedAt) {
-                            httpResponse = helpers_1.HttpResponse.unauthorizedError(req.params.lang);
-                            res.status(httpResponse.statusCode).json(httpResponse.body);
-                        }
-                        else
-                            next();
-                    }
+                    else
+                        next();
                 }
             }
         }
