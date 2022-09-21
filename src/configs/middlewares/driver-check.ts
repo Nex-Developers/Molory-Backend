@@ -7,7 +7,7 @@ export default (req, res, next) => {
       res.status(httpResponse.statusCode).send(httpResponse.body)
   } else if (ref.role !== 'driver') {
     const httpResponse = HttpResponse.unauthorizedError(req.params.lang)
-    res.status(httpResponse.statusCode).send(httpResponse.body)
+    res.send(httpResponse)
   } else next()
 }
   

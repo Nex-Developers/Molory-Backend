@@ -26,18 +26,19 @@ export default async (req, res, next) => {
                     req.params.token = token
                     const userDb = new UserDb()
                     const { lastName, firstName, role,  blockedAt } = await userDb.findFirst({ where: { id: ref.id }, select: { lastName: true, firstName: true, role: true, blockedAt: true }})
-                    if (role !== ref.role) {
-                        CacheManager.removetAt('tokens', token);
-                        httpResponse = HttpResponse.forbiddenError(new ExpiredParamError('token'), req.params.lang)
-                        res.status(httpResponse.statusCode).json(httpResponse.body)
-                    } else {
+                    // if (role !== ref.role) {
+                    //     CacheManager.removetAt('tokens', token);
+                    //     httpResponse = HttpResponse.forbiddenError(new ExpiredParamError('token'), req.params.lang)
+                    //     res.status(httpResponse.statusCode).json(httpResponse.body)
+                    // } else {
+                        ref.role = role
                         req.params.ref.lastName = lastName
                         req.params.ref.firstName = firstName
                         if (blockedAt) {
                             httpResponse = HttpResponse.unauthorizedError(req.params.lang)
                             res.status(httpResponse.statusCode).json(httpResponse.body) 
                         }  else next()
-                    }
+                    // }
                 }
             }
         } catch(err) {
