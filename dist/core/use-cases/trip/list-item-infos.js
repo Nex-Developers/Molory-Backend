@@ -44,6 +44,22 @@ function makeListItemInfos({ tripDb } = {}) {
                         duration: true,
                         price: true,
                         stops: true,
+                        travels: {
+                            select: {
+                                seats: true,
+                                status: true,
+                                createdAt: true,
+                                user: {
+                                    select: {
+                                        id: true,
+                                        avatar: true,
+                                        firstName: true,
+                                        lastName: true,
+                                        phoneNumber: true
+                                    }
+                                },
+                            }
+                        }
                     }
                 },
                 createdAt: true

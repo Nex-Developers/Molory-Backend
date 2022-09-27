@@ -14,8 +14,12 @@ function makeListItemInfos({ travelDb } = {}) {
             },
             select: {
                 id: true,
-                title: true,
-                description: true,
+                route: true,
+                seats: true,
+                status: true,
+                passengerRating: true,
+                driverRating: true,
+                payment: true,
                 createdAt: true
             }
         });
