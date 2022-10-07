@@ -23,6 +23,7 @@ export default class SmsServer{
                 //     }
                 // )
                 // return data
+                console.log(message);
                 const {data} = await axios.get(`${SmsServer.apiUrl}?key=${SmsServer.apiKey}&secret=${SmsServer.apiToken}&from=${SmsServer.sender}&to=${phoneNumbers[0]}&text=${message}`)
                 console.log(data)
                 return data
