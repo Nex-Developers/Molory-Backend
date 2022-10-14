@@ -17,3 +17,8 @@ $ ==================================
    [ ] get by user
    
 $ =========================
+
+
+- [] Fix email confirmation error
+- [] Test log with phoneNumber for email account
+- [] Deploy

@@ -1,3 +1,4 @@
+import { env } from "../../../configs/environment"
 import { ServerError } from "../../../utils/errors"
 
 export default function makeAskToConfirmEmail({
@@ -19,7 +20,7 @@ export default function makeAskToConfirmEmail({
             message =  {text: 'auth.confirmationMail.message' },
             confirmButtonText = {text: 'auth.confirmationMail.button' },
             responseUrl = apiUrl + 'api/auth/confirm-email?token='+token+'&lang='+lang,
-            html = await ejsToHtml('mails/email-confirmation.ejs', { responseUrl, message, confirmButtonText, salutationText, thanks, senderName }, lang)
+            html = await ejsToHtml('mails/email-confirmation.ejs', { baseUrl: env.url, responseUrl, message, confirmButtonText, salutationText, thanks, senderName }, 'fr')
         const subject = "Confirmation mail"
         return await sendMail(email, subject, html)
     }

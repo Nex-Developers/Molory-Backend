@@ -7,7 +7,6 @@ exports.default = (req, res, next) => (0, tslib_1.__awaiter)(void 0, void 0, voi
     const token = req.params.token;
     if (token) {
         const ref = yield helpers_1.TokenManager.verify(token);
-        console.log(ref);
         if (!ref)
             res.status(403).send({ message: 'Access denied' });
         else {

@@ -5,7 +5,6 @@ export default async (req, res, next) => {
     const token = req.params.token
     if (token) {
         const ref = await TokenManager.verify(token)
-        console.log(ref)
         if (!ref) res.status(403).send({ message: 'Access denied' })         
         else {
             const tokenIndex = await CacheManager.findInArray('tmp_tokens', token)

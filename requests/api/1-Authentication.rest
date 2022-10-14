@@ -1,6 +1,7 @@
 @hostname = 0.0.0.0
 @port = 8086
-@host = {{hostname}}:{{port}}
+# @host = {{hostname}}:{{port}}
+@host = 0.0.0.0/molory-backend
 @contentType = application/json
 @avatarPath = ../assets/img/avatar.png
 @idCardpath = ../assets/img/id-card.jpeg
@@ -32,7 +33,7 @@ content-type: application/json
 ###
 
 @authTmpToken = {{login.response.body.token}}
-# @authTmpToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZU51bWJlciI6IjIyODkyOTQyNjAxIiwiaWF0IjoxNjYyMjYzMDAxfQ.WwThl8XBffxUGsf9RLl4xK2Dv8wbrmV8klD7iEh4-f0
+@authTmpToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE2NjU1MDE4MDh9.T3SiEcmEzYrxgZgkv5tOpq98taTXq3xEl6cHfzySm8M
 
 
 # Confirm OTP
@@ -72,19 +73,32 @@ Authorization: Bearer {{authToken}}
 
 
 ### Activate email and password auth 
-POST http://{{host}}/api/auth/add-email-auth HTTP/1.1
-content-type: application/json
-Authorization: Bearer {{authToken}}
+# POST http://{{host}}/api/auth/add-email-auth HTTP/1.1
+# content-type: application/json
+# Authorization: Bearer {{authToken}}
 
-{
-    "email": "k0d3.s0n1k@gmail.com",
-    "password": "azertyui"
-}
+# {
+#     "email": "k0d3.s0n1k@gmail.com",
+#     "password": "azertyui"
+# }
 
 
 ### Get profile
 GET  http://{{host}}/api/auth/profile HTTP/1.1
 Authorization: Bearer {{authToken}}
+
+### Sigup with Email
+POST http://{{host}}/api/auth/register HTTP/1.1
+content-type: application/json
+
+{
+    "firstName": "KoDE",
+    "lastName": "Sonik",
+    "birthDay":  "1996-01-23",
+    "email": "k0d3.s0n1k@gmail.com",
+    "gender": "M",
+    "password": "azertyui"
+}
 
 ### Editing Profile
 POST http://{{host}}/api/auth/edit-profile HTTP/1.1
@@ -94,15 +108,17 @@ Authorization: Bearer {{authToken}}
 {
     "firstName": "Ko",
     "lastName": "Sonik",
-    "birthDay":  "1996-01-23"
+    "birthDay":  "1996-01-23",
+    "email": "kode3.s0n1k@gmail.com"
 }
+
 
 ### Email verification (Sign in)
 POST http://{{host}}/api/auth/verify-email HTTP/1.1
 content-type: application/json
 
 {
-    "email": "k0d3.s0n1k@gmail.com",
+    "email": "k0d3.s0n1k@gmail.com"
 }
 
 ### Password verification (Sign in)

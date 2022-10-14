@@ -1,4 +1,4 @@
-import { ServerError, MissingParamError, UnauthorizedError, AccountNotFoundError } from "../../../utils/errors"
+import { ServerError, MissingParamError, AccountNotFoundError, UnmatchedAuthMethodError, NotVerifiedCredentialError } from "../../../utils/errors"
 
 export default function makeCheckEmail({
     userDb,
@@ -10,10 +10,15 @@ export default function makeCheckEmail({
         email
     }: any = {}) {
         if (!email) throw new MissingParamError('email')
-        const user = await userDb.findFirst({ where: { email }, select: { id: true, emailVerifiedAt: true }})
-        console.log(user)
+        const user = await userDb.findFirst({ where: { email }, select: { id: true, emailVerifiedAt: true, phoneNumber:true, signUpMethod: true }})
+        console.log(user);
         if (!user) throw new AccountNotFoundError('email')
-        if (!user.emailVerifiedAt) throw new UnauthorizedError()
+        if (user.signUpMethod == 'phoneNumber') {
+            const truncateParam = '+' + user.phoneNumber.substring(0, 6) + '...';
+            throw new UnmatchedAuthMethodError(truncateParam);
+        }
+        if (!user.emailVerifiedAt) throw new NotVerifiedCredentialError()
+        
         const token =  await generateToken({ id: user.id })
         await saveTmpToken({ token })
         const message = { text: 'auth.message.checkEmail' }

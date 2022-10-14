@@ -31,7 +31,8 @@ model User {
   countryId                     Int?
   avatar                        String?
   email                         String?        @unique
-  phoneNumber                   String         @unique
+  phoneNumber                   String?        @unique
+  signUpMethod                  String?
   emailVerifiedAt               DateTime?
   phoneNumberVerifiedAt         DateTime?
   firstName                     String

@@ -29,8 +29,14 @@ export default class HttpResponse {
       case 'AlreadyDoneError':
         method = () => _this.badRequest(err, lang)
         break
+      case 'NotVerifiedCredentialError':
+        method = () => _this.badRequest(err, lang)
+        break
+      case 'AccountNotFoundError':
+        method = () => _this.badRequest(err, lang)
+        break
       case 'ServerError':
-        method =() =>  _this.serverError(lang)
+        method = () => _this.serverError(lang)
         break
       case 'UnauthorizedError':
         method = () => _this.unauthorizedError(lang)
@@ -48,7 +54,7 @@ export default class HttpResponse {
   static badRequest(err, lang): IHttpResponse {
     return {
       statusCode: 400,
-      body: { error: LanguageManager.translate(lang, err.message, err.params)}
+      body: { error: LanguageManager.translate(lang, err.message, err.params) }
     }
   }
 
@@ -56,7 +62,7 @@ export default class HttpResponse {
     return {
       statusCode: 401,
       body: {
-        error:  LanguageManager.translate(lang, new UnauthorizedError().message)
+        error: LanguageManager.translate(lang, new UnauthorizedError().message)
       }
     }
   }
@@ -65,7 +71,7 @@ export default class HttpResponse {
     return {
       statusCode: 403,
       body: {
-        error:  LanguageManager.translate(lang, err.message, err.params)
+        error: LanguageManager.translate(lang, err.message, err.params)
       }
     }
   }
@@ -78,6 +84,6 @@ export default class HttpResponse {
       }
     }
   }
-  
+
 
 }

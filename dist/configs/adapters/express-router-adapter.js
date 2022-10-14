@@ -20,7 +20,11 @@ function makeExpressRouterAdapter() {
             }
             else if (responseFormat === 'html') {
                 res.type(responseFormat);
-                res.status(httpResponse.statusCode).render(httpResponse.body.view);
+                res.status(httpResponse.statusCode).send(httpResponse.body.view);
+            }
+            else if (responseFormat === 'render') {
+                res.type('html');
+                res.render(httpResponse.body.view);
             }
             else if (responseFormat) {
                 res.type(responseFormat);

@@ -1,0 +1,1 @@
+{"version":3,"file":"unmatched-auth-method-error.js","sourceRoot":"","sources":["../../../../src/utils/errors/auth/unmatched-auth-method-error.ts"],"names":[],"mappings":";;;AAAA,0BAAuC;AAEvC,MAAa,wBAAyB,SAAQ,qBAAiB;IAC7D,YAAa,SAAiB;QAC5B,KAAK,CAAE,SAAS,EAAE,2BAA2B,CAAC,CAAA;IAChD,CAAC;CACF;AAJD,4DAIC"}

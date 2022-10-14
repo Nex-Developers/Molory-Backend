@@ -1,3 +1,5 @@
+import { env } from "../../../configs/environment"
+
 export default function makeEmailConfirmationView({
     ejsToHtml
 }: any = {}) {
@@ -9,6 +11,6 @@ export default function makeEmailConfirmationView({
         thanks = {text: 'auth.confirmationPage.thanks'},
         senderName = {text: 'auth.confirmationPage.sender' },
         message = {text: 'auth.confirmationPage.message' }
-        return await ejsToHtml('pages/auth/email-confirmation.ejs', { salutationText, thanks, message, senderName }, lang)
+        return await ejsToHtml('pages/auth/email-confirmation.ejs', { salutationText, baseUrl: env.url, thanks, message, senderName }, 'fr')
     }
 }

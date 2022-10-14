@@ -33,7 +33,8 @@ function makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveT
                             firstName: "",
                             lastName: "",
                             language: lang,
-                            password: ""
+                            password: "",
+                            signUpMethod: "phoneNumber",
                         }
                     });
                 }

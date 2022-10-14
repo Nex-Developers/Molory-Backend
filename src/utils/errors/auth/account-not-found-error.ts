@@ -1,7 +1,7 @@
-import { InvalidParamError } from "..";
+import { CustomError } from "../../../core/conventions";
 
-export class AccountNotFoundError extends InvalidParamError {
+export class AccountNotFoundError extends CustomError {
   constructor (parameter: string) {
-    super( parameter, 'error.userNotFound')
+    super('AccountNotFoundError', 'error.userNotFound', parameter)
   }
 }

@@ -28,6 +28,12 @@ class HttpResponse {
             case 'AlreadyDoneError':
                 method = () => _this.badRequest(err, lang);
                 break;
+            case 'NotVerifiedCredentialError':
+                method = () => _this.badRequest(err, lang);
+                break;
+            case 'AccountNotFoundError':
+                method = () => _this.badRequest(err, lang);
+                break;
             case 'ServerError':
                 method = () => _this.serverError(lang);
                 break;

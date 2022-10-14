@@ -15,10 +15,14 @@ function makeSignInWithPhoneNumber({ generateOtp, saveOtp, sendOtp, generateToke
                 throw new errors_1.InvalidParamError('phoneNumber');
             if (!action)
                 action = 'signin';
-            const user = yield userDb.findFirst({ where: { phoneNumber }, select: { id: true } });
+            const user = yield userDb.findFirst({ where: { phoneNumber }, select: { id: true, email: true, signUpMethod: true } });
             if (action == 'signin') {
                 if (!user)
                     throw new errors_1.AccountNotFoundError('phoneNumber');
+                if (user.signUpMethod == 'email') {
+                    const truncateParam = user.email.substring(0, 6) + '...';
+                    throw new errors_1.UnmatchedAuthMethodError(truncateParam);
+                }
             }
             else {
                 if (user)

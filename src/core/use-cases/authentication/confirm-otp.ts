@@ -41,7 +41,8 @@ export default function makeConfirmOtp({
                         firstName: "",
                         lastName: "",
                         language: lang,
-                        password: ""
+                        password: "",
+                        signUpMethod: "phoneNumber",
                     }
                 })
             } else user = await userDb.updateOne({ where: { id: user.id }, data: { phoneNumberVerifiedAt } })

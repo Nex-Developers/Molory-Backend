@@ -9,7 +9,9 @@
         "alreadyDone": "L'opération que vous essayez d'effectuer a été déjà effectuée depuis :date",
         "userNotFound": "L'utilisateur avec ce :parameter n'a pas été trouvé.",
         "passwordIncorrect": "Le mot de passe est incorrect.",
-        "otpIncorrect": "Le code que vous avez entré est incorrect."
+        "otpIncorrect": "Le code que vous avez entré est incorrect.",
+        "notVerifiedCredential": "Votre email n'est pas confirmé. Vérifiez votre boîte mail pour activer votre compte.",
+        "unmatchedAuthMethod": "L'identifiant avec lequel vous essayez de vous connecter n'est pas celui que vous utilisez pour vous inscrire. Veuillez utiliser :parameter pour vous connecter"
     },
     "response": {
         "add": "Ajouté avec succès!",
@@ -19,8 +21,8 @@
     },
     "auth": {
         "confirmationMail": {
-            "salutation": "Salut :name",
-            "message": "Veuillez cliquer sur le bouton ci-ddesous pour confirmer votre email.",
+            "salutation": "Salut :name !",
+            "message": "Veuillez cliquer sur le bouton ci-dessous pour confirmer votre email.",
             "button": "Confirmer mon email",
             "sender": "Equipe Technique",
             "thanks": "Merci"

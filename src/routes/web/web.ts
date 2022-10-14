@@ -4,7 +4,7 @@ import { HttpResponse } from "../../utils/helpers"
 
 export default () => { 
     const router = express.Router()
-    router.get('/', expressRouterAdapter((httpRequest) => HttpResponse.ok({ view: 'pages/index'}), 'html'))
+    router.get('/', expressRouterAdapter((httpRequest) => HttpResponse.ok({ view: 'pages/index'}), 'render'))
     // router.get('docs/logs')
     // router.get('docs/auth')
     // router.get('docs/user')
