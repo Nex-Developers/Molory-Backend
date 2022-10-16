@@ -22,6 +22,8 @@ function makeListItemInfos({ routeDb } = {}) {
                 distance: true,
                 duration: true,
                 price: true,
+                principal: true,
+                remainingSeats: true,
                 trip: {
                     select: {
                         id: true,
@@ -45,6 +47,7 @@ function makeListItemInfos({ routeDb } = {}) {
                     select: {
                         id: true,
                         type: true,
+                        principal: true,
                         longitude: true,
                         latitude: true,
                         address: true,

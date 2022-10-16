@@ -1,4 +1,7 @@
+
 // import { ServerError } from "../../../utils/errors"
+
+import { InvalidParamError, UnauthorizedError } from "../../../utils/errors"
 
 
 // import { PrismaClient } from "@prisma/client"
@@ -38,30 +41,42 @@ export default function makeConfirmPayment({
             // ensure « cpm_amount » est égale à la valeur du montant stocké
             if (res.code !== "00") {
                 // notify client
-                return
+                throw new UnauthorizedError()
             }
 
             if (amount !== + res.data.amount) {
                 // send notification to admin and user
-                return
+                throw new InvalidParamError('amount')
             }
             prisma.$transaction(async _ => {
                 // check remaining seats
-                const { trip } = await prisma.route.findFirst({
+                const { remainingSeats, principal, trip } = await prisma.route.findFirst({
                     where: { id: travel.routeId },
-                    select: { trip: true }
+                    select: { remainingSeats: true, principal: true, trip: true }
                 })
                 if (!trip.remainingSeats) throw new Error('Unvailable Resource')
-                if (travel.seats > trip.remainingSeats) throw new Error('Missing ' + (travel.seats - trip.remainingSeats) + 'resource')
+                if (travel.seats > remainingSeats) throw new Error('Missing ' + (travel.seats - remainingSeats) + 'resource')
                 // update travel status
                 prisma.travel.update({ where: { id: travel.id }, data: { status: 3 } })
                 // remove seats from trip avalaibleSeats
-                prisma.trip.update({ where: { id: trip.id }, data: { remainingSeats: { decrement: travel.seats } } })
+                if (principal) {
+                    prisma.route.update({ where: { tripId: trip.id }, data: { remainingSeats: { decrement: travel.seats, } } })
+                } else {
+                    prisma.route.update({ where: { id }, data: { remainingSeats: { decrement: travel.seats, } } })
+                    // const otherROutes
+                    const secondaryRoutes = prisma.route.find({ where: { principal: false }, select: {remainingSeats: true }})
+                    if(secondaryRoutes.length) {
+                        const A = secondaryRoutes[0].remainingSeats;
+                        const B = secondaryRoutes[1].remainingSeats;
+                        if (A !== B) prisma.route.update({ where: { principal: true }, data: { remainingSeats: { decrement: travel.seats, } } })
+                    }
+                    // for( let route of secondaryRoutes) route
+                }
             })
 
         }
-        return
-        // const message = { text: "response.add" }
-        // return { message }
+        // return
+        const message = { text: "response.add" }
+        return { message }
     }
 }

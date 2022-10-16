@@ -124,10 +124,15 @@ content-type: application/json
 ### Password verification (Sign in)
 POST http://{{host}}/api/auth/verify-password HTTP/1.1
 content-type: application/json
-Authorization: Bearer {{authToken}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTY2NTc3Mjc5NX0.RTeoIvtMJ_4XU3P81P7cx5JpWWcUmaQB_o0yrAMogrQ
 
 {
-    "password": "azertyui"
+    "password": "azertyui",
+    "device": {
+        "id": "502A26A3-497E-41B9-9F64-E728AAFFF547",
+        "platform": "web",
+        "token": "c_bmxTMHs0iQtrXcznWirlAPA91bHto8JLS3zGixD0kvXYyklZDVC1wssC9fRPFmJY1j0q7dgtu7FKLbdQRMJxC5kAImXqW-Eu7Nv4OUVhKYKuOF73mzCP7cj_v5srckOojnpCU5ve4FFpRCj3w0iNQj0i66_6mxB7"
+    }
 }
 
 #### Upload avatar

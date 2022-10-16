@@ -182,7 +182,7 @@ model Trip {
   userId         Int
   vehicleId      Int?
   seats          Int
-  remainingSeats Int   
+  remainingSeats Int
   status         Int       @default(3)
   departureDate  String
   departureTime  String
@@ -193,13 +193,13 @@ model Trip {
   // stops Stop[]
   routes         Route[]
   user           User      @relation(fields: [userId], references: [id])
-  vehicle        Vehicle?   @relation(fields: [vehicleId], references: [id])
+  vehicle        Vehicle?  @relation(fields: [vehicleId], references: [id])
 }
 
 model Stop {
   id         Int       @id @default(autoincrement())
   routeId    Int
-  principal  Boolean   @default(true)
+  principal  Boolean   @default(false)
   type       String
   longitude  Float
   latitude   Float
@@ -211,15 +211,17 @@ model Stop {
 }
 
 model Route {
-  id        Int       @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   tripId    Int
   distance  Int
   duration  Int
   price     Int
-  deletedAt DateTime?
-  travels   Travel[]
-  stops     Stop[]
-  trip      Trip      @relation(fields: [tripId], references: [id])
+  principal Boolean @default(false)
+  remainingSeats Int?
+  deletedAt      DateTime?
+  travels        Travel[]
+  stops          Stop[]
+  trip           Trip      @relation(fields: [tripId], references: [id])
 }
 
 model Travel {

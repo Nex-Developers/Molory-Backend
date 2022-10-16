@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
+const errors_1 = require("../../../utils/errors");
 function makeConfirmPayment({ prisma, getPaymentState } = {}) {
     return ({ id } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const { status, amount, travel } = yield prisma.payment.findFirst({
@@ -25,25 +26,38 @@ function makeConfirmPayment({ prisma, getPaymentState } = {}) {
                 }
             });
             if (res.code !== "00") {
-                return;
+                throw new errors_1.UnauthorizedError();
             }
             if (amount !== +res.data.amount) {
-                return;
+                throw new errors_1.InvalidParamError('amount');
             }
             prisma.$transaction((_) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-                const { trip } = yield prisma.route.findFirst({
+                const { remainingSeats, principal, trip } = yield prisma.route.findFirst({
                     where: { id: travel.routeId },
-                    select: { trip: true }
+                    select: { remainingSeats: true, principal: true, trip: true }
                 });
                 if (!trip.remainingSeats)
                     throw new Error('Unvailable Resource');
-                if (travel.seats > trip.remainingSeats)
-                    throw new Error('Missing ' + (travel.seats - trip.remainingSeats) + 'resource');
+                if (travel.seats > remainingSeats)
+                    throw new Error('Missing ' + (travel.seats - remainingSeats) + 'resource');
                 prisma.travel.update({ where: { id: travel.id }, data: { status: 3 } });
-                prisma.trip.update({ where: { id: trip.id }, data: { remainingSeats: { decrement: travel.seats } } });
+                if (principal) {
+                    prisma.route.update({ where: { tripId: trip.id }, data: { remainingSeats: { decrement: travel.seats, } } });
+                }
+                else {
+                    prisma.route.update({ where: { id }, data: { remainingSeats: { decrement: travel.seats, } } });
+                    const secondaryRoutes = prisma.route.find({ where: { principal: false }, select: { remainingSeats: true } });
+                    if (secondaryRoutes.length) {
+                        const A = secondaryRoutes[0].remainingSeats;
+                        const B = secondaryRoutes[1].remainingSeats;
+                        if (A !== B)
+                            prisma.route.update({ where: { principal: true }, data: { remainingSeats: { decrement: travel.seats, } } });
+                    }
+                }
             }));
         }
-        return;
+        const message = { text: "response.add" };
+        return { message };
     });
 }
 exports.default = makeConfirmPayment;

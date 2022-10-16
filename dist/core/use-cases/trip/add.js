@@ -27,6 +27,7 @@ function makeAdd({ tripDb, calculMatrix, } = {}) {
         const routes = [];
         for (const departure of departures) {
             for (const arrival of arrivals) {
+                const principal = (departure.principal && arrival.principal) ? true : false;
                 if (departure.address == arrival.address)
                     break;
                 if (!departure.type) {
@@ -43,12 +44,21 @@ function makeAdd({ tripDb, calculMatrix, } = {}) {
                     distance,
                     duration,
                     price,
+                    principal,
+                    remainingSeats: seats,
                     stops: {
                         create: [departure, arrival]
                     }
                 });
             }
         }
+        const principalRoute = routes.find(route => route.principal);
+        const calculatedRoutes = routes.filter(route => !route.principal).map(route => {
+            route.price = Math.ceil(((route.distance / principalRoute.distance) * price) / 5) * 5;
+            return route;
+        });
+        calculatedRoutes.unshift(principalRoute);
+        console.log(calculatedRoutes);
         const trip = yield tripDb.insertOne({
             data: {
                 userId,
@@ -58,7 +68,7 @@ function makeAdd({ tripDb, calculMatrix, } = {}) {
                 departureDate: date,
                 departureTime: time,
                 routes: {
-                    create: routes
+                    create: calculatedRoutes
                 }
             },
             include: {
@@ -67,6 +77,8 @@ function makeAdd({ tripDb, calculMatrix, } = {}) {
                         id: true,
                         distance: true,
                         duration: true,
+                        principal: true,
+                        remainingSeats: true,
                         price: true,
                         stops: true
                     }

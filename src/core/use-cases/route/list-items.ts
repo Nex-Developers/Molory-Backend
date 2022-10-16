@@ -29,6 +29,8 @@ export default function makeListItemInfos({
                 distance: true,
                 duration: true,
                 price: true,
+                principal: true,
+                remainingSeats: true,
                 trip:{
                     select: {
                         id: true,
@@ -52,6 +54,7 @@ export default function makeListItemInfos({
                     select: {
                         id: true,
                         type: true,
+                        principal: true,
                         longitude: true,
                         latitude: true,
                         address: true,

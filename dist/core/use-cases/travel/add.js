@@ -12,14 +12,14 @@ function makeAdd({ travelDb, routeDb, paymentDb } = {}) {
             throw new errors_1.MissingParamError('routeId');
         if (!seats)
             throw new errors_1.MissingParamError('seats');
-        const { price, trip } = yield routeDb.findFirst({
+        const { price, remainingSeats } = yield routeDb.findFirst({
             where: { id: routeId },
-            select: { price: true, trip: { select: { remainingSeats: true } } }
+            select: { price: true, remainingSeats: true }
         });
-        if (!trip.remainingSeats)
+        if (!remainingSeats)
             throw new Error('Unvailable Resource');
-        if (seats > trip.remainingSeats)
-            throw new Error('Missing ' + (seats - trip.remainingSeats) + 'resource');
+        if (seats > remainingSeats)
+            throw new Error('Missing ' + (seats - remainingSeats) + 'resource');
         const { id, payment } = yield travelDb.insertOne({
             data: {
                 userId,
