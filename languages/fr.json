@@ -22,7 +22,7 @@
     "auth": {
         "confirmationMail": {
             "salutation": "Salut :name !",
-            "message": "Veuillez cliquer sur le bouton ci-dessous pour confirmer votre email.",
+            "message": "Veuillez utiliser le code à 4 chiffres ci-dessous pour confirmer votre email.",
             "button": "Confirmer mon email",
             "sender": "Equipe Technique",
             "thanks": "Merci"
@@ -54,7 +54,7 @@
             "profileUpdated": "Votre profil a été mis à jour avec succès.",
             "login": "Vous êtes connecté avec succès",
             "checkEmail": "Votre compte est actif,Entrez votre mot de passe pour vous connecter.",
-            "register": "Un lien de confirmation a été envoyé sur votre email :email",
+            "register": "Un code à 4 chiffres a été envoyé sur votre email :email",
             "logout": "Vous êtes déconnecté avec succès",
             "changePassword": "Votre mot de passe a été changé avec succès",
             "updateProfile": "Votre profil a été mis à jour avec succés",

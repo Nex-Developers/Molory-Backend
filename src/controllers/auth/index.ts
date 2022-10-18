@@ -19,7 +19,8 @@ import {
     checkEmail,
     checkPassword,
     updateIdCard,
-    updateDriverLicense
+    updateDriverLicense,
+    validateAccount
 } from "../../core/use-cases/authentication"
 import makeCompleteInfosController from "./complete-infos"
 import makeConfirmEmailController from "./confirm-email"
@@ -40,6 +41,7 @@ import makeRegisterController from "./register"
 import makeResetPasswordController from "./reset-password"
 import makeSendOtpController from "./send-otp"
 import makeUploadDocumentController from "./upload-document"
+import makeVerifyAccountController from "./verify-account"
 import makeVerifyEmailController from "./verify-email"
 import makeVerifyOtpController from "./verify-otp"
 import makeVerifyPasswordController from "./verify-password"
@@ -53,6 +55,7 @@ const verifyEmailController = makeVerifyEmailController({ checkEmail })
 const verifyPasswordController = makeVerifyPasswordController({ checkPassword })
 const loginController = makeLoginController({ signInWithEmailAndPassword })
 const registerController = makeRegisterController({ signUp })
+const verifyAccountController = makeVerifyAccountController({ validateAccount })
 const logoutController = makeLogoutController({  signOut })
 const profileController = makeProfileController({ getProfile })
 const newPasswordController = makeNewPasswordController({ changePassword })
@@ -75,6 +78,7 @@ export {
     verifyPasswordController,
     loginController,
     registerController,
+    verifyAccountController,
     logoutController,
     profileController,
     newPasswordController,

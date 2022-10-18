@@ -35,8 +35,6 @@ export default function makeRegisterController({
                     password: body.password,
                     language: lang
                 })
-                reqLog.userId = data.data.id,
-                reqLog.modelId = data.data.id.toString()
                 reqLog.status = LogStatus.SUCCEEDED
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)

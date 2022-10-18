@@ -3,34 +3,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const conventions_1 = require("../../core/conventions");
 const helpers_1 = require("../../utils/helpers");
-function makeRegisterController({ signUp }) {
-    return function registerController(request) {
+function makeVerifyAccountController({ validateAccount }) {
+    return function verifyAccountController(request) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            const { lastName, firstName, email, phoneNumber } = request.body, lang = request.lang, date = new Date(), reqLog = {
+            const { email } = request.ref, lang = request.lang, date = new Date(), reqLog = {
                 date: date.toDateString(),
                 time: date.toTimeString(),
                 userId: null,
-                lastName,
-                firstName,
                 email,
-                phoneNumber,
                 model: 'User',
-                path: '/api/auth/register',
+                path: '/api/auth/verify-account',
                 modelId: null,
-                action: conventions_1.Action.WRITE,
+                action: conventions_1.Action.REQUEST,
                 status: conventions_1.LogStatus.FAILED,
-                description: `${lastName}  ${firstName}  ${conventions_1.Action.WRITE} his infos`
+                description: `${email} ${conventions_1.Action.REQUEST} to confirm account`
             };
             try {
-                const body = request.body, data = yield signUp({
-                    firstName,
-                    lastName,
-                    birthDay: body.birthDay,
-                    phoneNumber,
-                    email,
-                    password: body.password,
-                    language: lang
-                });
+                const token = request.token, { otp, device } = request.body, data = yield validateAccount({ token, otp, device, lang, email });
+                reqLog.userId = data.data.id;
+                reqLog.modelId = data.data.id.toString();
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 helpers_1.LogManager.save(reqLog);
                 return helpers_1.HttpResponse.ok(data, lang);
@@ -43,5 +34,5 @@ function makeRegisterController({ signUp }) {
         });
     };
 }
-exports.default = makeRegisterController;
-//# sourceMappingURL=register.js.map
+exports.default = makeVerifyAccountController;
+//# sourceMappingURL=verify-account.js.map

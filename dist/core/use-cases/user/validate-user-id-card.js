@@ -20,7 +20,7 @@ function makeValidateUserIdCard({ userDb, walletDb } = {}) {
                 yield userDb.updateOne({ where: { id: userId }, data: { idCardStatus: 0, idCardRejectionMessage: response, idCardModifiedAt: new Date() } });
             }
             else {
-                const data = { idCardStatus: 1, idCardNumber: cardNumber, idCardModifiedAt: new Date() };
+                const data = { idCardStatus: 1, idCardNumber: cardNumber, idCardModifiedAt: new Date(), status: 1 };
                 if (user.role === 'user')
                     data.role = "driver";
                 yield userDb.updateOne({ where: { id: userId }, data });

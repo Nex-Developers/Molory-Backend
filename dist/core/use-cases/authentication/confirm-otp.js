@@ -29,7 +29,7 @@ function makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveT
                             phoneNumber,
                             phoneNumberVerifiedAt,
                             role: 'user',
-                            status: 3,
+                            status: 2,
                             firstName: "",
                             lastName: "",
                             language: lang,

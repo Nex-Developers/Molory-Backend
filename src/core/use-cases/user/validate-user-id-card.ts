@@ -27,7 +27,7 @@ export default function makeValidateUserIdCard({
         //     })
         //     else await sendSms({ to: user.phoneNumber, text: `Your account has been rejected because: ${failureReason}` })
         } else {
-            const data: any = { idCardStatus: 1,  idCardNumber: cardNumber, idCardModifiedAt: new Date()}
+            const data: any = { idCardStatus: 1,  idCardNumber: cardNumber, idCardModifiedAt: new Date(), status: 1}
             if (user.role === 'user') data.role = "driver"
             await userDb.updateOne({ where: { id: userId} , data })
             await walletDb.insertOne({ data: { userId }})

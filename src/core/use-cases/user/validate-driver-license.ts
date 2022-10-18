@@ -25,7 +25,7 @@ export default function makeValidateDriverLicense({
             // })
             // else  sendSms({ to: user.phoneNumber, text: `Your account has been rejected because: ${failureReason}` })
         } else {
-            const data: any = { driverLicenseStatus: 1, driverLicenseNumber: cardNumber, driverLicenseModifiedAt: new Date()}
+            const data: any = { driverLicenseStatus: 1, driverLicenseNumber: cardNumber, driverLicenseModifiedAt: new Date(), status: 1}
             // if (user.idCardStatus == 1) data.role = "driver"
              if (user.role === 'user') data.role = "driver"
             // else  sendMail({

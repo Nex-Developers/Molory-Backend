@@ -16,6 +16,7 @@ exports.default = () => {
     router.get('/confirm-email', middlewares_1.langCheck, middlewares_1.queryParser, (0, adapters_1.expressRouterAdapter)(auth_1.confirmEmailController, 'html'));
     router.post('/login', middlewares_1.langCheck, (0, adapters_1.expressRouterAdapter)(auth_1.loginController));
     router.post('/register', middlewares_1.langCheck, (0, adapters_1.expressRouterAdapter)(auth_1.registerController));
+    router.post('/verify-account', middlewares_1.langCheck, middlewares_1.tmpAuthCheck, (0, adapters_1.expressRouterAdapter)(auth_1.verifyAccountController));
     router.post('/logout', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.logoutController));
     router.get('/profile', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.profileController));
     router.post('/new-password', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.newPasswordController));

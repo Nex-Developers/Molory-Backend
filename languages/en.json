@@ -26,7 +26,7 @@
   "auth": {
     "confirmationMail": {
       "salutation": " Hi :name",
-      "message": "Click the big button below to activate your account.",
+      "message": "Use the code below to activate your account.",
       "button": "Activate",
       "sender": "Tech Team",
       "thanks": "Thanks"
@@ -58,7 +58,8 @@
       "profileUpdated": "Your profile have been updated successfully.",
       "checkEmail": "Your account is active, please complete password to login",
       "login": "You are logged in successfully",
-      "register": "A confirmation link has been send on your email :email",
+      "register": "A 4-digit code has been send on your email :email",
+      "emailVerified": "Your email is verified successfully.",
       "logout": "You are logged out successfully!",
       "changePassword": "Your password has been changed successfully",
       "updateProfile": "Your profile has been updated successfully",

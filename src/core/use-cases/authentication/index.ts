@@ -27,18 +27,20 @@ import makeCheckEmail from "./check-email"
 import makeCheckPassword from "./check-password"
 import makeUpdateIdCard from "./update-id-card"
 import makeUpdateDriverLicense from "./update-driver-license"
+import makeValidateAccount from "./validate-acount"
 
 const prisma = new PrismaClient()
 const userDb = new UserDb()
 const deviceDb = new DeviceDb()
 
 const addEmailAuth =  makeAddEmailAuth({ userDb, generateToken, saveTmpToken, askToConfirmEmail, isValidEmail, hashPassword })
-const checkEmail = makeCheckEmail({ userDb, generateToken, saveTmpToken })
+const checkEmail = makeCheckEmail({ userDb, generateToken, saveTmpToken, generateOtp, saveOtp, askToConfirmEmail })
 const checkPassword = makeCheckPassword({  userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, comparePasswords })
 const signInWithEmailAndPassword = makeSignInWithEmailAndPassword({ userDb, comparePasswords, generateToken, saveToken })
 const signInWithPhoneNumber = makeSignInWithPhoneNumber({ generateOtp, saveOtp, sendOtp, generateToken, saveTmpToken, userDb })
 const confirmOtp = makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken })
-const signUp = makeSignUp({ userDb, askToConfirmEmail, isValidEmail, hashPassword, generateToken, saveTmpToken})
+const signUp = makeSignUp({ userDb, askToConfirmEmail, isValidEmail, hashPassword, generateToken, saveTmpToken, generateOtp, saveOtp})
+const validateAccount = makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken })
 const confirmEmail = makeConfirmEmail({ removeTmpToken, verifyToken, emailConfirmationView, userDb })
 const removePassword = makeRemovePassword({ removeTmpToken, verifyToken, resetPasswordView, userDb })
 const changePassword = makeChangePassword({ removeToken, comparePasswords, hashPassword, userDb })
@@ -60,6 +62,7 @@ export {
     signInWithPhoneNumber,
     confirmOtp,
     signUp,
+    validateAccount,
     confirmEmail,
     removePassword,
     changePassword,

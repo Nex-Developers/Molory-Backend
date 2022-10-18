@@ -6,9 +6,11 @@ export default function makeSignUp({
     isValidEmail,
     hashPassword,
     generateToken,
-    saveTmpToken
+    saveTmpToken,
+    generateOtp,
+    saveOtp
 }: any = {}) {
-    if (!userDb || !askToConfirmEmail || !isValidEmail || !hashPassword || !generateToken || !saveTmpToken) throw new ServerError()
+    if (!userDb || !askToConfirmEmail || !isValidEmail || !hashPassword || !generateToken || !saveTmpToken || !generateOtp || !saveOtp) throw new ServerError()
     return async function signUp({
         firstName,
         lastName,
@@ -30,16 +32,22 @@ export default function makeSignUp({
         if (!password) throw new MissingParamError('password')
         password = await hashPassword({ password })
         try {
-            const { id } = await userDb.insertOne({ data: { firstName, lastName, phoneNumber, email, password, birthDay, role: 'user', language, signUpMethod: "email", gender, profileCompletedAt: new Date(), status: 3 } })
-            const token = await generateToken({ email })
-            await saveTmpToken({ token })
-            await askToConfirmEmail({ email, token, firstName, lastName, lang: language })
-            const message = { text: 'auth.message.register', params: { email } }
-            return { message, data: { id } }
+            await userDb.insertOne({ data: { firstName, lastName, phoneNumber, email, password, birthDay, role: 'user', language, signUpMethod: "email", gender, profileCompletedAt: new Date(), status: 3 } })
         } catch (err) {
             console.log(err.message);
             throw new AccountAllReadyExistError('email');
         }
-
+        const token = await generateToken({ email })
+        const otp = await generateOtp()
+        await saveTmpToken({ token })
+        await saveOtp({ phoneNumber: email, otp })
+        try {
+            await askToConfirmEmail({ email, otp, firstName, lastName, lang: language })
+        } catch (err) {
+            console.log(err.message);
+            throw new InvalidParamError('email');
+        }
+        const message = { text: 'auth.message.register', params: { email } }
+        return { token, message }
     }
 }

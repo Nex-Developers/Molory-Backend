@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadDocumentController = exports.enableEmailAuthController = exports.deleteAccountController = exports.newPhoneNumberController = exports.newEmailController = exports.resetPasswordController = exports.forgotPasswordController = exports.editDriverLicense = exports.editIdCardController = exports.editAvatarController = exports.editProfileController = exports.newPasswordController = exports.profileController = exports.logoutController = exports.registerController = exports.loginController = exports.verifyPasswordController = exports.verifyEmailController = exports.confirmEmailController = exports.completeInfosController = exports.verifyOtpController = exports.sendOtpController = void 0;
+exports.uploadDocumentController = exports.enableEmailAuthController = exports.deleteAccountController = exports.newPhoneNumberController = exports.newEmailController = exports.resetPasswordController = exports.forgotPasswordController = exports.editDriverLicense = exports.editIdCardController = exports.editAvatarController = exports.editProfileController = exports.newPasswordController = exports.profileController = exports.logoutController = exports.verifyAccountController = exports.registerController = exports.loginController = exports.verifyPasswordController = exports.verifyEmailController = exports.confirmEmailController = exports.completeInfosController = exports.verifyOtpController = exports.sendOtpController = void 0;
 const tslib_1 = require("tslib");
 const authentication_1 = require("../../core/use-cases/authentication");
 const complete_infos_1 = (0, tslib_1.__importDefault)(require("./complete-infos"));
@@ -22,6 +22,7 @@ const register_1 = (0, tslib_1.__importDefault)(require("./register"));
 const reset_password_1 = (0, tslib_1.__importDefault)(require("./reset-password"));
 const send_otp_1 = (0, tslib_1.__importDefault)(require("./send-otp"));
 const upload_document_1 = (0, tslib_1.__importDefault)(require("./upload-document"));
+const verify_account_1 = (0, tslib_1.__importDefault)(require("./verify-account"));
 const verify_email_1 = (0, tslib_1.__importDefault)(require("./verify-email"));
 const verify_otp_1 = (0, tslib_1.__importDefault)(require("./verify-otp"));
 const verify_password_1 = (0, tslib_1.__importDefault)(require("./verify-password"));
@@ -43,6 +44,8 @@ const loginController = (0, login_1.default)({ signInWithEmailAndPassword: authe
 exports.loginController = loginController;
 const registerController = (0, register_1.default)({ signUp: authentication_1.signUp });
 exports.registerController = registerController;
+const verifyAccountController = (0, verify_account_1.default)({ validateAccount: authentication_1.validateAccount });
+exports.verifyAccountController = verifyAccountController;
 const logoutController = (0, logout_1.default)({ signOut: authentication_1.signOut });
 exports.logoutController = logoutController;
 const profileController = (0, profile_1.default)({ getProfile: authentication_1.getProfile });

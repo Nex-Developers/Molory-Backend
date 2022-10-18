@@ -39,7 +39,7 @@ model User {
   lastName                      String
   gender                        String?
   birthDay                      DateTime?
-  status                        Int            @default(1)
+  status                        Int            @default(3)
   role                          String
   language                      String
   idCardFront                   String?

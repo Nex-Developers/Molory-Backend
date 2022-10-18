@@ -20,7 +20,7 @@ function makeValidateDriverLicense({ userDb, walletDb } = {}) {
                 yield userDb.updateOne({ where: { id: userId }, data: { driverLicenseStatus: 0, driverLicenseRejectionMessage: response, driverLicenseModifiedAt: new Date() } });
             }
             else {
-                const data = { driverLicenseStatus: 1, driverLicenseNumber: cardNumber, driverLicenseModifiedAt: new Date() };
+                const data = { driverLicenseStatus: 1, driverLicenseNumber: cardNumber, driverLicenseModifiedAt: new Date(), status: 1 };
                 if (user.role === 'user')
                     data.role = "driver";
                 yield userDb.updateOne({ where: { id: userId }, data });
