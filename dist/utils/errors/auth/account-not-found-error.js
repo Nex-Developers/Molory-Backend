@@ -4,7 +4,7 @@ exports.AccountNotFoundError = void 0;
 const conventions_1 = require("../../../core/conventions");
 class AccountNotFoundError extends conventions_1.CustomError {
     constructor(parameter) {
-        super('AccountNotFoundError', 'error.userNotFound', parameter);
+        super('AccountNotFoundError', 'error.userNotFound', { parameter });
     }
 }
 exports.AccountNotFoundError = AccountNotFoundError;
