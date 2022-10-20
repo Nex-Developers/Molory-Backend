@@ -15,6 +15,7 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                 throw new errors_1.MissingParamError('device');
             if (!token || !lang)
                 throw new errors_1.ServerError();
+            console.log('device', device);
             const otpIndex = yield getOtp({ phoneNumber: email, otp });
             if (otpIndex === null || otpIndex === undefined)
                 throw new errors_1.OtpIncorrectError('');
@@ -30,10 +31,10 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                 if (!savedDevice)
                     yield deviceDb.insertOne({
                         data: {
-                            id: device.id,
-                            userId: user.id,
-                            token: device.token,
-                            platform: device.platform
+                            id: device["id"],
+                            userId: user["id"],
+                            token: device["token"],
+                            platform: device["platform"]
                         }
                     });
                 const authToken = yield generateToken({ id: user.id, role: user.role });

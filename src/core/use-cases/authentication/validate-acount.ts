@@ -22,7 +22,7 @@ export default function makeValidateAccount({
         if (!otp) throw new MissingParamError('otp')
         if (!device) throw new MissingParamError('device')
         if (!token || !lang) throw new ServerError()
-
+        console.log('device', device)
         const otpIndex = await getOtp({ phoneNumber:email, otp })
         if (otpIndex === null || otpIndex === undefined) throw new OtpIncorrectError('')
 
@@ -35,10 +35,10 @@ export default function makeValidateAccount({
             const savedDevice = await deviceDb.findFirst({ where: { id: device.id, userId: user.id } })
             if (!savedDevice) await deviceDb.insertOne({
                 data: {
-                    id: device.id,
-                    userId: user.id,
-                    token: device.token,
-                    platform: device.platform
+                    id: device["id"],
+                    userId: user["id"],
+                    token: device["token"],
+                    platform: device["platform"]
                 }
             })
             const authToken = await generateToken({ id: user.id, role: user.role })
