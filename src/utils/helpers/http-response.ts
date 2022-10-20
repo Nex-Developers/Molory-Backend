@@ -7,6 +7,7 @@ export default class HttpResponse {
 
   static ok(body, lang?): IHttpResponse {
     if (lang && body.message) body.message = LanguageManager.translate(lang, body.message.text, body.message.params)
+    if (lang && body.error) body.error = LanguageManager.translate(lang, body.error.text, body.error.params)
     return {
       statusCode: 200,
       body
