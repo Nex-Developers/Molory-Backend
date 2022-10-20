@@ -22,8 +22,8 @@ function makeCheckEmail({ userDb, generateToken, saveTmpToken, generateOtp, save
                 yield saveTmpToken({ token });
                 yield saveOtp({ phoneNumber: email, otp });
                 yield askToConfirmEmail({ email, otp, firstName: user.firstName, lastName: user.lastName, lang: 'fr' });
-                const message = { text: 'error.notVerifiedCredential' };
-                return { token, message };
+                const error = { text: 'error.notVerifiedCredential', params: { parameter: 'email' } };
+                return { token, error };
             }
             const token = yield generateToken({ id: user.id });
             yield saveTmpToken({ token });

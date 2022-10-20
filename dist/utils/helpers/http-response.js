@@ -7,6 +7,8 @@ class HttpResponse {
     static ok(body, lang) {
         if (lang && body.message)
             body.message = _1.LanguageManager.translate(lang, body.message.text, body.message.params);
+        if (lang && body.error)
+            body.error = _1.LanguageManager.translate(lang, body.error.text, body.error.params);
         return {
             statusCode: 200,
             body
