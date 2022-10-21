@@ -26,6 +26,7 @@ import {
     registerController,
     resetPasswordController,
     sendOtpController,
+    setPasswordController,
     uploadDocumentController,
     verifyAccountController,
     verifyEmailController,
@@ -49,6 +50,7 @@ export default () => {
     router.get('/profile', langCheck, authCheck, expressRouterAdapter(profileController))
     router.post('/new-password', langCheck, authCheck, expressRouterAdapter(newPasswordController))
     router.post('/forgot-password', langCheck, expressRouterAdapter(forgotPasswordController))
+    router.post('/set-password', langCheck, tmpAuthCheck, expressRouterAdapter(setPasswordController))
     router.post('/edit-profile', langCheck, authCheck, expressRouterAdapter(editProfileController))
     router.post('/edit-avatar', langCheck, authCheck, fileUpload.single('avatar'), expressRouterAdapter(editAvatarController))
     router.post('/id-card', langCheck, authCheck, fileUpload.array('idCard', 2), expressRouterAdapter(editIdCardController))

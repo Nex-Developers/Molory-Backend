@@ -21,6 +21,7 @@ exports.default = () => {
     router.get('/profile', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.profileController));
     router.post('/new-password', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.newPasswordController));
     router.post('/forgot-password', middlewares_1.langCheck, (0, adapters_1.expressRouterAdapter)(auth_1.forgotPasswordController));
+    router.post('/set-password', middlewares_1.langCheck, middlewares_1.tmpAuthCheck, (0, adapters_1.expressRouterAdapter)(auth_1.setPasswordController));
     router.post('/edit-profile', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.editProfileController));
     router.post('/edit-avatar', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.single('avatar'), (0, adapters_1.expressRouterAdapter)(auth_1.editAvatarController));
     router.post('/id-card', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.array('idCard', 2), (0, adapters_1.expressRouterAdapter)(auth_1.editIdCardController));

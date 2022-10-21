@@ -5,8 +5,10 @@ export default function makeRecoverPassword({
     generateToken,
     saveTmpToken,
     askToResetPassword,
+    generateOtp,
+    saveOtp
 }: any = {}) {
-    if (!userDb || !generateToken || !saveTmpToken || !askToResetPassword ) throw new ServerError()
+    if (!userDb || !generateToken || !saveTmpToken || !askToResetPassword || !generateOtp || !saveOtp ) throw new ServerError()
     return async function recoverPassword({
         email,
         lang
@@ -17,9 +19,16 @@ export default function makeRecoverPassword({
         if (!user) throw new InvalidParamError('email')
         if (!user.emailVerifiedAt) throw new Error('Your email is not confirmed. Check your box')
         const token = await generateToken({ email })
+        const otp = await generateOtp()
         await saveTmpToken({ token })
-        await askToResetPassword({ email, token, firstName: user.firstName, lang })
-        const message = { text: 'auth.message.recoverPassword', params: { email } }
-        return { message }
+        await saveOtp({ phoneNumber: email, otp })
+        try {
+            await askToResetPassword({ email, otp, firstName: user.firstName, lastName: user.lastName, lang: 'fr' })
+        } catch (err) {
+            console.log(err.message);
+            throw new InvalidParamError('email');
+        }
+        const message = { text: 'auth.message.recoverPassword',  params: { email } }
+        return { token, message }
     }
 }

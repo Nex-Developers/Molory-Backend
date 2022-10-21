@@ -20,7 +20,8 @@ import {
     checkPassword,
     updateIdCard,
     updateDriverLicense,
-    validateAccount
+    validateAccount,
+    setPassword
 } from "../../core/use-cases/authentication"
 import makeCompleteInfosController from "./complete-infos"
 import makeConfirmEmailController from "./confirm-email"
@@ -40,6 +41,7 @@ import makeProfileController from "./profile"
 import makeRegisterController from "./register"
 import makeResetPasswordController from "./reset-password"
 import makeSendOtpController from "./send-otp"
+import makeSetPasswordController from "./set-password"
 import makeUploadDocumentController from "./upload-document"
 import makeVerifyAccountController from "./verify-account"
 import makeVerifyEmailController from "./verify-email"
@@ -65,6 +67,7 @@ const editIdCardController = makeEditIdCardController({ updateIdCard })
 const editDriverLicense = makeEditDriverLicenseController({ updateDriverLicense })
 const forgotPasswordController = makeForgotPasswordController({ recoverPassword })
 const resetPasswordController = makeResetPasswordController({ removePassword })
+const setPasswordController = makeSetPasswordController({ setPassword })
 const newEmailController = makeNewEmailController({ changeEmail })
 const newPhoneNumberController = makeNewPhoneNumberController({ changePhoneNumber })
 const deleteAccountController = makeDeleteAccountController({ removeAccount })
@@ -87,6 +90,7 @@ export {
     editIdCardController,
     editDriverLicense,
     forgotPasswordController,
+    setPasswordController,
     resetPasswordController,
     newEmailController,
     newPhoneNumberController,

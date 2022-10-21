@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadDocumentController = exports.enableEmailAuthController = exports.deleteAccountController = exports.newPhoneNumberController = exports.newEmailController = exports.resetPasswordController = exports.forgotPasswordController = exports.editDriverLicense = exports.editIdCardController = exports.editAvatarController = exports.editProfileController = exports.newPasswordController = exports.profileController = exports.logoutController = exports.verifyAccountController = exports.registerController = exports.loginController = exports.verifyPasswordController = exports.verifyEmailController = exports.confirmEmailController = exports.completeInfosController = exports.verifyOtpController = exports.sendOtpController = void 0;
+exports.uploadDocumentController = exports.enableEmailAuthController = exports.deleteAccountController = exports.newPhoneNumberController = exports.newEmailController = exports.resetPasswordController = exports.setPasswordController = exports.forgotPasswordController = exports.editDriverLicense = exports.editIdCardController = exports.editAvatarController = exports.editProfileController = exports.newPasswordController = exports.profileController = exports.logoutController = exports.verifyAccountController = exports.registerController = exports.loginController = exports.verifyPasswordController = exports.verifyEmailController = exports.confirmEmailController = exports.completeInfosController = exports.verifyOtpController = exports.sendOtpController = void 0;
 const tslib_1 = require("tslib");
 const authentication_1 = require("../../core/use-cases/authentication");
 const complete_infos_1 = (0, tslib_1.__importDefault)(require("./complete-infos"));
@@ -21,6 +21,7 @@ const profile_1 = (0, tslib_1.__importDefault)(require("./profile"));
 const register_1 = (0, tslib_1.__importDefault)(require("./register"));
 const reset_password_1 = (0, tslib_1.__importDefault)(require("./reset-password"));
 const send_otp_1 = (0, tslib_1.__importDefault)(require("./send-otp"));
+const set_password_1 = (0, tslib_1.__importDefault)(require("./set-password"));
 const upload_document_1 = (0, tslib_1.__importDefault)(require("./upload-document"));
 const verify_account_1 = (0, tslib_1.__importDefault)(require("./verify-account"));
 const verify_email_1 = (0, tslib_1.__importDefault)(require("./verify-email"));
@@ -64,6 +65,8 @@ const forgotPasswordController = (0, forgot_password_1.default)({ recoverPasswor
 exports.forgotPasswordController = forgotPasswordController;
 const resetPasswordController = (0, reset_password_1.default)({ removePassword: authentication_1.removePassword });
 exports.resetPasswordController = resetPasswordController;
+const setPasswordController = (0, set_password_1.default)({ setPassword: authentication_1.setPassword });
+exports.setPasswordController = setPasswordController;
 const newEmailController = (0, new_email_1.default)({ changeEmail: authentication_1.changeEmail });
 exports.newEmailController = newEmailController;
 const newPhoneNumberController = (0, new_phone_1.default)({ changePhoneNumber: authentication_1.changePhoneNumber });

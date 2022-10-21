@@ -36,7 +36,7 @@
         },
         "resetPassword": {
             "salutation": "Salut :name",
-            "message": "Veuillez cliquer sur le lien pour renitialiser votre mot de passe.",
+            "message": "Veuillez utiliser le code à 4 chiffres ci-dessous pour renitialiser votre mot de passe.",
             "button": "Renitialiser mon mot de passe",
             "sender": "Equipe Technique",
             "thanks": "Merci"
@@ -59,7 +59,7 @@
             "changePassword": "Votre mot de passe a été changé avec succès",
             "updateProfile": "Votre profil a été mis à jour avec succés",
             "updateAvatar": "Votre avatar a été mis à jour avec succès",
-            "recoverPassword": "Le lien de réinitialisation du mot de passe a été envoyé sur votre email :email",
+            "recoverPassword": "Le code de réinitialisation du mot de passe a été envoyé sur votre email :email",
             "changeEmail": "Votre adresse e-mail a été modifiée avec succès. Vérifiez votre nouvelle boîte e-mail :email pour confirmer votre e-mail",
             "changePhoneNumber": "Votre numéro de téléphone a été modifié avec succès. un code OTP a été envoyé sur le  :phoneNumber",
             "removeAccount": "Votre compte a été supprimé avec succès."

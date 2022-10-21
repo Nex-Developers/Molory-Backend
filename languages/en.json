@@ -40,7 +40,7 @@
     },
     "resetPassword": {
       "salutation": " Hi :name",
-      "message": "Click the big button below to reset your password.",
+      "message": "Use the code below to reset your password.",
       "button": "Reset password",
       "sender": "Tech Team",
       "thanks": "Thanks"
@@ -64,7 +64,7 @@
       "changePassword": "Your password has been changed successfully",
       "updateProfile": "Your profile has been updated successfully",
       "updateAvatar": "Your avatar has been updated successfully",
-      "recoverPassword": "The password reset link has been send on your email :email",
+      "recoverPassword": "The password reset code has been send on your email :email",
       "changeEmail": "You are email has been changed successfully. Check you new email box :email to confirm your email",
       "changePhoneNumber": "You are phoneNumber has been changed successfully. an Otp code has been send on  :phoneNumber",
       "removeAccount": "Your account has been deleted successfully"

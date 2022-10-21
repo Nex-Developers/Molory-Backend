@@ -28,6 +28,7 @@ import makeCheckPassword from "./check-password"
 import makeUpdateIdCard from "./update-id-card"
 import makeUpdateDriverLicense from "./update-driver-license"
 import makeValidateAccount from "./validate-acount"
+import makeSetPassword from "./set-password"
 
 const prisma = new PrismaClient()
 const userDb = new UserDb()
@@ -50,7 +51,8 @@ const updateProfile = makeUpdateProfile({ userDb })
 const updateAvatar = makeUpdateAvatar({ userDb, deleteAvatarFile})
 const updateIdCard = makeUpdateIdCard({ userDb })
 const updateDriverLicense = makeUpdateDriverLicense({ userDb })
-const recoverPassword = makeRecoverPassword({ userDb, generateToken, saveTmpToken, askToResetPassword })
+const recoverPassword = makeRecoverPassword({ userDb, generateToken, saveTmpToken, askToResetPassword, generateOtp, saveOtp })
+const setPassword = makeSetPassword({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, hashPassword })
 const signOut = makeSignOut({ removeToken })
 const removeAccount = makeRemoveAccount({ userDb, removeToken})
 const changeEmail = makeChangeEmail({ userDb, generateToken, removeToken, saveTmpToken, askToConfirmEmail, isValidEmail })
@@ -73,6 +75,7 @@ export {
     updateIdCard,
     updateDriverLicense,
     recoverPassword,
+    setPassword,
     signOut,
     removeAccount,
     changeEmail,

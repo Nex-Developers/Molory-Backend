@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkPassword = exports.checkEmail = exports.changePhoneNumber = exports.changeEmail = exports.removeAccount = exports.signOut = exports.recoverPassword = exports.updateDriverLicense = exports.updateIdCard = exports.updateAvatar = exports.updateProfile = exports.getProfile = exports.setProfile = exports.changePassword = exports.removePassword = exports.confirmEmail = exports.validateAccount = exports.signUp = exports.confirmOtp = exports.signInWithPhoneNumber = exports.signInWithEmailAndPassword = exports.addEmailAuth = void 0;
+exports.checkPassword = exports.checkEmail = exports.changePhoneNumber = exports.changeEmail = exports.removeAccount = exports.signOut = exports.setPassword = exports.recoverPassword = exports.updateDriverLicense = exports.updateIdCard = exports.updateAvatar = exports.updateProfile = exports.getProfile = exports.setProfile = exports.changePassword = exports.removePassword = exports.confirmEmail = exports.validateAccount = exports.signUp = exports.confirmOtp = exports.signInWithPhoneNumber = exports.signInWithEmailAndPassword = exports.addEmailAuth = void 0;
 const tslib_1 = require("tslib");
 const client_1 = require("@prisma/client");
 const db_1 = require("../../../db");
@@ -31,6 +31,7 @@ const check_password_1 = (0, tslib_1.__importDefault)(require("./check-password"
 const update_id_card_1 = (0, tslib_1.__importDefault)(require("./update-id-card"));
 const update_driver_license_1 = (0, tslib_1.__importDefault)(require("./update-driver-license"));
 const validate_acount_1 = (0, tslib_1.__importDefault)(require("./validate-acount"));
+const set_password_1 = (0, tslib_1.__importDefault)(require("./set-password"));
 const prisma = new client_1.PrismaClient();
 const userDb = new db_1.UserDb();
 const deviceDb = new db_1.DeviceDb();
@@ -68,8 +69,10 @@ const updateIdCard = (0, update_id_card_1.default)({ userDb });
 exports.updateIdCard = updateIdCard;
 const updateDriverLicense = (0, update_driver_license_1.default)({ userDb });
 exports.updateDriverLicense = updateDriverLicense;
-const recoverPassword = (0, recover_password_1.default)({ userDb, generateToken: token_1.generateToken, saveTmpToken: token_1.saveTmpToken, askToResetPassword: email_1.askToResetPassword });
+const recoverPassword = (0, recover_password_1.default)({ userDb, generateToken: token_1.generateToken, saveTmpToken: token_1.saveTmpToken, askToResetPassword: email_1.askToResetPassword, generateOtp: otp_1.generateOtp, saveOtp: otp_1.saveOtp });
 exports.recoverPassword = recoverPassword;
+const setPassword = (0, set_password_1.default)({ prisma, getOtp: otp_1.getOtp, userDb, deviceDb, generateToken: token_1.generateToken, saveToken: token_1.saveToken, removeOtp: otp_1.removeOtp, removeTmpToken: token_1.removeTmpToken, hashPassword: password_1.hashPassword });
+exports.setPassword = setPassword;
 const signOut = (0, sign_out_1.default)({ removeToken: token_1.removeToken });
 exports.signOut = signOut;
 const removeAccount = (0, remove_account_1.default)({ userDb, removeToken: token_1.removeToken });
