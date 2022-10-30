@@ -17,9 +17,6 @@ function makeRemovePassword({ verifyToken, getOtp, userDb } = {}) {
             const otpIndex = yield getOtp({ phoneNumber: email, otp });
             if (otpIndex === null || otpIndex === undefined)
                 throw new errors_1.OtpIncorrectError('');
-            const user = yield userDb.findFirst({ where: { email }, select: { firstName: true, password: true } });
-            if (user.password)
-                yield userDb.updateOne({ where: { email }, data: { password: '' } });
             const message = { text: 'auth.message.removePassword' };
             return { token, message };
         });
