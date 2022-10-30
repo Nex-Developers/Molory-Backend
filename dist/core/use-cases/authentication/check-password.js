@@ -13,7 +13,7 @@ function makeCheckPassword({ userDb, deviceDb, generateToken, saveToken, removeT
                 throw new errors_1.MissingParamError('password');
             if (!device)
                 throw new errors_1.MissingParamError('device');
-            let user = yield userDb.findFirst({ where: { id } });
+            const user = yield userDb.findFirst({ where: { id } });
             if (!(yield comparePasswords({ hash: user.password, password })))
                 throw new errors_1.PasswordIncorrectError('password');
             const savedDevice = yield deviceDb.findFirst({ where: { id: device.id, userId: user.id } });
@@ -30,7 +30,7 @@ function makeCheckPassword({ userDb, deviceDb, generateToken, saveToken, removeT
             yield saveToken({ token: authToken });
             yield removeTmpToken({ token });
             const message = { text: 'auth.message.login' };
-            return { token: authToken, message, data: { id: user.id, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt } };
+            return { token: authToken, message, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt } };
         });
     };
 }

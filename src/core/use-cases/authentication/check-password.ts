@@ -19,7 +19,7 @@ export default function makeCheckPassword({
         if (!password) throw new MissingParamError('password')
         if (!device) throw new MissingParamError('device')
 
-        let user = await userDb.findFirst({ where: { id } })
+        const user = await userDb.findFirst({ where: { id } })
         if (! await comparePasswords({ hash: user.password, password })) throw new PasswordIncorrectError('password')
         const savedDevice = await deviceDb.findFirst({ where: { id: device.id, userId: user.id } })
         if (!savedDevice) await deviceDb.insertOne({
@@ -34,6 +34,6 @@ export default function makeCheckPassword({
         await saveToken({ token: authToken })
         await removeTmpToken({ token })
         const message = { text: 'auth.message.login' }
-        return { token: authToken, message, data: { id: user.id, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt } } 
+        return { token: authToken, message, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt } } 
     }
 }
