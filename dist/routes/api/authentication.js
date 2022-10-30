@@ -21,13 +21,13 @@ exports.default = () => {
     router.get('/profile', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.profileController));
     router.post('/new-password', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.newPasswordController));
     router.post('/forgot-password', middlewares_1.langCheck, (0, adapters_1.expressRouterAdapter)(auth_1.forgotPasswordController));
-    router.post('/set-password', middlewares_1.langCheck, middlewares_1.tmpAuthCheck, (0, adapters_1.expressRouterAdapter)(auth_1.setPasswordController));
+    router.post('/reset-password', middlewares_1.langCheck, middlewares_1.tmpAuthCheck, (0, adapters_1.expressRouterAdapter)(auth_1.resetPasswordController));
+    router.post('/set-new-password', middlewares_1.langCheck, middlewares_1.tmpAuthCheck, (0, adapters_1.expressRouterAdapter)(auth_1.setPasswordController));
     router.post('/edit-profile', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.editProfileController));
     router.post('/edit-avatar', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.single('avatar'), (0, adapters_1.expressRouterAdapter)(auth_1.editAvatarController));
     router.post('/id-card', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.array('idCard', 2), (0, adapters_1.expressRouterAdapter)(auth_1.editIdCardController));
     router.post('/driver-license', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.array('driverLicense', 2), (0, adapters_1.expressRouterAdapter)(auth_1.editDriverLicense));
     router.post('/upload-document', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.fields([{ name: 'idCard', maxCount: 2 }, { name: 'driverLicense', maxCount: 2 }]), (0, adapters_1.expressRouterAdapter)(auth_1.uploadDocumentController));
-    router.get('/reset-password', middlewares_1.langCheck, middlewares_1.queryParser, (0, adapters_1.expressRouterAdapter)(auth_1.resetPasswordController));
     router.post('/new-email', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.newEmailController));
     router.post('/new-phonenumber', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.newPhoneNumberController));
     router.post('/delete-account', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.deleteAccountController));

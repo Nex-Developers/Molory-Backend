@@ -19,7 +19,7 @@ function makeSetPasswordController({ setPassword }) {
                 description: `${email} ${conventions_1.Action.REQUEST} to set password`
             };
             try {
-                const token = request.token, { otp, password, device } = request.body, data = yield setPassword({ token, otp, password, device, lang, email });
+                const token = request.token, { password, device } = request.body, data = yield setPassword({ token, password, device, lang, email });
                 reqLog.userId = data.data.id;
                 reqLog.modelId = data.data.id.toString();
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;

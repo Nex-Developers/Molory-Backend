@@ -19,10 +19,10 @@ function makeResetPasswordController({ removePassword } = {}) {
                 description: `${email}  reset his password`
             };
             try {
-                const token = request.token, lang = request.lang, data = yield removePassword({ token, lang });
+                const token = request.token, { otp } = request.body, data = yield removePassword({ token, lang, otp });
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 helpers_1.LogManager.save(reqLog);
-                return helpers_1.HttpResponse.ok(data);
+                return helpers_1.HttpResponse.ok(data, lang);
             }
             catch (err) {
                 reqLog.failureReason = err.message;
