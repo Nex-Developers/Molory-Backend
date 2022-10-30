@@ -1,24 +1,24 @@
-import { AlreadyDoneError, InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
+import { InvalidParamError, MissingParamError, OtpIncorrectError, ServerError } from "../../../utils/errors"
 
 export default function makeRemovePassword({
-    removeTmpToken,
     verifyToken,
-    resetPasswordView,
+    getOtp,
     userDb
 }: any = {}) {
-    if (!removeTmpToken || !verifyToken || !userDb || !resetPasswordView) throw new ServerError()
+    if (!getOtp || !verifyToken || !userDb ) throw new ServerError()
     return async function removePassword({
         token,
-        lang
+        otp,
     }: any = {}) {
         if (!token) throw new MissingParamError('token')
+        if (!otp) throw new MissingParamError('otp')
         const { email } = await verifyToken({ token })
         if (!email) throw new InvalidParamError('token')
+        const otpIndex = await getOtp({ phoneNumber:email, otp })
+        if (otpIndex === null || otpIndex === undefined) throw new OtpIncorrectError('')
         const user = await userDb.findFirst({ where: { email }, select: { firstName: true, password: true } })
-        if (!user) throw new InvalidParamError('link')
-         if (!user.password) throw new AlreadyDoneError('before')
-        await userDb.updateOne({ where: { email }, data: { password: '' } })
-        removeTmpToken({ token })
-        return resetPasswordView({ lang, firstName: user.firstName })
+        if(user.password)   await userDb.updateOne({ where: { email }, data: { password: '' } })
+        const message = { text: 'auth.message.removePassword' }
+        return { token, message }
     }
 }

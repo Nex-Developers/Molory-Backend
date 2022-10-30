@@ -22,12 +22,12 @@ export default function makeResetPasswordController({
             }
         try {
             const token = request.token,
-                lang = request.lang,
-                data = await removePassword({ token,lang })
-                reqLog.status = LogStatus.SUCCEEDED
-                LogManager.save(reqLog)
-            return HttpResponse.ok(data)
-            
+                { otp } = request.body,
+                data = await removePassword({ token, lang, otp })
+            reqLog.status = LogStatus.SUCCEEDED
+            LogManager.save(reqLog)
+            return HttpResponse.ok(data, lang)
+
         } catch (err) {
             reqLog.failureReason = err.message
             LogManager.save(reqLog)

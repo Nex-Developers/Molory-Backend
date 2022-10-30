@@ -57,6 +57,7 @@
             "register": "Un code à 4 chiffres a été envoyé sur votre email :email",
             "logout": "Vous êtes déconnecté avec succès",
             "changePassword": "Votre mot de passe a été changé avec succès",
+            "removePassword": "Votre mot de passe a été changé a ete renitailise avec succès. Entrer un nouveau mot de passe pour continuer.",
             "updateProfile": "Votre profil a été mis à jour avec succés",
             "updateAvatar": "Votre avatar a été mis à jour avec succès",
             "recoverPassword": "Le code de réinitialisation du mot de passe a été envoyé sur votre email :email",

@@ -62,6 +62,7 @@
       "emailVerified": "Your email is verified successfully.",
       "logout": "You are logged out successfully!",
       "changePassword": "Your password has been changed successfully",
+      "removePassword": "Your password has been removed successfully. Set new password to continue.",
       "updateProfile": "Your profile has been updated successfully",
       "updateAvatar": "Your avatar has been updated successfully",
       "recoverPassword": "The password reset code has been send on your email :email",

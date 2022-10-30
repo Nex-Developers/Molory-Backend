@@ -22,8 +22,8 @@ export default function makeSetPasswordController({
             }
         try {
             const token = request.token,
-                { otp, password, device } = request.body,
-                data = await setPassword({ token, otp, password, device, lang, email })
+                { password, device } = request.body,
+                data = await setPassword({ token, password, device, lang, email })
             reqLog.userId = data.data.id
             reqLog.modelId = data.data.id.toString()
             reqLog.status = LogStatus.SUCCEEDED

@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import { DeviceDb, UserDb } from "../../../db"
-import { askToConfirmEmail, askToResetPassword, emailConfirmationView, isValidEmail, resetPasswordView } from "../../services/email"
+import { askToConfirmEmail, askToResetPassword, emailConfirmationView, isValidEmail } from "../../services/email"
 import { generateOtp, getOtp, removeOtp, saveOtp, sendOtp } from "../../services/otp"
 import { comparePasswords, hashPassword } from "../../services/password"
 import { generateToken, removeTmpToken, removeToken, saveTmpToken, saveToken, verifyToken } from "../../services/token"
@@ -43,7 +43,6 @@ const confirmOtp = makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateTo
 const signUp = makeSignUp({ userDb, askToConfirmEmail, isValidEmail, hashPassword, generateToken, saveTmpToken, generateOtp, saveOtp})
 const validateAccount = makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken })
 const confirmEmail = makeConfirmEmail({ removeTmpToken, verifyToken, emailConfirmationView, userDb })
-const removePassword = makeRemovePassword({ removeTmpToken, verifyToken, resetPasswordView, userDb })
 const changePassword = makeChangePassword({ removeToken, comparePasswords, hashPassword, userDb })
 const setProfile = makeSetProfile({ userDb })
 const getProfile = makeGetProfile({ userDb })
@@ -52,7 +51,8 @@ const updateAvatar = makeUpdateAvatar({ userDb, deleteAvatarFile})
 const updateIdCard = makeUpdateIdCard({ userDb })
 const updateDriverLicense = makeUpdateDriverLicense({ userDb })
 const recoverPassword = makeRecoverPassword({ userDb, generateToken, saveTmpToken, askToResetPassword, generateOtp, saveOtp })
-const setPassword = makeSetPassword({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, hashPassword })
+const removePassword = makeRemovePassword({ getOtp, verifyToken, userDb })
+const setPassword = makeSetPassword({ prisma, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, hashPassword })
 const signOut = makeSignOut({ removeToken })
 const removeAccount = makeRemoveAccount({ userDb, removeToken})
 const changeEmail = makeChangeEmail({ userDb, generateToken, removeToken, saveTmpToken, askToConfirmEmail, isValidEmail })
