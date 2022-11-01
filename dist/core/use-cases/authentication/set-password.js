@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-function makeSetPassword({ prisma, userDb, deviceDb, generateToken, saveToken, removeOtp, verifyToken, removeTmpToken, hashPassword, } = {}) {
-    if (!prisma || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !hashPassword)
+function makeSetPassword({ prisma, userDb, deviceDb, generateToken, saveToken, removeOtp, verifyToken, removeTmpToken, hashPassword, getOtp } = {}) {
+    if (!prisma || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !hashPassword || !getOtp)
         throw new errors_1.ServerError();
     return function setPassword({ token, password, lang, device } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -14,7 +14,10 @@ function makeSetPassword({ prisma, userDb, deviceDb, generateToken, saveToken, r
             if (!password)
                 throw new errors_1.MissingParamError('password');
             console.log('device', device);
-            const { email } = yield verifyToken({ token });
+            const { email, otp } = yield verifyToken({ token });
+            const otpIndex = yield getOtp({ phoneNumber: email, otp });
+            if (otpIndex === null || otpIndex === undefined)
+                throw new errors_1.InvalidParamError('token');
             let user = yield userDb.findFirst({ where: { email } });
             password = yield hashPassword({ password });
             return yield prisma.$transaction((_) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
