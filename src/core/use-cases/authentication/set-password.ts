@@ -1,4 +1,4 @@
-import { AccountNotFoundError, MissingParamError, OtpIncorrectError, ServerError } from "../../../utils/errors"
+import { AccountNotFoundError, InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeSetPassword({
     prisma,
@@ -7,31 +7,33 @@ export default function makeSetPassword({
     generateToken,
     saveToken,
     removeOtp,
+    verifyToken,
     removeTmpToken,
     hashPassword,
+    getOtp
 }: any = {}) {
-    if (!prisma || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !hashPassword) throw new ServerError()
+    if (!prisma || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !hashPassword || !getOtp) throw new ServerError()
     return async function setPassword({
         token,
-        email,
         password,
         lang,
         device
     }: any = {}) {
-        if (!email) throw new MissingParamError('email')
         if (!device) throw new MissingParamError('device')
         if (!token || !lang) throw new ServerError()
         if (!password) throw new MissingParamError('password')
 
         console.log('device', device)
-      
+        const { email, otp } = await verifyToken({ token })
+        const otpIndex = await getOtp({ phoneNumber:email, otp })
+        if (otpIndex === null || otpIndex === undefined) throw new InvalidParamError('token')
         let user = await userDb.findFirst({ where: { email } })
          password = await hashPassword({ password })
         return await prisma.$transaction(async (_) => {
             if (!user) {
                 throw new AccountNotFoundError('email')
             } 
-            if (user.password) throw new OtpIncorrectError('')
+            // if (user.password) throw new OtpIncorrectError('')
             user = await userDb.updateOne({ where: { id: user.id }, data: { password } })
             const savedDevice = await deviceDb.findFirst({ where: { id: device.id, userId: user.id } })
             if (!savedDevice) await deviceDb.insertOne({

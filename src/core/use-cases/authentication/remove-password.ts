@@ -3,9 +3,12 @@ import { InvalidParamError, MissingParamError, OtpIncorrectError, ServerError } 
 export default function makeRemovePassword({
     verifyToken,
     getOtp,
-    userDb
+    userDb,
+    generateToken,
+    saveTmpToken,
+    removeTmpToken
 }: any = {}) {
-    if (!getOtp || !verifyToken || !userDb ) throw new ServerError()
+    if (!getOtp || !verifyToken || !userDb || !generateToken || !saveTmpToken || !removeTmpToken ) throw new ServerError()
     return async function removePassword({
         token,
         otp,
@@ -18,6 +21,9 @@ export default function makeRemovePassword({
         if (otpIndex === null || otpIndex === undefined) throw new OtpIncorrectError('')
         // const user = await userDb.findFirst({ where: { email }, select: { firstName: true, password: true } })
         // if(user.password)   await userDb.updateOne({ where: { email }, data: { password: '' } })
+        await removeTmpToken({ token }) 
+        token = await generateToken({ email, otp })
+         await saveTmpToken({ token })
         const message = { text: 'auth.message.removePassword' }
         return { token, message }
     }
