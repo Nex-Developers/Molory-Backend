@@ -35,6 +35,7 @@ function makeGetProfile({ userDb } = {}) {
                     driverLicenseNumber: true,
                     driverLicenseRejectionMessage: true,
                     driverLicenseModifiedAt: true,
+                    signUpMethod: true,
                     vehicles: true,
                     preferences: {
                         select: {

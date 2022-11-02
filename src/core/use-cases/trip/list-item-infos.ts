@@ -33,6 +33,7 @@ export default function makeListItemInfos({
                     select: {
                         id: true,
                         type: true,
+                        model: true,
                         color: true,
                         numberPlate: true,
                         registrationDoc: true

@@ -16,6 +16,7 @@ function makeListItemInfos({ vehicleDb } = {}) {
                 id: true,
                 type: true,
                 color: true,
+                model: true,
                 numberPlate: true,
                 registrationDoc: true,
                 createdAt: true

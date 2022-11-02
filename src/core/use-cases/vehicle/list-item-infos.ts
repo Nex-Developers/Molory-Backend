@@ -17,6 +17,7 @@ export default function makeListItemInfos({
                 id: true,
                 type: true,
                 color: true,
+                model: true,
                 numberPlate: true,
                 registrationDoc: true,
                 createdAt: true

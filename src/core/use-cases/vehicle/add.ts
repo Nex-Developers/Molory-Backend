@@ -7,6 +7,7 @@ export default function makeAdd({
     return async ({
         userId,
         type,
+        model,
         color,
         numberPlate
     }: any = {}) => {
@@ -15,7 +16,7 @@ export default function makeAdd({
         if (!color) throw new MissingParamError('color')
         if (!numberPlate) throw new MissingParamError('numberPlate')
 
-        const { id } = await vehicleDb.insertOne({ data: { userId, type, color, numberPlate }})
+        const { id } = await vehicleDb.insertOne({ data: { userId, type, color, model, numberPlate }})
         const message = { text: "response.add" }
         return { message, id }
     } 
