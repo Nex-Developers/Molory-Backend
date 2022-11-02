@@ -6,7 +6,7 @@ const helpers_1 = require("../../utils/helpers");
 function makeRegisterController({ signUp }) {
     return function registerController(request) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            const { lastName, firstName, email, phoneNumber } = request.body, lang = request.lang, date = new Date(), reqLog = {
+            const { lastName, firstName, email, phoneNumber, gender, birthDay } = request.body, lang = request.lang, date = new Date(), reqLog = {
                 date: date.toDateString(),
                 time: date.toTimeString(),
                 userId: null,
@@ -25,9 +25,10 @@ function makeRegisterController({ signUp }) {
                 const body = request.body, data = yield signUp({
                     firstName,
                     lastName,
-                    birthDay: body.birthDay,
+                    birthDay,
                     phoneNumber,
                     email,
+                    gender,
                     password: body.password,
                     language: lang
                 });

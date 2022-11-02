@@ -6,7 +6,7 @@ export default function makeRegisterController({
 }) {
     // use translations
     return async function registerController(request: IHttpRequest): Promise<IHttpResponse> {
-        const { lastName, firstName, email, phoneNumber } = request.body,
+        const { lastName, firstName, email, phoneNumber, gender, birthDay } = request.body,
         lang = request.lang,
         date = new Date(),
         reqLog: Log = {
@@ -29,9 +29,10 @@ export default function makeRegisterController({
                 data = await signUp({
                     firstName,
                     lastName,
-                    birthDay: body.birthDay,
+                    birthDay,
                     phoneNumber,
-                    email, 
+                    email,
+                    gender, 
                     password: body.password,
                     language: lang
                 })
