@@ -7,6 +7,7 @@ function makeSetProfile({ userDb, } = {}) {
         throw new errors_1.ServerError();
     return function setProfile({ id, lang, firstName, lastName, gender, email, birthDay } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            console.log('birthDay', birthDay);
             if (!id)
                 throw new errors_1.InvalidParamError('token');
             if (!firstName)
@@ -24,7 +25,7 @@ function makeSetProfile({ userDb, } = {}) {
                 const message = { text: 'error.alreadyDone', params: { date: user.profileCompletedAt } };
                 return { message };
             }
-            const data = { firstName, lastName, birthDay, email, profileCompletedAt: new Date(), language: lang };
+            const data = { firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang };
             user = yield userDb.updateOne({ where: { id }, data });
             const message = { text: 'auth.message.profileUpdated' };
             return { message, user };

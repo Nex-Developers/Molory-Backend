@@ -23,6 +23,7 @@ function makeEditUser({ userDb, isValidEmail, hashPassword } = {}) {
                     throw new errors_1.InvalidParamError('email');
                 data.email = email;
             }
+            console.log(birthDay);
             if (birthDay) {
                 if (typeof birthDay === 'string')
                     birthDay = new Date(birthDay);
@@ -33,7 +34,7 @@ function makeEditUser({ userDb, isValidEmail, hashPassword } = {}) {
             if (language)
                 data.language = language;
             if (password)
-                password = yield hashPassword({ password });
+                data.password = yield hashPassword({ password });
             if (Object.keys(data).length === 0)
                 throw new errors_1.MissingParamError('all');
             yield userDb.updateOne({ where: { id }, data });

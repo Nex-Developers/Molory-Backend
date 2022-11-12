@@ -12,37 +12,20 @@ function makeListItemInfos({ routeDb } = {}) {
             limit = 100;
         const where = { trip: { status: 3, remainingSeats: { gt: 0 } } };
         if (date)
-            where.trip.departureDate = date;
+            where.departureDate = date;
         const routes = yield routeDb.findMany({
             startAt,
             limit,
             where,
             select: {
                 id: true,
+                departureDate: true,
+                departureTime: true,
                 distance: true,
                 duration: true,
                 price: true,
                 principal: true,
                 remainingSeats: true,
-                trip: {
-                    select: {
-                        id: true,
-                        seats: true,
-                        remainingSeats: true,
-                        status: true,
-                        departureDate: true,
-                        departureTime: true,
-                        user: {
-                            select: {
-                                id: true,
-                                avatar: true,
-                                firstName: true,
-                                lastName: true,
-                                phoneNumber: true
-                            }
-                        }
-                    }
-                },
                 stops: {
                     select: {
                         id: true,

@@ -14,7 +14,7 @@ export default function makeListItemInfos({
         if (!startAt) startAt = 0
         if (!limit) limit = 100
         const where: any = { trip: { status: 3, remainingSeats: { gt: 0}}}
-        if(date) where.trip.departureDate = date
+        if(date) where.departureDate = date
         // if (departure && arrival) where.stops = { AND: [{ address: departure, type: 'departure' }, { address: arrival, type: 'arrival' }]}
         // else if (departure) where.stops = {address: departure, type: 'departure'}
         // else if (arrival) where.stops = {address: arrival, type: 'arrival'}
@@ -26,30 +26,32 @@ export default function makeListItemInfos({
             where,
             select: {
                 id: true,
+                departureDate: true,
+                departureTime: true,
                 distance: true,
                 duration: true,
                 price: true,
                 principal: true,
                 remainingSeats: true,
-                trip:{
-                    select: {
-                        id: true,
-                        seats: true,
-                        remainingSeats: true,
-                        status: true,
-                        departureDate: true,
-                        departureTime: true,
-                        user: {
-                            select: {
-                                id: true,
-                                avatar: true,
-                                firstName: true,
-                                lastName: true,
-                                phoneNumber: true
-                            }
-                        }
-                    }
-                }, 
+                // trip:{
+                //     select: {
+                //         id: true,
+                //         seats: true,
+                //         remainingSeats: true,
+                //         status: true,
+                //         departureDate: true,
+                //         departureTime: true,
+                //         user: {
+                //             select: {
+                //                 id: true,
+                //                 avatar: true,
+                //                 firstName: true,
+                //                 lastName: true,
+                //                 phoneNumber: true
+                //             }
+                //         }
+                //     }
+                // }, 
                 stops: {
                     select: {
                         id: true,

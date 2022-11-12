@@ -12,6 +12,7 @@ export default function makeUpdateProfile ({
         gender,
         email
     }: any = {}) {
+        console.log('birthDay', birthDay)
         const data: any = {}
         if (! id ) throw new InvalidParamError('token')
         if (firstName) data.firstName = firstName

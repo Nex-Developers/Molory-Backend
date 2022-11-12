@@ -6,7 +6,7 @@ const errors_1 = require("../../../utils/errors");
 function makeAddUser({ userDb, isValidEmail, hashPassword, generateToken, askToConfirmEmail, saveTmpToken } = {}) {
     if (!userDb || !isValidEmail || !hashPassword || !generateToken || !askToConfirmEmail || !saveTmpToken)
         throw new errors_1.ServerError();
-    return function addUser({ lastName, firstName, phoneNumber, email, birthDay, role, language, password } = {}) {
+    return function addUser({ lastName, firstName, phoneNumber, email, birthDay, gender, role, language, password } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!lastName)
                 throw new errors_1.MissingParamError('lastName');
@@ -18,6 +18,7 @@ function makeAddUser({ userDb, isValidEmail, hashPassword, generateToken, askToC
                 throw new errors_1.MissingParamError('email');
             if (!(yield isValidEmail({ email })))
                 throw new errors_1.InvalidParamError('email');
+            console.log(birthDay);
             if (birthDay && typeof birthDay === 'string')
                 birthDay = new Date(birthDay);
             if (!role)
@@ -30,6 +31,7 @@ function makeAddUser({ userDb, isValidEmail, hashPassword, generateToken, askToC
                     firstName,
                     phoneNumber,
                     email,
+                    gender,
                     birthDay,
                     role,
                     language,

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
+const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 function makeAdd({ tripDb, calculMatrix, } = {}) {
     if (!tripDb)
         throw new errors_1.ServerError();
@@ -18,29 +19,50 @@ function makeAdd({ tripDb, calculMatrix, } = {}) {
             throw new errors_1.MissingParamError('time');
         if (!stops && !stops.length)
             throw new errors_1.MissingParamError('stops');
-        const departures = stops.filter(stop => stop.type === 'departure' || stop.type === 'both');
+        const departures = JSON.parse(JSON.stringify(stops)).filter(stop => stop.type === 'departure' || stop.type === 'both');
+        departures.map(departure => {
+            if (departure.type !== 'departure') {
+                departure.type = 'departure';
+                departure.principal = false;
+            }
+            return departure;
+        });
         if (!departures.length)
             throw new errors_1.MissingParamError('departure');
-        const arrivals = stops.filter(stop => stop.type === 'arrival' || stop.type === 'both');
+        const arrivals = JSON.parse(JSON.stringify(stops)).filter(stop => stop.type === 'arrival' || stop.type === 'both');
+        arrivals.map(arrival => {
+            if (arrival.type !== 'arrival') {
+                arrival.type = 'arrival';
+                arrival.principal = false;
+            }
+            return arrival;
+        });
         if (!arrivals.length)
             throw new errors_1.MissingParamError('arrival');
+        console.log(departures.length, arrivals.length);
         const routes = [];
         for (const departure of departures) {
             for (const arrival of arrivals) {
-                const principal = (departure.principal && arrival.principal) ? true : false;
-                if (departure.address == arrival.address)
+                if (departure.address === arrival.address)
                     break;
-                if (!departure.type) {
-                    departure.type = 'departure';
-                    departure.principal = false;
-                }
-                if (!arrival.type) {
-                    arrival.type = 'arrival';
-                    arrival.principal = false;
-                }
+                const principal = (departure.principal && arrival.principal) ? true : false;
                 const { distance, duration } = yield calculMatrix({ departure, arrival });
-                console.log(distance, duration, price);
+                let departureDate = date;
+                let departureTime = time;
+                if (!departure.principal) {
+                    const principalDeparture = departures.find(departure => departure.principal);
+                    const { duration } = yield calculMatrix({ departure: principalDeparture, arrival: departure });
+                    console.log('duration to principal departure', duration);
+                    const calculateDepartureDateTime = (0, moment_1.default)(departureDate + ' ' + departureTime).add(duration, 'hours');
+                    console.log('Calculate departure datetime  ', calculateDepartureDateTime);
+                    const [calDepartureDate, calDepartureTime] = (0, moment_1.default)(calculateDepartureDateTime).format('YYYY-MM-DD HH:MM').split(' ');
+                    departureDate = calDepartureDate;
+                    departureTime = calDepartureTime;
+                }
+                console.log(departureDate, departureTime, distance, duration);
                 routes.push({
+                    departureDate,
+                    departureTime,
                     distance,
                     duration,
                     price,
@@ -75,6 +97,8 @@ function makeAdd({ tripDb, calculMatrix, } = {}) {
                 routes: {
                     select: {
                         id: true,
+                        departureDate: true,
+                        departureTime: true,
                         distance: true,
                         duration: true,
                         principal: true,

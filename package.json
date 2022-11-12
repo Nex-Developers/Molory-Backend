@@ -48,7 +48,7 @@
     "pre-deploy": "sudo docker compose -f docker-compose.yml -p 'molory' up --build -d",
     "deploy": "sudo docker compose -f docker-compose.dev.yml -p 'molory' up  --build -d",
     "deploy:prod": "npm run build && sudo docker compose -f docker-compose.prod.yml -p 'molory' up --build -d",
-    "docker:build": "sudo docker compose docker-compose.prod.yml build api", 
+    "docker:build": "sudo docker compose docker-compose.prod.yml build api",
     "push": "sudo docker compose docker-compose.prod.yml push api"
   },
   "author": "Kode Sonik <k0d3.s0n1k@gmail.com>",
@@ -65,6 +65,7 @@
     "express": "^4.17.1",
     "formidable": "^2.0.1",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
     "multer": "^1.4.4",
     "node-fetch": "^2.6.1",
     "nodemailer": "^6.7.0",

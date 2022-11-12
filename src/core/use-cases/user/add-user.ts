@@ -16,6 +16,7 @@ export default function makeAddUser({
         phoneNumber,
         email,
         birthDay,
+        gender,
         role,
         language,
         password
@@ -26,6 +27,7 @@ export default function makeAddUser({
         if (!email) throw new MissingParamError('email')
         if (! await isValidEmail({ email })) throw new InvalidParamError('email')
         // if (!birthDay) throw new MissingParamError('birthDay')
+        console.log(birthDay)
         if (birthDay && typeof birthDay === 'string') birthDay = new Date(birthDay)
         if (!role) role = 'user'
         if (!language) language = env.lang.default
@@ -36,6 +38,7 @@ export default function makeAddUser({
             firstName,
             phoneNumber,
             email,
+            gender,
             birthDay,
             role,
             language,

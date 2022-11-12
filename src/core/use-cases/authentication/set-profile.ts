@@ -13,6 +13,7 @@ export default function makeSetProfile ({
         email,
         birthDay
     }: any = {}) {
+        console.log('birthDay', birthDay);
         if (! id ) throw new InvalidParamError('token')
         if (!firstName) throw new MissingParamError('firstName')
         if (!lastName) throw new MissingParamError('lastName')
@@ -25,7 +26,7 @@ export default function makeSetProfile ({
             const message =  { text: 'error.alreadyDone', params: { date: user.profileCompletedAt}}
             return { message }
         }
-        const data: any = { firstName, lastName, birthDay, email, profileCompletedAt: new Date(), language: lang }
+        const data: any = { firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang }
         
         user = await userDb.updateOne({ where: { id }, data })
         const message = { text: 'auth.message.profileUpdated'}

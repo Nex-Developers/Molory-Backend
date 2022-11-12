@@ -214,6 +214,8 @@ model Stop {
 model Route {
   id        Int     @id @default(autoincrement())
   tripId    Int
+  departureDate  String?
+  departureTime  String?
   distance  Int
   duration  Int
   price     Int

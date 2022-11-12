@@ -21,7 +21,7 @@ export default function makeSignUp({
         language,
         gender
     }: any = {}) {
-        console.log('signup');
+        console.log('birthDay', birthDay);
         if (!firstName) throw new MissingParamError('firstName')
         if (!lastName) throw new MissingParamError('lastName')
         if (!birthDay) throw new MissingParamError('birthDay')

@@ -7,7 +7,7 @@ function makeSignUp({ userDb, askToConfirmEmail, isValidEmail, hashPassword, gen
         throw new errors_1.ServerError();
     return function signUp({ firstName, lastName, birthDay, phoneNumber, email, password, language, gender } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            console.log('signup');
+            console.log('birthDay', birthDay);
             if (!firstName)
                 throw new errors_1.MissingParamError('firstName');
             if (!lastName)

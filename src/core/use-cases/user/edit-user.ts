@@ -28,13 +28,14 @@ export default function makeEditUser({
             if (! await isValidEmail({ email })) throw new InvalidParamError('email')
             data.email = email
         }
+        console.log(birthDay);
         if (birthDay) {
             if (typeof birthDay === 'string') birthDay = new Date(birthDay)
             data.birthDay = birthDay
         }
         if (role) data.role = role
         if (language) data.language = language
-        if (password) password = await hashPassword({ password }) 
+        if (password) data.password = await hashPassword({ password }) 
 
         if( Object.keys(data).length === 0) throw new MissingParamError('all')
 
