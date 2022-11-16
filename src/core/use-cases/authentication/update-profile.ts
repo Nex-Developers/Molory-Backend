@@ -1,3 +1,4 @@
+import moment from "moment"
 import { ServerError, InvalidParamError, AccountAllReadyExistError } from "../../../utils/errors"
 import { isValidEmail } from "../../services/email"
 
@@ -18,7 +19,10 @@ export default function makeUpdateProfile ({
         if (! id ) throw new InvalidParamError('token')
         if (firstName) data.firstName = firstName
         if (lastName) data.lastName = lastName
-        if (birthDay) data.birthDay =  new Date(birthDay) 
+        if (birthDay) {
+            const formatedDate = moment(data.birthDay, 'DD-MM-YYYY').format('MM-DD-YYYY')
+            data.birthDay = new Date(formatedDate)
+        }
         if (gender) data.gender =  gender 
         if (email) {
             if (! await isValidEmail({ email })) throw new InvalidParamError('email')

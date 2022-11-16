@@ -1,3 +1,4 @@
+import moment from "moment";
 import { AccountAllReadyExistError, InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeSignUp({
@@ -25,7 +26,8 @@ export default function makeSignUp({
         if (!firstName) throw new MissingParamError('firstName')
         if (!lastName) throw new MissingParamError('lastName')
         if (!birthDay) throw new MissingParamError('birthDay')
-        if (typeof birthDay == 'string') birthDay = new Date(birthDay)
+        const formatedDate = moment(birthDay, 'DD-MM-YYYY').format('MM-DD-YYYY')
+        birthDay = new Date(formatedDate)
         // if (!phoneNumber) throw new MissingParamError('phoneNumber')
         if (!email) throw new MissingParamError('email')
         if (!isValidEmail({ email })) throw new InvalidParamError('email')

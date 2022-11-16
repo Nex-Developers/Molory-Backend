@@ -1,3 +1,4 @@
+import moment from "moment"
 import { env } from "../../../configs/environment"
 import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 
@@ -27,8 +28,11 @@ export default function makeAddUser({
         if (!email) throw new MissingParamError('email')
         if (! await isValidEmail({ email })) throw new InvalidParamError('email')
         // if (!birthDay) throw new MissingParamError('birthDay')
-        console.log(birthDay)
-        if (birthDay && typeof birthDay === 'string') birthDay = new Date(birthDay)
+     
+        if (birthDay){
+            const formatedDate = moment(birthDay, 'DD-MM-YYYY').format('MM-DD-YYYY')
+            birthDay = new Date(formatedDate)
+        }
         if (!role) role = 'user'
         if (!language) language = env.lang.default
        password = password? await hashPassword({ password }) : '' 

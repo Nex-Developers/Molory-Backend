@@ -1,4 +1,5 @@
 import { ServerError, InvalidParamError, MissingParamError } from "../../../utils/errors"
+import moment from 'moment'
 
 export default function makeSetProfile ({
     userDb,
@@ -20,7 +21,9 @@ export default function makeSetProfile ({
         if (!gender) throw new MissingParamError('gender')
         // if (!email) throw new MissingParamError('email')
         if (!birthDay) throw new MissingParamError('birthDay')
-        if (typeof birthDay == 'string') birthDay = new Date(birthDay)
+        // if (typeof birthDay == 'string') birthDay = new Date(birthDay)
+        const formatedDate = moment(birthDay, 'DD-MM-YYYY').format('MM-DD-YYYY')
+        birthDay = new Date(formatedDate)
         let user = await userDb.findFirst({ where: { id }, select: { firstName: true, lastName: true, birthDay: true, profileCompletedAt: true }})
         if (user && (user.firstName || user.lastName || user.birthDay)) {
             const message =  { text: 'error.alreadyDone', params: { date: user.profileCompletedAt}}
