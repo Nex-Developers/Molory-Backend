@@ -18,7 +18,6 @@ function makeVerifyPasswordController({ checkPassword }) {
                 description: `${id}  ${conventions_1.Action.LOGIN}`
             };
             try {
-                console.log(request.body);
                 const data = yield checkPassword({ id, password: request.body.password, device: request.body.device, token: request.token });
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 helpers_1.LogManager.save(reqLog);

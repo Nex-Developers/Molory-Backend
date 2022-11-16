@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
+const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 function makeGetProfile({ userDb } = {}) {
     if (!userDb)
         throw new errors_1.ServerError();
@@ -78,7 +79,7 @@ function makeGetProfile({ userDb } = {}) {
                     avatar: data.avatar,
                     firstName: data.firstName,
                     lastName: data.lastName,
-                    birthDay: data.birthDay,
+                    birthDay: (0, moment_1.default)(data.birthDay).format('DD-MM-YYYY'),
                     email: data.email,
                     gender: data.gender,
                     role: data.role,
