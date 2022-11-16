@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
+const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 function makeSetProfile({ userDb, } = {}) {
     if (!userDb)
         throw new errors_1.ServerError();
@@ -18,8 +19,8 @@ function makeSetProfile({ userDb, } = {}) {
                 throw new errors_1.MissingParamError('gender');
             if (!birthDay)
                 throw new errors_1.MissingParamError('birthDay');
-            if (typeof birthDay == 'string')
-                birthDay = new Date(birthDay);
+            const formatedDate = (0, moment_1.default)(birthDay, 'DD-MM-YYYY').format('MM-DD-YYYY');
+            birthDay = new Date(formatedDate);
             let user = yield userDb.findFirst({ where: { id }, select: { firstName: true, lastName: true, birthDay: true, profileCompletedAt: true } });
             if (user && (user.firstName || user.lastName || user.birthDay)) {
                 const message = { text: 'error.alreadyDone', params: { date: user.profileCompletedAt } };

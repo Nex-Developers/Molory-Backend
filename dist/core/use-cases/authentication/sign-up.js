@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
+const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 const errors_1 = require("../../../utils/errors");
 function makeSignUp({ userDb, askToConfirmEmail, isValidEmail, hashPassword, generateToken, saveTmpToken, generateOtp, saveOtp } = {}) {
     if (!userDb || !askToConfirmEmail || !isValidEmail || !hashPassword || !generateToken || !saveTmpToken || !generateOtp || !saveOtp)
@@ -14,8 +15,8 @@ function makeSignUp({ userDb, askToConfirmEmail, isValidEmail, hashPassword, gen
                 throw new errors_1.MissingParamError('lastName');
             if (!birthDay)
                 throw new errors_1.MissingParamError('birthDay');
-            if (typeof birthDay == 'string')
-                birthDay = new Date(birthDay);
+            const formatedDate = (0, moment_1.default)(birthDay, 'DD-MM-YYYY').format('MM-DD-YYYY');
+            birthDay = new Date(formatedDate);
             if (!email)
                 throw new errors_1.MissingParamError('email');
             if (!isValidEmail({ email }))
