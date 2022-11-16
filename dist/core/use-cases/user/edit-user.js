@@ -21,6 +21,9 @@ function makeEditUser({ userDb, isValidEmail, hashPassword } = {}) {
             if (email) {
                 if (!(yield isValidEmail({ email })))
                     throw new errors_1.InvalidParamError('email');
+                const user = yield userDb.findFirst({ where: { email } });
+                if (user)
+                    throw new errors_1.AccountAllReadyExistError('email');
                 data.email = email;
             }
             console.log(birthDay);

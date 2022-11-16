@@ -1,4 +1,5 @@
-import { ServerError, InvalidParamError } from "../../../utils/errors"
+import { ServerError, InvalidParamError, AccountAllReadyExistError } from "../../../utils/errors"
+import { isValidEmail } from "../../services/email"
 
 export default function makeUpdateProfile ({
     userDb
@@ -19,7 +20,12 @@ export default function makeUpdateProfile ({
         if (lastName) data.lastName = lastName
         if (birthDay) data.birthDay =  new Date(birthDay) 
         if (gender) data.gender =  gender 
-        if (email) data.email =  email
+        if (email) {
+            if (! await isValidEmail({ email })) throw new InvalidParamError('email')
+            const user = await userDb.findFirst({ where: { email } })
+            if(user) throw new AccountAllReadyExistError('email')
+            data.email =  email
+        }
         await userDb.updateOne({ where: { id }, data })
         const message = { text: 'auth.message.updateProfile' }
         return { message }

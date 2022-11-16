@@ -1,4 +1,4 @@
-import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
+import { AccountAllReadyExistError, InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeEditUser({
     userDb,
@@ -26,6 +26,8 @@ export default function makeEditUser({
         if (gender) data.gender = gender
         if (email) {
             if (! await isValidEmail({ email })) throw new InvalidParamError('email')
+            const user = await userDb.findFirst({ where: { email } })
+            if(user) throw new AccountAllReadyExistError('email')
             data.email = email
         }
         console.log(birthDay);
