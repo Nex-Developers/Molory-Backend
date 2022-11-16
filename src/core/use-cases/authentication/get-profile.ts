@@ -1,5 +1,5 @@
 import { ServerError, InvalidParamError } from "../../../utils/errors"
-
+import moment  from "moment"
 export default function makeGetProfile({
     userDb
 }: any = {}) {
@@ -78,7 +78,7 @@ export default function makeGetProfile({
                 avatar: data.avatar,
                 firstName: data.firstName,
                 lastName: data.lastName,
-                birthDay: data.birthDay,
+                birthDay: moment(data.birthDay).format('DD-MM-YYYY'),
                 email: data.email,
                 gender: data.gender,
                 role: data.role,
