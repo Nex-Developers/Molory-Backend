@@ -1,12 +1,11 @@
 import { ServerError, InvalidParamError, MissingParamError } from "../../../utils/errors"
-import moment from 'moment'
 
-export default function makeSetProfile ({
+export default function makeSetProfile({
     userDb,
 }: any = {}) {
     if (!userDb) throw new ServerError()
     return async function setProfile({
-        id ,
+        id,
         lang,
         firstName,
         lastName,
@@ -15,24 +14,25 @@ export default function makeSetProfile ({
         birthDay
     }: any = {}) {
         console.log('birthDay', birthDay);
-        if (! id ) throw new InvalidParamError('token')
+        if (!id) throw new InvalidParamError('token')
         if (!firstName) throw new MissingParamError('firstName')
         if (!lastName) throw new MissingParamError('lastName')
         if (!gender) throw new MissingParamError('gender')
         // if (!email) throw new MissingParamError('email')
         if (!birthDay) throw new MissingParamError('birthDay')
         // if (typeof birthDay == 'string') birthDay = new Date(birthDay)
-        const formatedDate = moment(birthDay, 'DD-MM-YYYY').format('MM-DD-YYYY')
-        birthDay = new Date(formatedDate)
-        let user = await userDb.findFirst({ where: { id }, select: { firstName: true, lastName: true, birthDay: true, profileCompletedAt: true }})
+        const formatedDateArray = birthDay.split('-')
+        const fomatedDate = [formatedDateArray[1], formatedDateArray[0], formatedDateArray[2]].join('-')
+        birthDay = new Date(fomatedDate)
+        let user = await userDb.findFirst({ where: { id }, select: { firstName: true, lastName: true, birthDay: true, profileCompletedAt: true } })
         if (user && (user.firstName || user.lastName || user.birthDay)) {
-            const message =  { text: 'error.alreadyDone', params: { date: user.profileCompletedAt}}
+            const message = { text: 'error.alreadyDone', params: { date: user.profileCompletedAt } }
             return { message }
         }
         const data: any = { firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang }
-        
+
         user = await userDb.updateOne({ where: { id }, data })
-        const message = { text: 'auth.message.profileUpdated'}
+        const message = { text: 'auth.message.profileUpdated' }
         return { message, user }
     }
 }

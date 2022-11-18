@@ -1,4 +1,3 @@
-import moment from "moment"
 import { env } from "../../../configs/environment"
 import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 
@@ -9,7 +8,7 @@ export default function makeAddUser({
     generateToken,
     askToConfirmEmail,
     saveTmpToken
-}: any = {}){
+}: any = {}) {
     if (!userDb || !isValidEmail || !hashPassword || !generateToken || !askToConfirmEmail || !saveTmpToken) throw new ServerError()
     return async function addUser({
         lastName,
@@ -21,37 +20,40 @@ export default function makeAddUser({
         role,
         language,
         password
-    }: any = {}){
+    }: any = {}) {
         if (!lastName) throw new MissingParamError('lastName')
         if (!firstName) throw new MissingParamError('firstName')
         if (!phoneNumber) throw new MissingParamError('phoneNumber')
         if (!email) throw new MissingParamError('email')
         if (! await isValidEmail({ email })) throw new InvalidParamError('email')
         // if (!birthDay) throw new MissingParamError('birthDay')
-     
-        if (birthDay){
-            const formatedDate = moment(birthDay, 'DD-MM-YYYY').format('MM-DD-YYYY')
-            birthDay = new Date(formatedDate)
+
+        if (birthDay) {
+            const formatedDateArray = birthDay.split('-')
+            const fomatedDate = [formatedDateArray[1], formatedDateArray[0], formatedDateArray[2]].join('-')
+            birthDay = new Date(fomatedDate)
         }
         if (!role) role = 'user'
         if (!language) language = env.lang.default
-       password = password? await hashPassword({ password }) : '' 
+        password = password ? await hashPassword({ password }) : ''
 
-       const { id } = await userDb.insertOne({ data: {
-            lastName,
-            firstName,
-            phoneNumber,
-            email,
-            gender,
-            birthDay,
-            role,
-            language,
-            password
-        }})
+        const { id } = await userDb.insertOne({
+            data: {
+                lastName,
+                firstName,
+                phoneNumber,
+                email,
+                gender,
+                birthDay,
+                role,
+                language,
+                password
+            }
+        })
         const token = await generateToken({ email })
-        await saveTmpToken({ token  })
+        await saveTmpToken({ token })
         await askToConfirmEmail({ email, token, firstName, lastName, lang: language })
-        const message = { text: "response.add"}
-        return { message , id }
-    } 
+        const message = { text: "response.add" }
+        return { message, id }
+    }
 }

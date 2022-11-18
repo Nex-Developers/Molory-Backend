@@ -32,8 +32,9 @@ export default function makeEditUser({
         }
         console.log(birthDay);
         if (birthDay) {
-            if (typeof birthDay === 'string') birthDay = new Date(birthDay)
-            data.birthDay = birthDay
+            const formatedDateArray = birthDay.split('-')
+            const fomatedDate = [formatedDateArray[1], formatedDateArray[0], formatedDateArray[2]].join('-')
+            data.birthDay = new Date(fomatedDate)
         }
         if (role) data.role = role
         if (language) data.language = language

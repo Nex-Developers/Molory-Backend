@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 const errors_1 = require("../../../utils/errors");
 const email_1 = require("../../services/email");
 function makeUpdateProfile({ userDb } = {}) {
@@ -18,8 +17,9 @@ function makeUpdateProfile({ userDb } = {}) {
             if (lastName)
                 data.lastName = lastName;
             if (birthDay) {
-                const formatedDate = (0, moment_1.default)(data.birthDay, 'DD-MM-YYYY').format('MM-DD-YYYY');
-                data.birthDay = new Date(formatedDate);
+                const formatedDateArray = birthDay.split('-');
+                const fomatedDate = [formatedDateArray[1], formatedDateArray[0], formatedDateArray[2]].join('-');
+                data.birthDay = new Date(fomatedDate);
             }
             if (gender)
                 data.gender = gender;
