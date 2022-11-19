@@ -7,7 +7,7 @@ export default async (req, res, next) => {
     const ref = await TokenManager.verify(token)
     if (!ref) res.status(403).send({ message: 'Access denied' })         
     else {
-        console.log('token', token)
+        // console.log('token', token)
         const tokenIndex = await CacheManager.findInArray('tmp_tokens', token)
         if (tokenIndex === undefined || tokenIndex === null) res.status(503).json({ error: "Token expired."})
         else {  

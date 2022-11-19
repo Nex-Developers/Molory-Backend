@@ -21,7 +21,7 @@ function makeValidateDriverLicense({ userDb, walletDb } = {}) {
             }
             else {
                 const data = { driverLicenseStatus: 1, driverLicenseNumber: cardNumber, driverLicenseModifiedAt: new Date(), status: 1 };
-                if (user.role === 'user')
+                if (user.idCardStatus == 1)
                     data.role = "driver";
                 yield userDb.updateOne({ where: { id: userId }, data });
                 yield walletDb.insertOne({ data: { userId } });

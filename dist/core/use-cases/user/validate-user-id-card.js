@@ -21,7 +21,7 @@ function makeValidateUserIdCard({ userDb, walletDb } = {}) {
             }
             else {
                 const data = { idCardStatus: 1, idCardNumber: cardNumber, idCardModifiedAt: new Date(), status: 1 };
-                if (user.role === 'user')
+                if (user.driverLicenseStatus == 1)
                     data.role = "driver";
                 yield userDb.updateOne({ where: { id: userId }, data });
                 yield walletDb.insertOne({ data: { userId } });

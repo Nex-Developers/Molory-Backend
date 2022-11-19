@@ -11,7 +11,6 @@ exports.default = (req, res, next) => (0, tslib_1.__awaiter)(void 0, void 0, voi
     if (!ref)
         res.status(403).send({ message: 'Access denied' });
     else {
-        console.log('token', token);
         const tokenIndex = yield helpers_1.CacheManager.findInArray('tmp_tokens', token);
         if (tokenIndex === undefined || tokenIndex === null)
             res.status(503).json({ error: "Token expired." });
