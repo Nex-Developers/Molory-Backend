@@ -11,7 +11,7 @@ export default function makeListItemInfos({
 
         const data = await tripDb.findFirst({
             where: {
-                id: true
+                id
             },
             select: {
                 id: true,

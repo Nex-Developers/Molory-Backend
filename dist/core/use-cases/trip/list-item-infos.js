@@ -10,7 +10,7 @@ function makeListItemInfos({ tripDb } = {}) {
             throw new errors_1.MissingParamError('id');
         const data = yield tripDb.findFirst({
             where: {
-                id: true
+                id
             },
             select: {
                 id: true,

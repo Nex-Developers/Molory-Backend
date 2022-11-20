@@ -7,6 +7,7 @@ const middlewares_1 = require("../../configs/middlewares");
 const trip_1 = require("../../controllers/trip");
 exports.default = () => {
     const router = express_1.default.Router();
+    router.get('/trip/:id', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(trip_1.getTripController));
     router.route('/trip')
         .get(middlewares_1.langCheck, middlewares_1.queryParser, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(trip_1.getTripsController))
         .post(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(trip_1.postTripController));

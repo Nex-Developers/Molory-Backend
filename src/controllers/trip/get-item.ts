@@ -2,7 +2,7 @@ import { Action, IHttpRequest, IHttpResponse, Log, LogStatus } from "../../core/
 import { HttpResponse, LogManager } from "../../utils/helpers";
 
 export default function makeGetItemController({
-    listTrips
+    listTripInfos
 }) {
     // use translations
     return async function (request: IHttpRequest): Promise<IHttpResponse> {
@@ -13,22 +13,20 @@ export default function makeGetItemController({
             lastName: request.ref.lastName,
             firstName: request.ref.firstName,
             model: 'Trip',
-            path: '/api/trip',
-            modelId: 'all',
+            path: '/api/trip/:id',
+            modelId: request.params.id,
             action: Action.READ,
             status: LogStatus.FAILED,
-            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.READ} all trips`
+            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.READ}  trip ${request.params.id}`
         } 
 
         try {
             const lang = request.lang,
-                body = request.params;
-                if (request.ref.role !== 'admin') body.userId = request.ref.id
+                { id } = request.params
                   // if query
                 // body.qery = qery
-                const data = await listTrips({...body})
+                const data = await listTripInfos({ id: Number(id)})
                 reqLog.status = LogStatus.SUCCEEDED
-                reqLog.description += ` (${ data.count }) from ${ data.startAt} to ${ data.startAt + data.limit }`
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)
         } catch (err) {
