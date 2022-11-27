@@ -1,21 +1,27 @@
 
 // import { ServerError } from "../../../utils/errors"
 
-import { InvalidParamError, UnauthorizedError } from "../../../utils/errors"
+import { InvalidParamError } from "../../../utils/errors"
 
 
 // import { PrismaClient } from "@prisma/client"
 
 export default function makeConfirmPayment({
     prisma,
-    getPaymentState
+    // getPaymentState
 }: any = {}) {
     // if (!prisma || !getPaymentState) throw new ServerError()
     return async ({
-        id
+        id, 
+        status,
+        amount
     }: any = {}) => {
         // const prisma = DbConnection.prisma
-        const { status, amount, travel } = await prisma.payment.findFirst({
+        if (!status) {
+            const message = { text: "response.delete" }
+            return { message } 
+        }
+        const payment = await prisma.payment.findFirst({
             where: { id },
             select: {
                 status: true, amount: true, travel: {
@@ -23,31 +29,35 @@ export default function makeConfirmPayment({
                 }
             }
         })
-        if (status == 2) {
-            const res = await getPaymentState({ id })
-            console.log(res)
+        if(payment.amount != amount) {
+            throw new InvalidParamError('amount')
+        }
+        const travel = payment.travel;
+        if (payment.status == 2) {
+            // const res = await getPaymentState({ id })
+            // console.log(res)
             // verify  « cpm_result » est égale à « 00 »
 
-            await prisma.payment.update({
-                where: { id }, data: {
-                    reference: res.api_response_id,
-                    receivedAmount: +res.data.amount,
-                    method: res.data.payment_method,
-                    accessNumber: res.data.operator_id,
-                    status: res.code == "00" ? 1 : 0,
-                    validatedAt: res.data.payment_date
-                }
-            })
+            // await prisma.payment.update({
+            //     where: { id }, data: {
+            //         reference: res.api_response_id,
+            //         receivedAmount: +res.data.amount,
+            //         method: res.data.payment_method,
+            //         accessNumber: res.data.operator_id,
+            //         status: res.code == "00" ? 1 : 0,
+            //         validatedAt: res.data.payment_date
+            //     }
+            // })
             // ensure « cpm_amount » est égale à la valeur du montant stocké
-            if (res.code !== "00") {
-                // notify client
-                throw new UnauthorizedError()
-            }
+            // if (res.code !== "00") {
+            //     // notify client
+            //     throw new UnauthorizedError()
+            // }
 
-            if (amount !== + res.data.amount) {
-                // send notification to admin and user
-                throw new InvalidParamError('amount')
-            }
+            // if (amount !== + res.data.amount) {
+            //     // send notification to admin and user
+            //     throw new InvalidParamError('amount')
+            // }
             prisma.$transaction(async _ => {
                 // check remaining seats
                 const { remainingSeats, principal, trip } = await prisma.route.findFirst({

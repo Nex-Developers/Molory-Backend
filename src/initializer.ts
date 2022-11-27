@@ -30,4 +30,6 @@ export default async () => {
     const response = await addUser(data)
     console.log(`--> Admin user created with id: ${response.id}`)
 
+    // task every hour to set all expired trips
+
 }

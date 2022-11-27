@@ -43,6 +43,14 @@ export default function makeGetProfile({
                         answer: true
                     }
                 },
+                wallets: {
+                    select: {
+                        id: true,
+                        type: true,
+                        balance: true,
+                        currency: true
+                    }
+                },
                 _count: {
                     select: {
                         trips: true,
@@ -75,6 +83,7 @@ export default function makeGetProfile({
         }
         return {
             data: {
+                id,
                 avatar: data.avatar,
                 firstName: data.firstName,
                 lastName: data.lastName,
@@ -89,6 +98,7 @@ export default function makeGetProfile({
                 preferences: data.preferences,
                 vehicles: data.vehicles,
                 documents,
+                wallet: data.wallets?.[0],
                 stats: data._count
             }
         }

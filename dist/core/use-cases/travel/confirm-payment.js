@@ -2,9 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-function makeConfirmPayment({ prisma, getPaymentState } = {}) {
-    return ({ id } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-        const { status, amount, travel } = yield prisma.payment.findFirst({
+function makeConfirmPayment({ prisma, } = {}) {
+    return ({ id, status, amount } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        if (!status) {
+            const message = { text: "response.delete" };
+            return { message };
+        }
+        const payment = yield prisma.payment.findFirst({
             where: { id },
             select: {
                 status: true, amount: true, travel: {
@@ -12,25 +16,11 @@ function makeConfirmPayment({ prisma, getPaymentState } = {}) {
                 }
             }
         });
-        if (status == 2) {
-            const res = yield getPaymentState({ id });
-            console.log(res);
-            yield prisma.payment.update({
-                where: { id }, data: {
-                    reference: res.api_response_id,
-                    receivedAmount: +res.data.amount,
-                    method: res.data.payment_method,
-                    accessNumber: res.data.operator_id,
-                    status: res.code == "00" ? 1 : 0,
-                    validatedAt: res.data.payment_date
-                }
-            });
-            if (res.code !== "00") {
-                throw new errors_1.UnauthorizedError();
-            }
-            if (amount !== +res.data.amount) {
-                throw new errors_1.InvalidParamError('amount');
-            }
+        if (payment.amount != amount) {
+            throw new errors_1.InvalidParamError('amount');
+        }
+        const travel = payment.travel;
+        if (payment.status == 2) {
             prisma.$transaction((_) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
                 const { remainingSeats, principal, trip } = yield prisma.route.findFirst({
                     where: { id: travel.routeId },

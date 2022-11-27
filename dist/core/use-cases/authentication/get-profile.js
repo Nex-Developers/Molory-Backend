@@ -7,6 +7,7 @@ function makeGetProfile({ userDb } = {}) {
     if (!userDb)
         throw new errors_1.ServerError();
     return function getProfile({ id } = {}) {
+        var _a;
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!id)
                 throw new errors_1.InvalidParamError('token');
@@ -45,6 +46,14 @@ function makeGetProfile({ userDb } = {}) {
                             answer: true
                         }
                     },
+                    wallets: {
+                        select: {
+                            id: true,
+                            type: true,
+                            balance: true,
+                            currency: true
+                        }
+                    },
                     _count: {
                         select: {
                             trips: true,
@@ -76,6 +85,7 @@ function makeGetProfile({ userDb } = {}) {
             }
             return {
                 data: {
+                    id,
                     avatar: data.avatar,
                     firstName: data.firstName,
                     lastName: data.lastName,
@@ -90,6 +100,7 @@ function makeGetProfile({ userDb } = {}) {
                     preferences: data.preferences,
                     vehicles: data.vehicles,
                     documents,
+                    wallet: (_a = data.wallets) === null || _a === void 0 ? void 0 : _a[0],
                     stats: data._count
                 }
             };
