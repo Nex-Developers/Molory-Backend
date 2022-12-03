@@ -21,6 +21,9 @@ export default function makeConfirmOtp({
         if (!phoneNumber) throw new MissingParamError('phoneNumber')
         if (!otp) throw new MissingParamError('otp')
         if (!device) throw new MissingParamError('device')
+        if (!device.id) throw new MissingParamError('Device id')
+        if (!device.platform) throw new MissingParamError('Device platform')
+        if(!device.token) throw new MissingParamError('Device token')
         if (!token || !lang) throw new ServerError()
 
         const otpIndex = await getOtp({ phoneNumber, otp })

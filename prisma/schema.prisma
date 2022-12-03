@@ -164,7 +164,7 @@ model VehicleType {
 
 model Vehicle {
   id              Int         @id @default(autoincrement())
-  userId          Int
+  userId          Int         
   type            String
   model           String?
   color           String

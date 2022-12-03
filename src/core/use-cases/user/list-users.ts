@@ -1,4 +1,5 @@
 import { ServerError } from "../../../utils/errors"
+import moment  from "moment"
 
 export default function makeListUsers({
     userDb
@@ -18,11 +19,14 @@ export default function makeListUsers({
             phoneNumber: true,
             gender: true,
             email: true,
+            signUpMethod: true,
             birthDay: true,
             createdAt: true,
             blockedAt: true,
             role: true
         }})
+        data.birthDay = moment(data.birthDay).format('DD-MM-YYYY')
+        data.createdAt = moment(data.createdAt).format('DD-MM-YYYY')
         return { data, count: data.length, startAt, limit }
     }
 }
