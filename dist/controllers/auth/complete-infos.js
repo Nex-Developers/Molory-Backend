@@ -22,6 +22,7 @@ function makeCompleteInfosController({ setProfile } = {}) {
                 status: conventions_1.LogStatus.FAILED,
                 description: `${lastName}  ${firstName}  ${conventions_1.Action.EDIT} his infos`
             };
+            console.log('id is', id);
             try {
                 const body = request.body, data = yield setProfile(Object.assign(Object.assign({ id }, body), { lang }));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;

@@ -23,6 +23,7 @@ export default function makeCompleteInfosController({
                 status: LogStatus.FAILED,
                 description: `${lastName}  ${firstName}  ${Action.EDIT} his infos`
             }
+            console.log('id is', id)
         try {
             const body = request.body,
                 data = await setProfile({ id, ...body, lang })

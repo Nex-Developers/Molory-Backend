@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
+const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 function makeListUsers({ userDb } = {}) {
     if (!userDb)
         throw new errors_1.ServerError();
@@ -19,11 +20,14 @@ function makeListUsers({ userDb } = {}) {
                     phoneNumber: true,
                     gender: true,
                     email: true,
+                    signUpMethod: true,
                     birthDay: true,
                     createdAt: true,
                     blockedAt: true,
                     role: true
                 } });
+            data.birthDay = (0, moment_1.default)(data.birthDay).format('DD-MM-YYYY');
+            data.createdAt = (0, moment_1.default)(data.createdAt).format('DD-MM-YYYY');
             return { data, count: data.length, startAt, limit };
         });
     };

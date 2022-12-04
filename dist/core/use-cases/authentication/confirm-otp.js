@@ -13,6 +13,12 @@ function makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveT
                 throw new errors_1.MissingParamError('otp');
             if (!device)
                 throw new errors_1.MissingParamError('device');
+            if (!device.id)
+                throw new errors_1.MissingParamError('Device id');
+            if (!device.platform)
+                throw new errors_1.MissingParamError('Device platform');
+            if (!device.token)
+                throw new errors_1.MissingParamError('Device token');
             if (!token || !lang)
                 throw new errors_1.ServerError();
             const otpIndex = yield getOtp({ phoneNumber, otp });

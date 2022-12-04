@@ -1,4 +1,4 @@
-import { ServerError, InvalidParamError, MissingParamError } from "../../../utils/errors"
+import { ServerError, MissingParamError } from "../../../utils/errors"
 
 export default function makeSetProfile({
     userDb,
@@ -14,7 +14,7 @@ export default function makeSetProfile({
         birthDay
     }: any = {}) {
         console.log('birthDay', birthDay);
-        if (!id) throw new InvalidParamError('token')
+        if (!id) throw new MissingParamError('token')
         if (!firstName) throw new MissingParamError('firstName')
         if (!lastName) throw new MissingParamError('lastName')
         if (!gender) throw new MissingParamError('gender')

@@ -9,7 +9,7 @@ function makeSetProfile({ userDb, } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             console.log('birthDay', birthDay);
             if (!id)
-                throw new errors_1.InvalidParamError('token');
+                throw new errors_1.MissingParamError('token');
             if (!firstName)
                 throw new errors_1.MissingParamError('firstName');
             if (!lastName)
