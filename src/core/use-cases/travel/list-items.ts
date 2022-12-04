@@ -13,7 +13,7 @@ export default function makeListItems({
         if (!limit) limit = 100
         const where: any = { status: { lt: 4 } }
         if (userId) where.userId = userId
-        const data = await travelDb.findMany({
+        const res = await travelDb.findMany({
             startAt,
             limit,
             where,
@@ -30,6 +30,8 @@ export default function makeListItems({
                         price: true,
                         distance: true,
                         duration: true,
+                        departureDate: true,
+                        departureTime: true,
                         stops: true,
                         trip: {
                             select: {
@@ -61,6 +63,19 @@ export default function makeListItems({
                 createdAt: true
             }
         })
+
+        const  { route,  _trip} = res.route
+        const { trip, user} = _trip
+        const data = {
+            id: res.id,
+            seats: res.seats,
+            status: res.status,
+            createdAt: res.createdAt,
+            route,
+            trip,
+            driver: user,
+            user: res.user
+        }
         return { data }
     }
 }

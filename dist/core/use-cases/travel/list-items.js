@@ -13,7 +13,7 @@ function makeListItems({ travelDb } = {}) {
         const where = { status: { lt: 4 } };
         if (userId)
             where.userId = userId;
-        const data = yield travelDb.findMany({
+        const res = yield travelDb.findMany({
             startAt,
             limit,
             where,
@@ -30,6 +30,8 @@ function makeListItems({ travelDb } = {}) {
                         price: true,
                         distance: true,
                         duration: true,
+                        departureDate: true,
+                        departureTime: true,
                         stops: true,
                         trip: {
                             select: {
@@ -61,6 +63,18 @@ function makeListItems({ travelDb } = {}) {
                 createdAt: true
             }
         });
+        const { route, _trip } = res.route;
+        const { trip, user } = _trip;
+        const data = {
+            id: res.id,
+            seats: res.seats,
+            status: res.status,
+            createdAt: res.createdAt,
+            route,
+            trip,
+            driver: user,
+            user: res.user
+        };
         return { data };
     });
 }
