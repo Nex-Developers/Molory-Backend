@@ -13,12 +13,6 @@ function makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveT
                 throw new errors_1.MissingParamError('otp');
             if (!device)
                 throw new errors_1.MissingParamError('device');
-            if (!device.id)
-                throw new errors_1.MissingParamError('Device id');
-            if (!device.platform)
-                throw new errors_1.MissingParamError('Device platform');
-            if (!device.token)
-                throw new errors_1.MissingParamError('Device token');
             if (!token || !lang)
                 throw new errors_1.ServerError();
             const otpIndex = yield getOtp({ phoneNumber, otp });
@@ -47,16 +41,18 @@ function makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveT
                 else
                     user = yield userDb.updateOne({ where: { id: user.id }, data: { phoneNumberVerifiedAt } });
                 console.log(user);
-                const savedDevice = yield deviceDb.findFirst({ where: { id: device.id, userId: user.id } });
-                if (!savedDevice)
-                    yield deviceDb.insertOne({
-                        data: {
-                            id: device.id,
-                            userId: user.id,
-                            token: device.token,
-                            platform: device.platform
-                        }
-                    });
+                if (device.id && device.platform && device.token) {
+                    const savedDevice = yield deviceDb.findFirst({ where: { id: device.id, userId: user.id } });
+                    if (!savedDevice)
+                        yield deviceDb.insertOne({
+                            data: {
+                                id: device.id,
+                                userId: user.id,
+                                token: device.token,
+                                platform: device.platform
+                            }
+                        });
+                }
                 const authToken = yield generateToken({ id: user.id, role: user.role });
                 yield saveToken({ token: authToken });
                 yield removeOtp({ phoneNumber });

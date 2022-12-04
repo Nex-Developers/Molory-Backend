@@ -1,9 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
+const already_done_error_1 = require("./../../../utils/errors/already-done-error");
 const errors_1 = require("../../../utils/errors");
-function makeConfirmPayment({ prisma, } = {}) {
+const helpers_1 = require("../../../utils/helpers");
+function makeConfirmPayment() {
     return ({ id, status, amount } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        const prisma = helpers_1.DbConnection.prisma;
         console.log('Confirm-payment called with ', id, status, amount);
         if (!status) {
             const message = { text: "response.delete" };
@@ -20,9 +23,9 @@ function makeConfirmPayment({ prisma, } = {}) {
         if (payment.amount != amount) {
             throw new errors_1.InvalidParamError('amount');
         }
-        const travel = payment.travel;
+        let travel = payment.travel;
         if (payment.status == 2) {
-            prisma.$transaction((_) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
                 const { remainingSeats, principal, trip } = yield prisma.route.findFirst({
                     where: { id: travel.routeId },
                     select: { remainingSeats: true, principal: true, trip: true }
@@ -31,24 +34,27 @@ function makeConfirmPayment({ prisma, } = {}) {
                     throw new errors_1.InvalidParamError('Unvailable Resource');
                 if (travel.seats > remainingSeats)
                     throw new errors_1.InvalidParamError('Missing ' + (travel.seats - remainingSeats) + 'resource');
-                prisma.travel.update({ where: { id: travel.id }, data: { status: 3 } });
+                travel = yield prisma.travel.update({ where: { id: travel.id }, data: { status: 3 } });
                 if (principal) {
-                    prisma.route.update({ where: { tripId: trip.id }, data: { remainingSeats: { decrement: travel.seats, } } });
+                    yield prisma.route.updateMany({ where: { tripId: trip.id }, data: { remainingSeats: { decrement: travel.seats, } } });
                 }
                 else {
-                    prisma.route.update({ where: { id }, data: { remainingSeats: { decrement: travel.seats, } } });
-                    const secondaryRoutes = prisma.route.find({ where: { principal: false }, select: { remainingSeats: true } });
+                    yield prisma.route.update({ where: { id }, data: { remainingSeats: { decrement: travel.seats, } } });
+                    const secondaryRoutes = yield prisma.route.findMany({ where: { principal: false }, select: { remainingSeats: true } });
                     if (secondaryRoutes.length) {
                         const A = secondaryRoutes[0].remainingSeats;
                         const B = secondaryRoutes[1].remainingSeats;
                         if (A !== B)
-                            prisma.route.update({ where: { principal: true }, data: { remainingSeats: { decrement: travel.seats, } } });
+                            prisma.route.updateMany({ where: { principal: true }, data: { remainingSeats: { decrement: travel.seats, } } });
                     }
                 }
+                const message = { text: "response.add", data: travel };
+                return { message };
             }));
         }
-        const message = { text: "response.add" };
-        return { message };
+        else {
+            throw new already_done_error_1.AlreadyDoneError(new Date().toISOString());
+        }
     });
 }
 exports.default = makeConfirmPayment;

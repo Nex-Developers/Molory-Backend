@@ -3,8 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.confirmPayment = exports.removeTravel = exports.listTravelInfos = exports.listTravels = exports.editTravel = exports.addTravel = void 0;
 const tslib_1 = require("tslib");
 const db_1 = require("../../../db");
-const helpers_1 = require("../../../utils/helpers");
-const payment_1 = require("../../services/payment");
 const add_1 = (0, tslib_1.__importDefault)(require("./add"));
 const confirm_payment_1 = (0, tslib_1.__importDefault)(require("./confirm-payment"));
 const edit_1 = (0, tslib_1.__importDefault)(require("./edit"));
@@ -24,6 +22,6 @@ const listTravelInfos = (0, list_item_infos_1.default)({ travelDb });
 exports.listTravelInfos = listTravelInfos;
 const removeTravel = (0, remove_1.default)({ travelDb });
 exports.removeTravel = removeTravel;
-const confirmPayment = (0, confirm_payment_1.default)({ getPaymentState: payment_1.getPaymentState, prisma: helpers_1.DbConnection.prisma });
+const confirmPayment = (0, confirm_payment_1.default)();
 exports.confirmPayment = confirmPayment;
 //# sourceMappingURL=index.js.map

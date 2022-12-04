@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 function makeEdit({ vehicleDb } = {}) {
     if (!vehicleDb)
         throw new errors_1.ServerError();
-    return ({ id, type, color, numberPlate, registrationDoc } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ id, type, color, model, numberPlate, registrationDoc } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!id)
             throw new errors_1.MissingParamError('id');
         const data = {};
@@ -13,6 +13,8 @@ function makeEdit({ vehicleDb } = {}) {
             data.type = type;
         if (color)
             data.color = color;
+        if (model)
+            data.model = model;
         if (numberPlate)
             data.numberPlate = numberPlate;
         if (registrationDoc)

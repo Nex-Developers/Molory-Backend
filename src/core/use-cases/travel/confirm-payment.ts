@@ -1,3 +1,4 @@
+import { AlreadyDoneError } from './../../../utils/errors/already-done-error';
 
 // import { ServerError } from "../../../utils/errors"
 
@@ -57,7 +58,7 @@ export default function makeConfirmPayment() {
             //     // send notification to admin and user
             //     throw new InvalidParamError('amount')
             // }
-            return await prisma.$transaction(async _ => {
+            return await prisma.$transaction(async () => {
                 // check remaining seats
                 const { remainingSeats, principal, trip } = await prisma.route.findFirst({
                     where: { id: travel.routeId },
@@ -81,12 +82,16 @@ export default function makeConfirmPayment() {
                     }
                     // for( let route of secondaryRoutes) route
                     // return
-                    const message = { text: "response.add", data: travel }
-                    return { message }
+                  
                 }
+                const message = { text: "response.add", data: travel }
+                return { message }
             })
 
+        } else {
+            throw new AlreadyDoneError(new Date().toISOString())
         }
+        
 
     }
 }
