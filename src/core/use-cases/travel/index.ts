@@ -1,5 +1,5 @@
-import { prisma } from "@prisma/client"
 import { PaymentDb, RouteDb, TravelDb } from "../../../db"
+import { DbConnection } from "../../../utils/helpers"
 import { getPaymentState } from "../../services/payment"
 import makeAdd from "./add"
 import makeConfirmPayment from "./confirm-payment"
@@ -18,7 +18,7 @@ const editTravel = makeEdit({ travelDb })
 const listTravels = makeListItems({ travelDb })
 const listTravelInfos = makeListItemInfos({ travelDb })
 const removeTravel = makeRemove({ travelDb })
-const confirmPayment = makeConfirmPayment({ getPaymentState, prisma })
+const confirmPayment = makeConfirmPayment({ getPaymentState, prisma: DbConnection.prisma })
 
 export {
     addTravel,
