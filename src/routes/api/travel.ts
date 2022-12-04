@@ -25,6 +25,6 @@ export default () => {
     .post(langCheck, authCheck, expressRouterAdapter(postTravelController))
     .patch(langCheck, authCheck, driverCheck, expressRouterAdapter(patchTravelController))
     .delete(langCheck, authCheck, driverCheck, expressRouterAdapter(deleteTravelController))
-    router.post('/confirm-payment', expressRouterAdapter(postNotifyController))
+    router.post('/confirm-payment',langCheck, authCheck,expressRouterAdapter(postNotifyController))
     return router
 }

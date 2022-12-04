@@ -13,7 +13,7 @@ exports.default = () => {
         .post(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(travel_1.postTravelController))
         .patch(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(travel_1.patchTravelController))
         .delete(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(travel_1.deleteTravelController));
-    router.post('/confirm-payment', (0, adapters_1.expressRouterAdapter)(travel_1.postNotifyController));
+    router.post('/confirm-payment', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(travel_1.postNotifyController));
     return router;
 };
 //# sourceMappingURL=travel.js.map
