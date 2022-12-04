@@ -20,6 +20,7 @@ export default function makePostNotifyController({
             description: `Cinet pay  ${Action.ACTIVATE} payment`
         } 
         try {
+            
             const lang = request.lang,
                 body = request.body,
                 // data = await confirmPayment({
