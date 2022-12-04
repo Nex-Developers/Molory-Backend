@@ -10,7 +10,7 @@ function makeListItems({ travelDb } = {}) {
             startAt = 0;
         if (!limit)
             limit = 100;
-        const where = {};
+        const where = { status: { lt: 4 } };
         if (userId)
             where.userId = userId;
         const data = yield travelDb.findMany({

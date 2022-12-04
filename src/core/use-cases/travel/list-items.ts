@@ -11,7 +11,7 @@ export default function makeListItems({
     }: any = {}) => {
         if (!startAt) startAt = 0
         if (!limit) limit = 100
-        const where: any = {}
+        const where: any = { status: { lt: 4 } }
         if (userId) where.userId = userId
         const data = await travelDb.findMany({
             startAt,
