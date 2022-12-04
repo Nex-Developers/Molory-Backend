@@ -2,25 +2,23 @@
 // import { ServerError } from "../../../utils/errors"
 
 import { InvalidParamError } from "../../../utils/errors"
+import { DbConnection } from "../../../utils/helpers"
 
 
 // import { PrismaClient } from "@prisma/client"
 
-export default function makeConfirmPayment({
-    prisma,
-    // getPaymentState
-}: any = {}) {
+export default function makeConfirmPayment() {
     // if (!prisma || !getPaymentState) throw new ServerError()
     return async ({
-        id, 
+        id,
         status,
         amount
     }: any = {}) => {
-        // const prisma = DbConnection.prisma
+        const prisma = DbConnection.prisma
         console.log('Confirm-payment called with ', id, status, amount)
         if (!status) {
             const message = { text: "response.delete" }
-            return { message } 
+            return { message }
         }
         const payment = await prisma.payment.findFirst({
             where: { id },
@@ -30,10 +28,10 @@ export default function makeConfirmPayment({
                 }
             }
         })
-        if(payment.amount != amount) {
+        if (payment.amount != amount) {
             throw new InvalidParamError('amount')
         }
-        const travel = payment.travel;
+        let travel = payment.travel;
         if (payment.status == 2) {
             // const res = await getPaymentState({ id })
             // console.log(res)
@@ -59,7 +57,7 @@ export default function makeConfirmPayment({
             //     // send notification to admin and user
             //     throw new InvalidParamError('amount')
             // }
-            prisma.$transaction(async _ => {
+            return await prisma.$transaction(async _ => {
                 // check remaining seats
                 const { remainingSeats, principal, trip } = await prisma.route.findFirst({
                     where: { id: travel.routeId },
@@ -68,26 +66,27 @@ export default function makeConfirmPayment({
                 if (!trip.remainingSeats) throw new InvalidParamError('Unvailable Resource')
                 if (travel.seats > remainingSeats) throw new InvalidParamError('Missing ' + (travel.seats - remainingSeats) + 'resource')
                 // update travel status
-                prisma.travel.update({ where: { id: travel.id }, data: { status: 3 } })
+                travel = await prisma.travel.update({ where: { id: travel.id }, data: { status: 3 } })
                 // remove seats from trip avalaibleSeats
                 if (principal) {
-                    prisma.route.update({ where: { tripId: trip.id }, data: { remainingSeats: { decrement: travel.seats, } } })
+                    await prisma.route.updateMany({ where: { tripId: trip.id }, data: { remainingSeats: { decrement: travel.seats, } } })
                 } else {
-                    prisma.route.update({ where: { id }, data: { remainingSeats: { decrement: travel.seats, } } })
+                    await prisma.route.update({ where: { id }, data: { remainingSeats: { decrement: travel.seats, } } })
                     // const otherROutes
-                    const secondaryRoutes = prisma.route.find({ where: { principal: false }, select: {remainingSeats: true }})
-                    if(secondaryRoutes.length) {
+                    const secondaryRoutes = await prisma.route.findMany({ where: { principal: false }, select: { remainingSeats: true } })
+                    if (secondaryRoutes.length) {
                         const A = secondaryRoutes[0].remainingSeats;
                         const B = secondaryRoutes[1].remainingSeats;
-                        if (A !== B) prisma.route.update({ where: { principal: true }, data: { remainingSeats: { decrement: travel.seats, } } })
+                        if (A !== B) prisma.route.updateMany({ where: { principal: true }, data: { remainingSeats: { decrement: travel.seats, } } })
                     }
                     // for( let route of secondaryRoutes) route
+                    // return
+                    const message = { text: "response.add", data: travel }
+                    return { message }
                 }
             })
 
         }
-        // return
-        const message = { text: "response.add" }
-        return { message }
+
     }
 }

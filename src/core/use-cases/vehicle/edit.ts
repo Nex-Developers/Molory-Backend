@@ -8,6 +8,7 @@ export default function makeEdit({
         id,
         type,
         color,
+        model,
         numberPlate,
         registrationDoc
     }: any = {}) => {
@@ -16,6 +17,7 @@ export default function makeEdit({
         const data: any = {}
         if (type) data.type = type
         if (color) data.color = color
+        if (model) data.model = model
         if (numberPlate) data.numberPlate = numberPlate
         if (registrationDoc) data.registrationDoc = registrationDoc
 
