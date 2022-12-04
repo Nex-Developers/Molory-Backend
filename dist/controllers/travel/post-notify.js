@@ -20,13 +20,7 @@ function makePostNotifyController({ confirmPayment }) {
                 description: `Cinet pay  ${conventions_1.Action.ACTIVATE} payment`
             };
             try {
-                const lang = request.lang, body = request.body, data = yield confirmPayment({
-                    id: body.operator_transaction_id,
-                    ref: body.transaction_id,
-                    receivedAmount: body.amount,
-                    status: body.sending_status,
-                    validatedAt: body.validated_at
-                });
+                const lang = request.lang, body = request.body, data = yield confirmPayment(Object.assign({}, body));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 reqLog.modelId = data.id;
                 reqLog.description += data.id;

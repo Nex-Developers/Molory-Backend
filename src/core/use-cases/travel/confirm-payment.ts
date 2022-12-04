@@ -17,6 +17,7 @@ export default function makeConfirmPayment({
         amount
     }: any = {}) => {
         // const prisma = DbConnection.prisma
+        console.log('Confirm-payment called with ', id, status, amount)
         if (!status) {
             const message = { text: "response.delete" }
             return { message } 
@@ -64,8 +65,8 @@ export default function makeConfirmPayment({
                     where: { id: travel.routeId },
                     select: { remainingSeats: true, principal: true, trip: true }
                 })
-                if (!trip.remainingSeats) throw new Error('Unvailable Resource')
-                if (travel.seats > remainingSeats) throw new Error('Missing ' + (travel.seats - remainingSeats) + 'resource')
+                if (!trip.remainingSeats) throw new InvalidParamError('Unvailable Resource')
+                if (travel.seats > remainingSeats) throw new InvalidParamError('Missing ' + (travel.seats - remainingSeats) + 'resource')
                 // update travel status
                 prisma.travel.update({ where: { id: travel.id }, data: { status: 3 } })
                 // remove seats from trip avalaibleSeats

@@ -4,6 +4,7 @@ const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 function makeConfirmPayment({ prisma, } = {}) {
     return ({ id, status, amount } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        console.log('Confirm-payment called with ', id, status, amount);
         if (!status) {
             const message = { text: "response.delete" };
             return { message };
@@ -27,9 +28,9 @@ function makeConfirmPayment({ prisma, } = {}) {
                     select: { remainingSeats: true, principal: true, trip: true }
                 });
                 if (!trip.remainingSeats)
-                    throw new Error('Unvailable Resource');
+                    throw new errors_1.InvalidParamError('Unvailable Resource');
                 if (travel.seats > remainingSeats)
-                    throw new Error('Missing ' + (travel.seats - remainingSeats) + 'resource');
+                    throw new errors_1.InvalidParamError('Missing ' + (travel.seats - remainingSeats) + 'resource');
                 prisma.travel.update({ where: { id: travel.id }, data: { status: 3 } });
                 if (principal) {
                     prisma.route.update({ where: { tripId: trip.id }, data: { remainingSeats: { decrement: travel.seats, } } });

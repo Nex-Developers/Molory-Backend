@@ -22,13 +22,14 @@ export default function makePostNotifyController({
         try {
             const lang = request.lang,
                 body = request.body,
-                data = await confirmPayment({
-                    id: body.operator_transaction_id,
-                    ref: body.transaction_id, 
-                    receivedAmount: body.amount, 
-                    status: body.sending_status,
-                    validatedAt: body.validated_at 
-                })
+                // data = await confirmPayment({
+                //     id: body.operator_transaction_id,
+                //     ref: body.transaction_id, 
+                //     receivedAmount: body.amount, 
+                //     status: body.sending_status,
+                //     validatedAt: body.validated_at 
+                // })
+                data = await confirmPayment({ ...body })
                 reqLog.status = LogStatus.SUCCEEDED
                 reqLog.modelId = data.id
                 reqLog.description += data.id
