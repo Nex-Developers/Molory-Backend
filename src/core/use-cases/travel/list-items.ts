@@ -63,19 +63,24 @@ export default function makeListItems({
                 createdAt: true
             }
         })
+        const data = [];
+        res.forEach( item => {
+            const  { trip, ...route} = item.route
+            const { user, ..._trip} = trip
+            data.push({
+                id: item.id,
+                seats: item.seats,
+                status: item.status,
+                createdAt: item.createdAt,
+                route,
+                trip: _trip,
+                driver: user,
+                user: item.user
+            })
+        })
+       
 
-        const  { route,  _trip} = res.route
-        const { trip, user} = _trip
-        const data = {
-            id: res.id,
-            seats: res.seats,
-            status: res.status,
-            createdAt: res.createdAt,
-            route,
-            trip,
-            driver: user,
-            user: res.user
-        }
+       
         return { data }
     }
 }

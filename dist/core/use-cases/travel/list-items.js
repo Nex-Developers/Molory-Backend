@@ -63,18 +63,21 @@ function makeListItems({ travelDb } = {}) {
                 createdAt: true
             }
         });
-        const { route, _trip } = res.route;
-        const { trip, user } = _trip;
-        const data = {
-            id: res.id,
-            seats: res.seats,
-            status: res.status,
-            createdAt: res.createdAt,
-            route,
-            trip,
-            driver: user,
-            user: res.user
-        };
+        const data = [];
+        res.forEach(item => {
+            const _a = item.route, { trip } = _a, route = (0, tslib_1.__rest)(_a, ["trip"]);
+            const { user } = trip, _trip = (0, tslib_1.__rest)(trip, ["user"]);
+            data.push({
+                id: item.id,
+                seats: item.seats,
+                status: item.status,
+                createdAt: item.createdAt,
+                route,
+                trip: _trip,
+                driver: user,
+                user: item.user
+            });
+        });
         return { data };
     });
 }
