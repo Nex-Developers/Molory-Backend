@@ -7,10 +7,12 @@ exports.default = ({ questionDb }) => {
         throw new errors_1.ServerError();
     return ({ role }) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
         const select = {
+            id: true,
             value: true,
             createdAt: true,
             answers: {
                 select: {
+                    id: true,
                     value: true,
                     createdAt: true
                 }

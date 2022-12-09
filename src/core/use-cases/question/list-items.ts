@@ -8,10 +8,12 @@ export default ({
         role
     }) => {
         const select: any = {
+            id: true,
             value: true,
             createdAt: true,
             answers: {
                 select: {
+                    id: true,
                     value: true,
                     createdAt: true
                 }
