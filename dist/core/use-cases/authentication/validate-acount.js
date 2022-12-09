@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken } = {}) {
-    if (!prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken)
+function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, notifyDevice, publicationDb } = {}) {
+    if (!prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !publicationDb)
         throw new errors_1.ServerError();
     return function confirmOtp({ token, email, otp, lang, device } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -41,6 +41,22 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                 yield saveToken({ token: authToken });
                 yield removeOtp({ phoneNumber: email });
                 yield removeTmpToken({ token });
+                const { title, body, data, cover } = yield notifyDevice({ deviceTokens: [device["token"]], titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'en' });
+                yield publicationDb.insertOne({
+                    data: {
+                        title,
+                        message: body,
+                        data: data ? JSON.stringify(data) : null,
+                        picture: cover,
+                        notifications: {
+                            create: {
+                                user: {
+                                    connect: { id: user.id }
+                                }
+                            }
+                        }
+                    }
+                });
                 const message = { text: 'auth.message.emailVerified' };
                 return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt }, message };
             }));

@@ -15,7 +15,6 @@ exports.default = (req, res, next) => (0, tslib_1.__awaiter)(void 0, void 0, voi
     else {
         try {
             const ref = yield helpers_1.TokenManager.verify(token);
-            console.log(ref);
             if (!ref) {
                 httpResponse = helpers_1.HttpResponse.badRequest(new errors_1.InvalidParamError('token'), req.params.lang);
                 res.status(httpResponse.statusCode).json(httpResponse.body);

@@ -41,9 +41,18 @@ function makeGetProfile({ userDb } = {}) {
                     vehicles: true,
                     preferences: {
                         select: {
-                            id: true,
-                            question: true,
-                            answer: true
+                            question: {
+                                select: {
+                                    id: true,
+                                    value: true,
+                                }
+                            },
+                            answer: {
+                                select: {
+                                    id: true,
+                                    value: true,
+                                }
+                            }
                         }
                     },
                     wallets: {
@@ -95,6 +104,7 @@ function makeGetProfile({ userDb } = {}) {
                     role: data.role,
                     phoneNumber: data.phoneNumber,
                     profileCompletedAt: data.profileCompletedAt,
+                    signUpMethod: data.signUpMethod,
                     rating: data.rating,
                     reviewsReceived: data.reviewsReceived,
                     preferences: data.preferences,

@@ -4,7 +4,13 @@ const tslib_1 = require("tslib");
 const conventions_1 = require("./core/conventions");
 const user_1 = require("./core/use-cases/user");
 const db_1 = require("./db");
+const cron = (0, tslib_1.__importStar)(require("node-cron"));
 exports.default = () => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
+    const travelDb = new db_1.TravelDb();
+    cron.schedule('0 1 * * *', () => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
+        console.log('running a task every day');
+        deleteUnAchievedJobs();
+    }));
     const userDb = new db_1.UserDb();
     const admin = yield userDb.findFirst({ where: { email: 'developer@nex-softwares.com' }, select: { id: true } });
     if (admin) {
@@ -27,5 +33,10 @@ exports.default = () => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function*
     };
     const response = yield (0, user_1.addUser)(data);
     console.log(`--> Admin user created with id: ${response.id}`);
+    const deleteUnAchievedJobs = () => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
+        console.log(' ----> Deleting anuchieved commands!!!');
+        return yield travelDb.deleteMany({ where: { status: 4 }, force: true });
+    });
+    return;
 });
 //# sourceMappingURL=initializer.js.map

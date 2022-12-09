@@ -10,7 +10,7 @@ exports.default = () => {
     router.get('/preference/:id', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(preference_1.getPreferenceController));
     router.route('/preference')
         .get(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(preference_1.getPreferencesController))
-        .post(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.adminCheck, (0, adapters_1.expressRouterAdapter)(preference_1.postPreferenceController))
+        .post(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(preference_1.postPreferenceController))
         .patch(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.adminCheck, (0, adapters_1.expressRouterAdapter)(preference_1.patchPreferenceController))
         .delete(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.adminCheck, (0, adapters_1.expressRouterAdapter)(preference_1.deletePreferenceController));
     return router;

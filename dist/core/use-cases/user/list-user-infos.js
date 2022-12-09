@@ -38,7 +38,6 @@ function makeListUserInfos({ userDb } = {}) {
                     vehicles: true,
                     preferences: {
                         select: {
-                            id: true,
                             question: true,
                             answer: true
                         }

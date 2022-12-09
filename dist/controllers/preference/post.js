@@ -20,7 +20,7 @@ function makePostController({ addPreference }) {
                 description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.WRITE} preference `
             };
             try {
-                const lang = request.lang, body = request.body, data = yield addPreference(Object.assign({}, body));
+                const lang = request.lang, body = request.body, userId = request.ref.id, data = yield addPreference(Object.assign({ userId }, body));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 reqLog.modelId = data.id;
                 reqLog.description += data.id;

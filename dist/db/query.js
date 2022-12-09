@@ -65,17 +65,26 @@ class Query {
             return yield this.collection.upsert({ where, create, update });
         });
     }
-    deleteOne({ where }) {
+    deleteOne({ where, force }) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            if (environment_1.env.db.softDelete)
-                return this.softDeleteOne({ where });
+            if (environment_1.env.db.softDelete && !force)
+                return this.softDelete({ where });
             else
                 return yield this.collection.delete({ where });
         });
     }
-    softDeleteOne({ where }) {
+    softDelete({ where }) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             return yield this.collection.update({ where, data: { deletedAt: new Date() } });
+        });
+    }
+    deleteMany({ where, force }) {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            console.log('deleteMany', where, force);
+            if (environment_1.env.db.softDelete && !force)
+                return this.softDelete({ where });
+            else
+                return yield this.collection.deleteMany({ where });
         });
     }
 }
