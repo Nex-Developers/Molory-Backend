@@ -2,6 +2,7 @@ import app from "./configs/app"
 import { env } from "./configs/environment"
 import initializer from "./initializer"
 import { CacheManager, DbConnection, Mailer } from "./utils/helpers"
+import FirebaseAdmin from "./utils/helpers/firebase-admin"
 
 
 try {
@@ -10,6 +11,7 @@ try {
         await CacheManager.connect()
         await Mailer.connect()
         await initializer()
+        FirebaseAdmin.connect()
         app.listen(env.port, () => console.log(`Server running at http://localhost:${env.port}`))
     }
     startApp()

@@ -15,7 +15,7 @@ export default class TokenManager {
     return jwt.sign(id, TokenManager.secret)
   }
 
-  static async verify(token) {
+  static async verify(token): Promise<any> {
     if (!token) throw new MissingParamError('token')
     if (!TokenManager.secret) throw new MissingParamError('secret')
     return jwt.verify(token, TokenManager.secret)

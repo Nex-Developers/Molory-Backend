@@ -19,7 +19,7 @@ export default () => {
     router.get('/preference/:id', langCheck, authCheck, expressRouterAdapter(getPreferenceController))
     router.route('/preference')
     .get(langCheck, authCheck, expressRouterAdapter(getPreferencesController))
-    .post(langCheck, authCheck, adminCheck, expressRouterAdapter(postPreferenceController))
+    .post(langCheck, authCheck, expressRouterAdapter(postPreferenceController))
     .patch(langCheck, authCheck, adminCheck, expressRouterAdapter(patchPreferenceController))
     .delete(langCheck, authCheck, adminCheck, expressRouterAdapter(deletePreferenceController))
     return router

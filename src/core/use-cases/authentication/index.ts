@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { DeviceDb, UserDb } from "../../../db"
+import { DeviceDb, PublicationDb, UserDb } from "../../../db"
 import { askToConfirmEmail, askToResetPassword, emailConfirmationView, isValidEmail } from "../../services/email"
 import { generateOtp, getOtp, removeOtp, saveOtp, sendOtp } from "../../services/otp"
 import { comparePasswords, hashPassword } from "../../services/password"
@@ -29,10 +29,12 @@ import makeUpdateIdCard from "./update-id-card"
 import makeUpdateDriverLicense from "./update-driver-license"
 import makeValidateAccount from "./validate-acount"
 import makeSetPassword from "./set-password"
+import { notifyDevice } from "../../services/notifications"
 
 const prisma = new PrismaClient()
 const userDb = new UserDb()
 const deviceDb = new DeviceDb()
+const publicationDb = new PublicationDb()
 
 const addEmailAuth =  makeAddEmailAuth({ userDb, generateToken, saveTmpToken, askToConfirmEmail, isValidEmail, hashPassword })
 const checkEmail = makeCheckEmail({ userDb, generateToken, saveTmpToken, generateOtp, saveOtp, askToConfirmEmail })
@@ -41,10 +43,10 @@ const signInWithEmailAndPassword = makeSignInWithEmailAndPassword({ userDb, comp
 const signInWithPhoneNumber = makeSignInWithPhoneNumber({ generateOtp, saveOtp, sendOtp, generateToken, saveTmpToken, userDb })
 const confirmOtp = makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken })
 const signUp = makeSignUp({ userDb, askToConfirmEmail, isValidEmail, hashPassword, generateToken, saveTmpToken, generateOtp, saveOtp})
-const validateAccount = makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken })
+const validateAccount = makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, notifyDevice, publicationDb })
 const confirmEmail = makeConfirmEmail({ removeTmpToken, verifyToken, emailConfirmationView, userDb })
 const changePassword = makeChangePassword({ removeToken, comparePasswords, hashPassword, userDb })
-const setProfile = makeSetProfile({ userDb })
+const setProfile = makeSetProfile({ userDb, notifyDevice, publicationDb })
 const getProfile = makeGetProfile({ userDb })
 const updateProfile = makeUpdateProfile({ userDb })
 const updateAvatar = makeUpdateAvatar({ userDb, deleteAvatarFile})

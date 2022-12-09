@@ -1,8 +1,12 @@
+import AnswerDb from "./answer-db"
 import DeviceDb from "./device-db"
 import NewsletterDb from "./newsletter-db"
+import NotificationDb from "./notification-db"
 import PaymentDb from "./payment-db"
 import PreferenceDb from "./preference-db"
 import PricingDb from "./pricing-db"
+import PublicationDb from "./publication-db"
+import QuestionDb from "./question-db"
 import ReviewDb from "./review-db"
 import RouteDb from "./route-db"
 import StopDb from "./stop-db"
@@ -29,5 +33,9 @@ export {
     PaymentDb,
     WithdrawalDb,
     ReviewDb,
-    WalletDb
+    WalletDb,
+    QuestionDb,
+    AnswerDb,
+    NotificationDb,
+    PublicationDb
 }

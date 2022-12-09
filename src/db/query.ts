@@ -74,12 +74,20 @@ export default class Query <T> {
         return await this.collection.upsert({ where, create, update})
     }
 
-    async deleteOne({ where }) {
-        if (env.db.softDelete) return this.softDeleteOne({ where })
+    async deleteOne({ where, force }) {
+        if (env.db.softDelete && !force) return this.softDelete({ where })
         else return await this.collection.delete({ where })
     }
 
-    async softDeleteOne({ where }) {
+    async softDelete({ where }) {
         return await this.collection.update({ where, data: { deletedAt: new Date()}})
     }
+
+
+    async deleteMany({where, force }) {
+        console.log('deleteMany', where, force)
+        if (env.db.softDelete && !force) return this.softDelete({ where })
+        else return await this.collection.deleteMany({ where })
+    }
+
 }

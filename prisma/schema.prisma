@@ -129,14 +129,39 @@ model Pricing {
   vehicleType     VehicleType @relation(fields: [vehicleTypeName], references: [name])
 }
 
+model Question {
+  id          Int          @id @default(autoincrement())
+  value       String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?    @updatedAt
+  deletedAt   DateTime?
+  answers     Answer[]
+  preferences Preference[]
+}
+
+model Answer {
+  id          Int          @id @default(autoincrement())
+  questionId  Int
+  value       String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?    @updatedAt
+  deletedAt   DateTime?
+  question    Question     @relation(fields: [questionId], references: [id])
+  preferences Preference[]
+}
+
 model Preference {
-  id        Int       @id @default(autoincrement())
-  question  String
-  answer    String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
-  deletedAt DateTime?
-  users     User[]
+  questionId Int
+  answerId   Int
+  userId     Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+  deletedAt  DateTime?
+  question   Question  @relation(fields: [questionId], references: [id])
+  answer     Answer    @relation(fields: [answerId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
+
+  @@id([userId, questionId, answerId])
 }
 
 // model Configuration {
@@ -164,7 +189,7 @@ model VehicleType {
 
 model Vehicle {
   id              Int         @id @default(autoincrement())
-  userId          Int         
+  userId          Int
   type            String
   model           String?
   color           String
@@ -189,6 +214,7 @@ model Trip {
   departureTime  String
   createdAt      DateTime  @default(now())
   deletedAt      DateTime?
+  deletionReason String?
   startedAt      DateTime?
   finishedAt     DateTime?
   // stops Stop[]
@@ -212,14 +238,14 @@ model Stop {
 }
 
 model Route {
-  id        Int     @id @default(autoincrement())
-  tripId    Int
+  id             Int       @id @default(autoincrement())
+  tripId         Int
   departureDate  String?
   departureTime  String?
-  distance  Int
-  duration  Int
-  price     Int
-  principal Boolean @default(false)
+  distance       Int
+  duration       Int
+  price          Int
+  principal      Boolean   @default(false)
   remainingSeats Int?
   deletedAt      DateTime?
   travels        Travel[]
@@ -237,6 +263,7 @@ model Travel {
   startedAt       DateTime?
   finishedAt      DateTime?
   deletedAt       DateTime?
+  deletionReason  String?
   driverRating    Int?
   passengerRating Int?
   user            User      @relation(fields: [userId], references: [id])
@@ -299,11 +326,11 @@ model Publication {
   icon        String?
   sound       String?
   picture     String?
-  data        Json?
-  senderId    Int
+  data        String?
+  senderId    Int?
   createdAt   DateTime       @default(now())
-  user        User           @relation(fields: [senderId], references: [id])
-  notications Notification[]
+  user        User?           @relation(fields: [senderId], references: [id])
+  notifications Notification[]
 }
 
 model Notification {
@@ -311,7 +338,7 @@ model Notification {
   receiverId    Int
   createdAt     DateTime    @default(now())
   seenAt        DateTime?
-  status        Int
+  status        Int @default(2)
   publication   Publication @relation(fields: [publicationId], references: [id])
   user          User        @relation(fields: [receiverId], references: [id])
 

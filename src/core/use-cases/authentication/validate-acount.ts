@@ -8,9 +8,11 @@ export default function makeValidateAccount({
     generateToken,
     saveToken,
     removeOtp,
-    removeTmpToken
+    removeTmpToken,
+    notifyDevice,
+    publicationDb
 }: any = {}) {
-    if (!prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken) throw new ServerError()
+    if (!prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !publicationDb) throw new ServerError()
     return async function confirmOtp({
         token,
         email,
@@ -23,7 +25,7 @@ export default function makeValidateAccount({
         if (!device) throw new MissingParamError('device')
         if (!token || !lang) throw new ServerError()
         console.log('device', device)
-        const otpIndex = await getOtp({ phoneNumber:email, otp })
+        const otpIndex = await getOtp({ phoneNumber: email, otp })
         if (otpIndex === null || otpIndex === undefined) throw new OtpIncorrectError('')
 
         let user = await userDb.findFirst({ where: { email } })
@@ -45,8 +47,24 @@ export default function makeValidateAccount({
             await saveToken({ token: authToken })
             await removeOtp({ phoneNumber: email })
             await removeTmpToken({ token })
+            const { title, body, data, cover } = await notifyDevice({ deviceTokens: [device["token"]], titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'en' })
+            await publicationDb.insertOne({
+                data: {
+                    title,
+                    message: body,
+                    data: data ? JSON.stringify(data) : null,
+                    picture: cover,
+                    notifications: {
+                        create: {
+                           user: {
+                                connect: { id: user.id}
+                           }
+                        }
+                    }
+                }
+            })
             const message = { text: 'auth.message.emailVerified' }
-            return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt }, message } 
+            return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt }, message }
         })
     }
 }

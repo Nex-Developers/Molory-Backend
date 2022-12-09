@@ -1,32 +1,29 @@
 import { Action, IHttpRequest, IHttpResponse, Log, LogStatus } from "../../core/conventions";
 import { HttpResponse, LogManager } from "../../utils/helpers";
 
-export default function makePostController({
-    addPreference
+export default function makePatchController({
+    editQuestion
 }) {
     // use translations
-    return async function(request: IHttpRequest): Promise<IHttpResponse> {
+    return async function (request: IHttpRequest): Promise<IHttpResponse> {
         const reqLog: Log = {
             date: new Date().toDateString(), 
             time: new Date().toTimeString(),
             userId: request.ref.id, 
             lastName: request.ref.lastName,
             firstName: request.ref.firstName,
-            model: 'Preference',
-            path: '/api/preference',
-            modelId: '',
-            action: Action.WRITE,
+            model: 'Question',
+            path: '/api/question',
+            modelId: request.body.id,
+            action: Action.EDIT,
             status: LogStatus.FAILED,
-            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.WRITE} preference `
+            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.EDIT} question ${request.body.id}`
         } 
         try {
             const lang = request.lang,
                 body = request.body,
-                userId = request.ref.id,
-                data = await addPreference({userId, ...body})
+                data = await editQuestion({...body})
                 reqLog.status = LogStatus.SUCCEEDED
-                reqLog.modelId = data.id
-                reqLog.description += data.id
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)
         } catch (err) {

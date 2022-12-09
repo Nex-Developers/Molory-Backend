@@ -1,9 +1,12 @@
+import answer from "./answer"
 import authentication from "./authentication"
 import configuration from "./configuration"
 import logs from "./logs"
 import newsletter from "./newsletter"
+import notification from "./notification"
 import preference from "./preference"
 import pricing from "./pricing"
+import question from "./question"
 import route from "./route"
 import travel from "./travel"
 import trip from "./trip"
@@ -24,5 +27,8 @@ export default (router) => {
     router.use(route())
     router.use(travel())
     router.use(newsletter())
+    router.use(question())
+    router.use(answer())
+    router.use(notification())
     return router
 }

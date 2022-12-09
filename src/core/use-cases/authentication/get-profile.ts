@@ -1,5 +1,5 @@
 import { ServerError, InvalidParamError } from "../../../utils/errors"
-import moment  from "moment"
+import moment from "moment"
 export default function makeGetProfile({
     userDb
 }: any = {}) {
@@ -38,9 +38,18 @@ export default function makeGetProfile({
                 vehicles: true,
                 preferences: {
                     select: {
-                        id: true,
-                        question: true,
-                        answer: true
+                        question: {
+                            select: {
+                                id: true,
+                                value: true,
+                            }
+                        },
+                        answer: {
+                            select: {
+                                id: true,
+                                value: true,
+                            }
+                        }
                     }
                 },
                 wallets: {
@@ -93,6 +102,7 @@ export default function makeGetProfile({
                 role: data.role,
                 phoneNumber: data.phoneNumber,
                 profileCompletedAt: data.profileCompletedAt,
+                signUpMethod: data.signUpMethod,
                 rating: data.rating,
                 reviewsReceived: data.reviewsReceived,
                 preferences: data.preferences,

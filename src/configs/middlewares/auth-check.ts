@@ -13,7 +13,6 @@ export default async (req, res, next) => {
     } else {
         try {
             const ref = await TokenManager.verify(token)
-            console.log(ref)
             if (!ref) {
                 httpResponse = HttpResponse.badRequest(new InvalidParamError('token'), req.params.lang)
                 res.status(httpResponse.statusCode).json(httpResponse.body) 

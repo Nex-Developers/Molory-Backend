@@ -37,7 +37,6 @@ export default function makeListUserInfos({
                 vehicles: true,
                 preferences: {
                     select: {
-                        id: true,
                         question: true,
                         answer: true
                     }

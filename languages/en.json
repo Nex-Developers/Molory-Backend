@@ -70,5 +70,9 @@
       "changePhoneNumber": "You are phoneNumber has been changed successfully. an Otp code has been send on  :phoneNumber",
       "removeAccount": "Your account has been deleted successfully"
     }
+  },
+  "notification" : {
+    "signUpTitle": "Welcome on Molory!!!",
+    "signUpMessage": "Thanks for joining Molory comunity."
   }
 }

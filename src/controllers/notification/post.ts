@@ -2,7 +2,7 @@ import { Action, IHttpRequest, IHttpResponse, Log, LogStatus } from "../../core/
 import { HttpResponse, LogManager } from "../../utils/helpers";
 
 export default function makePostController({
-    addPreference
+    setAsSeen
 }) {
     // use translations
     return async function(request: IHttpRequest): Promise<IHttpResponse> {
@@ -12,21 +12,18 @@ export default function makePostController({
             userId: request.ref.id, 
             lastName: request.ref.lastName,
             firstName: request.ref.firstName,
-            model: 'Preference',
-            path: '/api/preference',
-            modelId: '',
+            model: 'notification',
+            path: '/api/notification',
+            modelId: request.body.id,
             action: Action.WRITE,
             status: LogStatus.FAILED,
-            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.WRITE} preference `
+            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.EDIT} notification ${request.ref.id } as seen. `
         } 
         try {
             const lang = request.lang,
-                body = request.body,
-                userId = request.ref.id,
-                data = await addPreference({userId, ...body})
+                id = request.body.id,
+                data = await setAsSeen({ id })
                 reqLog.status = LogStatus.SUCCEEDED
-                reqLog.modelId = data.id
-                reqLog.description += data.id
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)
         } catch (err) {

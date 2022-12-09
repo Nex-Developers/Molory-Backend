@@ -2,8 +2,10 @@ import { ServerError, MissingParamError } from "../../../utils/errors"
 
 export default function makeSetProfile({
     userDb,
+    notifyDevice,
+    publicationDb
 }: any = {}) {
-    if (!userDb) throw new ServerError()
+    if (!userDb || !publicationDb || !notifyDevice) throw new ServerError()
     return async function setProfile({
         id,
         lang,
@@ -24,14 +26,30 @@ export default function makeSetProfile({
         const formatedDateArray = birthDay.split('-')
         const fomatedDate = [formatedDateArray[1], formatedDateArray[0], formatedDateArray[2]].join('-')
         birthDay = new Date(fomatedDate)
-        let user = await userDb.findFirst({ where: { id }, select: { firstName: true, lastName: true, birthDay: true, profileCompletedAt: true } })
+        let user = await userDb.findFirst({ where: { id }, select: { id: true, firstName: true, lastName: true, birthDay: true, profileCompletedAt: true, devices: true } })
         if (user && (user.firstName || user.lastName || user.birthDay)) {
             const message = { text: 'error.alreadyDone', params: { date: user.profileCompletedAt } }
             return { message }
         }
-        const data: any = { firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang }
-
-        user = await userDb.updateOne({ where: { id }, data })
+        const res: any = { firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang }
+        const deviceTokens = user.devices.map(device => device.token)
+        const { title, body, data, cover } = await notifyDevice({ deviceTokens, titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'en' })
+        await publicationDb.insertOne({
+            data: {
+                title,
+                message: body,
+                data: data ? JSON.stringify(data) : null,
+                picture: cover,
+                notifications: {
+                    create: {
+                       user: {
+                            connect: { id: user.id}
+                       }
+                    }
+                }
+            }
+        })
+        user = await userDb.updateOne({ where: { id }, data: res })
         const message = { text: 'auth.message.profileUpdated' }
         return { message, user }
     }
