@@ -10,12 +10,12 @@ export default ({
         const select: any = {
             id: true,
             value: true,
-            createdAt: true,
+            // createdAt: true,
             answers: {
                 select: {
                     id: true,
                     value: true,
-                    createdAt: true
+                    // createdAt: true
                 }
             }
         }

@@ -9,12 +9,10 @@ exports.default = ({ questionDb }) => {
         const select = {
             id: true,
             value: true,
-            createdAt: true,
             answers: {
                 select: {
                     id: true,
                     value: true,
-                    createdAt: true
                 }
             }
         };
