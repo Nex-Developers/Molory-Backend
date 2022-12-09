@@ -22,7 +22,8 @@ export default function makePostController({
         try {
             const lang = request.lang,
                 id = request.body.id,
-                data = await setAsSeen({ id })
+                userId = request.ref.id,
+                data = await setAsSeen({ id, userId })
                 reqLog.status = LogStatus.SUCCEEDED
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)

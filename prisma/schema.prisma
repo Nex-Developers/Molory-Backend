@@ -320,16 +320,17 @@ model Historic {
 }
 
 model Publication {
-  id          Int            @id @default(autoincrement())
-  title       String
-  message     String
-  icon        String?
-  sound       String?
-  picture     String?
-  data        String?
-  senderId    Int?
-  createdAt   DateTime       @default(now())
-  user        User?           @relation(fields: [senderId], references: [id])
+  id            Int            @id @default(autoincrement())
+  title         String
+  message       String
+  icon          String?
+  sound         String?
+  picture       String?
+  data          String?
+  senderId      Int?
+  createdAt     DateTime       @default(now())
+  deletedAt     DateTime?
+  user          User?          @relation(fields: [senderId], references: [id])
   notifications Notification[]
 }
 
@@ -337,8 +338,9 @@ model Notification {
   publicationId Int
   receiverId    Int
   createdAt     DateTime    @default(now())
+  deletedAt     DateTime?
   seenAt        DateTime?
-  status        Int @default(2)
+  status        Int         @default(2)
   publication   Publication @relation(fields: [publicationId], references: [id])
   user          User        @relation(fields: [receiverId], references: [id])
 

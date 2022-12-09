@@ -9,7 +9,7 @@ exports.default = () => {
     const router = express_1.default.Router();
     router.route('/notification')
         .get(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(notification_1.getNotificationsController));
-    router.post('notification-seen', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.adminCheck, (0, adapters_1.expressRouterAdapter)(notification_1.postNotificationController));
+    router.post('/notification-seen', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(notification_1.postNotificationController));
     return router;
 };
 //# sourceMappingURL=notification.js.map

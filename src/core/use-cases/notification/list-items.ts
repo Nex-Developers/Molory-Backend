@@ -13,12 +13,12 @@ export default ({
         userId
     }) => {
         const select: any = {
-            id: true,
-            creatAt: true,
+            createdAt: true,
             seenAt: true,
             status: true,
             publication: {
                 select: {
+                    id: true,
                     title: true,
                     message: true,
                     sound: true,
@@ -27,11 +27,19 @@ export default ({
                 }
             }
         }
-        const data = await notificationDb.findMany({
-            where: { recieverId: userId, createdAt: { gt: getLastWeeksDate()} },
+        const res = await notificationDb.findMany({
+            where: { receiverId: userId, createdAt: { gt: getLastWeeksDate()} },
             select
         })
-        return { data }
+        return { data: res.map(item =>({
+            id: item.publication?.id,
+            title: item.publication?.title,
+            message: item.publication?.message,
+            picture: item.publication?.picture,
+            data: item.publucation?.data?JSON.parse(item.publication?.data):null,
+            seenAt: item.seenAt,
+            createdAt: item.createdAt
+        }))}
     }
 
 }

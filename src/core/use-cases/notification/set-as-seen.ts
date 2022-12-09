@@ -1,16 +1,26 @@
 import { MissingParamError, ServerError } from "../../../utils/errors"
 
 export default ({
-    notificationDb
-}: any ) => {
-    if (!notificationDb)  throw new ServerError()
+    publicationDb
+}: any) => {
+    if (!publicationDb) throw new ServerError()
     return async ({
         id,
-        value
+        userId
     }) => {
         if (!id) throw new MissingParamError('id')
-        if (!value) throw new MissingParamError('value')
-        await notificationDb.updateOne({ where: {id}, data: { seenAt: new Date(), status: 1 }})
+        if (!userId) throw new MissingParamError('userId')
+        await publicationDb.updateOne({
+            where: { id },
+            data: {
+                notifications: {
+                    updateMany: {
+                        where: { receiverId: userId },
+                        data: { seenAt: new Date() }
+                    }
+                }
+            }
+        })
         const message = { text: 'response.edit' }
         return { message }
     }

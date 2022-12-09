@@ -33,7 +33,7 @@ export default function makeSetProfile({
         }
         const res: any = { firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang }
         const deviceTokens = user.devices.map(device => device.token)
-        const { title, body, data, cover } = await notifyDevice({ deviceTokens, titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'en' })
+        const { title, body, data, cover } = await notifyDevice({ deviceTokens, titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'fr' })
         await publicationDb.insertOne({
             data: {
                 title,

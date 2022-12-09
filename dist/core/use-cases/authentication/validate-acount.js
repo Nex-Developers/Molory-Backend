@@ -41,7 +41,7 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                 yield saveToken({ token: authToken });
                 yield removeOtp({ phoneNumber: email });
                 yield removeTmpToken({ token });
-                const { title, body, data, cover } = yield notifyDevice({ deviceTokens: [device["token"]], titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'en' });
+                const { title, body, data, cover } = yield notifyDevice({ deviceTokens: [device["token"]], titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'fr' });
                 yield publicationDb.insertOne({
                     data: {
                         title,

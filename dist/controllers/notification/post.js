@@ -20,7 +20,7 @@ function makePostController({ setAsSeen }) {
                 description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.EDIT} notification ${request.ref.id} as seen. `
             };
             try {
-                const lang = request.lang, id = request.body.id, data = yield setAsSeen({ id });
+                const lang = request.lang, id = request.body.id, userId = request.ref.id, data = yield setAsSeen({ id, userId });
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 helpers_1.LogManager.save(reqLog);
                 return helpers_1.HttpResponse.ok(data, lang);

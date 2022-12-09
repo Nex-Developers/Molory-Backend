@@ -1,7 +1,6 @@
 import express from "express"
 import { expressRouterAdapter } from "../../configs/adapters"
 import { 
-    adminCheck, 
     authCheck, 
     langCheck 
 } from "../../configs/middlewares"
@@ -15,6 +14,6 @@ export default () => {
     const router = express.Router()
     router.route('/notification')
     .get(langCheck, authCheck, expressRouterAdapter(getNotificationsController))
-    router.post('notification-seen',langCheck, authCheck, adminCheck, expressRouterAdapter(postNotificationController))
+    router.post('/notification-seen',langCheck, authCheck, expressRouterAdapter(postNotificationController))
     return router
 }

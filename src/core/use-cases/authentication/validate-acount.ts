@@ -47,7 +47,7 @@ export default function makeValidateAccount({
             await saveToken({ token: authToken })
             await removeOtp({ phoneNumber: email })
             await removeTmpToken({ token })
-            const { title, body, data, cover } = await notifyDevice({ deviceTokens: [device["token"]], titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'en' })
+            const { title, body, data, cover } = await notifyDevice({ deviceTokens: [device["token"]], titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'fr' })
             await publicationDb.insertOne({
                 data: {
                     title,

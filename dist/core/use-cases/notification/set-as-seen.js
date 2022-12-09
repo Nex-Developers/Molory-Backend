@@ -2,15 +2,25 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-exports.default = ({ notificationDb }) => {
-    if (!notificationDb)
+exports.default = ({ publicationDb }) => {
+    if (!publicationDb)
         throw new errors_1.ServerError();
-    return ({ id, value }) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
+    return ({ id, userId }) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
         if (!id)
             throw new errors_1.MissingParamError('id');
-        if (!value)
-            throw new errors_1.MissingParamError('value');
-        yield notificationDb.updateOne({ where: { id }, data: { seenAt: new Date(), status: 1 } });
+        if (!userId)
+            throw new errors_1.MissingParamError('userId');
+        yield publicationDb.updateOne({
+            where: { id },
+            data: {
+                notifications: {
+                    updateMany: {
+                        where: { receiverId: userId },
+                        data: { seenAt: new Date() }
+                    }
+                }
+            }
+        });
         const message = { text: 'response.edit' };
         return { message };
     });
