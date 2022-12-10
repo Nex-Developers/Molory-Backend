@@ -17,6 +17,7 @@ function makeListItemInfos({ travelDb } = {}) {
                 route: true,
                 seats: true,
                 status: true,
+                description: true,
                 passengerRating: true,
                 driverRating: true,
                 payment: true,

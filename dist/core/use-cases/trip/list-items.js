@@ -32,6 +32,7 @@ function makeListItems({ tripDb } = {}) {
                 status: true,
                 departureDate: true,
                 departureTime: true,
+                description: true,
                 user: {
                     select: {
                         id: true,

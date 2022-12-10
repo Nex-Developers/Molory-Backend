@@ -18,6 +18,7 @@ export default function makeListItemInfos({
                 route: true,
                 seats: true,
                 status: true,
+                description: true,
                 passengerRating: true,
                 driverRating: true,
                 payment: true,

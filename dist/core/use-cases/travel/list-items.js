@@ -24,6 +24,7 @@ function makeListItems({ travelDb } = {}) {
                 id: true,
                 seats: true,
                 status: true,
+                description: true,
                 route: {
                     select: {
                         id: true,
@@ -71,6 +72,7 @@ function makeListItems({ travelDb } = {}) {
                 id: item.id,
                 seats: item.seats,
                 status: item.status,
+                description: item.description,
                 createdAt: item.createdAt,
                 route,
                 trip: _trip,

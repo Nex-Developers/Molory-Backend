@@ -35,11 +35,30 @@ function makeListUserInfos({ userDb } = {}) {
                     driverLicenseNumber: true,
                     driverLicenseRejectionMessage: true,
                     driverLicenseModifiedAt: true,
+                    signUpMethod: true,
                     vehicles: true,
                     preferences: {
                         select: {
-                            question: true,
-                            answer: true
+                            question: {
+                                select: {
+                                    id: true,
+                                    value: true,
+                                }
+                            },
+                            answer: {
+                                select: {
+                                    id: true,
+                                    value: true,
+                                }
+                            }
+                        }
+                    },
+                    wallets: {
+                        select: {
+                            id: true,
+                            type: true,
+                            balance: true,
+                            currency: true
                         }
                     },
                     _count: { select: {
@@ -59,6 +78,7 @@ function makeListUserInfos({ userDb } = {}) {
                     role: data.role,
                     phoneNumber: data.phoneNumber,
                     profileCompletedAt: data.profileCompletedAt,
+                    signUpMethod: data.signUpMethod,
                     rating: data.rating,
                     reviewsReceived: data.reviewsReceived,
                     vehicles: data.vehicles,

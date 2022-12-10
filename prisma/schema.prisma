@@ -212,6 +212,7 @@ model Trip {
   status         Int       @default(3)
   departureDate  String
   departureTime  String
+  description    String?
   createdAt      DateTime  @default(now())
   deletedAt      DateTime?
   deletionReason String?
@@ -259,6 +260,7 @@ model Travel {
   routeId         Int
   seats           Int
   status          Int       @default(4)
+  description     String?
   createdAt       DateTime  @default(now())
   startedAt       DateTime?
   finishedAt      DateTime?

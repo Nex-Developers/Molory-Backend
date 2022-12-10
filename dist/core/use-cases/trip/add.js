@@ -6,7 +6,7 @@ const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 function makeAdd({ tripDb, calculMatrix, } = {}) {
     if (!tripDb)
         throw new errors_1.ServerError();
-    return ({ userId, vehicleId, seats, date, time, price, stops } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ userId, vehicleId, seats, date, time, price, stops, description } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!userId)
             throw new errors_1.MissingParamError('userId');
         if (!price)
@@ -19,6 +19,8 @@ function makeAdd({ tripDb, calculMatrix, } = {}) {
             throw new errors_1.MissingParamError('time');
         if (!stops && !stops.length)
             throw new errors_1.MissingParamError('stops');
+        if (!description)
+            description = null;
         const departures = JSON.parse(JSON.stringify(stops)).filter(stop => stop.type === 'departure' || stop.type === 'both');
         departures.map(departure => {
             if (departure.type !== 'departure') {
@@ -89,6 +91,7 @@ function makeAdd({ tripDb, calculMatrix, } = {}) {
                 remainingSeats: seats,
                 departureDate: date,
                 departureTime: time,
+                description,
                 routes: {
                     create: calculatedRoutes
                 }

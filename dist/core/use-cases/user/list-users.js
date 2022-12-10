@@ -12,7 +12,8 @@ function makeListUsers({ userDb } = {}) {
                 startAt = 0;
             if (!limit)
                 limit = 100;
-            const data = yield userDb.findMany({ startAt, limit, orderBy: { role: 'asc' }, select: {
+            const data = yield userDb.findMany({
+                startAt, limit, orderBy: { role: 'asc' }, select: {
                     id: true,
                     avatar: true,
                     lastName: true,
@@ -25,9 +26,15 @@ function makeListUsers({ userDb } = {}) {
                     createdAt: true,
                     blockedAt: true,
                     role: true
-                } });
-            data.birthDay = (0, moment_1.default)(data.birthDay).format('DD-MM-YYYY');
-            data.createdAt = (0, moment_1.default)(data.createdAt).format('DD-MM-YYYY');
+                }
+            });
+            data.map(item => {
+                if (item.birthDay)
+                    item.birthDay = (0, moment_1.default)(item.birthDay).format('DD-MM-YYYY');
+                if (item.createdAt)
+                    item.createdAt = (0, moment_1.default)(item.createdAt).format('DD-MM-YYYY');
+                return item;
+            });
             return { data, count: data.length, startAt, limit };
         });
     };

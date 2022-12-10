@@ -16,7 +16,8 @@ export default function makeAdd({
         date,
         time,
         price,
-        stops
+        stops,
+        description
     }: any = {}) => {
         if (!userId) throw new MissingParamError('userId')
         // if (!vehicleId) throw new MissingParamError('vehicleId')
@@ -25,7 +26,7 @@ export default function makeAdd({
         if (!date) throw new MissingParamError('date')
         if (!time) throw new MissingParamError('time')
         if (!stops && !stops.length) throw new MissingParamError('stops')
-
+        if (!description) description=null
         const departures = JSON.parse(JSON.stringify(stops)).filter(stop => stop.type === 'departure' || stop.type === 'both')
             departures.map(departure => {
                 if (departure.type !== 'departure') {
@@ -106,6 +107,7 @@ export default function makeAdd({
                 remainingSeats: seats,
                 departureDate: date,
                 departureTime: time,
+                description,
                 routes: {
                     create: calculatedRoutes
                 }

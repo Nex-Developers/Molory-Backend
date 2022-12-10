@@ -9,13 +9,14 @@ export default function makeAdd({
     return async ({
         userId,
         routeId,
-        seats
+        seats,
+        description
     }: any = {}) => {
 
         if (!userId) throw new MissingParamError('userId')
         if (!routeId) throw new MissingParamError('routeId')
         if (!seats) throw new MissingParamError('seats')
-
+        if (!description) description = null
         // avoid buying self ticket
         // const { driverId } = await routeDb({ where: { } })
 
@@ -34,6 +35,7 @@ export default function makeAdd({
                 userId,
                 routeId,
                 seats,
+                description,
                 payment: {
                     create: {
                         userId,
