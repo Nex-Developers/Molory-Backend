@@ -7,7 +7,6 @@ import PreferenceDb from "./preference-db"
 import PricingDb from "./pricing-db"
 import PublicationDb from "./publication-db"
 import QuestionDb from "./question-db"
-import ReviewDb from "./review-db"
 import RouteDb from "./route-db"
 import StopDb from "./stop-db"
 import TravelDb from "./travel-db"
@@ -32,7 +31,6 @@ export {
     NewsletterDb,
     PaymentDb,
     WithdrawalDb,
-    ReviewDb,
     WalletDb,
     QuestionDb,
     AnswerDb,

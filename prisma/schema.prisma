@@ -71,24 +71,10 @@ model User {
   historics                     Historic[]
   sendedNotifications           Publication[]
   receivedNotifications         Notification[]
-  wallets                       Wallet[]
   devices                       Device[]
   payments                      Payment[]
+  transferts                    Transfert[]
   country                       Country?       @relation(fields: [countryId], references: [id])
-  reviewsReceived               Review[]       @relation(name: "received")
-  reviewsDone                   Review[]       @relation(name: "done")
-}
-
-model Review {
-  id        Int       @id @default(autoincrement())
-  userId    Int
-  doneBy    Int
-  rating    Float
-  review    String
-  createdAt DateTime  @default(now())
-  deletedAt DateTime?
-  user      User      @relation(name: "received", fields: [userId], references: [id])
-  doer      User      @relation(name: "done", fields: [doneBy], references: [id])
 }
 
 model Device {
@@ -105,12 +91,9 @@ model Device {
 }
 
 model Wallet {
-  id          Int          @id @default(autoincrement())
-  type        String       @default("default")
-  userId      Int
+  id          Int          @id
   currency    String       @default("XOF")
   balance     Int          @default(0)
-  user        User         @relation(fields: [userId], references: [id])
   createdAt   DateTime     @default(now())
   updatedAt   DateTime?    @updatedAt
   deletedAt   DateTime?
@@ -142,6 +125,7 @@ model Question {
 model Answer {
   id          Int          @id @default(autoincrement())
   questionId  Int
+  index       Int          @default(0)
   value       String
   createdAt   DateTime     @default(now())
   updatedAt   DateTime?    @updatedAt
@@ -153,6 +137,7 @@ model Answer {
 model Preference {
   questionId Int
   answerId   Int
+  answerIndex    Int
   userId     Int
   createdAt  DateTime  @default(now())
   updatedAt  DateTime? @updatedAt
@@ -214,8 +199,9 @@ model Trip {
   departureTime  String
   description    String?
   createdAt      DateTime  @default(now())
+  canceledAt     DateTime?
   deletedAt      DateTime?
-  deletionReason String?
+  cancelReason   String?
   startedAt      DateTime?
   finishedAt     DateTime?
   // stops Stop[]
@@ -246,6 +232,7 @@ model Route {
   distance       Int
   duration       Int
   price          Int
+  fees           Int
   principal      Boolean   @default(false)
   remainingSeats Int?
   deletedAt      DateTime?
@@ -255,26 +242,51 @@ model Route {
 }
 
 model Travel {
-  id              Int       @id @default(autoincrement())
+  id              Int              @id @default(autoincrement())
   userId          Int
   routeId         Int
   seats           Int
-  status          Int       @default(4)
+  status          Int              @default(3)
   description     String?
-  createdAt       DateTime  @default(now())
+  createdAt       DateTime         @default(now())
+  deletedAt       DateTime?
   startedAt       DateTime?
   finishedAt      DateTime?
-  deletedAt       DateTime?
-  deletionReason  String?
-  driverRating    Int?
-  passengerRating Int?
-  user            User      @relation(fields: [userId], references: [id])
-  route           Route     @relation(fields: [routeId], references: [id])
+  canceledAt      DateTime?
+  canceledBy      String?
+  cancelReason    String?
+  // driverRating    Int?
+  // passengerRating Int?
+  rating          Float            @default(0.0)
+  user            User             @relation(fields: [userId], references: [id])
+  route           Route            @relation(fields: [routeId], references: [id])
   payment         Payment?
+  passengerReview PassengerReview?
+  driverReview    DriverReview?
+}
+
+model PassengerReview {
+  travelId  Int       @id
+  rating    Int?
+  comment   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+  travel    Travel    @relation(fields: [travelId], references: [id])
+}
+
+model DriverReview {
+  travelId  Int       @id
+  rating    Int?
+  comment   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+  travel    Travel    @relation(fields: [travelId], references: [id])
 }
 
 model Payment {
-  id             Int       @id @default(autoincrement())
+  id             String    @id
   travelId       Int       @unique
   userId         Int
   method         String?
@@ -283,6 +295,7 @@ model Payment {
   reference      String?
   accessNumber   String?
   createdAt      DateTime  @default(now())
+  deletedAt      DateTime?
   validatedAt    DateTime?
   status         Int       @default(2) //2-wating 1-success 0-canceled
   travel         Travel    @relation(fields: [travelId], references: [id])
@@ -290,9 +303,8 @@ model Payment {
 }
 
 model Withdrawal {
-  id           Int       @id @default(autoincrement())
+  id           String    @id
   walletId     Int
-  type         String
   method       String?
   amount       Int
   accessNumber String?
@@ -300,6 +312,18 @@ model Withdrawal {
   validatedAt  DateTime?
   status       Int       @default(2) //2-wating 1-success 0-canceled
   wallet       Wallet    @relation(fields: [walletId], references: [id])
+}
+
+model Transfert {
+  id           String    @id
+  userId       Int
+  method       String?
+  amount       Int
+  accessNumber String?
+  createdAt    DateTime  @default(now())
+  validatedAt  DateTime?
+  status       Int       @default(3) //3-available 2-In process 1-success 0-canceled
+  user         User      @relation(fields: [userId], references: [id])
 }
 
 model Status {
@@ -355,4 +379,13 @@ model Newsletter {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   deletedAt DateTime?
+}
+
+model Setting {
+  key         String    @id
+  value       String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  deletedAt   DateTime?
 }

@@ -1,7 +1,6 @@
 import express from "express"
 import { expressRouterAdapter } from "../../configs/adapters"
 import { 
-    driverCheck, 
     authCheck, 
     langCheck, 
     queryParser
@@ -23,8 +22,8 @@ export default () => {
     router.route('/travel')
     .get(langCheck, queryParser, authCheck, expressRouterAdapter(getTravelsController))
     .post(langCheck, authCheck, expressRouterAdapter(postTravelController))
-    .patch(langCheck, authCheck, driverCheck, expressRouterAdapter(patchTravelController))
-    .delete(langCheck, authCheck, driverCheck, expressRouterAdapter(deleteTravelController))
+    .patch(langCheck, authCheck, expressRouterAdapter(patchTravelController))
+    .delete(langCheck, authCheck, expressRouterAdapter(deleteTravelController))
     router.post('/confirm-payment',langCheck, authCheck,expressRouterAdapter(postNotifyController))
     return router
 }

@@ -1,12 +1,12 @@
 import { AlreadyDoneError, InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeChangePassword({ 
-    removeToken,
+    // removeToken,
     comparePasswords,
     hashPassword,
     userDb
 }: any = {}) {
-    if ( !removeToken  || !userDb || !comparePasswords || !hashPassword ) throw new ServerError()
+    if ( !userDb || !comparePasswords || !hashPassword ) throw new ServerError()
 
     return async function changePassword ({
         id,
@@ -29,7 +29,7 @@ export default function makeChangePassword({
              where: { id }, 
              data: { password }
             })
-        await removeToken({ token })
+        // await removeToken({ token })
         const message = { text: 'auth.message.changePassword'}
         return { message }
     }

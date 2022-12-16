@@ -9,6 +9,7 @@ export default ({
     }) => {
         const select: any = {
             value: true,
+            index: true,
             createdAt: true,
             question: {
                 select: {

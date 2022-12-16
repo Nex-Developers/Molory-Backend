@@ -1,4 +1,5 @@
 import { PaymentDb, RouteDb, TravelDb } from "../../../db"
+import { notifyDevice } from "../../services/notifications"
 // import { DbConnection } from "../../../utils/helpers"
 // import { getPaymentState } from "../../services/payment"
 import makeAdd from "./add"
@@ -17,7 +18,7 @@ const addTravel = makeAdd({ travelDb, routeDb, paymentDb })
 const editTravel = makeEdit({ travelDb })
 const listTravels = makeListItems({ travelDb })
 const listTravelInfos = makeListItemInfos({ travelDb })
-const removeTravel = makeRemove({ travelDb })
+const removeTravel = makeRemove({ travelDb, notifyDevice })
 const confirmPayment = makeConfirmPayment()
 
 export {

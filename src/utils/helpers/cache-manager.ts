@@ -30,13 +30,14 @@ export default class CacheManager {
    return  makeAsync(array, 1, value)
   }
 
-  static remove(array) {
+  static remove(key) {
     const makeAsync = promisify( CacheManager.client.del).bind(CacheManager.client) 
-   return  makeAsync(array)
+   return  makeAsync(key)
   }
 
-   static set (key, value) {
+   static set (key, value, ttl = 120) {
     CacheManager.client.set(key, value)
+    CacheManager.client.expire(key, ttl)
   }
 
   static get (key) {

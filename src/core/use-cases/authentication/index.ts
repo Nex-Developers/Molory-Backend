@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { DeviceDb, PublicationDb, UserDb } from "../../../db"
+import { DeviceDb, PublicationDb, UserDb, WalletDb } from "../../../db"
 import { askToConfirmEmail, askToResetPassword, emailConfirmationView, isValidEmail } from "../../services/email"
 import { generateOtp, getOtp, removeOtp, saveOtp, sendOtp } from "../../services/otp"
 import { comparePasswords, hashPassword } from "../../services/password"
@@ -33,6 +33,7 @@ import { notifyDevice } from "../../services/notifications"
 
 const prisma = new PrismaClient()
 const userDb = new UserDb()
+const walletDb =  new WalletDb()
 const deviceDb = new DeviceDb()
 const publicationDb = new PublicationDb()
 
@@ -45,9 +46,9 @@ const confirmOtp = makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateTo
 const signUp = makeSignUp({ userDb, askToConfirmEmail, isValidEmail, hashPassword, generateToken, saveTmpToken, generateOtp, saveOtp})
 const validateAccount = makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, notifyDevice, publicationDb })
 const confirmEmail = makeConfirmEmail({ removeTmpToken, verifyToken, emailConfirmationView, userDb })
-const changePassword = makeChangePassword({ removeToken, comparePasswords, hashPassword, userDb })
+const changePassword = makeChangePassword({ comparePasswords, hashPassword, userDb })
 const setProfile = makeSetProfile({ userDb, notifyDevice, publicationDb })
-const getProfile = makeGetProfile({ userDb })
+const getProfile = makeGetProfile({ userDb, walletDb })
 const updateProfile = makeUpdateProfile({ userDb })
 const updateAvatar = makeUpdateAvatar({ userDb, deleteAvatarFile})
 const updateIdCard = makeUpdateIdCard({ userDb })

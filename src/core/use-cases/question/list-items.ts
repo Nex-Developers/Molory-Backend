@@ -15,6 +15,7 @@ export default ({
                 select: {
                     id: true,
                     value: true,
+                    index: true
                     // createdAt: true
                 }
             }

@@ -11,7 +11,7 @@ export default function makeListItems({
     }: any = {}) => {
         if (!startAt) startAt = 0
         if (!limit) limit = 100
-        const where: any = { status: { lt: 4 } }
+        const where: any = {}
         if (userId) where.userId = userId
         const res = await travelDb.findMany({
             startAt,
@@ -25,6 +25,7 @@ export default function makeListItems({
                 seats: true,
                 status: true,
                 description: true,
+
                 route: {
                     select: {
                         id: true,
@@ -45,9 +46,18 @@ export default function makeListItems({
                                         avatar: true,
                                         firstName: true,
                                         lastName: true,
-                                        phoneNumber: true
+                                        phoneNumber: true,
+                                        rating: true
                                     }
-                                }
+                                }, vehicle: {
+                                    select: {
+                                        id: true,
+                                        numberPlate: true,
+                                        model: true,
+                                        type: true,
+                                        color: true
+                                    }
+                                },
                             }
                         }
                     }
@@ -65,9 +75,9 @@ export default function makeListItems({
             }
         })
         const data = [];
-        res.forEach( item => {
-            const  { trip, ...route} = item.route
-            const { user, ..._trip} = trip
+        res.forEach(item => {
+            const { trip, ...route } = item.route
+            const { user, vehicle, ..._trip } = trip
             data.push({
                 id: item.id,
                 seats: item.seats,
@@ -77,12 +87,13 @@ export default function makeListItems({
                 route,
                 trip: _trip,
                 driver: user,
+                vehicle,
                 user: item.user
             })
         })
-       
 
-       
+
+
         return { data }
     }
 }

@@ -21,8 +21,8 @@ export default function makeDeleteController({
         } 
         try {
             const lang = request.lang,
-                { id } = request.body,
-                data = await removeTravel({ id })
+                body = request.body,
+                data = await removeTravel({ ...body })
                 reqLog.status = LogStatus.SUCCEEDED
                 LogManager.save(reqLog)
                 return HttpResponse.ok(data, lang)

@@ -17,6 +17,7 @@ export default function makeListItems({
                 id: true,
                 question: true,
                 answer: true,
+                answerIndex: true
                 // createdAt: true
             }
         })

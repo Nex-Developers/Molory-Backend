@@ -1,5 +1,5 @@
 
-import { ReviewDb, UserDb, WalletDb } from "../../../db"
+import { UserDb, WalletDb } from "../../../db"
 import { askToConfirmEmail, isValidEmail } from "../../services/email"
 import { hashPassword } from "../../services/password"
 import { generateToken, saveTmpToken } from "../../services/token"
@@ -21,7 +21,6 @@ import makeValidateDriverLicense from "./validate-driver-license"
 import makeValidateUserIdCard from "./validate-user-id-card"
 
 const userDb = new UserDb()
-const reviewDb = new ReviewDb()
 const walletDb = new WalletDb()
 
 const listUsers = makeListUsers({ userDb })
@@ -38,7 +37,7 @@ const listRemovedUserInfos = makeListRemovedUserInfos({ userDb })
 const editUserAvatar = makeEditUserAvatar({ userDb, deleteAvatarFile })
 const validateUserIdCard = makeValidateUserIdCard({ userDb, walletDb })
 const validateDriverLicense = makeValidateDriverLicense({ userDb, walletDb })
-const rateUser = makeRateUser({reviewDb, userDb })
+const rateUser = makeRateUser({ userDb })
 
 export {
     listUserInfos,

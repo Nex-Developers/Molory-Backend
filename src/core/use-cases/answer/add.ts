@@ -10,7 +10,10 @@ export default ({
     }) => {
         if (!questionId) throw new MissingParamError('questionId')
         if (!value) throw new MissingParamError('value')
-        const { id } = await answerDb.insertOne({ data: {questionId, value}})
+        const oldanswer = await answerDb.findFirst({ where: { questionId }, orderBy: { id: 'desc'}})
+        let index = 0
+        if (oldanswer) index++
+        const { id } = await answerDb.insertOne({ data: {questionId, value, index}})
         const message = { text: 'response.add' }
         return { message, id }
     }
