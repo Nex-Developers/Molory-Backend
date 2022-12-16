@@ -6,7 +6,7 @@ function makeSignInWithPhoneNumber({ generateOtp, saveOtp, sendOtp, generateToke
     if (!generateOtp || !saveOtp || !sendOtp || !generateToken || !saveTmpToken || !userDb)
         throw new errors_1.ServerError();
     return function signInWithPhoneNumber({ phoneNumber, action } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!phoneNumber)
                 throw new errors_1.MissingParamError('phoneNumber');
             if (phoneNumber.charAt(0) == '+')

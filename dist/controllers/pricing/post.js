@@ -5,7 +5,7 @@ const conventions_1 = require("../../core/conventions");
 const helpers_1 = require("../../utils/helpers");
 function makePostController({ addPricing }) {
     return function (request) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const reqLog = {
                 date: new Date().toDateString(),
                 time: new Date().toTimeString(),

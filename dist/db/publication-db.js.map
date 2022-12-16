@@ -1,1 +1,1 @@
-{"version":3,"file":"publication-db.js","sourceRoot":"","sources":["../../src/db/publication-db.ts"],"names":[],"mappings":";;;AACA,iEAA4B;AAE5B,MAAqB,aAAc,SAAQ,eAAkB;IACzD;QACI,KAAK,CAAC,aAAa,CAAC,CAAA;IACxB,CAAC;CAGJ;AAND,gCAMC"}
+{"version":3,"file":"publication-db.js","sourceRoot":"","sources":["../../src/db/publication-db.ts"],"names":[],"mappings":";;;AACA,4DAA4B;AAE5B,MAAqB,aAAc,SAAQ,eAAkB;IACzD;QACI,KAAK,CAAC,aAAa,CAAC,CAAA;IACxB,CAAC;CAGJ;AAND,gCAMC"}

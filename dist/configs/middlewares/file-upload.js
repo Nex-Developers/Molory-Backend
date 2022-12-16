@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const multer_1 = (0, tslib_1.__importDefault)(require("multer"));
+const multer_1 = tslib_1.__importDefault(require("multer"));
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/uploads/' + file.fieldname);

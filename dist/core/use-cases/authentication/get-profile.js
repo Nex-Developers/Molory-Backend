@@ -2,16 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
-function makeGetProfile({ userDb } = {}) {
-    if (!userDb)
+const moment_1 = tslib_1.__importDefault(require("moment"));
+function makeGetProfile({ userDb, walletDb } = {}) {
+    if (!userDb || !walletDb)
         throw new errors_1.ServerError();
     return function getProfile({ id } = {}) {
-        var _a;
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!id)
                 throw new errors_1.InvalidParamError('token');
-            const data = yield userDb.findFirst({
+            const res = yield userDb.findFirst({
                 where: { id },
                 select: {
                     avatar: true,
@@ -22,7 +21,6 @@ function makeGetProfile({ userDb } = {}) {
                     gender: true,
                     role: true,
                     rating: true,
-                    reviewsReceived: true,
                     phoneNumber: true,
                     profileCompletedAt: true,
                     idCardFront: true,
@@ -50,17 +48,10 @@ function makeGetProfile({ userDb } = {}) {
                             answer: {
                                 select: {
                                     id: true,
+                                    index: true,
                                     value: true,
                                 }
                             }
-                        }
-                    },
-                    wallets: {
-                        select: {
-                            id: true,
-                            type: true,
-                            balance: true,
-                            currency: true
                         }
                     },
                     _count: {
@@ -72,48 +63,54 @@ function makeGetProfile({ userDb } = {}) {
                 }
             });
             const documents = [];
-            if (data.idCardFront || data.idCardBack) {
+            if (res.idCardFront || res.idCardBack) {
                 documents.push({
                     name: "ID Card",
-                    reference: data.idCardNumber,
-                    urlFront: data.idCardFront,
-                    urlBack: data.idCardBack,
-                    status: data.idCardStatus,
-                    rejectionMessage: data.idCardRejectionMessage,
+                    reference: res.idCardNumber,
+                    urlFront: res.idCardFront,
+                    urlBack: res.idCardBack,
+                    status: res.idCardStatus,
+                    rejectionMessage: res.idCardRejectionMessage,
                 });
             }
-            if (data.driverLicenseFront || data.driverLicenseBack) {
+            if (res.driverLicenseFront || res.driverLicenseBack) {
                 documents.push({
                     name: "Driver License",
-                    reference: data.driverLicenseNumber,
-                    urlFront: data.driverLicenseFront,
-                    urlBack: data.driverLicenseBack,
-                    status: data.driverLicenseStatus,
-                    rejectionMessage: data.driverLicenseRejectionMessage,
+                    reference: res.driverLicenseNumber,
+                    urlFront: res.driverLicenseFront,
+                    urlBack: res.driverLicenseBack,
+                    status: res.driverLicenseStatus,
+                    rejectionMessage: res.driverLicenseRejectionMessage,
                 });
             }
-            return {
-                data: {
-                    id,
-                    avatar: data.avatar,
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    birthDay: (0, moment_1.default)(data.birthDay).format('DD-MM-YYYY'),
-                    email: data.email,
-                    gender: data.gender,
-                    role: data.role,
-                    phoneNumber: data.phoneNumber,
-                    profileCompletedAt: data.profileCompletedAt,
-                    signUpMethod: data.signUpMethod,
-                    rating: data.rating,
-                    reviewsReceived: data.reviewsReceived,
-                    preferences: data.preferences,
-                    vehicles: data.vehicles,
-                    documents,
-                    wallet: (_a = data.wallets) === null || _a === void 0 ? void 0 : _a[0],
-                    stats: data._count
-                }
+            const data = {
+                id,
+                avatar: res.avatar,
+                firstName: res.firstName,
+                lastName: res.lastName,
+                birthDay: (0, moment_1.default)(res.birthDay).format('DD-MM-YYYY'),
+                email: res.email,
+                gender: res.gender,
+                role: res.role,
+                phoneNumber: res.phoneNumber,
+                profileCompletedAt: res.profileCompletedAt,
+                signUpMethod: res.signUpMethod,
+                rating: res.rating,
+                reviewsReceived: res.reviewsReceived,
+                preferences: res.preferences,
+                vehicles: res.vehicles,
+                documents,
+                stats: res._count
             };
+            if (res.role === 'driver')
+                data.wallet = yield walletDb.findFirst({
+                    where: { id: res.userId },
+                    select: {
+                        balance: true,
+                        currency: true
+                    }
+                });
+            return { data };
         });
     };
 }

@@ -6,7 +6,7 @@ function makeSetProfile({ userDb, notifyDevice, publicationDb } = {}) {
     if (!userDb || !publicationDb || !notifyDevice)
         throw new errors_1.ServerError();
     return function setProfile({ id, lang, firstName, lastName, gender, email, birthDay } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             console.log('birthDay', birthDay);
             if (!id)
                 throw new errors_1.MissingParamError('token');

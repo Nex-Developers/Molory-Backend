@@ -1,1 +1,1 @@
-{"version":3,"file":"travel-db.js","sourceRoot":"","sources":["../../src/db/travel-db.ts"],"names":[],"mappings":";;;AACA,iEAA4B;AAE5B,MAAqB,QAAS,SAAQ,eAAa;IAC/C;QACI,KAAK,CAAC,QAAQ,CAAC,CAAA;IACnB,CAAC;CAGJ;AAND,2BAMC"}
+{"version":3,"file":"travel-db.js","sourceRoot":"","sources":["../../src/db/travel-db.ts"],"names":[],"mappings":";;;AACA,4DAA4B;AAE5B,MAAqB,QAAS,SAAQ,eAAa;IAC/C;QACI,KAAK,CAAC,QAAQ,CAAC,CAAA;IACnB,CAAC;CAGJ;AAND,2BAMC"}

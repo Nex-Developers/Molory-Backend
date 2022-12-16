@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 exports.default = ({ questionDb }) => {
     if (!questionDb)
         throw new errors_1.ServerError();
-    return ({ role }) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
+    return ({ role }) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         const select = {
             id: true,
             value: true,
@@ -13,6 +13,7 @@ exports.default = ({ questionDb }) => {
                 select: {
                     id: true,
                     value: true,
+                    index: true
                 }
             }
         };

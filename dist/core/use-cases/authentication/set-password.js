@@ -6,7 +6,7 @@ function makeSetPassword({ prisma, userDb, deviceDb, generateToken, saveToken, r
     if (!prisma || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !hashPassword || !getOtp || !comparePasswords)
         throw new errors_1.ServerError();
     return function setPassword({ token, password, lang, device } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!device)
                 throw new errors_1.MissingParamError('device');
             if (!token || !lang)
@@ -18,7 +18,7 @@ function makeSetPassword({ prisma, userDb, deviceDb, generateToken, saveToken, r
             if (otpIndex === null || otpIndex === undefined)
                 throw new errors_1.InvalidParamError('token');
             let user = yield userDb.findFirst({ where: { email } });
-            return yield prisma.$transaction((_) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            return yield prisma.$transaction((_) => tslib_1.__awaiter(this, void 0, void 0, function* () {
                 if (!user) {
                     throw new errors_1.AccountNotFoundError('email');
                 }

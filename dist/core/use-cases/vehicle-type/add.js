@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 function makeAdd({ vehicleTypeDb } = {}) {
     if (!vehicleTypeDb)
         throw new errors_1.ServerError();
-    return ({ name, description, maxSeats } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ name, description, maxSeats } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
         if (!name)
             throw new errors_1.MissingParamError('name');
         if (!description)

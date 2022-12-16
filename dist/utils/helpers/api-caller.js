@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const axios_1 = (0, tslib_1.__importDefault)(require("axios"));
+const axios_1 = tslib_1.__importDefault(require("axios"));
 class ApiCaller {
     static read(url, req) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const headers = {
                 'Content-Type': 'application/json',
             };
@@ -17,7 +17,7 @@ class ApiCaller {
         });
     }
     static send(url, req) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const headers = {
                 'Content-Type': 'application/json',
             };

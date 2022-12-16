@@ -6,7 +6,7 @@ function makeAddEmailAuth({ userDb, generateToken, saveTmpToken, askToConfirmEma
     if (!userDb || !generateToken || !saveTmpToken || !askToConfirmEmail || !isValidEmail || !hashPassword)
         throw new errors_1.ServerError();
     return function ({ id, email, password } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!id)
                 throw new errors_1.InvalidParamError('token');
             if (!email)

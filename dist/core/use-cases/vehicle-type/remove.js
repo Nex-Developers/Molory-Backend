@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 function makeRemove({ vehicleTypeDb } = {}) {
     if (!vehicleTypeDb)
         throw new errors_1.ServerError();
-    return ({ name } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ name } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
         if (!name)
             throw new errors_1.MissingParamError('name');
         yield vehicleTypeDb.deleteOne({

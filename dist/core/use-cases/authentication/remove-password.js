@@ -6,7 +6,7 @@ function makeRemovePassword({ verifyToken, getOtp, userDb, generateToken, saveTm
     if (!getOtp || !verifyToken || !userDb || !generateToken || !saveTmpToken || !removeTmpToken)
         throw new errors_1.ServerError();
     return function removePassword({ token, otp, } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!token)
                 throw new errors_1.MissingParamError('token');
             if (!otp)

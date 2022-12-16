@@ -1,1 +1,1 @@
-{"version":3,"file":"newsletter-db.js","sourceRoot":"","sources":["../../src/db/newsletter-db.ts"],"names":[],"mappings":";;;AACA,iEAA4B;AAE5B,MAAqB,YAAa,SAAQ,eAAiB;IACvD;QACI,KAAK,CAAC,YAAY,CAAC,CAAA;IACvB,CAAC;CAGJ;AAND,+BAMC"}
+{"version":3,"file":"newsletter-db.js","sourceRoot":"","sources":["../../src/db/newsletter-db.ts"],"names":[],"mappings":";;;AACA,4DAA4B;AAE5B,MAAqB,YAAa,SAAQ,eAAiB;IACvD;QACI,KAAK,CAAC,YAAY,CAAC,CAAA;IACvB,CAAC;CAGJ;AAND,+BAMC"}

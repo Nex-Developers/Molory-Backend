@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 function makeAdd({ pricingDb } = {}) {
     if (!pricingDb)
         throw new errors_1.ServerError();
-    return ({ vehicleTypeName, lowerDistance, upperDistance, unitPrice } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ vehicleTypeName, lowerDistance, upperDistance, unitPrice } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
         if (!vehicleTypeName)
             throw new errors_1.MissingParamError('vehicleTypeName');
         if (!lowerDistance)

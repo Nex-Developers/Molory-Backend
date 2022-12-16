@@ -6,7 +6,7 @@ const errors_1 = require("../../../utils/errors");
 function makeAdd({ withdrawalDb, walletDb } = {}) {
     if (!withdrawalDb || !walletDb)
         throw new errors_1.ServerError();
-    return ({ userId, walletId, type, method, amount, accessNumber, } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ userId, walletId, type, method, amount, accessNumber, } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
         if (!walletId)
             throw new errors_1.MissingParamError('walletId');
         if (!type)

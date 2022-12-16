@@ -2,15 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const conventions_1 = require("./core/conventions");
-const user_1 = require("./core/use-cases/user");
+const password_1 = require("./core/services/password");
 const db_1 = require("./db");
-const cron = (0, tslib_1.__importStar)(require("node-cron"));
-exports.default = () => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
-    const travelDb = new db_1.TravelDb();
-    cron.schedule('0 1 * * *', () => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
-        console.log('running a task every day');
-        deleteUnAchievedJobs();
-    }));
+exports.default = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const userDb = new db_1.UserDb();
     const admin = yield userDb.findFirst({ where: { email: 'developer@nex-softwares.com' }, select: { id: true } });
     if (admin) {
@@ -29,14 +23,11 @@ exports.default = () => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function*
         lastName: 'NEX',
         phoneNumber: '22890909090',
         language: 'en',
-        birthDay: new Date()
+        birthDay: new Date('01-01-1990')
     };
-    const response = yield (0, user_1.addUser)(data);
+    data.password = yield (0, password_1.hashPassword)({ password: data.password });
+    const response = yield userDb.insertOne({ data, include: null });
     console.log(`--> Admin user created with id: ${response.id}`);
-    const deleteUnAchievedJobs = () => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
-        console.log(' ----> Deleting anuchieved commands!!!');
-        return yield travelDb.deleteMany({ where: { status: 4 }, force: true });
-    });
     return;
 });
 //# sourceMappingURL=initializer.js.map

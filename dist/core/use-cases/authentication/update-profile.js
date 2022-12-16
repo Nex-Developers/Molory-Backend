@@ -7,7 +7,7 @@ function makeUpdateProfile({ userDb } = {}) {
     if (!userDb)
         throw new errors_1.ServerError();
     return function updateProfile({ id, firstName, lastName, birthDay, gender, email } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             console.log('birthDay gender email', birthDay, gender, email);
             const data = {};
             if (!id)

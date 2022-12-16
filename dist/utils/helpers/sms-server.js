@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const axios_1 = (0, tslib_1.__importDefault)(require("axios"));
+const axios_1 = tslib_1.__importDefault(require("axios"));
 const environment_1 = require("../../configs/environment");
 class SmsServer {
     static send(phoneNumbers, message) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             console.log(' production ', environment_1.env.production);
             try {
                 console.log(message);

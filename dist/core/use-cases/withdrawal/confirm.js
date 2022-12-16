@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 function makeConfirm({ withdrawalDb } = {}) {
     if (!withdrawalDb)
         throw new errors_1.ServerError();
-    return ({ id, amount, status } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ id, amount, status } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
         if (!id)
             throw new errors_1.MissingParamError('id');
         if (!amount)

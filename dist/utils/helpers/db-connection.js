@@ -4,13 +4,13 @@ const tslib_1 = require("tslib");
 const client_1 = require("@prisma/client");
 class DbConnection {
     static connect() {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield DbConnection.prisma.$connect();
             return DbConnection.prisma;
         });
     }
     static disconnect() {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             yield DbConnection.prisma.$disconnect();
         });
     }

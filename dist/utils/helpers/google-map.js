@@ -5,7 +5,7 @@ const environment_1 = require("../../configs/environment");
 const google_maps_services_js_1 = require("@googlemaps/google-maps-services-js");
 class GoogleMap {
     static calculMatrix(origin, destination) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const request = {
                 params: {
                     origins: [origin],

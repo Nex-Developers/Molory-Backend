@@ -5,7 +5,7 @@ const conventions_1 = require("../../core/conventions");
 const helpers_1 = require("../../utils/helpers");
 function makeSendOtpController({ signInWithPhoneNumber }) {
     return function sendOtpController(request) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { phoneNumber, action } = request.body, lang = request.lang, date = new Date(), reqLog = {
                 date: date.toDateString(),
                 time: date.toTimeString(),

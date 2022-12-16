@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../errors");
-const jsonwebtoken_1 = (0, tslib_1.__importDefault)(require("jsonwebtoken"));
+const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
 const environment_1 = require("../../configs/environment");
 class TokenManager {
     static generate(id) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!TokenManager.secret) {
                 throw new errors_1.MissingParamError('secret');
             }
@@ -17,7 +17,7 @@ class TokenManager {
         });
     }
     static verify(token) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!token)
                 throw new errors_1.MissingParamError('token');
             if (!TokenManager.secret)

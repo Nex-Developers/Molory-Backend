@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const ejs_1 = (0, tslib_1.__importDefault)(require("ejs"));
-const path_1 = (0, tslib_1.__importDefault)(require("path"));
-const express_1 = (0, tslib_1.__importDefault)(require("express"));
+const ejs_1 = tslib_1.__importDefault(require("ejs"));
+const path_1 = tslib_1.__importDefault(require("path"));
+const express_1 = tslib_1.__importDefault(require("express"));
 const middlewares_1 = require("../middlewares");
 exports.default = app => {
     app.disable('x-powered-by');

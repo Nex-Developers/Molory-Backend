@@ -6,7 +6,7 @@ function makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveT
     if (!prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken)
         throw new errors_1.ServerError();
     return function confirmOtp({ token, phoneNumber, otp, lang, device } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!phoneNumber)
                 throw new errors_1.MissingParamError('phoneNumber');
             if (!otp)
@@ -21,7 +21,7 @@ function makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveT
             let user = yield userDb.findFirst({ where: { phoneNumber } });
             const phoneNumberVerifiedAt = new Date();
             let firstAuth = false;
-            return yield prisma.$transaction((_) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            return yield prisma.$transaction((_) => tslib_1.__awaiter(this, void 0, void 0, function* () {
                 if (!user) {
                     firstAuth = true;
                     user = yield userDb.insertOne({

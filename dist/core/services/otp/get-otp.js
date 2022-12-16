@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 function makeGetOtp({ findInCache } = {}) {
     return function getOtp({ phoneNumber, otp } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             return yield findInCache(phoneNumber, otp);
         });
     };

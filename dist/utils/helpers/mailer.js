@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const nodemailer_1 = (0, tslib_1.__importDefault)(require("nodemailer"));
+const nodemailer_1 = tslib_1.__importDefault(require("nodemailer"));
 const environment_1 = require("../../configs/environment");
 class Mailer {
     static connect() {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             Mailer.transporter = yield nodemailer_1.default.createTransport({
                 host: environment_1.env.mail.host,
                 port: environment_1.env.mail.port,
@@ -24,7 +24,7 @@ class Mailer {
         });
     }
     static send(to, subject, html) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const mailOptions = {
                 from: environment_1.env.mail.email,
                 to,

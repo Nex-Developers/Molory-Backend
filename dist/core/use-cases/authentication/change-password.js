@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-function makeChangePassword({ removeToken, comparePasswords, hashPassword, userDb } = {}) {
-    if (!removeToken || !userDb || !comparePasswords || !hashPassword)
+function makeChangePassword({ comparePasswords, hashPassword, userDb } = {}) {
+    if (!userDb || !comparePasswords || !hashPassword)
         throw new errors_1.ServerError();
     return function changePassword({ id, password, oldPassword, token } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!token)
                 throw new errors_1.MissingParamError('token');
             if (!id)
@@ -27,7 +27,6 @@ function makeChangePassword({ removeToken, comparePasswords, hashPassword, userD
                 where: { id },
                 data: { password }
             });
-            yield removeToken({ token });
             const message = { text: 'auth.message.changePassword' };
             return { message };
         });

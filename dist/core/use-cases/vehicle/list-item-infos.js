@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 function makeListItemInfos({ vehicleDb } = {}) {
     if (!vehicleDb)
         throw new errors_1.ServerError();
-    return ({ id } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ id } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
         if (!id)
             throw new errors_1.MissingParamError('id');
         const data = yield vehicleDb.findFirst({

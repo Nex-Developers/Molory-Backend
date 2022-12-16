@@ -6,7 +6,7 @@ const helpers_1 = require("../../utils/helpers");
 function makePostValidateIdCardController({ validateUserIdCard }) {
     return function (request) {
         var _a;
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             console.log(request.body);
             const reqLog = {
                 date: new Date().toDateString(),

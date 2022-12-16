@@ -6,7 +6,7 @@ function makeSignInWithEmailAndPassword({ userDb, comparePasswords, generateToke
     if (!userDb || !comparePasswords || !generateToken || !saveToken)
         throw new errors_1.ServerError();
     return function signInWithEmailAndPassword({ email, password } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!email)
                 throw new errors_1.MissingParamError('email');
             if (!password)

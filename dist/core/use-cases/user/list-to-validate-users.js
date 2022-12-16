@@ -6,7 +6,7 @@ function makeListToValidateUsers({ userDb } = {}) {
     if (!userDb)
         throw new errors_1.ServerError();
     return function ({ startAt, limit } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!startAt)
                 startAt = 0;
             if (!limit)

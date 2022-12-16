@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const xlsx_1 = (0, tslib_1.__importDefault)(require("xlsx"));
+const xlsx_1 = tslib_1.__importDefault(require("xlsx"));
 const environment_1 = require("../../configs/environment");
 class LogManager {
     static save(data) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const file = yield LogManager.getDataFile();
             if (!file)
                 return;
@@ -27,7 +27,7 @@ class LogManager {
         });
     }
     static getByUser(userId) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const file = yield LogManager.getDataFile();
             if (!file)
                 return [];
@@ -44,7 +44,7 @@ class LogManager {
         });
     }
     static read(limit = 20, where) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const file = xlsx_1.default.readFile(environment_1.env.logs.file);
             if (!file)
                 return [];
@@ -69,7 +69,7 @@ class LogManager {
         });
     }
     static getDataFile() {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 return yield xlsx_1.default.readFile(environment_1.env.logs.file);
             }
@@ -83,7 +83,7 @@ class LogManager {
         });
     }
     static createDataFile() {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const file = xlsx_1.default.utils.book_new();
             yield xlsx_1.default.utils.book_append_sheet(file, null, 'home');
             return yield xlsx_1.default.writeFile(file, environment_1.env.logs.file);

@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 function makeEdit({ routeDb } = {}) {
     if (!routeDb)
         throw new errors_1.ServerError();
-    return ({ id, price, duration } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ id, price, duration } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
         if (!id)
             throw new errors_1.MissingParamError('id');
         const data = {};

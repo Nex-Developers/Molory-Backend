@@ -6,7 +6,7 @@ function makeChangePhoneNumber({ generateOtp, saveOtp, sendOtp, generateToken, r
     if (!generateOtp || !saveOtp || !sendOtp || !generateToken || !saveTmpToken || !removeToken || !userDb)
         throw new errors_1.ServerError();
     return function changePhoneNumber({ id, phoneNumber, token } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!id)
                 throw new errors_1.MissingParamError('id');
             if (!phoneNumber)

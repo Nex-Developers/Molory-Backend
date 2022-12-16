@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 function makeListItemInfos({ routeDb } = {}) {
     if (!routeDb)
         throw new errors_1.ServerError();
-    return ({ startAt, limit, departure, arrival, date } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ startAt, limit, departure, arrival, date } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
         if (!startAt)
             startAt = 0;
         if (!limit)
@@ -24,6 +24,7 @@ function makeListItemInfos({ routeDb } = {}) {
                 distance: true,
                 duration: true,
                 price: true,
+                fees: true,
                 principal: true,
                 remainingSeats: true,
                 stops: {
@@ -40,7 +41,12 @@ function makeListItemInfos({ routeDb } = {}) {
             }
         });
         const data = routes.filter(route => route.stops.find(stop => stop.address.toLowerCase().includes(departure.toLowerCase()) && stop.type == 'departure')
-            && route.stops.find(stop => stop.address.toLowerCase().includes(arrival.toLowerCase()) && stop.type == 'arrival'));
+            && route.stops.find(stop => stop.address.toLowerCase().includes(arrival.toLowerCase()) && stop.type == 'arrival'))
+            .map(route => {
+            route.price = route.price + route.fees;
+            delete route.fees;
+            return route;
+        });
         return { data };
     });
 }

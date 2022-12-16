@@ -6,7 +6,7 @@ function makeValidateUserIdCard({ userDb, walletDb } = {}) {
     if (!userDb || !walletDb)
         throw new errors_1.ServerError();
     return function ({ userId, response, cardNumber } = {}) {
-        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!userId)
                 throw new errors_1.MissingParamError('userId');
             if (!cardNumber && response == "validate")
@@ -24,7 +24,9 @@ function makeValidateUserIdCard({ userDb, walletDb } = {}) {
                 if (user.driverLicenseStatus == 1)
                     data.role = "driver";
                 yield userDb.updateOne({ where: { id: userId }, data });
-                yield walletDb.insertOne({ data: { userId } });
+                const wallet = yield walletDb.findFirst({ where: { id: userId } });
+                if (!wallet)
+                    yield walletDb.insertOne({ data: { id: userId } });
             }
             const message = { text: "response.edit" };
             return { message };
