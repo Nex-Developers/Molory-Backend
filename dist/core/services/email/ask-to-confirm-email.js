@@ -7,7 +7,7 @@ function makeAskToConfirmEmail({ sendMail, apiUrl, ejsToHtml } = {}) {
     if (!sendMail || !apiUrl || !ejsToHtml)
         throw new errors_1.ServerError();
     return function askToConfirmEmail({ email, otp, firstName, lang } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!email || !otp || !firstName || !lang)
                 throw new errors_1.ServerError();
             console.log(otp);

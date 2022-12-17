@@ -6,7 +6,7 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
     if (!prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !publicationDb)
         throw new errors_1.ServerError();
     return function confirmOtp({ token, email, otp, lang, device } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!email)
                 throw new errors_1.MissingParamError('email');
             if (!otp)
@@ -21,7 +21,7 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                 throw new errors_1.OtpIncorrectError('');
             let user = yield userDb.findFirst({ where: { email } });
             const emailVerifiedAt = new Date();
-            return yield prisma.$transaction((_) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return yield prisma.$transaction((_) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
                 if (!user) {
                     throw new errors_1.AccountNotFoundError('email');
                 }

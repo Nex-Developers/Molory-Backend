@@ -5,7 +5,7 @@ const conventions_1 = require("../../core/conventions");
 const helpers_1 = require("../../utils/helpers");
 function makeDeleteAccountController({ removeAccount }) {
     return function deleteAccountController(request) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const { id, lastName, firstName } = request.ref, lang = request.lang, date = new Date(), reqLog = {
                 date: date.toDateString(),
                 time: date.toTimeString(),

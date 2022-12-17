@@ -7,7 +7,7 @@ function makeSignUp({ askToConfirmEmail, isValidEmail, hashPassword, generateTok
     if (!askToConfirmEmail || !isValidEmail || !hashPassword || !generateToken || !saveTmpToken || !generateOtp || !saveOtp)
         throw new errors_1.ServerError();
     return function signUp({ firstName, lastName, birthDay, phoneNumber, email, password, language, gender } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const prisma = helpers_1.DbConnection.prisma;
             if (!firstName)
                 throw new errors_1.MissingParamError('firstName');
@@ -25,7 +25,7 @@ function makeSignUp({ askToConfirmEmail, isValidEmail, hashPassword, generateTok
             if (!password)
                 throw new errors_1.MissingParamError('password');
             password = yield hashPassword({ password });
-            return yield prisma.$transaction(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
                 try {
                     yield prisma.user.create({ data: { firstName, lastName, phoneNumber, email, password, birthDay, role: 'user', language, signUpMethod: "email", gender, profileCompletedAt: new Date(), status: 3 } });
                 }

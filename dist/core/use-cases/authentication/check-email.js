@@ -6,7 +6,7 @@ function makeCheckEmail({ userDb, generateToken, saveTmpToken, generateOtp, save
     if (!userDb || !generateToken || !saveTmpToken || !generateOtp || !saveOtp || !askToConfirmEmail)
         throw new errors_1.ServerError();
     return function ({ email } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!email)
                 throw new errors_1.MissingParamError('email');
             const user = yield userDb.findFirst({ where: { email }, select: { id: true, emailVerifiedAt: true, firstName: true, lastName: true, phoneNumber: true, signUpMethod: true } });

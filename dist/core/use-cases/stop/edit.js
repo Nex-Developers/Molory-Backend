@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 function makeEdit({ stopDb } = {}) {
     if (!stopDb)
         throw new errors_1.ServerError();
-    return ({ id, longitude, latitude, address, description, activateAt } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    return ({ id, longitude, latitude, address, description, activateAt } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!id)
             throw new errors_1.MissingParamError('id');
         const data = {};

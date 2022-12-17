@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const express_1 = tslib_1.__importDefault(require("express"));
+const express_1 = (0, tslib_1.__importDefault)(require("express"));
 const adapters_1 = require("../../configs/adapters");
 const middlewares_1 = require("../../configs/middlewares");
 const question_1 = require("../../controllers/question");

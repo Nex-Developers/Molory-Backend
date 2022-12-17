@@ -8,7 +8,7 @@ class Query {
         this.collection = helpers_1.DbConnection.prisma[collectionName];
     }
     findMany({ startAt, limit, select, where, orderBy }) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (environment_1.env.db.softDelete)
                 where = Object.assign(Object.assign({}, where), { deletedAt: null });
             return yield this.collection.findMany({
@@ -21,7 +21,7 @@ class Query {
         });
     }
     findManyInTrash({ startAt, limit, select, orderBy, where }) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             where = Object.assign(Object.assign({}, where), { deletedAt: { not: null } });
             const order = { deletedAt: 'desc' };
             if (orderBy)
@@ -38,35 +38,35 @@ class Query {
         });
     }
     findFirst({ where, select }) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (environment_1.env.db.softDelete)
                 where = Object.assign(Object.assign({}, where), { deletedAt: null });
             return yield this.collection.findFirst({ where, select });
         });
     }
     findFirstInTrash({ where, select }) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             where = Object.assign(Object.assign({}, where), { deletedAt: { not: null } });
             return yield this.collection.findFirst({ where, select });
         });
     }
     insertOne({ data, include }) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             return yield this.collection.create({ data, include });
         });
     }
     updateOne({ where, data }) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             return yield this.collection.update({ where, data });
         });
     }
     insertOrUpdate({ where, create, update }) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             return yield this.collection.upsert({ where, create, update });
         });
     }
     deleteOne({ where, force }) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (environment_1.env.db.softDelete && !force)
                 return this.softDelete({ where });
             else
@@ -74,12 +74,12 @@ class Query {
         });
     }
     softDelete({ where }) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             return yield this.collection.update({ where, data: { deletedAt: new Date() } });
         });
     }
     deleteMany({ where, force }) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             console.log('deleteMany', where, force);
             if (environment_1.env.db.softDelete && !force)
                 return this.softDelete({ where });

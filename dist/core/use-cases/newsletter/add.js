@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 function makeAdd({ newsletterDb } = {}) {
     if (!newsletterDb)
         throw new errors_1.ServerError();
-    return ({ email, name } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    return ({ email, name } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!email)
             throw new errors_1.MissingParamError('email');
         if (!name)

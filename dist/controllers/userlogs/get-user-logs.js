@@ -5,7 +5,7 @@ const conventions_1 = require("../../core/conventions");
 const helpers_1 = require("../../utils/helpers");
 function makeGetUserLogsController() {
     return function getUserLogsController(request) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const lang = request.lang, { id } = request.params, userId = request.ref.id, { lastName, firstName } = request.ref, reqLog = {
                 date: new Date().toDateString(),
                 time: new Date().toTimeString(),

@@ -6,7 +6,7 @@ exports.default = () => {
     return ({ travelId, rating, comment }) => {
         console.log('rating');
         const prisma = helpers_1.DbConnection.prisma;
-        prisma.$transaction(() => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        prisma.$transaction(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
             return;
         }));
     };

@@ -6,9 +6,9 @@ const helpers_1 = require("../../../utils/helpers");
 exports.default = ({ notifyDevice }) => {
     if (!notifyDevice)
         throw new errors_1.ServerError();
-    return ({ id }) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    return ({ id }) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
-        return yield prisma.$transaction(() => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
             const { status, startedAt } = yield prisma.trip.findUnique({ where: { id }, select: { status: true, startedAt: true } });
             if (status === 0)
                 throw new errors_1.UnauthorizedError();

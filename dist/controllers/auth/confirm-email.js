@@ -8,7 +8,7 @@ function makeConfirmEmailController({ confirmEmail } = {}) {
     if (!confirmEmail)
         throw new errors_1.ServerError();
     return function confirmEmailController(request) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const { email } = request.ref, lang = request.lang, date = new Date(), reqLog = {
                 date: date.toDateString(),
                 time: date.toTimeString(),

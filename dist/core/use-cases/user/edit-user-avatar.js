@@ -6,7 +6,7 @@ function makeEditUserAvatar({ userDb, deleteAvatarFile } = {}) {
     if (!userDb || !deleteAvatarFile)
         throw new errors_1.ServerError();
     return function editUserAvatar({ id, file } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!id)
                 throw new errors_1.MissingParamError('id');
             if (!file || file == {})

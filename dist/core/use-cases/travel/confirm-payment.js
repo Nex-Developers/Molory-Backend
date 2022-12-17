@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
 function makeConfirmPayment() {
-    return ({ id, status, amount, method, reference, validatedAt, } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    return ({ id, status, amount, method, reference, validatedAt, } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
         console.log('Confirm-payment called with ', id, status, amount);
         if (!status) {
@@ -24,7 +24,7 @@ function makeConfirmPayment() {
             validatedAt = new Date();
         if (!reference)
             reference = null;
-        return yield prisma.$transaction(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const { remainingSeats, principal, trip } = yield prisma.route.findUnique({
                 where: { id: data.routeId },
                 select: { remainingSeats: true, principal: true, trip: true }

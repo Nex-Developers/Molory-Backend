@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const environment_1 = require("../../configs/environment");
-const fs_1 = tslib_1.__importDefault(require("fs"));
+const fs_1 = (0, tslib_1.__importDefault)(require("fs"));
 class LanguageManager {
     static translate(lang, _str, params = {}) {
         if (!lang)

@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const db_1 = require("../../db");
 const errors_1 = require("../../utils/errors");
 const helpers_1 = require("../../utils/helpers");
-exports.default = (req, res, next) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+exports.default = (req, res, next) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     let httpResponse;

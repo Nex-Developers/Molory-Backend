@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-const moment_1 = tslib_1.__importDefault(require("moment"));
+const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 function makeGetProfile({ userDb, walletDb } = {}) {
     if (!userDb || !walletDb)
         throw new errors_1.ServerError();
     return function getProfile({ id } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!id)
                 throw new errors_1.InvalidParamError('token');
             const res = yield userDb.findFirst({

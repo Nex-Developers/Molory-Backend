@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const admin = tslib_1.__importStar(require("firebase-admin"));
-const fs_1 = tslib_1.__importDefault(require("fs"));
+const admin = (0, tslib_1.__importStar)(require("firebase-admin"));
+const fs_1 = (0, tslib_1.__importDefault)(require("fs"));
 const firebase_admin_1 = require("firebase-admin");
 class FirebaseAdmin {
     static connect() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const serviceAccountData = fs_1.default.readFileSync('firebase/service-account-key.json');
             const serviceAccount = JSON.parse(serviceAccountData.toString());
             FirebaseAdmin.app = admin.initializeApp({
@@ -16,7 +16,7 @@ class FirebaseAdmin {
         });
     }
     static sendNotification(tokens, title, body, data, picture) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             console.log(picture);
             const payload = {
                 notification: {

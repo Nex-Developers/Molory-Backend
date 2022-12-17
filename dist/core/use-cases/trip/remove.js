@@ -10,13 +10,13 @@ function makeRemove({ tripDb, notifyDevice } = {}) {
     const getLast48hours = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
     };
-    return ({ id, cancelReason } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    return ({ id, cancelReason } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
         if (!id)
             throw new errors_1.MissingParamError('id');
         if (!cancelReason)
             throw new errors_1.MissingParamError('cancelReason');
-        return yield prisma.$transaction(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const { userId, status, departureDate, departureTime, routes, canceledAt } = yield prisma.trip.findFirst({
                 where: { id },
                 select: {
@@ -59,7 +59,7 @@ function makeRemove({ tripDb, notifyDevice } = {}) {
             if (delay < new Date()) {
                 prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: 0.15 * (principal.price + principal.fees) } } });
             }
-            const promises = routes.map((route) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const promises = routes.map((route) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
                 const travelsIds = route.travels.map(travel => travel.id);
                 yield prisma.travel.updateMany({
                     where: { id: { in: travelsIds } },
@@ -70,7 +70,7 @@ function makeRemove({ tripDb, notifyDevice } = {}) {
                         canceledBy: 'driver',
                     },
                 });
-                const promises2 = yield route.travels.map((travel) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+                const promises2 = yield route.travels.map((travel) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
                     const payment = travel.payment;
                     if (payment.status === 1) {
                         yield prisma.payment.update({ where: { id: payment.id }, data: { status: 0 } });

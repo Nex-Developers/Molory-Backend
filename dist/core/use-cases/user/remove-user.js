@@ -6,7 +6,7 @@ function makeRemoveUser({ userDb } = {}) {
     if (!userDb)
         throw new errors_1.ServerError();
     return function removeUser({ id, } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!id)
                 throw new errors_1.MissingParamError('id');
             yield userDb.deleteOne({ where: { id } });

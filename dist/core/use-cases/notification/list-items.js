@@ -9,7 +9,7 @@ exports.default = ({ notificationDb }) => {
     };
     if (!notificationDb)
         throw new errors_1.ServerError();
-    return ({ userId }) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    return ({ userId }) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
         const select = {
             createdAt: true,
             seenAt: true,

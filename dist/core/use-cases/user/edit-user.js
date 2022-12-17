@@ -6,7 +6,7 @@ function makeEditUser({ userDb, isValidEmail, hashPassword } = {}) {
     if (!userDb || !isValidEmail || !hashPassword)
         throw new errors_1.ServerError();
     return function editUser({ id, lastName, firstName, phoneNumber, gender, email, birthDay, role, language, password } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!id)
                 throw new errors_1.MissingParamError('id');
             const data = {};

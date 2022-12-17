@@ -6,7 +6,7 @@ function makeValidateUserIdCard({ userDb, walletDb } = {}) {
     if (!userDb || !walletDb)
         throw new errors_1.ServerError();
     return function ({ userId, response, cardNumber } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!userId)
                 throw new errors_1.MissingParamError('userId');
             if (!cardNumber && response == "validate")

@@ -8,7 +8,7 @@ function makeCompleteInfosController({ setProfile } = {}) {
     if (!setProfile)
         throw new errors_1.ServerError();
     return function completeInfosController(request) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const { id, lastName, firstName } = request.ref, lang = request.lang, date = new Date(), reqLog = {
                 date: date.toDateString(),
                 time: date.toTimeString(),

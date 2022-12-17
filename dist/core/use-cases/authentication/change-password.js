@@ -6,7 +6,7 @@ function makeChangePassword({ comparePasswords, hashPassword, userDb } = {}) {
     if (!userDb || !comparePasswords || !hashPassword)
         throw new errors_1.ServerError();
     return function changePassword({ id, password, oldPassword, token } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!token)
                 throw new errors_1.MissingParamError('token');
             if (!id)

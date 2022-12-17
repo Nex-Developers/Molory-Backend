@@ -6,7 +6,7 @@ function makeRecoverPassword({ userDb, generateToken, saveTmpToken, askToResetPa
     if (!userDb || !generateToken || !saveTmpToken || !askToResetPassword || !generateOtp || !saveOtp)
         throw new errors_1.ServerError();
     return function recoverPassword({ email, lang } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!email)
                 throw new errors_1.MissingParamError('email');
             if (!lang)

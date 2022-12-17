@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-const moment_1 = tslib_1.__importDefault(require("moment"));
+const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 const helpers_1 = require("../../../utils/helpers");
 function makeAdd({ calculMatrix, addTask, notifyDevice } = {}) {
     if (!calculMatrix || !addTask || !notifyDevice)
         throw new errors_1.ServerError();
-    return ({ userId, vehicleId, seats, date, time, price, fees, stops, description } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    return ({ userId, vehicleId, seats, date, time, price, fees, stops, description } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!userId)
             throw new errors_1.MissingParamError('userId');
         if (!vehicleId)
@@ -27,7 +27,7 @@ function makeAdd({ calculMatrix, addTask, notifyDevice } = {}) {
         if (!description)
             description = null;
         const prisma = helpers_1.DbConnection.prisma;
-        return yield prisma.$transaction(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const departures = JSON.parse(JSON.stringify(stops)).filter(stop => stop.type === 'departure' || stop.type === 'both');
             departures.map(departure => {
                 if (departure.type !== 'departure') {

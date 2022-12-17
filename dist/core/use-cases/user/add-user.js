@@ -7,7 +7,7 @@ function makeAddUser({ userDb, isValidEmail, hashPassword, generateToken, askToC
     if (!userDb || !isValidEmail || !hashPassword || !generateToken || !askToConfirmEmail || !saveTmpToken)
         throw new errors_1.ServerError();
     return function addUser({ lastName, firstName, phoneNumber, email, birthDay, gender, role, language, password } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!lastName)
                 throw new errors_1.MissingParamError('lastName');
             if (!firstName)

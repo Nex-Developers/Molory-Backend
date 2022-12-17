@@ -9,13 +9,13 @@ function makeRemove({ travelDb, notifyDevice } = {}) {
     const getLast48hours = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
     };
-    return ({ id, cancelReason } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    return ({ id, cancelReason } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
         if (!id)
             throw new errors_1.MissingParamError('id');
         if (!cancelReason)
             throw new errors_1.MissingParamError('cancelReason');
-        return yield prisma.$transaction(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const { userId, route, seats, payment, status, canceledAt } = yield prisma.travel.findUnique({ where: { id },
                 select: {
                     userId: true,

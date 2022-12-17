@@ -7,7 +7,7 @@ function makeUpdateDriverLicense({ userDb, } = {}) {
     if (!userDb)
         throw new errors_1.ServerError();
     return function ({ id, files } = {}) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!files || files.length == 0)
                 throw new errors_1.MissingParamError('files');
             console.log('files', files);

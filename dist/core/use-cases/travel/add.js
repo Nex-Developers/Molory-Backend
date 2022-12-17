@@ -7,7 +7,7 @@ const helpers_1 = require("../../../utils/helpers");
 function makeAdd({ travelDb, routeDb, paymentDb } = {}) {
     if (!travelDb || !routeDb || !paymentDb)
         throw new errors_1.ServerError();
-    const generateUid = () => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    const generateUid = () => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const uid = (0, uuid_1.v4)();
         const payment = yield paymentDb.findFirst({ where: { id: uid } });
         if (payment)
@@ -16,7 +16,7 @@ function makeAdd({ travelDb, routeDb, paymentDb } = {}) {
             return yield generateUid();
         return uid;
     });
-    return ({ userId, routeId, seats, description } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    return ({ userId, routeId, seats, description } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!userId)
             throw new errors_1.MissingParamError('userId');
         if (!routeId)

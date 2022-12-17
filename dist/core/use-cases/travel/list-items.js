@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 function makeListItems({ travelDb } = {}) {
     if (!travelDb)
         throw new errors_1.ServerError();
-    return ({ userId, startAt, limit } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    return ({ userId, startAt, limit } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!startAt)
             startAt = 0;
         if (!limit)
@@ -75,8 +75,8 @@ function makeListItems({ travelDb } = {}) {
         });
         const data = [];
         res.forEach(item => {
-            const _a = item.route, { trip } = _a, route = tslib_1.__rest(_a, ["trip"]);
-            const { user, vehicle } = trip, _trip = tslib_1.__rest(trip, ["user", "vehicle"]);
+            const _a = item.route, { trip } = _a, route = (0, tslib_1.__rest)(_a, ["trip"]);
+            const { user, vehicle } = trip, _trip = (0, tslib_1.__rest)(trip, ["user", "vehicle"]);
             data.push({
                 id: item.id,
                 seats: item.seats,

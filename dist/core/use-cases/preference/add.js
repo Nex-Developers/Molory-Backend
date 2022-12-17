@@ -6,13 +6,13 @@ const helpers_1 = require("../../../utils/helpers");
 function makeAdd({ preferenceDb } = {}) {
     if (!preferenceDb)
         throw new errors_1.ServerError();
-    return ({ userId, preferences } = {}) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    return ({ userId, preferences } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
         if (!userId)
             throw new errors_1.MissingParamError('userId');
-        return yield prisma.$transaction(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             yield prisma.preference.deleteMany({ where: { userId } });
-            const promises = yield preferences.map(({ questionId, answerIndex, answerId }) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const promises = yield preferences.map(({ questionId, answerIndex, answerId }) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
                 if (!questionId)
                     throw new errors_1.MissingParamError('questionId');
                 if (!answerId) {

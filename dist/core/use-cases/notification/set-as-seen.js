@@ -5,7 +5,7 @@ const errors_1 = require("../../../utils/errors");
 exports.default = ({ publicationDb }) => {
     if (!publicationDb)
         throw new errors_1.ServerError();
-    return ({ id, userId }) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    return ({ id, userId }) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
         if (!id)
             throw new errors_1.MissingParamError('id');
         if (!userId)
