@@ -5,11 +5,11 @@ exports.default = (req, res, next) => {
     const ref = req.params.ref;
     if (!ref) {
         const httpResponse = helpers_1.HttpResponse.serverError(req.params.lang);
-        res.status(httpResponse.statusCode).send(httpResponse.body);
+        res.status(200).json(httpResponse.body);
     }
     else if (ref.role !== 'admin') {
         const httpResponse = helpers_1.HttpResponse.unauthorizedError(req.params.lang);
-        res.status(httpResponse.statusCode).send(httpResponse.body);
+        res.status(200).json(httpResponse.body);
     }
     else
         next();

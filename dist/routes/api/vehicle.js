@@ -10,9 +10,9 @@ exports.default = () => {
     router.get('/vehicle/:id', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(vehicle_1.getVehicleController));
     router.route('/vehicle')
         .get(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(vehicle_1.getVehiclesController))
-        .post(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(vehicle_1.postVehicleController))
-        .patch(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(vehicle_1.patchVehicleController))
-        .delete(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(vehicle_1.deleteVehicleController));
+        .post(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(vehicle_1.postVehicleController))
+        .patch(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(vehicle_1.patchVehicleController))
+        .delete(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(vehicle_1.deleteVehicleController));
     return router;
 };
 //# sourceMappingURL=vehicle.js.map

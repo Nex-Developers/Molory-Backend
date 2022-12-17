@@ -23,7 +23,7 @@ exports.default = (req, res, next) => (0, tslib_1.__awaiter)(void 0, void 0, voi
                 const tokenIndex = yield helpers_1.CacheManager.findInArray('tokens', token);
                 if (tokenIndex === undefined || tokenIndex === null) {
                     httpResponse = helpers_1.HttpResponse.forbiddenError(new errors_1.ExpiredParamError('token'), req.params.lang);
-                    res.status(httpResponse.statusCode).json(httpResponse.body);
+                    res.status(200).json(httpResponse.body);
                 }
                 else {
                     req.params.ref = ref;
@@ -35,7 +35,7 @@ exports.default = (req, res, next) => (0, tslib_1.__awaiter)(void 0, void 0, voi
                     req.params.ref.firstName = firstName;
                     if (blockedAt) {
                         httpResponse = helpers_1.HttpResponse.unauthorizedError(req.params.lang);
-                        res.status(httpResponse.statusCode).json(httpResponse.body);
+                        res.status(200).json(httpResponse.body);
                     }
                     else
                         next();

@@ -20,7 +20,7 @@ export default async (req, res, next) => {
                 const tokenIndex = await CacheManager.findInArray('tokens', token)
                 if (tokenIndex === undefined || tokenIndex === null) {
                     httpResponse = HttpResponse.forbiddenError(new ExpiredParamError('token'), req.params.lang)
-                    res.status(httpResponse.statusCode).json(httpResponse.body) 
+                    res.status(200).json(httpResponse.body) 
                 } else {  
                     req.params.ref = ref
                     req.params.token = token
@@ -36,7 +36,7 @@ export default async (req, res, next) => {
                         req.params.ref.firstName = firstName
                         if (blockedAt) {
                             httpResponse = HttpResponse.unauthorizedError(req.params.lang)
-                            res.status(httpResponse.statusCode).json(httpResponse.body) 
+                            res.status(200).json(httpResponse.body) 
                         }  else next()
                     // }
                 }

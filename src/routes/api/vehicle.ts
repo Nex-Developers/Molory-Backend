@@ -1,7 +1,6 @@
 import express from "express"
 import { expressRouterAdapter } from "../../configs/adapters"
 import { 
-    driverCheck, 
     authCheck, 
     langCheck 
 } from "../../configs/middlewares"
@@ -19,8 +18,8 @@ export default () => {
     router.get('/vehicle/:id', langCheck, authCheck, expressRouterAdapter(getVehicleController))
     router.route('/vehicle')
     .get(langCheck, authCheck, expressRouterAdapter(getVehiclesController))
-    .post(langCheck, authCheck, driverCheck, expressRouterAdapter(postVehicleController))
-    .patch(langCheck, authCheck, driverCheck, expressRouterAdapter(patchVehicleController))
-    .delete(langCheck, authCheck, driverCheck, expressRouterAdapter(deleteVehicleController))
+    .post(langCheck, authCheck, expressRouterAdapter(postVehicleController))
+    .patch(langCheck, authCheck, expressRouterAdapter(patchVehicleController))
+    .delete(langCheck, authCheck, expressRouterAdapter(deleteVehicleController))
     return router
 }
