@@ -23,7 +23,9 @@ function makeEditProfileController({ updateProfile } = {}) {
                 description: `${lastName}  ${firstName}  ${conventions_1.Action.EDIT} his infos`
             };
             try {
-                const body = request.body, data = yield updateProfile(Object.assign({ id }, body));
+                const body = request.body;
+                delete body.id;
+                const data = yield updateProfile(Object.assign({ id }, body));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 helpers_1.LogManager.save(reqLog);
                 return helpers_1.HttpResponse.ok(data, lang);

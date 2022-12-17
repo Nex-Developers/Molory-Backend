@@ -8,7 +8,7 @@ function makeUpdateProfile({ userDb } = {}) {
         throw new errors_1.ServerError();
     return function updateProfile({ id, firstName, lastName, birthDay, gender, email } = {}) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.log('birthDay gender email', birthDay, gender, email);
+            console.log('id birthDay gender email', id, birthDay, gender, email);
             const data = {};
             if (!id)
                 throw new errors_1.InvalidParamError('token');

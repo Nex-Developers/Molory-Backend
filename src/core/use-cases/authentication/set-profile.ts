@@ -15,7 +15,6 @@ export default function makeSetProfile({
         email,
         birthDay
     }: any = {}) {
-        console.log('birthDay', birthDay);
         if (!id) throw new MissingParamError('token')
         if (!firstName) throw new MissingParamError('firstName')
         if (!lastName) throw new MissingParamError('lastName')
@@ -31,7 +30,7 @@ export default function makeSetProfile({
             const message = { text: 'error.alreadyDone', params: { date: user.profileCompletedAt } }
             return { message }
         }
-        const res: any = { firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang }
+        const res: any = { id, firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang }
         const deviceTokens = user.devices.map(device => device.token)
         const { title, body, data, cover } = await notifyDevice({ deviceTokens, titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'fr' })
         await publicationDb.insertOne({

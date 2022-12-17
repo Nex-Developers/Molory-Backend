@@ -24,8 +24,9 @@ export default function makeEditProfileController({
             description: `${lastName}  ${firstName}  ${Action.EDIT} his infos`
         } 
         try {
-                const body = request.body,
-                data = await updateProfile({ id, ...body })
+                const body = request.body
+                delete body.id
+                const data = await updateProfile({ id, ...body })
                 reqLog.status = LogStatus.SUCCEEDED
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)

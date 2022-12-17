@@ -7,7 +7,6 @@ function makeSetProfile({ userDb, notifyDevice, publicationDb } = {}) {
         throw new errors_1.ServerError();
     return function setProfile({ id, lang, firstName, lastName, gender, email, birthDay } = {}) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.log('birthDay', birthDay);
             if (!id)
                 throw new errors_1.MissingParamError('token');
             if (!firstName)
@@ -26,7 +25,7 @@ function makeSetProfile({ userDb, notifyDevice, publicationDb } = {}) {
                 const message = { text: 'error.alreadyDone', params: { date: user.profileCompletedAt } };
                 return { message };
             }
-            const res = { firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang };
+            const res = { id, firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang };
             const deviceTokens = user.devices.map(device => device.token);
             const { title, body, data, cover } = yield notifyDevice({ deviceTokens, titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'fr' });
             yield publicationDb.insertOne({
