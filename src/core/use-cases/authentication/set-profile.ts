@@ -3,9 +3,10 @@ import { ServerError, MissingParamError } from "../../../utils/errors"
 export default function makeSetProfile({
     userDb,
     notifyDevice,
-    publicationDb
+    publicationDb,
+    saveProfile
 }: any = {}) {
-    if (!userDb || !publicationDb || !notifyDevice) throw new ServerError()
+    if (!userDb || !publicationDb || !notifyDevice || !saveProfile) throw new ServerError()
     return async function setProfile({
         id,
         lang,
@@ -49,6 +50,7 @@ export default function makeSetProfile({
             }
         })
         user = await userDb.updateOne({ where: { id }, data: res })
+        saveProfile(id)
         const message = { text: 'auth.message.profileUpdated' }
         return { message, user }
     }

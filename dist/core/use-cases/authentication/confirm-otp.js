@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-function makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken } = {}) {
-    if (!prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken)
+const helpers_1 = require("../../../utils/helpers");
+function makeConfirmOtp({ getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, saveProfile } = {}) {
+    if (!saveProfile || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken)
         throw new errors_1.ServerError();
     return function confirmOtp({ token, phoneNumber, otp, lang, device } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -15,6 +16,7 @@ function makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveT
                 throw new errors_1.MissingParamError('device');
             if (!token || !lang)
                 throw new errors_1.ServerError();
+            const prisma = helpers_1.DbConnection.prisma;
             const otpIndex = yield getOtp({ phoneNumber, otp });
             if (otpIndex === null || otpIndex === undefined)
                 throw new errors_1.OtpIncorrectError('');
@@ -37,6 +39,7 @@ function makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveT
                             signUpMethod: "phoneNumber",
                         }
                     });
+                    saveProfile(user.id);
                 }
                 else
                     user = yield userDb.updateOne({ where: { id: user.id }, data: { phoneNumberVerifiedAt } });

@@ -8,9 +8,10 @@ export default function makeSignUp({
     generateToken,
     saveTmpToken,
     generateOtp,
-    saveOtp
+    saveOtp,
+    saveProfile
 }: any = {}) {
-    if (!askToConfirmEmail || !isValidEmail || !hashPassword || !generateToken || !saveTmpToken || !generateOtp || !saveOtp) throw new ServerError()
+    if (!askToConfirmEmail || !isValidEmail || !hashPassword || !generateToken || !saveTmpToken || !generateOtp || !saveOtp || !saveProfile) throw new ServerError()
     return async function signUp({
         firstName,
         lastName,
@@ -34,8 +35,9 @@ export default function makeSignUp({
         if (!password) throw new MissingParamError('password')
         password = await hashPassword({ password })
         return await prisma.$transaction(async () => {
+            let user
             try {
-                await prisma.user.create({ data: { firstName, lastName, phoneNumber, email, password, birthDay, role: 'user', language, signUpMethod: "email", gender, profileCompletedAt: new Date(), status: 3 } })
+                user = await prisma.user.create({ data: { firstName, lastName, phoneNumber, email, password, birthDay, role: 'user', language, signUpMethod: "email", gender, profileCompletedAt: new Date(), status: 3 } })
             } catch (err) {
                 console.log(err.message);
                 throw new AccountAllReadyExistError('email');
@@ -44,6 +46,7 @@ export default function makeSignUp({
             const otp = await generateOtp()
             await saveTmpToken({ token })
             await saveOtp({ phoneNumber: email, otp })
+            await saveProfile(user.id)
             try {
                 await askToConfirmEmail({ email, otp, firstName, lastName, lang: language })
             } catch (err) {
@@ -51,8 +54,8 @@ export default function makeSignUp({
                 throw new InvalidParamError('email');
             }
             const message = { text: 'auth.message.register', params: { email } }
-            return { token, message }   
+            return { token, message }
         })
-       
+
     }
 }

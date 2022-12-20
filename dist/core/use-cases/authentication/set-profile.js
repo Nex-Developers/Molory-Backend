@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-function makeSetProfile({ userDb, notifyDevice, publicationDb } = {}) {
-    if (!userDb || !publicationDb || !notifyDevice)
+function makeSetProfile({ userDb, notifyDevice, publicationDb, saveProfile } = {}) {
+    if (!userDb || !publicationDb || !notifyDevice || !saveProfile)
         throw new errors_1.ServerError();
     return function setProfile({ id, lang, firstName, lastName, gender, email, birthDay } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -44,6 +44,7 @@ function makeSetProfile({ userDb, notifyDevice, publicationDb } = {}) {
                 }
             });
             user = yield userDb.updateOne({ where: { id }, data: res });
+            saveProfile(id);
             const message = { text: 'auth.message.profileUpdated' };
             return { message, user };
         });

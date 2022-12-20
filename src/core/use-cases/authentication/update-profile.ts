@@ -2,9 +2,10 @@ import { ServerError, InvalidParamError, AccountAllReadyExistError } from "../..
 import { isValidEmail } from "../../services/email"
 
 export default function makeUpdateProfile ({
-    userDb
+    userDb,
+    saveProfile
 }: any = {}) {
-    if (!userDb) throw new ServerError()
+    if (!userDb || !saveProfile) throw new ServerError()
     return async function updateProfile({
         id ,
         firstName,
@@ -31,6 +32,7 @@ export default function makeUpdateProfile ({
             data.email =  email
         }
         await userDb.updateOne({ where: { id }, data })
+        saveProfile(id)
         const message = { text: 'auth.message.updateProfile' }
         return { message }
     }

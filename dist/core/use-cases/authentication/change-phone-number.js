@@ -2,11 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
+const helpers_1 = require("../../../utils/helpers");
 function makeChangePhoneNumber({ generateOtp, saveOtp, sendOtp, generateToken, removeToken, saveTmpToken, userDb } = {}) {
     if (!generateOtp || !saveOtp || !sendOtp || !generateToken || !saveTmpToken || !removeToken || !userDb)
         throw new errors_1.ServerError();
     return function changePhoneNumber({ id, phoneNumber, token } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            console.log(`changePhoneNumber ${phoneNumber}`);
             if (!id)
                 throw new errors_1.MissingParamError('id');
             if (!phoneNumber)
@@ -18,12 +20,11 @@ function makeChangePhoneNumber({ generateOtp, saveOtp, sendOtp, generateToken, r
                 throw new errors_1.InvalidParamError('id');
             if (user.phoneNumber === phoneNumber)
                 throw new errors_1.AlreadyDoneError('before');
-            yield userDb.updateOne({ where: { id }, data: { phoneNumber } });
+            yield helpers_1.CacheManager.set(+phoneNumber, id.toString(), 60 * 60);
             const otp = yield generateOtp();
             const tmpToken = yield generateToken({ phoneNumber });
             yield saveTmpToken({ token: tmpToken });
             yield saveOtp({ phoneNumber, otp });
-            yield removeToken({ token });
             const message = { text: 'auth.message.changePhoneNumber', params: { phoneNumber } };
             return { token: tmpToken, message };
         });

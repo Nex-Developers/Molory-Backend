@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const email_1 = require("../../services/email");
-function makeUpdateProfile({ userDb } = {}) {
-    if (!userDb)
+function makeUpdateProfile({ userDb, saveProfile } = {}) {
+    if (!userDb || !saveProfile)
         throw new errors_1.ServerError();
     return function updateProfile({ id, firstName, lastName, birthDay, gender, email } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -32,6 +32,7 @@ function makeUpdateProfile({ userDb } = {}) {
                 data.email = email;
             }
             yield userDb.updateOne({ where: { id }, data });
+            saveProfile(id);
             const message = { text: 'auth.message.updateProfile' };
             return { message };
         });

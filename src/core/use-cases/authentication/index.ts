@@ -30,6 +30,7 @@ import makeUpdateDriverLicense from "./update-driver-license"
 import makeValidateAccount from "./validate-acount"
 import makeSetPassword from "./set-password"
 import { notifyDevice } from "../../services/notifications"
+import { saveNotification, saveProfile } from "../../services/firebase"
 
 const prisma = new PrismaClient()
 const userDb = new UserDb()
@@ -42,14 +43,14 @@ const checkEmail = makeCheckEmail({ userDb, generateToken, saveTmpToken, generat
 const checkPassword = makeCheckPassword({  userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, comparePasswords })
 const signInWithEmailAndPassword = makeSignInWithEmailAndPassword({ userDb, comparePasswords, generateToken, saveToken })
 const signInWithPhoneNumber = makeSignInWithPhoneNumber({ generateOtp, saveOtp, sendOtp, generateToken, saveTmpToken, userDb })
-const confirmOtp = makeConfirmOtp({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken })
-const signUp = makeSignUp({ userDb, askToConfirmEmail, isValidEmail, hashPassword, generateToken, saveTmpToken, generateOtp, saveOtp})
-const validateAccount = makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, notifyDevice, publicationDb })
+const confirmOtp = makeConfirmOtp({ prisma, saveProfile, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken })
+const signUp = makeSignUp({ userDb, askToConfirmEmail, isValidEmail, hashPassword, generateToken, saveTmpToken, generateOtp, saveOtp, saveProfile})
+const validateAccount = makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, notifyDevice, saveNotification, publicationDb })
 const confirmEmail = makeConfirmEmail({ removeTmpToken, verifyToken, emailConfirmationView, userDb })
 const changePassword = makeChangePassword({ comparePasswords, hashPassword, userDb })
-const setProfile = makeSetProfile({ userDb, notifyDevice, publicationDb })
+const setProfile = makeSetProfile({ userDb, notifyDevice, publicationDb, saveProfile })
 const getProfile = makeGetProfile({ userDb, walletDb })
-const updateProfile = makeUpdateProfile({ userDb })
+const updateProfile = makeUpdateProfile({ userDb, saveProfile })
 const updateAvatar = makeUpdateAvatar({ userDb, deleteAvatarFile})
 const updateIdCard = makeUpdateIdCard({ userDb })
 const updateDriverLicense = makeUpdateDriverLicense({ userDb })

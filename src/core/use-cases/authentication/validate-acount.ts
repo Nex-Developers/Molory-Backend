@@ -10,9 +10,10 @@ export default function makeValidateAccount({
     removeOtp,
     removeTmpToken,
     notifyDevice,
-    publicationDb
+    publicationDb,
+    saveNotification
 }: any = {}) {
-    if (!prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !publicationDb) throw new ServerError()
+    if (!prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !saveNotification || !publicationDb) throw new ServerError()
     return async function confirmOtp({
         token,
         email,
@@ -63,6 +64,7 @@ export default function makeValidateAccount({
                     }
                 }
             })
+            saveNotification({receiversIds:  [user.id], notification: {type: 'sigup', title, message: body, data, picture: cover }})
             const message = { text: 'auth.message.emailVerified' }
             return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt }, message }
         })

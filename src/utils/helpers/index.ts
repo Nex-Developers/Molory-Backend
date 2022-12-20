@@ -14,6 +14,7 @@ import LogManager from "./log-manager"
 import  GoogleMap from "./google-map"
 import ApiCaller from "./api-caller"
 import FirebaseAdmin from "./firebase-admin"
+import FirestoreDb from "./firestore-db"
 
 export {
     Encrypter,
@@ -31,5 +32,6 @@ export {
     LogManager,
     GoogleMap,
     ApiCaller,
-    FirebaseAdmin
+    FirebaseAdmin,
+    FirestoreDb
 }
