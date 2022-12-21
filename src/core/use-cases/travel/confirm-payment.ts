@@ -10,7 +10,7 @@ import { CacheManager, DbConnection } from "../../../utils/helpers"
 export default function makeConfirmPayment({
     saveProfile
 }) {
-    if (saveProfile) throw new ServerError()
+    if (!saveProfile) throw new ServerError()
     return async ({
         id,
         status,
