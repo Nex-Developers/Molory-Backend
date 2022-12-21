@@ -13,8 +13,6 @@ try {
         yield helpers_1.Mailer.connect();
         yield (0, initializer_1.default)();
         firebase_admin_1.default.connect();
-        const saved = yield helpers_1.CacheManager.get("22892942072");
-        console.log(saved);
         app_1.default.listen(environment_1.env.port, () => console.log(`Server running at http://localhost:${environment_1.env.port}`));
     });
     startApp();
