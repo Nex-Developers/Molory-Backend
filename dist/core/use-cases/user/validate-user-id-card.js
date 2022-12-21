@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-function makeValidateUserIdCard({ userDb, walletDb } = {}) {
-    if (!userDb || !walletDb)
+function makeValidateUserIdCard({ userDb, walletDb, saveProfile } = {}) {
+    if (!userDb || !walletDb || !saveProfile)
         throw new errors_1.ServerError();
     return function ({ userId, response, cardNumber } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -28,6 +28,7 @@ function makeValidateUserIdCard({ userDb, walletDb } = {}) {
                 if (!wallet)
                     yield walletDb.insertOne({ data: { id: userId } });
             }
+            saveProfile(userId);
             const message = { text: "response.edit" };
             return { message };
         });

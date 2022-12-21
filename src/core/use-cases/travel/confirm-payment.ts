@@ -1,15 +1,16 @@
 // import { AlreadyDoneError } from './../../../utils/errors/already-done-error';
 
-// import { ServerError } from "../../../utils/errors"
 
-import { ExpiredParamError, InvalidParamError } from "../../../utils/errors"
+import { ExpiredParamError, InvalidParamError, ServerError } from "../../../utils/errors"
 import { CacheManager, DbConnection } from "../../../utils/helpers"
 
 
 // import { PrismaClient } from "@prisma/client"
     
-export default function makeConfirmPayment() {
-    // if (!prisma || !getPaymentState) throw new ServerError()
+export default function makeConfirmPayment({
+    saveProfile
+}) {
+    if (saveProfile) throw new ServerError()
     return async ({
         id,
         status,
@@ -95,6 +96,7 @@ export default function makeConfirmPayment() {
 
             }
             await CacheManager.remove(id)
+            saveProfile(travel.userId)
             const message = { text: "response.add", data: travel }
             return { message }
         })

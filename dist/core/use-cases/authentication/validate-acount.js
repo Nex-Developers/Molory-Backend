@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, notifyDevice, publicationDb, saveNotification } = {}) {
-    if (!prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !saveNotification || !publicationDb)
+function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, notifyDevice, publicationDb, saveNotification, saveProfile } = {}) {
+    if (!saveProfile || !prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !saveNotification || !publicationDb)
         throw new errors_1.ServerError();
     return function confirmOtp({ token, email, otp, lang, device } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -57,6 +57,7 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                         }
                     }
                 });
+                saveProfile(user.id);
                 saveNotification({ receiversIds: [user.id], notification: { type: 'sigup', title, message: body, data, picture: cover } });
                 const message = { text: 'auth.message.emailVerified' };
                 return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt }, message };

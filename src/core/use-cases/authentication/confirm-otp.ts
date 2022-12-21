@@ -69,7 +69,6 @@ export default function makeConfirmOtp({
                         signUpMethod: "phoneNumber",
                     }
                 })
-                saveProfile(user.id)
             } else user = await userDb.updateOne({ where: { id: user.id }, data: { phoneNumberVerifiedAt } })
             console.log(user)
             if (device.id && device.platform && device.token) {
@@ -87,6 +86,7 @@ export default function makeConfirmOtp({
             await saveToken({ token: authToken })
             await removeOtp({ phoneNumber })
             await removeTmpToken({ token })
+            saveProfile(user.id)
             const message = { text: 'auth.message.otpVerified' }
             return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt }, firstAuth, message }
         })

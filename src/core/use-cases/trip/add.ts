@@ -8,10 +8,11 @@ export default function makeAdd({
     // pricingDb,
     calculMatrix,
     addTask,
-    notifyDevice
+    notifyDevice,
+    saveProfile
     // calculPrice
 }: any = {}) {
-    if (!calculMatrix || !addTask || !notifyDevice) throw new ServerError()
+    if (!saveProfile || !calculMatrix || !addTask || !notifyDevice) throw new ServerError()
     return async ({
         userId,
         vehicleId,
@@ -154,6 +155,7 @@ export default function makeAdd({
             // add Task,
 
             // notify device
+            saveProfile(userId)
             const message = { text: "response.add" }
             return { message, data: trip }
         })

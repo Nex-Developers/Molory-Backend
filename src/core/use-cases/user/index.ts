@@ -1,6 +1,7 @@
 
 import { UserDb, WalletDb } from "../../../db"
 import { askToConfirmEmail, isValidEmail } from "../../services/email"
+import { saveProfile } from "../../services/firebase"
 import { hashPassword } from "../../services/password"
 import { generateToken, saveTmpToken } from "../../services/token"
 import { deleteAvatarFile } from "../../services/upload"
@@ -35,8 +36,8 @@ const unblockUser = makeUnblockUser({ userDb })
 const listRemovedUsers = makeListRemovedUsers({ userDb })
 const listRemovedUserInfos = makeListRemovedUserInfos({ userDb })
 const editUserAvatar = makeEditUserAvatar({ userDb, deleteAvatarFile })
-const validateUserIdCard = makeValidateUserIdCard({ userDb, walletDb })
-const validateDriverLicense = makeValidateDriverLicense({ userDb, walletDb })
+const validateUserIdCard = makeValidateUserIdCard({ userDb, walletDb, saveProfile })
+const validateDriverLicense = makeValidateDriverLicense({ userDb, walletDb, saveProfile })
 const rateUser = makeRateUser({ userDb })
 
 export {

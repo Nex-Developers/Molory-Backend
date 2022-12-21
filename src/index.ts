@@ -12,6 +12,8 @@ try {
         await Mailer.connect()
         await initializer()
         FirebaseAdmin.connect()
+        const saved = await CacheManager.get("22892942072")
+        console.log(saved)
         app.listen(env.port, () => console.log(`Server running at http://localhost:${env.port}`))
     }
     startApp()

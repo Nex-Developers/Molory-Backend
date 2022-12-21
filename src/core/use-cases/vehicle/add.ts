@@ -1,9 +1,10 @@
 import { MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeAdd({
-    vehicleDb
+    vehicleDb,
+    saveProfile
 }: any = {}) {
-    if (!vehicleDb) throw new ServerError()
+    if (!vehicleDb || !saveProfile) throw new ServerError()
     return async ({
         userId,
         type,
@@ -18,6 +19,7 @@ export default function makeAdd({
         if (!model) throw new MissingParamError('model')
 
         const { id } = await vehicleDb.insertOne({ data: { userId, type, color, model, numberPlate }})
+        saveProfile(userId)
         const message = { text: "response.add" }
         return { message, id }
     } 

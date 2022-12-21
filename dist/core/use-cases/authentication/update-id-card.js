@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const environment_1 = require("../../../configs/environment");
 const errors_1 = require("../../../utils/errors");
-function makeUpdateIdCard({ userDb, } = {}) {
-    if (!userDb)
+function makeUpdateIdCard({ userDb, saveProfile } = {}) {
+    if (!userDb || !saveProfile)
         throw new errors_1.ServerError();
     return function ({ id, files } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -22,7 +22,8 @@ function makeUpdateIdCard({ userDb, } = {}) {
             let idCardBack = '';
             if (backFile)
                 idCardBack = environment_1.env.url + backFile.path.substring(backFile.path.indexOf("/"));
-            userDb.updateOne({ where: { id }, data: { idCardBack, idCardFront, idCardStatus: 2, idCardUploadedAt: new Date() } });
+            yield userDb.updateOne({ where: { id }, data: { idCardBack, idCardFront, idCardStatus: 2, idCardUploadedAt: new Date() } });
+            saveProfile(id);
             const message = { text: 'response.update' };
             return { message, data: { idCardFront, idCardBack } };
         });

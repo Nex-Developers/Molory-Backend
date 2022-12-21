@@ -22,7 +22,7 @@ export default function makePatchController({
         try {
             const lang = request.lang,
                 body = request.body,
-                data = await editVehicle({...body})
+                data = await editVehicle({...body, userId: request.ref.id})
                 reqLog.status = LogStatus.SUCCEEDED
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)

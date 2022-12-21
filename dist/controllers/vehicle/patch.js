@@ -20,7 +20,7 @@ function makePatchController({ editVehicle }) {
                 description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.EDIT} vehicle ${request.body.id}`
             };
             try {
-                const lang = request.lang, body = request.body, data = yield editVehicle(Object.assign({}, body));
+                const lang = request.lang, body = request.body, data = yield editVehicle(Object.assign(Object.assign({}, body), { userId: request.ref.id }));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 helpers_1.LogManager.save(reqLog);
                 return helpers_1.HttpResponse.ok(data, lang);

@@ -39,7 +39,6 @@ function makeConfirmOtp({ getOtp, userDb, deviceDb, generateToken, saveToken, re
                             signUpMethod: "phoneNumber",
                         }
                     });
-                    saveProfile(user.id);
                 }
                 else
                     user = yield userDb.updateOne({ where: { id: user.id }, data: { phoneNumberVerifiedAt } });
@@ -60,6 +59,7 @@ function makeConfirmOtp({ getOtp, userDb, deviceDb, generateToken, saveToken, re
                 yield saveToken({ token: authToken });
                 yield removeOtp({ phoneNumber });
                 yield removeTmpToken({ token });
+                saveProfile(user.id);
                 const message = { text: 'auth.message.otpVerified' };
                 return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt }, firstAuth, message };
             }));

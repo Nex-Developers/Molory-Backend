@@ -22,7 +22,7 @@ export default function makeDeleteController({
         try {
             const lang = request.lang,
                 { id } = request.body,
-                data = await removeVehicle({ id })
+                data = await removeVehicle({ id, userId: request.ref.id })
                 reqLog.status = LogStatus.SUCCEEDED
                 LogManager.save(reqLog)
                 return HttpResponse.ok(data, lang)

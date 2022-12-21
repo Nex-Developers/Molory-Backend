@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.confirmPayment = exports.removeTravel = exports.listTravelInfos = exports.listTravels = exports.editTravel = exports.addTravel = void 0;
 const tslib_1 = require("tslib");
 const db_1 = require("../../../db");
+const firebase_1 = require("../../services/firebase");
 const notifications_1 = require("../../services/notifications");
 const add_1 = (0, tslib_1.__importDefault)(require("./add"));
 const confirm_payment_1 = (0, tslib_1.__importDefault)(require("./confirm-payment"));
@@ -23,6 +24,6 @@ const listTravelInfos = (0, list_item_infos_1.default)({ travelDb });
 exports.listTravelInfos = listTravelInfos;
 const removeTravel = (0, remove_1.default)({ travelDb, notifyDevice: notifications_1.notifyDevice });
 exports.removeTravel = removeTravel;
-const confirmPayment = (0, confirm_payment_1.default)();
+const confirmPayment = (0, confirm_payment_1.default)({ saveProfile: firebase_1.saveProfile });
 exports.confirmPayment = confirmPayment;
 //# sourceMappingURL=index.js.map

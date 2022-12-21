@@ -2,9 +2,10 @@ import { MissingParamError, ServerError } from "../../../utils/errors"
 import { DbConnection } from "../../../utils/helpers"
 
 export default function makeAdd({
-    preferenceDb
+    preferenceDb,
+    saveProfile
 }: any = {}) {
-    if (!preferenceDb) throw new ServerError()
+    if (!preferenceDb || !saveProfile) throw new ServerError()
     return async ({
         userId,
         preferences
@@ -36,6 +37,7 @@ export default function makeAdd({
                 }})
             })
             return Promise.all(promises).then(() => {
+                saveProfile(userId)
                 const message = { text: "response.add" }
                 return { message }
             })

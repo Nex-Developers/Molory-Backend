@@ -20,7 +20,7 @@ function makeDeleteController({ removeVehicle }) {
                 description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.DELETE} vehicle ${request.body.id}`
             };
             try {
-                const lang = request.lang, { id } = request.body, data = yield removeVehicle({ id });
+                const lang = request.lang, { id } = request.body, data = yield removeVehicle({ id, userId: request.ref.id });
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 helpers_1.LogManager.save(reqLog);
                 return helpers_1.HttpResponse.ok(data, lang);

@@ -3,9 +3,10 @@ import { InvalidParamError, MissingParamError, ServerError } from "../../../util
 
 export default function makeUpdateAvatar ({
     userDb,
-    deleteAvatarFile
+    deleteAvatarFile,
+    saveProfile
 }: any = {}) {
-    if (!userDb || !deleteAvatarFile) throw new ServerError()
+    if (!userDb || !deleteAvatarFile || !saveProfile) throw new ServerError()
     return async function updateAvatar({
          id,
         file
@@ -19,6 +20,7 @@ export default function makeUpdateAvatar ({
         const avatar = env.url + file.path.substring(file.path .indexOf("/"));
         userDb.updateOne({ where: { id },  data: { avatar }})
         const message = { text: 'auth.message.updateAvatar' }
+        saveProfile(id)
         return { message, data: { avatar }}
     }
 }

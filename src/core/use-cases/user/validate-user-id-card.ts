@@ -2,11 +2,12 @@ import { AlreadyDoneError, InvalidParamError, MissingParamError, ServerError } f
 
 export default function makeValidateUserIdCard({
     userDb,
-    walletDb
+    walletDb,
+    saveProfile
     // sendMail,
     // sendSms
 }: any = {}) {
-    if (!userDb || !walletDb) throw new ServerError()
+    if (!userDb || !walletDb || !saveProfile) throw new ServerError()
     return async function ({
         userId,
         response,
@@ -39,7 +40,7 @@ export default function makeValidateUserIdCard({
             //     text: `Your account has been validated`
             // })
         }
-
+        saveProfile(userId)
         const message = { text: "response.edit" }
         return { message }
     }

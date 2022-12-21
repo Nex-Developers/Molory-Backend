@@ -3,7 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-function makeConfirmPayment() {
+function makeConfirmPayment({ saveProfile }) {
+    if (saveProfile)
+        throw new errors_1.ServerError();
     return ({ id, status, amount, method, reference, validatedAt, } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
         console.log('Confirm-payment called with ', id, status, amount);
@@ -73,6 +75,7 @@ function makeConfirmPayment() {
                 }
             }
             yield helpers_1.CacheManager.remove(id);
+            saveProfile(travel.userId);
             const message = { text: "response.add", data: travel };
             return { message };
         }));

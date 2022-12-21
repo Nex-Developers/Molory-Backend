@@ -1,10 +1,12 @@
 import { MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeEdit({
-    vehicleDb
+    vehicleDb,
+    saveProfile
 }: any = {}) {
-    if (!vehicleDb) throw new ServerError()
+    if (!vehicleDb || !saveProfile) throw new ServerError()
     return async ({
+        userId,
         id,
         type,
         color,
@@ -13,6 +15,7 @@ export default function makeEdit({
         registrationDoc
     }: any = {}) => {
         if (!id) throw new MissingParamError('id')
+        if (!userId) throw new MissingParamError('userId')
 
         const data: any = {}
         if (type) data.type = type
@@ -24,6 +27,7 @@ export default function makeEdit({
         
         if( Object.keys(data).length === 0) throw new MissingParamError('all')
         await vehicleDb.updateOne({ where: { id}, data })
+        saveProfile(userId)
         const message = { text: "response.edit" }
         return { message }
     } 

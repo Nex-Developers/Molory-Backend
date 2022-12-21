@@ -4,8 +4,8 @@ const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 const helpers_1 = require("../../../utils/helpers");
-function makeAdd({ calculMatrix, addTask, notifyDevice } = {}) {
-    if (!calculMatrix || !addTask || !notifyDevice)
+function makeAdd({ calculMatrix, addTask, notifyDevice, saveProfile } = {}) {
+    if (!saveProfile || !calculMatrix || !addTask || !notifyDevice)
         throw new errors_1.ServerError();
     return ({ userId, vehicleId, seats, date, time, price, fees, stops, description } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!userId)
@@ -132,6 +132,7 @@ function makeAdd({ calculMatrix, addTask, notifyDevice } = {}) {
                     }
                 }
             });
+            saveProfile(userId);
             const message = { text: "response.add" };
             return { message, data: trip };
         }));
