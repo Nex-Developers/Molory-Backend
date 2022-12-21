@@ -12,12 +12,13 @@ import makeRemove from "./remove"
 import makeStart from "./start"
 import makeFinish from "./finish"
 import makeRate from "./rate"
+import { saveProfile } from "../../services/firebase"
 
 const tripDb = new TripDb()
 const vehicleDb = new VehicleDb()
 const pricingDb = new PricingDb()
 
-const addTrip = makeAdd({ tripDb, vehicleDb, pricingDb, calculMatrix, calculPrice, notifyDevice, addTask })
+const addTrip = makeAdd({ saveProfile, tripDb, vehicleDb, pricingDb, calculMatrix, calculPrice, notifyDevice, addTask })
 const startTrip = makeStart({ notifyDevice, addTask })
 const finishTrip = makeFinish({ notifyDevice })
 const rateTrip = makeRate()
