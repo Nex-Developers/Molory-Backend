@@ -8,7 +8,7 @@ import {
 } from "../../configs/middlewares"
 
 import { 
-    // deleteTripController,
+    deleteTripController,
     getTripController, 
     getTripsController,
     patchTripConfirmController,
@@ -23,7 +23,7 @@ export default () => {
     .get(langCheck, queryParser, authCheck, expressRouterAdapter(getTripsController))
     .post(langCheck, authCheck, driverCheck, expressRouterAdapter(postTripController))
     // .patch(langCheck, authCheck, driverCheck, expressRouterAdapter(patchTripController))
-    // .delete(langCheck, authCheck, driverCheck, expressRouterAdapter(deleteTripController))
+    .delete(langCheck, authCheck, driverCheck, expressRouterAdapter(deleteTripController))
     router.post('/confirm-trip', langCheck, authCheck, driverCheck, expressRouterAdapter(patchTripConfirmController))
     return router
 }
