@@ -19,7 +19,7 @@ function makeVerifyOtpController({ confirmOtp }) {
                 description: `${phoneNumber} ${conventions_1.Action.REQUEST} to receive otp`
             };
             try {
-                const token = request.token, { otp, device } = request.body, data = yield confirmOtp({ token, otp, device, lang, phoneNumber });
+                const token = request.token, { otp, device, changeAuthParam } = request.body, data = yield confirmOtp({ token, otp, device, lang, phoneNumber, changeAuthParam });
                 reqLog.userId = data.data.id;
                 reqLog.modelId = data.data.id.toString();
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;

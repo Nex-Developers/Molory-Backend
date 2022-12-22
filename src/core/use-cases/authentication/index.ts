@@ -59,7 +59,7 @@ const removePassword = makeRemovePassword({ getOtp, verifyToken, userDb, generat
 const setPassword = makeSetPassword({ prisma, userDb, deviceDb, verifyToken, generateToken, saveToken, removeOtp, removeTmpToken, hashPassword, comparePasswords, getOtp })
 const signOut = makeSignOut({ removeToken })
 const removeAccount = makeRemoveAccount({saveProfile, userDb, removeToken})
-const changeEmail = makeChangeEmail({ userDb, generateToken, removeToken, saveTmpToken, askToConfirmEmail, isValidEmail })
+const changeEmail = makeChangeEmail({ userDb, generateOtp, generateToken, removeToken, saveTmpToken, askToConfirmEmail, isValidEmail })
 const changePhoneNumber = makeChangePhoneNumber({ userDb, generateOtp, saveOtp, sendOtp, generateToken, removeToken, saveTmpToken })
 
 export {

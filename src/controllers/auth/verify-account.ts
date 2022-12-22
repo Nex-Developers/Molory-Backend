@@ -22,8 +22,8 @@ export default function makeVerifyAccountController({
             }
         try {
             const token = request.token,
-                { otp, device } = request.body,
-                data = await validateAccount({ token, otp, device, lang, email })
+                { otp, device, changeAuthParam } = request.body,
+                data = await validateAccount({ token, otp, device, lang, email, changeAuthParam })
             reqLog.userId = data.data.id
             reqLog.modelId = data.data.id.toString()
             reqLog.status = LogStatus.SUCCEEDED

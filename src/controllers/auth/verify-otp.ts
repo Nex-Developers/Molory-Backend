@@ -22,8 +22,8 @@ export default function makeVerifyOtpController({
             }
         try {
             const token = request.token,
-                { otp, device } = request.body,
-                data = await confirmOtp({ token, otp, device, lang, phoneNumber })
+                { otp, device, changeAuthParam } = request.body,
+                data = await confirmOtp({ token, otp, device, lang, phoneNumber, changeAuthParam })
             reqLog.userId = data.data.id
             reqLog.modelId = data.data.id.toString()
             reqLog.status = LogStatus.SUCCEEDED

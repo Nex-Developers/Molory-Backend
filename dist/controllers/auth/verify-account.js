@@ -19,7 +19,7 @@ function makeVerifyAccountController({ validateAccount }) {
                 description: `${email} ${conventions_1.Action.REQUEST} to confirm account`
             };
             try {
-                const token = request.token, { otp, device } = request.body, data = yield validateAccount({ token, otp, device, lang, email });
+                const token = request.token, { otp, device, changeAuthParam } = request.body, data = yield validateAccount({ token, otp, device, lang, email, changeAuthParam });
                 reqLog.userId = data.data.id;
                 reqLog.modelId = data.data.id.toString();
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;

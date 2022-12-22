@@ -20,11 +20,11 @@ function makeChangePhoneNumber({ generateOtp, saveOtp, sendOtp, generateToken, r
                 throw new errors_1.InvalidParamError('id');
             if (user.phoneNumber === phoneNumber)
                 throw new errors_1.AlreadyDoneError('before');
-            yield helpers_1.CacheManager.set(+phoneNumber, id.toString(), 60 * 60);
             const otp = yield generateOtp();
             const tmpToken = yield generateToken({ phoneNumber });
             yield saveTmpToken({ token: tmpToken });
-            yield saveOtp({ phoneNumber, otp });
+            yield helpers_1.CacheManager.set(phoneNumber, JSON.stringify({ id, code: otp.toString() }));
+            yield sendOtp({ phoneNumber, otp });
             const message = { text: 'auth.message.changePhoneNumber', params: { phoneNumber } };
             return { token: tmpToken, message };
         });

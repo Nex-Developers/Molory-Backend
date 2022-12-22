@@ -6,7 +6,7 @@ const email_1 = require("../../services/email");
 function makeUpdateProfile({ userDb, saveProfile } = {}) {
     if (!userDb || !saveProfile)
         throw new errors_1.ServerError();
-    return function updateProfile({ id, firstName, lastName, birthDay, gender, email } = {}) {
+    return function updateProfile({ id, firstName, lastName, birthDay, gender, email, phoneNumber } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             console.log('id birthDay gender email', id, birthDay, gender, email);
             const data = {};
@@ -30,6 +30,9 @@ function makeUpdateProfile({ userDb, saveProfile } = {}) {
                 if (user)
                     throw new errors_1.AccountAllReadyExistError('email');
                 data.email = email;
+            }
+            if (phoneNumber) {
+                data.phoneNumber = phoneNumber;
             }
             yield userDb.updateOne({ where: { id }, data });
             saveProfile(id);

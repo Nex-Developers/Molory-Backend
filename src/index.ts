@@ -12,6 +12,9 @@ try {
         await Mailer.connect()
         await initializer()
         FirebaseAdmin.connect()
+        // const id = 2
+        // const data = { id }
+        // await CacheManager.set("22892942072", JSON.stringify(data))
         // const saved = await CacheManager.get("22892942072")
         // console.log(saved)
         app.listen(env.port, () => console.log(`Server running at http://localhost:${env.port}`))

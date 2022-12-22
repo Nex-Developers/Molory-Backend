@@ -12,7 +12,8 @@ export default function makeUpdateProfile ({
         lastName,
         birthDay,
         gender,
-        email
+        email,
+        phoneNumber
     }: any = {}) {
         console.log('id birthDay gender email', id, birthDay, gender, email)
         const data: any = {}
@@ -30,6 +31,9 @@ export default function makeUpdateProfile ({
             const user = await userDb.findFirst({ where: { email } })
             if(user) throw new AccountAllReadyExistError('email')
             data.email =  email
+        }
+        if (phoneNumber) {
+            data.phoneNumber = phoneNumber
         }
         await userDb.updateOne({ where: { id }, data })
         saveProfile(id)

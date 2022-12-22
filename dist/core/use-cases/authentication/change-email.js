@@ -2,10 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-function makeChangeEmail({ userDb, generateToken, removeToken, saveTmpToken, askToConfirmEmail, isValidEmail } = {}) {
-    if (!userDb || !generateToken || !saveTmpToken || !askToConfirmEmail || !isValidEmail || !removeToken)
+const helpers_1 = require("../../../utils/helpers");
+function makeChangeEmail({ userDb, generateToken, removeToken, saveTmpToken, askToConfirmEmail, isValidEmail, generateOtp } = {}) {
+    if (!userDb || !generateOtp || !generateToken || !saveTmpToken || !askToConfirmEmail || !isValidEmail || !removeToken)
         throw new errors_1.ServerError();
-    return function changeEmail({ id, email, token, lang } = {}) {
+    return function changeEmail({ id, email, lang } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!id)
                 throw new errors_1.MissingParamError('id');
@@ -15,21 +16,19 @@ function makeChangeEmail({ userDb, generateToken, removeToken, saveTmpToken, ask
                 throw new errors_1.InvalidParamError('email');
             if (!lang)
                 throw new errors_1.MissingParamError('lang');
-            if (!token)
-                throw new errors_1.MissingParamError('token');
             const user = yield userDb.findFirst({ where: { id }, select: { email: true, firstName: true, emailVerifiedAt: true } });
             console.log(user);
             if (!user)
                 throw new errors_1.InvalidParamError('id');
             if (user.email === email)
                 throw new errors_1.AlreadyDoneError('before');
-            yield userDb.updateOne({ where: { id }, data: { email, emailVerifiedAt: null } });
-            const tmpToken = yield generateToken({ email });
-            yield saveTmpToken({ token: tmpToken });
-            yield askToConfirmEmail({ email, token: tmpToken, firstName: user.firstName, lang });
-            yield removeToken({ token });
+            const otp = yield generateOtp();
+            const token = yield generateToken({ email });
+            yield saveTmpToken({ token });
+            yield askToConfirmEmail({ email, otp, firstName: user.firstName, lang });
+            yield helpers_1.CacheManager.set(email, JSON.stringify({ id, code: otp.toString() }));
             const message = { text: 'auth.message.changeEmail', params: { email } };
-            return { message };
+            return { message, token };
         });
     };
 }

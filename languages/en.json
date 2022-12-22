@@ -66,8 +66,8 @@
       "updateProfile": "Your profile has been updated successfully",
       "updateAvatar": "Your avatar has been updated successfully",
       "recoverPassword": "The password reset code has been send on your email :email",
-      "changeEmail": "You are email has been changed successfully. Check you new email box :email to confirm your email",
-      "changePhoneNumber": "You are phoneNumber has been changed successfully. an Otp code has been send on  :phoneNumber",
+      "changeEmail": "Your email will be changed by confirming the Otp code send to :email",
+      "changePhoneNumber": "You phoneNumber will be changed by confirming the Otp code send to :phoneNumber",
       "removeAccount": "Your account has been deleted successfully"
     }
   },

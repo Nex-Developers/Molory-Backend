@@ -35,9 +35,9 @@ export default class CacheManager {
    return  makeAsync(key)
   }
 
-   static set (key, value, ttl = 120) {
+   static set (key, value, ttl = null) {
     CacheManager.client.set(key, value)
-    CacheManager.client.expire(key, ttl)
+   if(ttl) CacheManager.client.expire(key, ttl)
   }
 
   static get (key) {
