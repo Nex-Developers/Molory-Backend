@@ -20,7 +20,6 @@ function makeListUserInfos({ userDb } = {}) {
                     gender: true,
                     role: true,
                     rating: true,
-                    reviewsReceived: true,
                     phoneNumber: true,
                     profileCompletedAt: true,
                     idCardFront: true,
@@ -51,14 +50,6 @@ function makeListUserInfos({ userDb } = {}) {
                                     value: true,
                                 }
                             }
-                        }
-                    },
-                    wallets: {
-                        select: {
-                            id: true,
-                            type: true,
-                            balance: true,
-                            currency: true
                         }
                     },
                     _count: { select: {

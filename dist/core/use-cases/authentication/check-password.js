@@ -13,11 +13,15 @@ function makeCheckPassword({ userDb, deviceDb, generateToken, saveToken, removeT
                 throw new errors_1.MissingParamError('password');
             if (!device)
                 throw new errors_1.MissingParamError('device');
+            console.log(device);
+            console.log(device.id);
+            if (!device.id || !device.token)
+                throw new errors_1.InvalidParamError('device');
             const user = yield userDb.findFirst({ where: { id } });
             if (!(yield comparePasswords({ hash: user.password, password })))
                 throw new errors_1.PasswordIncorrectError('password');
             const savedDevice = yield deviceDb.findFirst({ where: { id: device.id, userId: user.id } });
-            if (!savedDevice)
+            if (!savedDevice || savedDevice.token != device.token)
                 yield deviceDb.insertOne({
                     data: {
                         id: device.id,

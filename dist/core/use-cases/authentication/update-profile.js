@@ -32,6 +32,9 @@ function makeUpdateProfile({ userDb, saveProfile } = {}) {
                 data.email = email;
             }
             if (phoneNumber) {
+                const user = yield userDb.findFirst({ where: { phoneNumber } });
+                if (user)
+                    throw new errors_1.AccountAllReadyExistError('phoneNumber');
                 data.phoneNumber = phoneNumber;
             }
             yield userDb.updateOne({ where: { id }, data });

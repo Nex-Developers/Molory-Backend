@@ -43,6 +43,8 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                 return { token: authToken, data: { id, avatar, firstName, lastName, phoneNumber, email, birthDay, createdAt }, message };
             }
             else {
+                console.log(device);
+                console.log(device.id);
                 if (!device)
                     throw new errors_1.MissingParamError('device');
                 const otpIndex = yield getOtp({ phoneNumber: email, otp });
@@ -57,7 +59,7 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                     else
                         user = yield userDb.updateOne({ where: { id: user.id }, data: { emailVerifiedAt, status: 2 } });
                     const savedDevice = yield deviceDb.findFirst({ where: { id: device.id, userId: user.id } });
-                    if (!savedDevice)
+                    if (!savedDevice || savedDevice.token != device.token)
                         yield deviceDb.insertOne({
                             data: {
                                 id: device["id"],
@@ -70,7 +72,7 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                     yield saveToken({ token: authToken });
                     yield removeOtp({ phoneNumber: email });
                     yield removeTmpToken({ token });
-                    const { title, body, data, cover } = yield notifyDevice({ deviceTokens: [device["token"]], titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'fr' });
+                    const { title, body, data, cover } = yield notifyDevice({ deviceTokens: [device["token"]], titleRef: { text: 'notification.signup.title' }, messageRef: { text: 'notification.signup.message', params: { name: user.firstName } }, cover: null, data: null, lang: 'fr' });
                     yield publicationDb.insertOne({
                         data: {
                             title,

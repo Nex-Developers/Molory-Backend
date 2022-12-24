@@ -33,6 +33,8 @@ export default function makeUpdateProfile ({
             data.email =  email
         }
         if (phoneNumber) {
+            const user = await userDb.findFirst({ where: { phoneNumber } })
+            if(user) throw new AccountAllReadyExistError('phoneNumber')
             data.phoneNumber = phoneNumber
         }
         await userDb.updateOne({ where: { id }, data })

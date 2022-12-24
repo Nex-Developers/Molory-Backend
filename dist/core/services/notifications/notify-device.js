@@ -9,8 +9,8 @@ function makeNotifyDevice({ sendNotification, translate } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!titleRef || !messageRef)
                 throw new errors_1.ServerError();
-            const title = translate(lang, titleRef);
-            const body = translate(lang, messageRef);
+            const title = translate(lang, titleRef.text, titleRef.params);
+            const body = translate(lang, messageRef.text, messageRef.params);
             try {
                 if (deviceTokens && deviceTokens.length)
                     sendNotification(deviceTokens, title, body, data, cover);

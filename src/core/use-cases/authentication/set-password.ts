@@ -39,7 +39,7 @@ export default function makeSetPassword({
             password = await hashPassword({ password })
             user = await userDb.updateOne({ where: { id: user.id }, data: { password } })
             const savedDevice = await deviceDb.findFirst({ where: { id: device.id, userId: user.id } })
-            if (!savedDevice) await deviceDb.insertOne({
+            if (!savedDevice || savedDevice.token != device.token) await deviceDb.insertOne({
                 data: {
                     id: device["id"],
                     userId: user["id"],

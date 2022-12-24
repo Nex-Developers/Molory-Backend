@@ -59,6 +59,8 @@ export default function makeValidateAccount({
                 return { token: authToken, data: { id, avatar, firstName, lastName, phoneNumber, email, birthDay, createdAt }, message }
 
         } else {
+            console.log(device)
+            console.log(device.id)
             if (!device) throw new MissingParamError('device')
             const otpIndex = await getOtp({ phoneNumber: email, otp })
             if (otpIndex === null || otpIndex === undefined) throw new OtpIncorrectError('')
@@ -70,7 +72,7 @@ export default function makeValidateAccount({
                     throw new AccountNotFoundError('email')
                 } else user = await userDb.updateOne({ where: { id: user.id }, data: { emailVerifiedAt, status: 2 } })
                 const savedDevice = await deviceDb.findFirst({ where: { id: device.id, userId: user.id } })
-                if (!savedDevice) await deviceDb.insertOne({
+                if (!savedDevice || savedDevice.token != device.token) await deviceDb.insertOne({
                     data: {
                         id: device["id"],
                         userId: user["id"],
@@ -82,7 +84,7 @@ export default function makeValidateAccount({
                 await saveToken({ token: authToken })
                 await removeOtp({ phoneNumber: email })
                 await removeTmpToken({ token })
-                const { title, body, data, cover } = await notifyDevice({ deviceTokens: [device["token"]], titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'fr' })
+                const { title, body, data, cover } = await notifyDevice({ deviceTokens: [device["token"]], titleRef: {text: 'notification.signup.title'}, messageRef:{ text: 'notification.signup.message', params: { name: user.firstName}}, cover: null, data: null, lang: 'fr' })
                 await publicationDb.insertOne({
                     data: {
                         title,

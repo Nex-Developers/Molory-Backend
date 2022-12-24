@@ -14,8 +14,8 @@ export default function makeNotifyDevice({
         lang
     }: any = {}) {
         if (!titleRef || !messageRef) throw new ServerError()
-        const title = translate(lang, titleRef)
-        const body = translate(lang, messageRef)
+        const title = translate(lang, titleRef.text, titleRef.params)
+        const body = translate(lang, messageRef.text, messageRef.params)
         // data = JSON.stringify(data)
         try {
             if (deviceTokens && deviceTokens.length) sendNotification(deviceTokens, title, body, data, cover)

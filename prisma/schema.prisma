@@ -257,7 +257,7 @@ model Travel {
   cancelReason    String?
   // driverRating    Int?
   // passengerRating Int?
-  rating          Float            @default(0.0)
+  rating          Float?           
   user            User             @relation(fields: [userId], references: [id])
   route           Route            @relation(fields: [routeId], references: [id])
   payment         Payment?

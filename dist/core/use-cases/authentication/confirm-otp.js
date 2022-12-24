@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-function makeConfirmOtp({ getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, saveProfile } = {}) {
-    if (!saveProfile || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken)
+function makeConfirmOtp({ getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, saveProfile, notifyDevice } = {}) {
+    if (!saveProfile || !notifyDevice || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken)
         throw new errors_1.ServerError();
     return function confirmOtp({ token, phoneNumber, otp, lang, device, changeAuthParam } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -75,7 +75,7 @@ function makeConfirmOtp({ getOtp, userDb, deviceDb, generateToken, saveToken, re
                     console.log(user);
                     if (device.id && device.platform && device.token) {
                         const savedDevice = yield deviceDb.findFirst({ where: { id: device.id, userId: user.id } });
-                        if (!savedDevice)
+                        if (!savedDevice || savedDevice.token != device.token)
                             yield deviceDb.insertOne({
                                 data: {
                                     id: device.id,
@@ -85,6 +85,22 @@ function makeConfirmOtp({ getOtp, userDb, deviceDb, generateToken, saveToken, re
                                 }
                             });
                     }
+                    const { title, body, data, cover } = yield notifyDevice({ deviceTokens: [device["token"]], titleRef: { text: 'notification.otpVerified.title' }, messageRef: { text: 'notification.otpVerified.message', params: { phoneNumber } }, cover: null, data: null, lang: 'fr' });
+                    yield prisma.publication.create({
+                        data: {
+                            title,
+                            message: body,
+                            data: data ? JSON.stringify(data) : null,
+                            picture: cover,
+                            notifications: {
+                                create: {
+                                    user: {
+                                        connect: { id: user.id }
+                                    }
+                                }
+                            }
+                        }
+                    });
                     const authToken = yield generateToken({ id: user.id, role: user.role });
                     yield saveToken({ token: authToken });
                     yield removeOtp({ phoneNumber });

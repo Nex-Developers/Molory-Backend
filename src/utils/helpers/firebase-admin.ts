@@ -21,7 +21,7 @@ export default class FirebaseAdmin{
                 title,
                 body,
                 sound: 'default',
-                badge: '1'
+                badge: '1',
             },
         }
         if (data) payload.data = data

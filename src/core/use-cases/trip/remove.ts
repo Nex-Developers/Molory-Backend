@@ -51,7 +51,7 @@ export default function makeRemove({
             })
             if (!status) throw new AlreadyDoneError(canceledAt.toString())
             if (status != 3) throw new UnauthorizedError()
-            await prisma.trip.update({ where: { id }, data: { status: 0, canceledAt: new Date() } })
+            await prisma.trip.update({ where: { id }, data: { status: 0, canceledAt: new Date(), cancelReason } })
             // penalities
             const departureDateTime = new Date(departureDate + ' ' + departureTime)
             const delay = getLast48hours(departureDateTime)
@@ -69,7 +69,6 @@ export default function makeRemove({
                         canceledAt: new Date(),
                         cancelReason,
                         canceledBy: 'driver',
-
                     },
                 })
                 const promises2 = await route.travels.map(async travel => {

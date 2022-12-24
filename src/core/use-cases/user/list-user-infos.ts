@@ -19,7 +19,7 @@ export default function makeListUserInfos({
                 gender: true,
                 role: true,
                 rating: true,
-                reviewsReceived: true,
+                // reviewsReceived: true,
                 phoneNumber: true,
                 profileCompletedAt: true,
                 idCardFront: true,
@@ -52,20 +52,19 @@ export default function makeListUserInfos({
                         }
                     }
                 },
-                wallets: {
-                    select: {
-                        id: true,
-                        type: true,
-                        balance: true,
-                        currency: true
-                    }
-                },
                 _count: { select: {
                     trips: true,
                     travels: true
                 }}
             }
         })
+        // if (data.role === 'driver') data.wallet = await walletDb.findFirst({
+        //     where: { id: res.userId },
+        //     select: {
+        //         balance: true,
+        //         currency: true
+        //     }
+        // })
         return {
             data: {
                 avatar: data.avatar,

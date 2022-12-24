@@ -18,11 +18,13 @@ export default function makeCheckPassword({
         if (!id) throw new InvalidParamError('Token')
         if (!password) throw new MissingParamError('password')
         if (!device) throw new MissingParamError('device')
-
+        console.log(device)
+        console.log(device.id)
+        if(!device.id || !device.token) throw new InvalidParamError('device')
         const user = await userDb.findFirst({ where: { id } })
         if (! await comparePasswords({ hash: user.password, password })) throw new PasswordIncorrectError('password')
         const savedDevice = await deviceDb.findFirst({ where: { id: device.id, userId: user.id } })
-        if (!savedDevice) await deviceDb.insertOne({
+        if (!savedDevice || savedDevice.token != device.token) await deviceDb.insertOne({
             data: {
                 id: device.id,
                 userId: user.id,

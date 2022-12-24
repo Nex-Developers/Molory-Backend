@@ -28,7 +28,7 @@ function makeSetPassword({ prisma, userDb, deviceDb, generateToken, saveToken, r
                 password = yield hashPassword({ password });
                 user = yield userDb.updateOne({ where: { id: user.id }, data: { password } });
                 const savedDevice = yield deviceDb.findFirst({ where: { id: device.id, userId: user.id } });
-                if (!savedDevice)
+                if (!savedDevice || savedDevice.token != device.token)
                     yield deviceDb.insertOne({
                         data: {
                             id: device["id"],

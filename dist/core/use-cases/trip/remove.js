@@ -52,7 +52,7 @@ function makeRemove({ tripDb, notifyDevice } = {}) {
                 throw new errors_1.AlreadyDoneError(canceledAt.toString());
             if (status != 3)
                 throw new unauthorized_error_1.UnauthorizedError();
-            yield prisma.trip.update({ where: { id }, data: { status: 0, canceledAt: new Date() } });
+            yield prisma.trip.update({ where: { id }, data: { status: 0, canceledAt: new Date(), cancelReason } });
             const departureDateTime = new Date(departureDate + ' ' + departureTime);
             const delay = getLast48hours(departureDateTime);
             const principal = routes.find(route => route.principal);
