@@ -32,23 +32,23 @@ export default function makeSetProfile({
             return { message }
         }
         const res: any = { id, firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang }
-        const deviceTokens = user.devices.map(device => device.token)
-        const { title, body, data, cover } = await notifyDevice({ deviceTokens, titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'fr' })
-        await publicationDb.insertOne({
-            data: {
-                title,
-                message: body,
-                data: data ? JSON.stringify(data) : null,
-                picture: cover,
-                notifications: {
-                    create: {
-                       user: {
-                            connect: { id: user.id}
-                       }
-                    }
-                }
-            }
-        })
+        // const deviceTokens = user.devices.map(device => device.token)
+        // const { title, body, data, cover } = await notifyDevice({ deviceTokens, titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'fr' })
+        // await publicationDb.insertOne({
+        //     data: {
+        //         title,
+        //         message: body,
+        //         data: data ? JSON.stringify(data) : null,
+        //         picture: cover,
+        //         notifications: {
+        //             create: {
+        //                user: {
+        //                     connect: { id: user.id}
+        //                }
+        //             }
+        //         }
+        //     }
+        // })
         user = await userDb.updateOne({ where: { id }, data: res })
         saveProfile(id)
         const message = { text: 'auth.message.profileUpdated' }

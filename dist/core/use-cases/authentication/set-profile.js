@@ -26,23 +26,6 @@ function makeSetProfile({ userDb, notifyDevice, publicationDb, saveProfile } = {
                 return { message };
             }
             const res = { id, firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang };
-            const deviceTokens = user.devices.map(device => device.token);
-            const { title, body, data, cover } = yield notifyDevice({ deviceTokens, titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'fr' });
-            yield publicationDb.insertOne({
-                data: {
-                    title,
-                    message: body,
-                    data: data ? JSON.stringify(data) : null,
-                    picture: cover,
-                    notifications: {
-                        create: {
-                            user: {
-                                connect: { id: user.id }
-                            }
-                        }
-                    }
-                }
-            });
             user = yield userDb.updateOne({ where: { id }, data: res });
             saveProfile(id);
             const message = { text: 'auth.message.profileUpdated' };
