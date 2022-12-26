@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
+const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 const errors_1 = require("../../../utils/errors");
 function makeSetProfile({ userDb, notifyDevice, publicationDb, saveProfile } = {}) {
     if (!userDb || !publicationDb || !notifyDevice || !saveProfile)
@@ -28,6 +29,7 @@ function makeSetProfile({ userDb, notifyDevice, publicationDb, saveProfile } = {
             const res = { id, firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang };
             user = yield userDb.updateOne({ where: { id }, data: res });
             saveProfile(id);
+            user.birthDay = (0, moment_1.default)(user.birthDay).format('DD-MM-YYYY');
             const message = { text: 'auth.message.profileUpdated' };
             return { message, user };
         });

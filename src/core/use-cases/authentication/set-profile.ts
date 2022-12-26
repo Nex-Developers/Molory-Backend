@@ -1,3 +1,4 @@
+import moment from "moment"
 import { ServerError, MissingParamError } from "../../../utils/errors"
 
 export default function makeSetProfile({
@@ -51,6 +52,7 @@ export default function makeSetProfile({
         // })
         user = await userDb.updateOne({ where: { id }, data: res })
         saveProfile(id)
+        user.birthDay =  moment(user.birthDay).format('DD-MM-YYYY')
         const message = { text: 'auth.message.profileUpdated' }
         return { message, user }
     }
