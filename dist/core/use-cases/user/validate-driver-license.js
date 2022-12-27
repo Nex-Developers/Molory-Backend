@@ -38,7 +38,7 @@ function makeValidateDriverLicense({ userDb, walletDb, saveProfile, notifyDevice
                         notifications: {
                             create: {
                                 user: {
-                                    connect: { id: user.id }
+                                    connect: { id: userId }
                                 }
                             }
                         }
