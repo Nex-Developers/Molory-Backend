@@ -50,7 +50,7 @@ export default function makeValidateDriverLicense({
                         notifications: {
                             create: {
                                 user: {
-                                    connect: { id: user.id }
+                                    connect: { id: userId }
                                 }
                             }
                         }
