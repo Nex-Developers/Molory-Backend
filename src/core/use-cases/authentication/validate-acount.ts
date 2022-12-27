@@ -39,7 +39,7 @@ export default function makeValidateAccount({
                 const { id, code } = JSON.parse(saved)
                 if (code !== otp) throw new OtpIncorrectError('')
                 const message = { text: 'auth.message.emailVerified' }
-                const { avatar, role, firstName, lastName, phoneNumber, birthDay, createdAt } = await prisma.user.update({
+                const { avatar, role, firstName, lastName, phoneNumber, birthDay, createdAt, signUpMethod } = await prisma.user.update({
                     where: { id }, data: { email },
                     select: {
                         avatar: true,
@@ -48,7 +48,8 @@ export default function makeValidateAccount({
                         lastName: true,
                         phoneNumber: true,
                         birthDay: true,
-                        createdAt: true
+                        createdAt: true,
+                        signUpMethod: true,
                     }
                 })
                 const authToken = await generateToken({ id, role })
@@ -56,7 +57,7 @@ export default function makeValidateAccount({
                 await removeOtp({ phoneNumber: email })
                 await removeTmpToken({ token })
                 saveProfile(id)
-                return { token: authToken, data: { id, avatar, firstName, lastName, phoneNumber, email, birthDay, createdAt }, message }
+                return { token: authToken, data: { id, avatar, firstName, lastName, phoneNumber, email, birthDay, createdAt, signUpMethod }, message }
 
         } else {
             console.log(device)
@@ -103,7 +104,7 @@ export default function makeValidateAccount({
                 saveProfile(user.id)
                 saveNotification({ receiversIds: [user.id], notification: { type: 'sigup', title, message: body, data, picture: cover } })
                 const message = { text: 'auth.message.emailVerified' }
-                return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt }, message }
+                return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, signUpMethod: user.signUpMethod, createdAt: user.createdAt }, message }
             })
         }
 

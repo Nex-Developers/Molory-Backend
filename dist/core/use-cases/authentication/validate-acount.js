@@ -23,7 +23,7 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                 if (code !== otp)
                     throw new errors_1.OtpIncorrectError('');
                 const message = { text: 'auth.message.emailVerified' };
-                const { avatar, role, firstName, lastName, phoneNumber, birthDay, createdAt } = yield prisma.user.update({
+                const { avatar, role, firstName, lastName, phoneNumber, birthDay, createdAt, signUpMethod } = yield prisma.user.update({
                     where: { id }, data: { email },
                     select: {
                         avatar: true,
@@ -32,7 +32,8 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                         lastName: true,
                         phoneNumber: true,
                         birthDay: true,
-                        createdAt: true
+                        createdAt: true,
+                        signUpMethod: true,
                     }
                 });
                 const authToken = yield generateToken({ id, role });
@@ -40,7 +41,7 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                 yield removeOtp({ phoneNumber: email });
                 yield removeTmpToken({ token });
                 saveProfile(id);
-                return { token: authToken, data: { id, avatar, firstName, lastName, phoneNumber, email, birthDay, createdAt }, message };
+                return { token: authToken, data: { id, avatar, firstName, lastName, phoneNumber, email, birthDay, createdAt, signUpMethod }, message };
             }
             else {
                 console.log(device);
@@ -91,7 +92,7 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                     saveProfile(user.id);
                     saveNotification({ receiversIds: [user.id], notification: { type: 'sigup', title, message: body, data, picture: cover } });
                     const message = { text: 'auth.message.emailVerified' };
-                    return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, createdAt: user.createdAt }, message };
+                    return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, signUpMethod: user.signUpMethod, createdAt: user.createdAt }, message };
                 }));
             }
         });

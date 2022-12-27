@@ -8,7 +8,7 @@ function makeUpdateAvatar({ userDb, deleteAvatarFile, saveProfile } = {}) {
         throw new errors_1.ServerError();
     return function updateAvatar({ id, file } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            if (!file || file == {})
+            if (!file)
                 throw new errors_1.MissingParamError('file');
             console.log('file', file);
             const user = yield userDb.findFirst({ where: { id }, select: { avatar: true } });
@@ -17,7 +17,7 @@ function makeUpdateAvatar({ userDb, deleteAvatarFile, saveProfile } = {}) {
             if (user.avatar)
                 deleteAvatarFile(user.avatar);
             const avatar = environment_1.env.url + file.path.substring(file.path.indexOf("/"));
-            userDb.updateOne({ where: { id }, data: { avatar } });
+            yield userDb.updateOne({ where: { id }, data: { avatar } });
             const message = { text: 'auth.message.updateAvatar' };
             saveProfile(id);
             return { message, data: { avatar } };
