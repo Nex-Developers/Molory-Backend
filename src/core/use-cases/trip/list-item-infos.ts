@@ -46,6 +46,7 @@ export default function makeListItemInfos({
                         distance: true,
                         duration: true,
                         price: true,
+                        fees: true,
                         stops: true,
                         travels: {
                             select: {

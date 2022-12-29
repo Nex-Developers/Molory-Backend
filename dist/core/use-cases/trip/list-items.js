@@ -58,6 +58,7 @@ function makeListItems({ tripDb } = {}) {
                         distance: true,
                         duration: true,
                         price: true,
+                        fees: true,
                         stops: {
                             select: {
                                 id: true,
