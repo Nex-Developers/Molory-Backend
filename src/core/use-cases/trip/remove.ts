@@ -7,8 +7,8 @@ export default function makeRemove({
     notifyDevice
 }: any = {}) {
     if (!tripDb || !notifyDevice) throw new ServerError()
-    const getLast48hours = (date) => {
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
+    const getLast48hours = (date: Date) => {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2, date.getHours(), date.getMinutes());
     }
     return async ({
         id,
@@ -56,10 +56,13 @@ export default function makeRemove({
             const departureDateTime = new Date(departureDate + ' ' + departureTime)
             const delay = getLast48hours(departureDateTime)
             const principal = routes.find(route => route.principal)
+            console.log(departureDateTime, delay, new Date())
             if (delay < new Date()) {
-                prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: 0.15 * (principal.price + principal.fees) } } })
+                const sanction = 0.15 * (principal.price + principal.fees)
+                console.log('sanction ', userId, sanction)
+                await prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement:  sanction} } })
                 // Notify the driver
-            }
+            } else console.log('sanction false')
             const promises = routes.map(async (route) => {
                 const travelsIds = route.travels.map(travel => travel.id)
                 await prisma.travel.updateMany({
@@ -74,7 +77,7 @@ export default function makeRemove({
                 const promises2 = await route.travels.map(async travel => {
                     const payment = travel.payment
                     if (payment.status === 1) {
-                        await prisma.payment.update({ where: { id: payment.id }, data: { status: 0 } })
+                        await prisma.payment.update({ where: { id: payment.id }, data: { status: 0, deletedAt: new Date() } })
                         await prisma.transfert.create({ data: { id: payment.id, userId: travel.userId, amount: payment.amount } })
                         // notify the user
                     }

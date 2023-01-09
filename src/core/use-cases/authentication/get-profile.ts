@@ -5,6 +5,9 @@ export default function makeGetProfile({
     walletDb
 }: any = {}) {
     if (!userDb || !walletDb) throw new ServerError()
+    const orderPreferences = (data: any[]) => {
+        return data.sort((a, b) => a.question.id - b.question.id)
+    }
     return async function getProfile({
         id
     }: any = {}) {
@@ -98,7 +101,7 @@ export default function makeGetProfile({
             signUpMethod: res.signUpMethod,
             rating: res.rating,
             reviewsReceived: res.reviewsReceived,
-            preferences: res.preferences,
+            preferences: orderPreferences(res.preferences),
             vehicles: res.vehicles,
             documents,
             stats: res._count
