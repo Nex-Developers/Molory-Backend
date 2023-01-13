@@ -96,7 +96,7 @@ function makeListItemInfos({ tripDb } = {}) {
                 fees: true,
                 stops: true,
             };
-            const promises = item.route.tavels.map(booking => {
+            const promises = item.route.travels.map(booking => {
                 const allReviews = booking.user.passengerReviews.concat(booking.user.driverReviews);
                 const reviews = allReviews.sort((a, b) => b.createdAt - a.createdAt);
                 delete booking.user.driverReviews;
