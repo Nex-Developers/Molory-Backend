@@ -22,7 +22,7 @@ exports.default = ({ saveProfile } = {}) => {
                 yield prisma.passengerReview.create({ data: { travelId, tripId, userId, rating, comment } });
             else
                 yield prisma.passengerReview.update({ where: { travelId }, data: { tripId, userId, rating, comment } });
-            if (!rating) {
+            if (rating) {
                 const dirverRatings = yield prisma.driverReview.findMany({ where: { userId }, select: { rating: true } });
                 const passengerRatings = yield prisma.passengerReview.findMany({ where: { userId }, select: { rating: true } });
                 const ratings = dirverRatings.map(r => r.rating).concat(passengerRatings.map(r => r.rating));
@@ -32,6 +32,7 @@ exports.default = ({ saveProfile } = {}) => {
                 if (q)
                     averageRating = sum / q;
                 yield prisma.user.update({ where: { id: userId }, data: { rating: averageRating } });
+                saveProfile(userId);
             }
             const message = { text: "response.edit" };
             return { message };
