@@ -58,7 +58,20 @@ export default function makeListItems({
                                         firstName: true,
                                         lastName: true,
                                         phoneNumber: true,
-                                        rating: true
+                                        rating: true,
+                                        vehicles: true,
+                                        passengerReviews: { select: {
+                                            rating: true,
+                                            comment: true,
+                                            createdAt: true,
+                                            updatedAt: true
+                                        }},
+                                        driverReviews: { select: {
+                                            rating: true,
+                                            comment: true,
+                                            createdAt: true,
+                                            updatedAt: true
+                                        }},
                                     }
                                 }, vehicle: {
                                     select: {
@@ -79,16 +92,20 @@ export default function makeListItems({
                         avatar: true,
                         firstName: true,
                         lastName: true,
-                        phoneNumber: true
+                        phoneNumber: true,
                     }
                 },
                 createdAt: true
             }
         })
         const data = [];
+        
         res.forEach(item => {
             const { trip, ...route } = item.route
             const { user, vehicle, ..._trip } = trip
+            const allReviews: any[] = user.passengerReviews.concat(user.driverReviews)
+            user.reviews = allReviews.sort((a, b) =>  b.createdAt - a.createdAt)
+            user.vehicle = user.vehicles[0] 
             data.push({
                 id: item.id,
                 seats: item.seats,
