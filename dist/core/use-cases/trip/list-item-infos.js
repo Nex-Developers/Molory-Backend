@@ -89,12 +89,12 @@ function makeListItemInfos({ tripDb } = {}) {
         const passengers = [];
         const promises = res.routes.map((item) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const route = {
-                id: true,
-                distance: true,
-                duration: true,
-                price: true,
-                fees: true,
-                stops: true,
+                id: item.id,
+                distance: item.distance,
+                duration: item.duration,
+                price: item.price,
+                fees: item.fees,
+                stops: item.stops,
             };
             const promises = item.travels.map(booking => {
                 const allReviews = booking.user.passengerReviews.concat(booking.user.driverReviews);

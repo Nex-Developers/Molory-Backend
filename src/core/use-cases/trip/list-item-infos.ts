@@ -93,14 +93,13 @@ export default function makeListItemInfos({
 
         const passengers = []
        const promises = res.routes.map(async  item => {
-
             const route = {
-                id: true,
-                distance: true,
-                duration: true,
-                price: true,
-                fees: true,
-                stops: true,
+                id: item.id,
+                distance: item.distance,
+                duration: item.duration,
+                price: item.price,
+                fees: item.fees,
+                stops: item.stops,
             }
             const promises = item.travels.map( booking =>{
                 const allReviews: any[] = booking.user.passengerReviews.concat(booking.user.driverReviews)
