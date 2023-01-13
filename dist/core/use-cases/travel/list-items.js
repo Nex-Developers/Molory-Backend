@@ -5,6 +5,9 @@ const errors_1 = require("../../../utils/errors");
 function makeListItems({ travelDb } = {}) {
     if (!travelDb)
         throw new errors_1.ServerError();
+    const orderPreferences = (data) => {
+        return data.sort((a, b) => a.question.id - b.question.id);
+    };
     return ({ userId, startAt, limit } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!startAt)
             startAt = 0;
@@ -58,7 +61,36 @@ function makeListItems({ travelDb } = {}) {
                                         firstName: true,
                                         lastName: true,
                                         phoneNumber: true,
-                                        rating: true
+                                        rating: true,
+                                        passengerReviews: { select: {
+                                                rating: true,
+                                                comment: true,
+                                                createdAt: true,
+                                                updatedAt: true
+                                            } },
+                                        driverReviews: { select: {
+                                                rating: true,
+                                                comment: true,
+                                                createdAt: true,
+                                                updatedAt: true
+                                            } },
+                                        preferences: {
+                                            select: {
+                                                question: {
+                                                    select: {
+                                                        id: true,
+                                                        value: true,
+                                                    }
+                                                },
+                                                answer: {
+                                                    select: {
+                                                        id: true,
+                                                        index: true,
+                                                        value: true,
+                                                    }
+                                                }
+                                            }
+                                        },
                                     }
                                 }, vehicle: {
                                     select: {
@@ -79,7 +111,7 @@ function makeListItems({ travelDb } = {}) {
                         avatar: true,
                         firstName: true,
                         lastName: true,
-                        phoneNumber: true
+                        phoneNumber: true,
                     }
                 },
                 createdAt: true
@@ -89,6 +121,9 @@ function makeListItems({ travelDb } = {}) {
         res.forEach(item => {
             const _a = item.route, { trip } = _a, route = (0, tslib_1.__rest)(_a, ["trip"]);
             const { user, vehicle } = trip, _trip = (0, tslib_1.__rest)(trip, ["user", "vehicle"]);
+            const allReviews = user.passengerReviews.concat(user.driverReviews);
+            user.reviews = allReviews.sort((a, b) => b.createdAt - a.createdAt);
+            user.preferences = orderPreferences(user.preferences);
             data.push({
                 id: item.id,
                 seats: item.seats,

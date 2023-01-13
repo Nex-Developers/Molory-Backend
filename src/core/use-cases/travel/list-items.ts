@@ -62,7 +62,6 @@ export default function makeListItems({
                                         lastName: true,
                                         phoneNumber: true,
                                         rating: true,
-                                        vehicles: true,
                                         passengerReviews: { select: {
                                             rating: true,
                                             comment: true,
@@ -125,7 +124,6 @@ export default function makeListItems({
             const { user, vehicle, ..._trip } = trip
             const allReviews: any[] = user.passengerReviews.concat(user.driverReviews)
             user.reviews = allReviews.sort((a, b) =>  b.createdAt - a.createdAt)
-            user.vehicle = user.vehicles[0]
             user.preferences =  orderPreferences(user.preferences)
             data.push({
                 id: item.id,
