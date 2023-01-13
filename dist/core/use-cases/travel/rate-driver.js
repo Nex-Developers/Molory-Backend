@@ -24,7 +24,7 @@ exports.default = ({ saveProfile } = {}) => {
                 yield prisma.driverReview.create({ data: { travelId, tripId, userId, rating, comment } });
             else
                 yield prisma.driverReview.update({ where: { travelId }, data: { tripId, userId, rating, comment } });
-            if (rating !== null && rating !== undefined) {
+            if (!rating) {
                 const dirverRatings = yield prisma.driverReview.findMany({ where: { userId }, select: { rating: true } });
                 const passengerRatings = yield prisma.passengerReview.findMany({ where: { userId }, select: { rating: true } });
                 const ratings = dirverRatings.map(r => r.rating).concat(passengerRatings.map(r => r.rating));

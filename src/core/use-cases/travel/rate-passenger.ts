@@ -22,7 +22,7 @@ export default  ({
             if(!review) await prisma.passengerReview.create({ data: { travelId, tripId, userId, rating, comment}})
             else await prisma.passengerReview.update({ where: { travelId}, data: {tripId, userId, rating, comment }})
 
-            if(rating !== null && rating !== undefined) {
+            if(!rating) {
                 const dirverRatings = await prisma.driverReview.findMany({ where: { userId }, select: { rating: true}})
                 const passengerRatings = await prisma.passengerReview.findMany({ where: { userId}, select: { rating: true}})
                 const ratings = dirverRatings.map(r => r.rating).concat(passengerRatings.map(r => r.rating))
