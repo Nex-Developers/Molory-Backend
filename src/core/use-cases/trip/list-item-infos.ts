@@ -4,12 +4,15 @@ export default function makeListItemInfos({
     tripDb
 }: any = {}) {
     if (!tripDb) throw new ServerError()
+    const orderPreferences = (data: any[]) => {
+        return data.sort((a, b) => a.question.id - b.question.id)
+    }
     return async ({
         id
     }: any = {}) => {
         if (!id) throw new MissingParamError('id')
 
-        const data = await tripDb.findFirst({
+        const res = await tripDb.findFirst({
             where: {
                 id
             },
@@ -73,7 +76,10 @@ export default function makeListItemInfos({
                                         avatar: true,
                                         firstName: true,
                                         lastName: true,
-                                        phoneNumber: true
+                                        phoneNumber: true,
+                                        passengerReviews: true,
+                                        driverReviews: true,
+                                        preferences: true
                                     }
                                 },
 
@@ -84,6 +90,48 @@ export default function makeListItemInfos({
                 createdAt: true
             }
         })
+
+        const passengers = []
+       const promises = res.routes.map(async  item => {
+
+            const route = {
+                id: true,
+                distance: true,
+                duration: true,
+                price: true,
+                fees: true,
+                stops: true,
+            }
+            const promises = item.route.tavels.map( booking =>{
+                const allReviews: any[] = booking.user.passengerReviews.concat(booking.user.driverReviews)
+                const reviews = allReviews.sort((a, b) =>  b.createdAt - a.createdAt)
+                delete booking.user.driverReviews
+                delete booking.user.passengerReviews
+                booking.user.preferences = orderPreferences(booking.user.preferences)
+                const user = { ...booking.user, reviews}
+                const travel = { route, seats: booking.seats,
+                     passengerReview: booking.passengerReview,
+                      driverReview: booking.driverReview,
+                      status: booking.status,
+                      createdAt: booking.createdAt
+                    }
+               return  passengers.push({ user, travel})
+            })
+            return await  Promise.all(promises)
+        })
+        await Promise.all(promises)
+        const data = {
+            id: res.id,
+            seats: res.seats,
+            remainingSeats: res.seats,
+            status: res.status,
+            departureDate: res.departureDate,
+            departureTime: res.departuereTime,
+            description: res.description,
+            user: res.user,
+            vehicle: res.vehicle,
+            passengers
+        }
         return { data }
     }
 }

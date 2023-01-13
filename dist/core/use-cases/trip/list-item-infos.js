@@ -5,10 +5,13 @@ const errors_1 = require("../../../utils/errors");
 function makeListItemInfos({ tripDb } = {}) {
     if (!tripDb)
         throw new errors_1.ServerError();
+    const orderPreferences = (data) => {
+        return data.sort((a, b) => a.question.id - b.question.id);
+    };
     return ({ id } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!id)
             throw new errors_1.MissingParamError('id');
-        const data = yield tripDb.findFirst({
+        const res = yield tripDb.findFirst({
             where: {
                 id
             },
@@ -70,7 +73,10 @@ function makeListItemInfos({ tripDb } = {}) {
                                         avatar: true,
                                         firstName: true,
                                         lastName: true,
-                                        phoneNumber: true
+                                        phoneNumber: true,
+                                        passengerReviews: true,
+                                        driverReviews: true,
+                                        preferences: true
                                     }
                                 },
                             }
@@ -80,6 +86,46 @@ function makeListItemInfos({ tripDb } = {}) {
                 createdAt: true
             }
         });
+        const passengers = [];
+        const promises = res.routes.map((item) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            const route = {
+                id: true,
+                distance: true,
+                duration: true,
+                price: true,
+                fees: true,
+                stops: true,
+            };
+            const promises = item.route.tavels.map(booking => {
+                const allReviews = booking.user.passengerReviews.concat(booking.user.driverReviews);
+                const reviews = allReviews.sort((a, b) => b.createdAt - a.createdAt);
+                delete booking.user.driverReviews;
+                delete booking.user.passengerReviews;
+                booking.user.preferences = orderPreferences(booking.user.preferences);
+                const user = Object.assign(Object.assign({}, booking.user), { reviews });
+                const travel = { route, seats: booking.seats,
+                    passengerReview: booking.passengerReview,
+                    driverReview: booking.driverReview,
+                    status: booking.status,
+                    createdAt: booking.createdAt
+                };
+                return passengers.push({ user, travel });
+            });
+            return yield Promise.all(promises);
+        }));
+        yield Promise.all(promises);
+        const data = {
+            id: res.id,
+            seats: res.seats,
+            remainingSeats: res.seats,
+            status: res.status,
+            departureDate: res.departureDate,
+            departureTime: res.departuereTime,
+            description: res.description,
+            user: res.user,
+            vehicle: res.vehicle,
+            passengers
+        };
         return { data };
     });
 }
