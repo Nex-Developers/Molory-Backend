@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.confirmPayment = exports.removeTravel = exports.listTravelInfos = exports.listTravels = exports.editTravel = exports.addTravel = void 0;
+exports.ratePassenger = exports.rateDriver = exports.confirmPayment = exports.removeTravel = exports.listTravelInfos = exports.listTravels = exports.editTravel = exports.addTravel = void 0;
 const tslib_1 = require("tslib");
 const db_1 = require("../../../db");
 const firebase_1 = require("../../services/firebase");
@@ -11,6 +11,8 @@ const edit_1 = (0, tslib_1.__importDefault)(require("./edit"));
 const list_item_infos_1 = (0, tslib_1.__importDefault)(require("./list-item-infos"));
 const list_items_1 = (0, tslib_1.__importDefault)(require("./list-items"));
 const remove_1 = (0, tslib_1.__importDefault)(require("./remove"));
+const rate_driver_1 = (0, tslib_1.__importDefault)(require("./rate-driver"));
+const rate_passenger_1 = (0, tslib_1.__importDefault)(require("./rate-passenger"));
 const travelDb = new db_1.TravelDb();
 const routeDb = new db_1.RouteDb();
 const paymentDb = new db_1.PaymentDb();
@@ -26,4 +28,8 @@ const removeTravel = (0, remove_1.default)({ travelDb, notifyDevice: notificatio
 exports.removeTravel = removeTravel;
 const confirmPayment = (0, confirm_payment_1.default)({ saveProfile: firebase_1.saveProfile });
 exports.confirmPayment = confirmPayment;
+const rateDriver = (0, rate_driver_1.default)({ saveProfile: firebase_1.saveProfile });
+exports.rateDriver = rateDriver;
+const ratePassenger = (0, rate_passenger_1.default)({ saveProfile: firebase_1.saveProfile });
+exports.ratePassenger = ratePassenger;
 //# sourceMappingURL=index.js.map

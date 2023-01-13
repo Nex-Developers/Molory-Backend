@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postNotifyController = exports.deleteTravelController = exports.patchTravelController = exports.postTravelController = exports.getTravelController = exports.getTravelsController = void 0;
+exports.postRatePassengerController = exports.postRateDriverController = exports.postNotifyController = exports.deleteTravelController = exports.patchTravelController = exports.postTravelController = exports.getTravelController = exports.getTravelsController = void 0;
 const tslib_1 = require("tslib");
 const travel_1 = require("../../core/use-cases/travel");
 const delete_1 = (0, tslib_1.__importDefault)(require("./delete"));
@@ -9,6 +9,8 @@ const get_items_1 = (0, tslib_1.__importDefault)(require("./get-items"));
 const patch_1 = (0, tslib_1.__importDefault)(require("./patch"));
 const post_1 = (0, tslib_1.__importDefault)(require("./post"));
 const post_notify_1 = (0, tslib_1.__importDefault)(require("./post-notify"));
+const post_rate_driver_1 = (0, tslib_1.__importDefault)(require("./post-rate-driver"));
+const post_rate_passenger_1 = (0, tslib_1.__importDefault)(require("./post-rate-passenger"));
 const getTravelsController = (0, get_items_1.default)({ listTravels: travel_1.listTravels });
 exports.getTravelsController = getTravelsController;
 const getTravelController = (0, get_item_1.default)({ listTravelInfos: travel_1.listTravelInfos });
@@ -21,4 +23,8 @@ const deleteTravelController = (0, delete_1.default)({ removeTravel: travel_1.re
 exports.deleteTravelController = deleteTravelController;
 const postNotifyController = (0, post_notify_1.default)({ confirmPayment: travel_1.confirmPayment });
 exports.postNotifyController = postNotifyController;
+const postRateDriverController = (0, post_rate_driver_1.default)({ rateDriver: travel_1.rateDriver });
+exports.postRateDriverController = postRateDriverController;
+const postRatePassengerController = (0, post_rate_passenger_1.default)({ ratePassenger: travel_1.ratePassenger });
+exports.postRatePassengerController = postRatePassengerController;
 //# sourceMappingURL=index.js.map

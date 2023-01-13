@@ -39,6 +39,18 @@ function makeSaveProfile({ set } = {}) {
                 driverLicenseModifiedAt: true,
                 signUpMethod: true,
                 vehicles: true,
+                passengerReviews: { select: {
+                        rating: true,
+                        comment: true,
+                        createdAt: true,
+                        updatedAt: true
+                    } },
+                driverReviews: { select: {
+                        rating: true,
+                        comment: true,
+                        createdAt: true,
+                        updatedAt: true
+                    } },
                 preferences: {
                     select: {
                         question: {
@@ -85,6 +97,8 @@ function makeSaveProfile({ set } = {}) {
                 rejectionMessage: res.driverLicenseRejectionMessage,
             });
         }
+        const allReviews = res.passengerReviews.concat(res.driverReviews);
+        const reviews = allReviews.sort((a, b) => b.createdAt - a.createdAt);
         const data = {
             id,
             avatar: res.avatar,
@@ -101,7 +115,8 @@ function makeSaveProfile({ set } = {}) {
             preferences: res.preferences,
             vehicles: res.vehicles,
             documents,
-            stats: res._count
+            stats: res._count,
+            reviews
         };
         if (res.role === 'driver')
             data.wallet = yield prisma.wallet.findUnique({

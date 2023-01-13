@@ -21,6 +21,8 @@ export default function makeListItemInfos({
                 departureDate: true,
                 departureTime: true,
                 description: true,
+                // driverReviews: true,
+                // passengerReviews: true,
                 user: {
                     select: {
                         id: true,
@@ -51,6 +53,18 @@ export default function makeListItemInfos({
                         travels: {
                             select: {
                                 seats: true,
+                                passengerReview: { select: {
+                                    rating: true,
+                                    comment: true,
+                                    createdAt: true,
+                                  updatedAt: true
+                                }},
+                                driverReview: { select: {
+                                    rating: true,
+                                    comment: true,
+                                    createdAt: true,
+                                  updatedAt: true
+                                }},
                                 status: true,
                                 createdAt: true,
                                 user: {

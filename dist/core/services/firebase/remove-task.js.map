@@ -1,0 +1,1 @@
+{"version":3,"file":"remove-task.js","sourceRoot":"","sources":["../../../../src/core/services/firebase/remove-task.ts"],"names":[],"mappings":";;;AAAA,SAAwB,cAAc,CAAC,EACnC,MAAM,EACV,AADU,KACD,EAAE;IACP,IAAI,CAAC,OAAM;QAAE,MAAM,IAAI,WAAW,EAAE,CAAA;IACpC,OAAO,CAAO,EAAE,EAAE,EAAE;QACjB,OAAO,MAAM,OAAM,CAAC,OAAO,EAAE,EAAE,CAAC,CAAA;IACnC,CAAC,CAAA,CAAA;AACL,CAAC;AAPD,iCAOC"}

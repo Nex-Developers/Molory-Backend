@@ -25,6 +25,18 @@ function makeListItems({ travelDb } = {}) {
                 seats: true,
                 status: true,
                 description: true,
+                passengerReview: { select: {
+                        rating: true,
+                        comment: true,
+                        createdAt: true,
+                        updatedAt: true
+                    } },
+                driverReview: { select: {
+                        rating: true,
+                        comment: true,
+                        createdAt: true,
+                        updatedAt: true
+                    } },
                 route: {
                     select: {
                         id: true,
@@ -83,6 +95,8 @@ function makeListItems({ travelDb } = {}) {
                 status: item.status,
                 description: item.description,
                 createdAt: item.createdAt,
+                passengerReview: item.passengerReview,
+                driverReview: item.driverReview,
                 route,
                 trip: _trip,
                 driver: user,

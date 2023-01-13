@@ -74,6 +74,8 @@ model User {
   devices                       Device[]
   payments                      Payment[]
   transferts                    Transfert[]
+  passengerReviews               PassengerReview[]
+  driverReviews DriverReview[]
   country                       Country?       @relation(fields: [countryId], references: [id])
 }
 
@@ -208,6 +210,8 @@ model Trip {
   routes         Route[]
   user           User      @relation(fields: [userId], references: [id])
   vehicle        Vehicle?  @relation(fields: [vehicleId], references: [id])
+  driverReviews DriverReview[]
+  passengerReviews PassengerReview[]
 }
 
 model Stop {
@@ -267,22 +271,30 @@ model Travel {
 
 model PassengerReview {
   travelId  Int       @id
+  userId Int
+  tripId Int
   rating    Int?
   comment   String?
   createdAt DateTime  @default(now())
   updatedAt DateTime?
   deletedAt DateTime?
   travel    Travel    @relation(fields: [travelId], references: [id])
+  trip      Trip @relation(fields: [tripId], references: [id])
+ user      User @relation(fields: [userId], references: [id])  
 }
 
 model DriverReview {
   travelId  Int       @id
+  tripId    Int 
+  userId    Int
   rating    Int?
   comment   String?
   createdAt DateTime  @default(now())
   updatedAt DateTime?
   deletedAt DateTime?
   travel    Travel    @relation(fields: [travelId], references: [id])
+  trip      Trip @relation(fields: [tripId], references: [id])
+  user      User @relation(fields: [userId], references: [id])
 }
 
 model Payment {

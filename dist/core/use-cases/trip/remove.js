@@ -8,7 +8,7 @@ function makeRemove({ tripDb, notifyDevice } = {}) {
     if (!tripDb || !notifyDevice)
         throw new errors_1.ServerError();
     const getLast48hours = (date) => {
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2, date.getHours(), date.getMinutes());
     };
     return ({ id, cancelReason } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
@@ -56,9 +56,14 @@ function makeRemove({ tripDb, notifyDevice } = {}) {
             const departureDateTime = new Date(departureDate + ' ' + departureTime);
             const delay = getLast48hours(departureDateTime);
             const principal = routes.find(route => route.principal);
+            console.log(departureDateTime, delay, new Date());
             if (delay < new Date()) {
-                prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: 0.15 * (principal.price + principal.fees) } } });
+                const sanction = 0.15 * (principal.price + principal.fees);
+                console.log('sanction ', userId, sanction);
+                yield prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: sanction } } });
             }
+            else
+                console.log('sanction false');
             const promises = routes.map((route) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
                 const travelsIds = route.travels.map(travel => travel.id);
                 yield prisma.travel.updateMany({
@@ -73,7 +78,7 @@ function makeRemove({ tripDb, notifyDevice } = {}) {
                 const promises2 = yield route.travels.map((travel) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
                     const payment = travel.payment;
                     if (payment.status === 1) {
-                        yield prisma.payment.update({ where: { id: payment.id }, data: { status: 0 } });
+                        yield prisma.payment.update({ where: { id: payment.id }, data: { status: 0, deletedAt: new Date() } });
                         yield prisma.transfert.create({ data: { id: payment.id, userId: travel.userId, amount: payment.amount } });
                     }
                     return true;

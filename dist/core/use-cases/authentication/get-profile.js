@@ -6,6 +6,9 @@ const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 function makeGetProfile({ userDb, walletDb } = {}) {
     if (!userDb || !walletDb)
         throw new errors_1.ServerError();
+    const orderPreferences = (data) => {
+        return data.sort((a, b) => a.question.id - b.question.id);
+    };
     return function getProfile({ id } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!id)
@@ -37,6 +40,18 @@ function makeGetProfile({ userDb, walletDb } = {}) {
                     driverLicenseModifiedAt: true,
                     signUpMethod: true,
                     vehicles: true,
+                    passengerReviews: { select: {
+                            rating: true,
+                            comment: true,
+                            createdAt: true,
+                            updatedAt: true
+                        } },
+                    driverReviews: { select: {
+                            rating: true,
+                            comment: true,
+                            createdAt: true,
+                            updatedAt: true
+                        } },
                     preferences: {
                         select: {
                             question: {
@@ -83,6 +98,8 @@ function makeGetProfile({ userDb, walletDb } = {}) {
                     rejectionMessage: res.driverLicenseRejectionMessage,
                 });
             }
+            const allReviews = res.passengerReviews.concat(res.driverReviews);
+            const reviews = allReviews.sort((a, b) => b.createdAt - a.createdAt);
             const data = {
                 id,
                 avatar: res.avatar,
@@ -96,11 +113,11 @@ function makeGetProfile({ userDb, walletDb } = {}) {
                 profileCompletedAt: res.profileCompletedAt,
                 signUpMethod: res.signUpMethod,
                 rating: res.rating,
-                reviewsReceived: res.reviewsReceived,
-                preferences: res.preferences,
+                preferences: orderPreferences(res.preferences),
                 vehicles: res.vehicles,
                 documents,
-                stats: res._count
+                stats: res._count,
+                reviews
             };
             if (res.role === 'driver')
                 data.wallet = yield walletDb.findFirst({

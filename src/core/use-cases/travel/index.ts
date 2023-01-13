@@ -9,6 +9,8 @@ import makeEdit from "./edit"
 import makeListItemInfos from "./list-item-infos"
 import makeListItems from "./list-items"
 import makeRemove from "./remove"
+import makeRateDriver from "./rate-driver"
+import makeRatePassenger from "./rate-passenger"
 
 const travelDb = new TravelDb()
 const routeDb = new RouteDb()
@@ -21,6 +23,8 @@ const listTravels = makeListItems({ travelDb })
 const listTravelInfos = makeListItemInfos({ travelDb })
 const removeTravel = makeRemove({ travelDb, notifyDevice })
 const confirmPayment = makeConfirmPayment({ saveProfile })
+const rateDriver = makeRateDriver({ saveProfile })
+const ratePassenger = makeRatePassenger({ saveProfile })
 
 export {
     addTravel,
@@ -28,5 +32,7 @@ export {
     listTravels,
     listTravelInfos,
     removeTravel,
-    confirmPayment
+    confirmPayment,
+    rateDriver,
+    ratePassenger
 }

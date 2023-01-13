@@ -39,6 +39,18 @@ export default function makeGetProfile({
                 driverLicenseModifiedAt: true,
                 signUpMethod: true,
                 vehicles: true,
+                passengerReviews: { select: {
+                    rating: true,
+                    comment: true,
+                    createdAt: true,
+                    updatedAt: true
+                }},
+                driverReviews: { select: {
+                    rating: true,
+                    comment: true,
+                    createdAt: true,
+                    updatedAt: true
+                }},
                 preferences: {
                     select: {
                         question: {
@@ -86,7 +98,8 @@ export default function makeGetProfile({
                 rejectionMessage: res.driverLicenseRejectionMessage,
             })
         }
-
+        const allReviews: any[] = res.passengerReviews.concat(res.driverReviews)
+        const reviews = allReviews.sort((a, b) =>  b.createdAt - a.createdAt)
         const data: any = {
             id,
             avatar: res.avatar,
@@ -100,11 +113,11 @@ export default function makeGetProfile({
             profileCompletedAt: res.profileCompletedAt,
             signUpMethod: res.signUpMethod,
             rating: res.rating,
-            reviewsReceived: res.reviewsReceived,
             preferences: orderPreferences(res.preferences),
             vehicles: res.vehicles,
             documents,
-            stats: res._count
+            stats: res._count,
+            reviews
         }
         if (res.role === 'driver') data.wallet = await walletDb.findFirst({
             where: { id: res.userId },

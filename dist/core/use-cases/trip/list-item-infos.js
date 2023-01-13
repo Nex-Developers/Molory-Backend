@@ -50,6 +50,18 @@ function makeListItemInfos({ tripDb } = {}) {
                         travels: {
                             select: {
                                 seats: true,
+                                passengerReview: { select: {
+                                        rating: true,
+                                        comment: true,
+                                        createdAt: true,
+                                        updatedAt: true
+                                    } },
+                                driverReview: { select: {
+                                        rating: true,
+                                        comment: true,
+                                        createdAt: true,
+                                        updatedAt: true
+                                    } },
                                 status: true,
                                 createdAt: true,
                                 user: {

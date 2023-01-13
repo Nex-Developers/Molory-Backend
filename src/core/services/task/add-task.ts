@@ -1,13 +1,12 @@
 import * as cron from "node-cron"
 
 export default () => {
-    return ({
+    return async ({
         timer,
-        interval,
         action
     }) => {
         cron.schedule(timer, async () => {
             action()
-        }, { interval });
+        });
     }
 }
