@@ -102,7 +102,7 @@ export default function makeListItemInfos({
                 fees: true,
                 stops: true,
             }
-            const promises = item.route.travels.map( booking =>{
+            const promises = item.travels.map( booking =>{
                 const allReviews: any[] = booking.user.passengerReviews.concat(booking.user.driverReviews)
                 const reviews = allReviews.sort((a, b) =>  b.createdAt - a.createdAt)
                 delete booking.user.driverReviews
