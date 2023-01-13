@@ -124,8 +124,7 @@ function makeListItems({ travelDb } = {}) {
             const allReviews = user.passengerReviews.concat(user.driverReviews);
             user.reviews = allReviews.sort((a, b) => b.createdAt - a.createdAt);
             user.preferences = orderPreferences(user.preferences);
-            user.vehicle = vehicle,
-                delete user.driverReviews;
+            delete user.driverReviews;
             delete user.passengerReviews;
             data.push({
                 id: item.id,
@@ -138,7 +137,8 @@ function makeListItems({ travelDb } = {}) {
                 route,
                 trip: _trip,
                 driver: user,
-                user: item.user
+                user: item.user,
+                vehicle
             });
         });
         return { data };
