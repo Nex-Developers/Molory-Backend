@@ -4,6 +4,9 @@ export default function makeListItems({
     travelDb
 }: any = {}) {
     if (!travelDb) throw new ServerError()
+    const orderPreferences = (data: any[]) => {
+        return data.sort((a, b) => a.question.id - b.question.id)
+    }
     return async ({
         userId,
         startAt,
@@ -72,6 +75,23 @@ export default function makeListItems({
                                             createdAt: true,
                                             updatedAt: true
                                         }},
+                                        preferences: {
+                                            select: {
+                                                question: {
+                                                    select: {
+                                                        id: true,
+                                                        value: true,
+                                                    }
+                                                },
+                                                answer: {
+                                                    select: {
+                                                        id: true,
+                                                        index: true,
+                                                        value: true,
+                                                    }
+                                                }
+                                            }
+                                        },
                                     }
                                 }, vehicle: {
                                     select: {
@@ -105,7 +125,8 @@ export default function makeListItems({
             const { user, vehicle, ..._trip } = trip
             const allReviews: any[] = user.passengerReviews.concat(user.driverReviews)
             user.reviews = allReviews.sort((a, b) =>  b.createdAt - a.createdAt)
-            user.vehicle = user.vehicles[0] 
+            user.vehicle = user.vehicles[0]
+            user.preferences =  orderPreferences(user.preferences)
             data.push({
                 id: item.id,
                 seats: item.seats,
