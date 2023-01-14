@@ -49,6 +49,7 @@ function makeListItemInfos({ tripDb } = {}) {
                         duration: true,
                         price: true,
                         fees: true,
+                        principal: true,
                         stops: true,
                         travels: {
                             select: {

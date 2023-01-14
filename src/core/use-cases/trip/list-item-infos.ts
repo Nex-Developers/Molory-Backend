@@ -52,6 +52,7 @@ export default function makeListItemInfos({
                         duration: true,
                         price: true,
                         fees: true,
+                        principal: true,
                         stops: true,
                         travels: {
                             select: {
