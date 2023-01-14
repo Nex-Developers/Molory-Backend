@@ -92,6 +92,7 @@ export default function makeListItemInfos({
         })
 
         const passengers = []
+        const route = res.routes.find(route => route.principal)
        const promises = res.routes.map(async  item => {
             const route = {
                 id: item.id,
@@ -119,6 +120,7 @@ export default function makeListItemInfos({
             return await  Promise.all(promises)
         })
         await Promise.all(promises)
+        delete route.travels
         const data = {
             id: res.id,
             seats: res.seats,
@@ -128,6 +130,7 @@ export default function makeListItemInfos({
             departureTime: res.departuereTime,
             description: res.description,
             user: res.user,
+            route,
             vehicle: res.vehicle,
             passengers
         }

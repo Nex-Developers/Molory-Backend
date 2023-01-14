@@ -87,6 +87,7 @@ function makeListItemInfos({ tripDb } = {}) {
             }
         });
         const passengers = [];
+        const route = res.routes.find(route => route.principal);
         const promises = res.routes.map((item) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const route = {
                 id: item.id,
@@ -114,6 +115,7 @@ function makeListItemInfos({ tripDb } = {}) {
             return yield Promise.all(promises);
         }));
         yield Promise.all(promises);
+        delete route.travels;
         const data = {
             id: res.id,
             seats: res.seats,
@@ -123,6 +125,7 @@ function makeListItemInfos({ tripDb } = {}) {
             departureTime: res.departuereTime,
             description: res.description,
             user: res.user,
+            route,
             vehicle: res.vehicle,
             passengers
         };
