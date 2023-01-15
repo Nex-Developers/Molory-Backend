@@ -50,46 +50,58 @@ export default function makeRemove({
                 }
             })
             if (!status) throw new AlreadyDoneError(canceledAt.toString())
-            if (status != 3) throw new UnauthorizedError()
-            await prisma.trip.update({ where: { id }, data: { status: 0, canceledAt: new Date(), cancelReason } })
-            // penalities
-            const departureDateTime = new Date(departureDate + ' ' + departureTime)
-            const delay = getLast48hours(departureDateTime)
-            const principal = routes.find(route => route.principal)
-            console.log(departureDateTime, delay, new Date())
-            if (delay < new Date()) {
-                const sanction = 0.15 * (principal.price + principal.fees)
-                console.log('sanction ', userId, sanction)
-                await prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement:  sanction} } })
-                // Notify the driver
-            } else console.log('sanction false')
-            const promises = routes.map(async (route) => {
-                const travelsIds = route.travels.map(travel => travel.id)
-                await prisma.travel.updateMany({
-                    where: { id: { in: travelsIds } },
-                    data: {
-                        status: 0,
-                        canceledAt: new Date(),
-                        cancelReason,
-                        canceledBy: 'driver',
-                    },
+            if (status === 1) throw new UnauthorizedError()
+            if (status === 3) {
+                await prisma.trip.update({ where: { id }, data: { status: 0, canceledAt: new Date(), cancelReason } })
+                // penalities
+                const departureDateTime = new Date(departureDate + ' ' + departureTime)
+                const delay = getLast48hours(departureDateTime)
+                const principal = routes.find(route => route.principal)
+                console.log(departureDateTime, delay, new Date())
+                if (delay < new Date()) {
+                    const sanction = 0.15 * (principal.price + principal.fees)
+                    console.log('sanction ', userId, sanction)
+                    await prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement:  sanction} } })
+                    // Notify the driver
+                } else console.log('sanction false')
+                const promises = routes.map(async (route) => {
+                    const travelsIds = route.travels.map(travel => travel.id)
+                    await prisma.travel.updateMany({
+                        where: { id: { in: travelsIds } },
+                        data: {
+                            status: 0,
+                            canceledAt: new Date(),
+                            cancelReason,
+                            canceledBy: 'driver',
+                        },
+                    })
+                    const promises2 = await route.travels.map(async travel => {
+                        const payment = travel.payment
+                        if (payment.status === 1) {
+                            await prisma.payment.update({ where: { id: payment.id }, data: { status: 0, deletedAt: new Date() } })
+                            await prisma.refund.create({ data: { id: payment.id,  amount: payment.amount, user: { connect: { id: travel.userId}}, travel: { connect: { id: travel.id }} } })
+                            // notify the user
+                        }
+                        return true
+                    });
+                    return Promise.all(promises2).then(() => true)
                 })
-                const promises2 = await route.travels.map(async travel => {
-                    const payment = travel.payment
-                    if (payment.status === 1) {
-                        await prisma.payment.update({ where: { id: payment.id }, data: { status: 0, deletedAt: new Date() } })
-                        await prisma.transfert.create({ data: { id: payment.id, userId: travel.userId, amount: payment.amount } })
-                        // notify the user
-                    }
-                    return true
-                });
-                return Promise.all(promises2).then(() => true)
-            })
-            return Promise.all(promises).then(() => {
+                return Promise.all(promises).then(() => {
+                    const message = { text: 'response.remove' }
+                    return { message }
+                })
+            }
+            if (status === 2) {
+                // incident
+                // Remettre l'argent au passager?
                 const message = { text: 'response.remove' }
                 return { message }
-            })
-
+            }
+            else {
+                // unknown status
+                const message = { text: 'response.remove' }
+                return { message }
+            }
         })
     }
 }

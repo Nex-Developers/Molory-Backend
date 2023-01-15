@@ -5,9 +5,6 @@ const errors_1 = require("../../../utils/errors");
 function makeListItemInfos({ tripDb } = {}) {
     if (!tripDb)
         throw new errors_1.ServerError();
-    const orderPreferences = (data) => {
-        return data.sort((a, b) => a.question.id - b.question.id);
-    };
     return ({ id } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!id)
             throw new errors_1.MissingParamError('id');
@@ -50,6 +47,8 @@ function makeListItemInfos({ tripDb } = {}) {
                         price: true,
                         fees: true,
                         principal: true,
+                        departureDate: true,
+                        departureTime: true,
                         stops: true,
                         travels: {
                             select: {
@@ -73,11 +72,7 @@ function makeListItemInfos({ tripDb } = {}) {
                                         id: true,
                                         avatar: true,
                                         firstName: true,
-                                        lastName: true,
-                                        phoneNumber: true,
-                                        passengerReviews: true,
-                                        driverReviews: true,
-                                        preferences: true
+                                        lastName: true
                                     }
                                 },
                             }
@@ -94,17 +89,14 @@ function makeListItemInfos({ tripDb } = {}) {
                 id: item.id,
                 distance: item.distance,
                 duration: item.duration,
+                departureDate: item.departureDate,
+                departureTime: item.departureTime,
                 price: item.price,
                 fees: item.fees,
                 stops: item.stops,
             };
             const promises = item.travels.map(booking => {
-                const allReviews = booking.user.passengerReviews.concat(booking.user.driverReviews);
-                const reviews = allReviews.sort((a, b) => b.createdAt - a.createdAt);
-                delete booking.user.driverReviews;
-                delete booking.user.passengerReviews;
-                booking.user.preferences = orderPreferences(booking.user.preferences);
-                const user = Object.assign(Object.assign({}, booking.user), { reviews });
+                const user = booking.user;
                 const travel = { route, seats: booking.seats,
                     passengerReview: booking.passengerReview,
                     driverReview: booking.driverReview,
@@ -123,7 +115,7 @@ function makeListItemInfos({ tripDb } = {}) {
             remainingSeats: res.seats,
             status: res.status,
             departureDate: res.departureDate,
-            departureTime: res.departuereTime,
+            departureTime: res.departureTime,
             description: res.description,
             user: res.user,
             route,

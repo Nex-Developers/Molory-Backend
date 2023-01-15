@@ -22,6 +22,7 @@ try {
         //      "Les notifications ne marche pas.", 
         //      null, 
         //      null)
+        // await SmsServer.send(['22890494008'], 'Test Nemo SMS service API for Molorz service')
         app.listen(env.port, () => console.log(`Server running at http://localhost:${env.port}`))
     }
     startApp()

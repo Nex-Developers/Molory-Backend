@@ -32,7 +32,7 @@ function makeAdd({ travelDb, routeDb, paymentDb } = {}) {
         if (!remainingSeats)
             throw new Error('Unvailable Resource');
         if (seats > remainingSeats)
-            throw new Error('Missing ' + (seats - remainingSeats) + 'resource');
+            throw new Error('Remaining ' + remainingSeats + ' seats');
         const id = yield generateUid();
         console.log(id);
         const amount = (price + fees) * seats;

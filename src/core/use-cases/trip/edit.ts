@@ -6,15 +6,12 @@ export default function makeEdit({
     if (!tripDb) throw new ServerError()
     return async ({
         id,
-        seats
+        description
     }: any = {}) => {
         if (!id) throw new MissingParamError('id')
+        if (!description) throw new MissingParamError('description')
 
-        const data: any = {}
-        if (seats) data.seats = seats
-        
-        if( Object.keys(data).length === 0) throw new MissingParamError('all')
-        await tripDb.updateOne({ where: { id}, data })
+        await tripDb.updateOne({ where: { id}, data: { description } })
         const message = { text: "response.edit" }
         return { message }
     } 

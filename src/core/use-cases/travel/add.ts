@@ -37,7 +37,7 @@ export default function makeAdd({
 
         if (!remainingSeats) throw new Error('Unvailable Resource')
 
-        if (seats > remainingSeats) throw new Error('Missing ' + (seats - remainingSeats) + 'resource')
+        if (seats > remainingSeats) throw new Error('Remaining ' + remainingSeats + ' seats')
 
         const id = await generateUid()
         console.log(id)

@@ -50,12 +50,13 @@ export default function makeConfirmPayment({
                     payment: {
                         create: {
                             id,
-                            userId: data.userId,
                             amount: data.amount,
                             reference,
                             validatedAt,
                             method,
-                            status: 1
+                            status: 1,
+                            user: { connect: { id: data.userId }},
+                            trip: { connect: { id:  trip.id}}
                         }
                     },
                     route: {

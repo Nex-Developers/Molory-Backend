@@ -4,9 +4,7 @@ export default function makeListItemInfos({
     tripDb
 }: any = {}) {
     if (!tripDb) throw new ServerError()
-    const orderPreferences = (data: any[]) => {
-        return data.sort((a, b) => a.question.id - b.question.id)
-    }
+
     return async ({
         id
     }: any = {}) => {
@@ -53,6 +51,8 @@ export default function makeListItemInfos({
                         price: true,
                         fees: true,
                         principal: true,
+                        departureDate: true,
+                        departureTime: true,
                         stops: true,
                         travels: {
                             select: {
@@ -76,11 +76,7 @@ export default function makeListItemInfos({
                                         id: true,
                                         avatar: true,
                                         firstName: true,
-                                        lastName: true,
-                                        phoneNumber: true,
-                                        passengerReviews: true,
-                                        driverReviews: true,
-                                        preferences: true
+                                        lastName: true
                                     }
                                 },
 
@@ -99,17 +95,15 @@ export default function makeListItemInfos({
                 id: item.id,
                 distance: item.distance,
                 duration: item.duration,
+                departureDate: item.departureDate,
+                departureTime: item.departureTime,
                 price: item.price,
                 fees: item.fees,
                 stops: item.stops,
             }
             const promises = item.travels.map( booking =>{
-                const allReviews: any[] = booking.user.passengerReviews.concat(booking.user.driverReviews)
-                const reviews = allReviews.sort((a, b) =>  b.createdAt - a.createdAt)
-                delete booking.user.driverReviews
-                delete booking.user.passengerReviews
-                booking.user.preferences = orderPreferences(booking.user.preferences)
-                const user = { ...booking.user, reviews}
+                
+                const user = booking.user
                 const travel = { route, seats: booking.seats,
                      passengerReview: booking.passengerReview,
                       driverReview: booking.driverReview,
@@ -128,7 +122,7 @@ export default function makeListItemInfos({
             remainingSeats: res.seats,
             status: res.status,
             departureDate: res.departureDate,
-            departureTime: res.departuereTime,
+            departureTime: res.departureTime,
             description: res.description,
             user: res.user,
             route,

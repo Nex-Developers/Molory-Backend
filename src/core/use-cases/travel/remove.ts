@@ -58,7 +58,7 @@ export default function makeRemove({
                 await prisma.wallet.update({ where: {id: route.trip.userId}, data: { balance: { increment: payedAmount - amount}}})
             }
             // return money
-            await prisma.transfert.create({ data: { id: payment.id, userId, amount } })
+            await prisma.refund.create({ data: { id: payment.id, amount, user: { connect: { id: userId }}, travel: { connect: { id }} } })
             await prisma.payment.update({ where: {id: payment.id}, data: { status: 0 }})
             
             // Notify driver

@@ -1,30 +1,34 @@
-import { UnauthorizedError } from './../../../utils/errors/unauthorized-error';
 import { MissingParamError, ServerError } from "../../../utils/errors"
+import { DbConnection } from "../../../utils/helpers"
+import { v4 } from 'uuid'
 
 export default function makeAdd({
-    withdrawalDb,
-    walletDb
+    addCinetpayContacts,
+    cinetpayTransfert
 }: any = {}) {
-    if (!withdrawalDb || !walletDb) throw new ServerError()
+    if (!addCinetpayContacts || !cinetpayTransfert) throw new ServerError()
+    
+    const generateUid = async (prisma) => {
+        const uid = v4()
+        const withdrawal = await prisma.withdrawal.findFirst({ where: { id: uid } })
+        if (withdrawal) return await generateUid(prisma)
+        return uid
+    }
+
+
     return async ({
         userId,
-        walletId,
-        type,
-        method,
-        amount,
-        accessNumber,
+        phoneNumber,
     }: any = {}) => {
-        if (!walletId) throw new MissingParamError('walletId')
-        if (!type) throw new MissingParamError('type')
-        if (!method) throw new MissingParamError('method')
-        if (!amount) throw new MissingParamError('amount')
-        if (!accessNumber) throw new MissingParamError('access number')
-        
-        const wallet = await walletDb.findOne({ where: { id: walletId }})
-
-        if (wallet.userId !== userId) throw new UnauthorizedError()
-        if (wallet.amount < amount)  throw new UnauthorizedError()
-        const { id } = await withdrawalDb.insertOne({ data: { walletId, type, method, amount, accessNumber }})
+        const prisma = DbConnection.prisma
+        if (!phoneNumber) throw new MissingParamError('phoneNumber')
+        const { firstName, lastName, email } = await prisma.user.findUnique({ where: { id: userId}, select: { lastName: true, firstName: true, email: true}})
+        const { balance } = await prisma.wallet.findUnique({ where: { id: userId}, select: { balance: true}}) 
+        await addCinetpayContacts({ firstName, lastName, email})
+        const id = generateUid(prisma)
+        await prisma.withdrawal.create({ data: { id, amount: balance, accessNumber: phoneNumber, wallet: { connect: { id: userId}} }})
+        await cinetpayTransfert({ id, amount: balance, phoneNumber })
+        await prisma.withdrawal.create({ data: { id, amount: balance, accessNumber: phoneNumber, status: 2, wallet: { connect: { id: userId}} }})
         const message = { text: "response.add" }
         return { message, id }
     } 

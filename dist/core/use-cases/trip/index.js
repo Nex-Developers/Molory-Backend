@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.confirmTrip = exports.removeTrip = exports.listTripInfos = exports.listTrips = exports.editTrip = exports.rateTrip = exports.finishTrip = exports.startTrip = exports.addTrip = void 0;
+exports.confirmTrip = exports.removeTrip = exports.listTripInfos = exports.listTrips = exports.editTrip = exports.finishTrip = exports.startTrip = exports.addTrip = void 0;
 const tslib_1 = require("tslib");
 const db_1 = require("../../../db");
 const map_1 = require("../../services/map");
@@ -15,7 +15,6 @@ const list_items_1 = (0, tslib_1.__importDefault)(require("./list-items"));
 const remove_1 = (0, tslib_1.__importDefault)(require("./remove"));
 const start_1 = (0, tslib_1.__importDefault)(require("./start"));
 const finish_1 = (0, tslib_1.__importDefault)(require("./finish"));
-const rate_1 = (0, tslib_1.__importDefault)(require("./rate"));
 const firebase_1 = require("../../services/firebase");
 const tripDb = new db_1.TripDb();
 const vehicleDb = new db_1.VehicleDb();
@@ -26,8 +25,6 @@ const startTrip = (0, start_1.default)({ notifyDevice: notifications_1.notifyDev
 exports.startTrip = startTrip;
 const finishTrip = (0, finish_1.default)({ notifyDevice: notifications_1.notifyDevice });
 exports.finishTrip = finishTrip;
-const rateTrip = (0, rate_1.default)();
-exports.rateTrip = rateTrip;
 const listTrips = (0, list_items_1.default)({ tripDb });
 exports.listTrips = listTrips;
 const listTripInfos = (0, list_item_infos_1.default)({ tripDb });

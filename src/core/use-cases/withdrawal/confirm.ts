@@ -1,22 +1,28 @@
 import { MissingParamError, ServerError } from "../../../utils/errors"
+import { DbConnection } from "../../../utils/helpers"
 
 export default function makeConfirm({
-    withdrawalDb
+    checkCinetpayTansfert
 }: any = {}) {
-    if (!withdrawalDb) throw new ServerError()
+    if (!checkCinetpayTansfert) throw new ServerError()
     return async ({
-        id,
-        amount,
-        status
+        id
     }: any = {}) => {
         if (!id) throw new MissingParamError('id')
-        if (!amount) throw new MissingParamError('amount')
-        const withDrawal = await withdrawalDb.findFirst({ where: { id }})
-        if (withDrawal.amount != amount) throw new MissingParamError('amount')
-        let validationStatus = 0
-        if (status === "00") validationStatus = 1
-        await withdrawalDb.updateOne({ where: { id }, data: { status: validationStatus }})
-        const message = { text: "response.edit" }
-        return { message }
+        const prisma = DbConnection.prisma
+        const withDrawal = await prisma.withdrawal.findUnique({ where: { id }})
+        if(withDrawal.status === 2) {
+           const transactionData = await checkCinetpayTansfert({ id})
+            if(!transactionData) return
+            if(transactionData.amount !== withDrawal.amount) {
+                // security issue mail administrator
+                console.log('transaction amount mismatch', transactionData.amount, withDrawal.amount)
+                return //bocked
+            }
+            if(transactionData.status == '00') {
+                await prisma.wallet.update({ where: { id: withDrawal.walletId }, data: { balance: { decrement: withDrawal.amount }}})
+                await prisma.withdrawal.update({ where: { id }, data: { status: 1}})
+            }
+        } 
     } 
 }

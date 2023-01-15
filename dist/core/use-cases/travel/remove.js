@@ -47,7 +47,7 @@ function makeRemove({ travelDb, notifyDevice } = {}) {
                 amount = payedAmount * 0.15;
                 yield prisma.wallet.update({ where: { id: route.trip.userId }, data: { balance: { increment: payedAmount - amount } } });
             }
-            yield prisma.transfert.create({ data: { id: payment.id, userId, amount } });
+            yield prisma.refund.create({ data: { id: payment.id, amount, user: { connect: { id: userId } }, travel: { connect: { id } } } });
             yield prisma.payment.update({ where: { id: payment.id }, data: { status: 0 } });
             const message = { text: 'response.remove' };
             return { message };

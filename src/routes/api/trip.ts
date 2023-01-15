@@ -11,9 +11,10 @@ import {
     deleteTripController,
     getTripController, 
     getTripsController,
-    patchTripConfirmController,
-    // patchTripController,
+    patchTripController,
     postTripController,
+    patchStartTripController,
+    patchFinishController
 } from "../../controllers/trip"
 
 export default () => {
@@ -22,8 +23,10 @@ export default () => {
     router.route('/trip')
     .get(langCheck, queryParser, authCheck, expressRouterAdapter(getTripsController))
     .post(langCheck, authCheck, driverCheck, expressRouterAdapter(postTripController))
-    // .patch(langCheck, authCheck, driverCheck, expressRouterAdapter(patchTripController))
+    .patch(langCheck, authCheck, driverCheck, expressRouterAdapter(patchTripController))
     .delete(langCheck, authCheck, driverCheck, expressRouterAdapter(deleteTripController))
-    router.post('/confirm-trip', langCheck, authCheck, driverCheck, expressRouterAdapter(patchTripConfirmController))
+    router.patch('/trip-start', langCheck, authCheck, driverCheck, expressRouterAdapter(patchStartTripController))
+    router.patch('/trip-finish', langCheck, authCheck, driverCheck, expressRouterAdapter(patchFinishController))
+    // router.post('/confirm-trip', langCheck, authCheck, driverCheck, expressRouterAdapter(patchConfirmController))
     return router
 }

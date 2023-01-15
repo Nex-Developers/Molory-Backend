@@ -10,13 +10,11 @@ exports.default = ({ notifyDevice, addTask }) => {
         const prisma = helpers_1.DbConnection.prisma;
         return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
             const { status, startedAt } = yield prisma.trip.findUnique({ where: { id }, select: { status: true, startedAt: true } });
-            if (status < 2)
-                throw new errors_1.UnauthorizedError();
-            if (status === 2)
-                throw new errors_1.AlreadyDoneError(startedAt.toString());
+            if (status !== 3)
+                throw new errors_1.AlreadyDoneError(startedAt === null || startedAt === void 0 ? void 0 : startedAt.toString());
             yield prisma.trip.update({ where: { id }, data: { status: 2, startedAt: new Date() } });
             yield prisma.travel.updateMany({ where: { route: { tripId: id }, status: { gt: 1 } }, data: { status: 2 } });
-            const message = 'response.edit';
+            const message = { text: "response.edit" };
             return { message };
         }));
     });

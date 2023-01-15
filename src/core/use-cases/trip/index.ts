@@ -11,7 +11,6 @@ import makeListItems from "./list-items"
 import makeRemove from "./remove"
 import makeStart from "./start"
 import makeFinish from "./finish"
-import makeRate from "./rate"
 import { saveProfile } from "../../services/firebase"
 
 const tripDb = new TripDb()
@@ -21,7 +20,6 @@ const pricingDb = new PricingDb()
 const addTrip = makeAdd({ saveProfile, tripDb, vehicleDb, pricingDb, calculMatrix, calculPrice, notifyDevice, addTask })
 const startTrip = makeStart({ notifyDevice, addTask })
 const finishTrip = makeFinish({ notifyDevice })
-const rateTrip = makeRate()
 const listTrips = makeListItems({ tripDb })
 const listTripInfos = makeListItemInfos({ tripDb })
 const removeTrip = makeRemove({ tripDb, notifyDevice })
@@ -34,9 +32,7 @@ const confirmTrip = makeConfirm({ tripDb })
 export {
     addTrip,
     startTrip,
-    finishTrip,
-    rateTrip,
-    
+    finishTrip,    
     editTrip,
     listTrips,
     listTripInfos,

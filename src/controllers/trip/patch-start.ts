@@ -1,8 +1,8 @@
 import { Action, IHttpRequest, IHttpResponse, Log, LogStatus } from "../../core/conventions";
 import { HttpResponse, LogManager } from "../../utils/helpers";
 
-export default function makePatchConfirmController({
-    confirmTrip
+export default function makePatchStartController({
+    startTrip
 }) {
     // use translations
     return async function (request: IHttpRequest): Promise<IHttpResponse> {
@@ -13,7 +13,7 @@ export default function makePatchConfirmController({
             lastName: request.ref.lastName,
             firstName: request.ref.firstName,
             model: 'Trip',
-            path: '/api/trip',
+            path: '/api/trip-start',
             modelId: request.body.id,
             action: Action.EDIT,
             status: LogStatus.FAILED,
@@ -22,7 +22,7 @@ export default function makePatchConfirmController({
         try {
             const lang = request.lang,
                 body = request.body,
-                data = await confirmTrip({...body})
+                data = await startTrip({...body})
                 reqLog.status = LogStatus.SUCCEEDED
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)

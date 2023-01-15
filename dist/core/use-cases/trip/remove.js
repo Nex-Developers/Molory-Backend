@@ -50,45 +50,55 @@ function makeRemove({ tripDb, notifyDevice } = {}) {
             });
             if (!status)
                 throw new errors_1.AlreadyDoneError(canceledAt.toString());
-            if (status != 3)
+            if (status === 1)
                 throw new unauthorized_error_1.UnauthorizedError();
-            yield prisma.trip.update({ where: { id }, data: { status: 0, canceledAt: new Date(), cancelReason } });
-            const departureDateTime = new Date(departureDate + ' ' + departureTime);
-            const delay = getLast48hours(departureDateTime);
-            const principal = routes.find(route => route.principal);
-            console.log(departureDateTime, delay, new Date());
-            if (delay < new Date()) {
-                const sanction = 0.15 * (principal.price + principal.fees);
-                console.log('sanction ', userId, sanction);
-                yield prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: sanction } } });
-            }
-            else
-                console.log('sanction false');
-            const promises = routes.map((route) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-                const travelsIds = route.travels.map(travel => travel.id);
-                yield prisma.travel.updateMany({
-                    where: { id: { in: travelsIds } },
-                    data: {
-                        status: 0,
-                        canceledAt: new Date(),
-                        cancelReason,
-                        canceledBy: 'driver',
-                    },
-                });
-                const promises2 = yield route.travels.map((travel) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-                    const payment = travel.payment;
-                    if (payment.status === 1) {
-                        yield prisma.payment.update({ where: { id: payment.id }, data: { status: 0, deletedAt: new Date() } });
-                        yield prisma.transfert.create({ data: { id: payment.id, userId: travel.userId, amount: payment.amount } });
-                    }
-                    return true;
+            if (status === 3) {
+                yield prisma.trip.update({ where: { id }, data: { status: 0, canceledAt: new Date(), cancelReason } });
+                const departureDateTime = new Date(departureDate + ' ' + departureTime);
+                const delay = getLast48hours(departureDateTime);
+                const principal = routes.find(route => route.principal);
+                console.log(departureDateTime, delay, new Date());
+                if (delay < new Date()) {
+                    const sanction = 0.15 * (principal.price + principal.fees);
+                    console.log('sanction ', userId, sanction);
+                    yield prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: sanction } } });
+                }
+                else
+                    console.log('sanction false');
+                const promises = routes.map((route) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+                    const travelsIds = route.travels.map(travel => travel.id);
+                    yield prisma.travel.updateMany({
+                        where: { id: { in: travelsIds } },
+                        data: {
+                            status: 0,
+                            canceledAt: new Date(),
+                            cancelReason,
+                            canceledBy: 'driver',
+                        },
+                    });
+                    const promises2 = yield route.travels.map((travel) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+                        const payment = travel.payment;
+                        if (payment.status === 1) {
+                            yield prisma.payment.update({ where: { id: payment.id }, data: { status: 0, deletedAt: new Date() } });
+                            yield prisma.refund.create({ data: { id: payment.id, amount: payment.amount, user: { connect: { id: travel.userId } }, travel: { connect: { id: travel.id } } } });
+                        }
+                        return true;
+                    }));
+                    return Promise.all(promises2).then(() => true);
                 }));
-                return Promise.all(promises2).then(() => true);
-            }));
-            return Promise.all(promises).then(() => {
+                return Promise.all(promises).then(() => {
+                    const message = { text: 'response.remove' };
+                    return { message };
+                });
+            }
+            if (status === 2) {
                 const message = { text: 'response.remove' };
                 return { message };
-            });
+            }
+            else {
+                const message = { text: 'response.remove' };
+                return { message };
+            }
         }));
     });
 }
