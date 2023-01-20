@@ -56,6 +56,7 @@ export default function makeListItemInfos({
                         stops: true,
                         travels: {
                             select: {
+                                id: true,
                                 seats: true,
                                 passengerReview: { select: {
                                     rating: true,
@@ -104,7 +105,7 @@ export default function makeListItemInfos({
             const promises = item.travels.map( booking =>{
                 
                 const user = booking.user
-                const travel = { route, seats: booking.seats,
+                const travel = { id: booking.id, route, seats: booking.seats,
                      passengerReview: booking.passengerReview,
                       driverReview: booking.driverReview,
                       status: booking.status,

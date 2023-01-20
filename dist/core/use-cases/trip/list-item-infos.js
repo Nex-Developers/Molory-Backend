@@ -52,6 +52,7 @@ function makeListItemInfos({ tripDb } = {}) {
                         stops: true,
                         travels: {
                             select: {
+                                id: true,
                                 seats: true,
                                 passengerReview: { select: {
                                         rating: true,
@@ -97,7 +98,7 @@ function makeListItemInfos({ tripDb } = {}) {
             };
             const promises = item.travels.map(booking => {
                 const user = booking.user;
-                const travel = { route, seats: booking.seats,
+                const travel = { id: booking.id, route, seats: booking.seats,
                     passengerReview: booking.passengerReview,
                     driverReview: booking.driverReview,
                     status: booking.status,
