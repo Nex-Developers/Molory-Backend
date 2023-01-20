@@ -4,9 +4,12 @@ const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 const helpers_1 = require("../../../utils/helpers");
-function makeAdd({ calculMatrix, addTask, notifyDevice, saveProfile } = {}) {
-    if (!saveProfile || !calculMatrix || !addTask || !notifyDevice)
+function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile } = {}) {
+    if (!saveProfile || !calculMatrix || !addTask || !notifyUser)
         throw new errors_1.ServerError();
+    const getDayPlusQuater = (date) => {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + 15);
+    };
     return ({ userId, vehicleId, seats, date, time, price, fees, stops, description } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!userId)
             throw new errors_1.MissingParamError('userId');
@@ -132,6 +135,10 @@ function makeAdd({ calculMatrix, addTask, notifyDevice, saveProfile } = {}) {
                     }
                 }
             });
+            const tripDate = new Date(trip.departureDate + ' ' + trip.departureTime);
+            const timer = getDayPlusQuater(tripDate);
+            addTask({ timer, path: 'trip-start', params: { id: trip.id } });
+            notifyUser({ id: userId, titleRef: { text: 'notification.addTrip.title' }, messageRef: { text: 'notification.addTrip.message' }, cover: null, data: { type: 'trip', id: trip.id }, lang: 'fr' });
             saveProfile(userId);
             const message = { text: "response.add" };
             return { message, data: trip };

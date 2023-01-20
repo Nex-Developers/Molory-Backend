@@ -13,8 +13,6 @@ function makeListItems({ tripDb } = {}) {
         const where = {};
         if (userId)
             where.userId = userId;
-        else
-            where.status = 3;
         if (date) {
             where.departureDate = date;
         }

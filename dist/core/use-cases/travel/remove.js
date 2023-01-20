@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-function makeRemove({ travelDb, notifyDevice } = {}) {
-    if (!travelDb || !notifyDevice)
+function makeRemove({ travelDb, notifyUser } = {}) {
+    if (!travelDb || !notifyUser)
         throw new errors_1.ServerError();
     const getLast48hours = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
@@ -49,6 +49,7 @@ function makeRemove({ travelDb, notifyDevice } = {}) {
             }
             yield prisma.refund.create({ data: { id: payment.id, amount, user: { connect: { id: userId } }, travel: { connect: { id } } } });
             yield prisma.payment.update({ where: { id: payment.id }, data: { status: 0 } });
+            notifyUser({ id: route.trip.userId, titleRef: { text: 'notification.removeTravel.title' }, messageRef: { text: 'notification.removeTravel.message' }, cover: null, data: { type: 'travel', id }, lang: 'fr' });
             const message = { text: 'response.remove' };
             return { message };
         }));

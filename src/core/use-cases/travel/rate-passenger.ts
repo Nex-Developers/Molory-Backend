@@ -17,7 +17,9 @@ export default  ({
         const prisma = DbConnection.prisma
 
         return prisma.$transaction( async() => {
-            const {userId, route } = await prisma.travel.findUnique({ where: { id: travelId }, select: { userId: true,  route: { select: { tripId: true } }}})
+            const travel = await prisma.travel.findUnique({ where: { id: travelId }, select: { userId: true,  route: { select: { tripId: true } }}})
+            if (!travel) throw new InvalidParamError('travelId')
+            const {userId, route } = travel
             const tripId = route.tripId
             const review = await prisma.passengerReview.findUnique({ where: { travelId }})
             if(!review) await prisma.passengerReview.create({ data: { travelId, tripId, userId, rating, comment}})

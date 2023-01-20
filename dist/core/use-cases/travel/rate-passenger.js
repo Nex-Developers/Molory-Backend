@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-exports.default = ({ saveProfile } = {}) => {
-    if (!saveProfile)
+exports.default = ({ saveProfile, notifyUser } = {}) => {
+    if (!saveProfile || !notifyUser)
         throw new errors_1.ServerError();
     return ({ travelId, rating, comment }) => {
         if (!travelId)
@@ -15,7 +15,10 @@ exports.default = ({ saveProfile } = {}) => {
             throw new errors_1.InvalidParamError('rating');
         const prisma = helpers_1.DbConnection.prisma;
         return prisma.$transaction(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
-            const { userId, route } = yield prisma.travel.findUnique({ where: { id: travelId }, select: { userId: true, route: { select: { tripId: true } } } });
+            const travel = yield prisma.travel.findUnique({ where: { id: travelId }, select: { userId: true, route: { select: { tripId: true } } } });
+            if (!travel)
+                throw new errors_1.InvalidParamError('travelId');
+            const { userId, route } = travel;
             const tripId = route.tripId;
             const review = yield prisma.passengerReview.findUnique({ where: { travelId } });
             if (!review)
@@ -34,6 +37,7 @@ exports.default = ({ saveProfile } = {}) => {
                 yield prisma.user.update({ where: { id: userId }, data: { rating: averageRating } });
                 saveProfile(userId);
             }
+            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title' }, messageRef: { text: 'notification.rateTravelDriver.message' }, cover: null, data: { type: 'travel', id: travelId }, lang: 'fr' });
             const message = { text: "response.edit" };
             return { message };
         }));

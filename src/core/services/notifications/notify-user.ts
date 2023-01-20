@@ -13,7 +13,6 @@ export default function makeNotifyUser({
         messageRef,
         cover,
         data,
-        type,
         lang
     }: any = {}) {
         if (!titleRef || !messageRef) throw new ServerError()
@@ -23,9 +22,9 @@ export default function makeNotifyUser({
         try {
             const prisma = DbConnection.prisma
             const devices = await prisma.device.findMany({ where: { userId: id }, select: { token: true }})
-            const deviceTokens = devices.map(device => device.token)
+            const deviceTokens = devices.map(device => device.token).filter(token => token)
             if (deviceTokens.length) sendNotification(deviceTokens, title, body, data, cover)
-            addInCollection('users', id.toString(),'notifications', { type, title, body, data, cover})
+            addInCollection('users', id.toString(),'notifications', { type: data.type, title, body, data, cover})
             prisma.publication.create({
                 data: {
                     title,

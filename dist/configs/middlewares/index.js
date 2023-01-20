@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.tmpAuthCheck = exports.queryParser = exports.langCheck = exports.jsonParser = exports.fileUpload = exports.cors = exports.contentType = exports.authCheck = exports.driverCheck = exports.adminCheck = void 0;
+exports.tmpAuthCheck = exports.queryParser = exports.langCheck = exports.jsonParser = exports.fileUpload = exports.cors = exports.contentType = exports.apiCheck = exports.authCheck = exports.driverCheck = exports.adminCheck = void 0;
 const tslib_1 = require("tslib");
 const admin_check_1 = (0, tslib_1.__importDefault)(require("./admin-check"));
 exports.adminCheck = admin_check_1.default;
+const api_check_1 = (0, tslib_1.__importDefault)(require("./api-check"));
+exports.apiCheck = api_check_1.default;
 const auth_check_1 = (0, tslib_1.__importDefault)(require("./auth-check"));
 exports.authCheck = auth_check_1.default;
 const content_type_1 = (0, tslib_1.__importDefault)(require("./content-type"));

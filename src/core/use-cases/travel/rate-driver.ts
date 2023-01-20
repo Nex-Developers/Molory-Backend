@@ -1,5 +1,4 @@
-import { InvalidParamError } from './../../../utils/errors/invalid-param-error';
-import { MissingParamError, ServerError } from "../../../utils/errors"
+import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 import { DbConnection } from "../../../utils/helpers"
 
 export default ({
@@ -18,7 +17,9 @@ export default ({
         const prisma = DbConnection.prisma
 
         return prisma.$transaction( async() => {
-            const { route } = await prisma.travel.findUnique({ where: { id: travelId }, select: { route: { select: { trip: { select: {id: true, userId: true}}}}}})
+            const travel= await prisma.travel.findUnique({ where: { id: travelId }, select: { route: { select: { trip: { select: {id: true, userId: true}}}}}})
+            if (!travel) throw new InvalidParamError('travelId')
+            const { route } = travel 
             const userId = route.trip.userId
             const tripId = route.trip.id
             const review = await prisma.driverReview.findUnique({ where: { travelId }})
