@@ -13,7 +13,10 @@ export default  ({
     }) => {
         if (!travelId) throw new MissingParamError("travelId")
         if (!rating && !comment) throw new MissingParamError("rating or comment")
-        if (rating && rating > 5 ) throw new InvalidParamError('rating')   
+        if (rating) {
+            if (typeof rating === "string") rating = Number(rating)
+            if (rating < 0 && rating > 5 ) throw new InvalidParamError('rating')  
+        } 
         const prisma = DbConnection.prisma
 
         return prisma.$transaction( async() => {
@@ -33,7 +36,7 @@ export default  ({
                 const q = ratings.length
                 let averageRating
                 if(q)  averageRating = sum/q
-                await prisma.user.update({ where: {id: userId}, data: { rating: averageRating}})
+                await prisma.user.update({ where: {id: userId}, data: { rating: Number(averageRating.toFixed(1))}})
                 saveProfile(userId)
             }
             notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title'}, messageRef: { text: 'notification.rateTravelDriver.message'}, cover: null, data: { type: 'travel', id: travelId}, lang: 'fr' })

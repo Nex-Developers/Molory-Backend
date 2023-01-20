@@ -11,8 +11,12 @@ exports.default = ({ saveProfile, notifyUser } = {}) => {
             throw new errors_1.MissingParamError("travelId");
         if (!rating && !comment)
             throw new errors_1.MissingParamError("rating or comment");
-        if (rating && rating > 5)
-            throw new errors_1.InvalidParamError('rating');
+        if (rating) {
+            if (typeof rating === "string")
+                rating = Number(rating);
+            if (rating < 0 && rating > 5)
+                throw new errors_1.InvalidParamError('rating');
+        }
         const prisma = helpers_1.DbConnection.prisma;
         return prisma.$transaction(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
             const travel = yield prisma.travel.findUnique({ where: { id: travelId }, select: { userId: true, route: { select: { tripId: true } } } });
@@ -34,7 +38,7 @@ exports.default = ({ saveProfile, notifyUser } = {}) => {
                 let averageRating;
                 if (q)
                     averageRating = sum / q;
-                yield prisma.user.update({ where: { id: userId }, data: { rating: averageRating } });
+                yield prisma.user.update({ where: { id: userId }, data: { rating: Number(averageRating.toFixed(1)) } });
                 saveProfile(userId);
             }
             notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title' }, messageRef: { text: 'notification.rateTravelDriver.message' }, cover: null, data: { type: 'travel', id: travelId }, lang: 'fr' });

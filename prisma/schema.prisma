@@ -282,7 +282,7 @@ model PassengerReview {
   travelId  Int       @id
   userId Int
   tripId Int
-  rating    Int?
+  rating    Float?
   comment   String?
   createdAt DateTime  @default(now())
   updatedAt DateTime?
@@ -296,7 +296,7 @@ model DriverReview {
   travelId  Int       @id
   tripId    Int 
   userId    Int
-  rating    Int?
+  rating    Float?
   comment   String?
   createdAt DateTime  @default(now())
   updatedAt DateTime?

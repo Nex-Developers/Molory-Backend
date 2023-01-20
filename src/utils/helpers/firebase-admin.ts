@@ -15,7 +15,7 @@ export default class FirebaseAdmin{
     }
 
     static async sendNotification(tokens, title, body, data, picture) {
-        console.log(picture)
+        console.log(data)
         const payload: MessagingPayload = {
             notification: {
                 title,

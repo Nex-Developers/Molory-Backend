@@ -17,7 +17,7 @@ class FirebaseAdmin {
     }
     static sendNotification(tokens, title, body, data, picture) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            console.log(picture);
+            console.log(data);
             const payload = {
                 notification: {
                     title,
