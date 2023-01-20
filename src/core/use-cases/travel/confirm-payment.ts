@@ -7,9 +7,10 @@ import { CacheManager, DbConnection } from "../../../utils/helpers"
 
     
 export default function makeConfirmPayment({
-    saveProfile
+    saveProfile,
+    notifyUser
 }) {
-    if (!saveProfile) throw new ServerError()
+    if (!saveProfile || !notifyUser) throw new ServerError()
     return async ({
         id,
         status,
@@ -88,6 +89,7 @@ export default function makeConfirmPayment({
             }
             await CacheManager.remove(id)
             saveProfile(travel.userId)
+            notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title'}, messageRef: { text: 'notification.addTravel.message'}, cover: null, data: { type: 'travel', id}, lang: 'fr' })
             const message = { text: "response.add", data: travel }
             return { message }
         })

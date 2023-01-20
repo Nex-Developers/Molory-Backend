@@ -1,6 +1,6 @@
 import { PricingDb, TripDb, VehicleDb } from "../../../db"
 import { calculMatrix } from "../../services/map"
-import { notifyDevice } from "../../services/notifications"
+import { notifyUser } from "../../services/notifications"
 import { calculPrice } from "../../services/payment"
 import { addTask } from "../../services/task"
 import makeAdd from "./add"
@@ -17,12 +17,12 @@ const tripDb = new TripDb()
 const vehicleDb = new VehicleDb()
 const pricingDb = new PricingDb()
 
-const addTrip = makeAdd({ saveProfile, tripDb, vehicleDb, pricingDb, calculMatrix, calculPrice, notifyDevice, addTask })
-const startTrip = makeStart({ notifyDevice, addTask })
-const finishTrip = makeFinish({ notifyDevice })
+const addTrip = makeAdd({ saveProfile, tripDb, vehicleDb, pricingDb, calculMatrix, calculPrice, notifyUser, addTask })
+const startTrip = makeStart({ notifyUser, addTask })
+const finishTrip = makeFinish({ notifyUser })
 const listTrips = makeListItems({ tripDb })
 const listTripInfos = makeListItemInfos({ tripDb })
-const removeTrip = makeRemove({ tripDb, notifyDevice })
+const removeTrip = makeRemove({ tripDb, notifyUser })
 
 
 

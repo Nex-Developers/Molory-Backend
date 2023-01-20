@@ -1,0 +1,49 @@
+import { ServerError } from "../../../utils/errors"
+import { DbConnection } from "../../../utils/helpers"
+
+export default function makeNotifyUser({
+    sendNotification,
+    addInCollection,
+    translate
+}: any = {}) {
+    if (!sendNotification || !addInCollection || !translate) throw new ServerError()
+    return async function notifyUser({
+        id,
+        titleRef,
+        messageRef,
+        cover,
+        data,
+        type,
+        lang
+    }: any = {}) {
+        if (!titleRef || !messageRef) throw new ServerError()
+        const title = translate(lang, titleRef.text, titleRef.params)
+        const body = translate(lang, messageRef.text, messageRef.params)
+        // data = JSON.stringify(data)
+        try {
+            const prisma = DbConnection.prisma
+            const devices = await prisma.device.findMany({ where: { userId: id }, select: { token: true }})
+            const deviceTokens = devices.map(device => device.token)
+            if (deviceTokens.length) sendNotification(deviceTokens, title, body, data, cover)
+            addInCollection('users', id.toString(),'notifications', { type, title, body, data, cover})
+            prisma.publication.create({
+                data: {
+                    title,
+                    message: body,
+                    data: data ? JSON.stringify(data) : null,
+                    picture: cover,
+                    notifications: {
+                        create: {
+                            user: {
+                                connect: { id }
+                            }
+                        }
+                    }
+                }
+            })
+            return
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
+}

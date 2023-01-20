@@ -3,6 +3,7 @@ dotenv.config()
 export default {
     production: true,
     url: process.env.BASE_URL,
+    taskUrl: process.env.TASK_URL || 'http://molory-task:8087/api/task',
     port: process.env.PORT,
     lang: {
         default: 'en',

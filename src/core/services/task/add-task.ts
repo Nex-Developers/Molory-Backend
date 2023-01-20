@@ -1,12 +1,11 @@
-import * as cron from "node-cron"
+import { env } from "../../../configs/environment"
 
-export default () => {
+export default ({send}) => {
     return async ({
         timer,
-        action
+        path,
+        params
     }) => {
-        cron.schedule(timer, async () => {
-            action()
-        });
+        return await send(env.taskUrl, { timer, path, params })
     }
 }

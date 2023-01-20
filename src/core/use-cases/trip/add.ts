@@ -8,11 +8,15 @@ export default function makeAdd({
     // pricingDb,
     calculMatrix,
     addTask,
-    notifyDevice,
+    notifyUser,
     saveProfile
     // calculPrice
 }: any = {}) {
-    if (!saveProfile || !calculMatrix || !addTask || !notifyDevice) throw new ServerError()
+    if (!saveProfile || !calculMatrix || !addTask || !notifyUser) throw new ServerError()
+    const getDayPlusQuater = (date: Date) => {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + 15);
+    }
+
     return async ({
         userId,
         vehicleId,
@@ -153,8 +157,11 @@ export default function makeAdd({
                 }
             })
             // add Task,
-
+            const tripDate = new Date(trip.departureDate + ' ' + trip.departureTime)
+            const timer = getDayPlusQuater(tripDate)
+            addTask({ timer, path: 'trip-start', params: { id: trip.id } })
             // notify device
+            notifyUser({ id: userId, titleRef: { text: 'notification.addTrip.title'}, messageRef: { text: 'notification.addTrip.message'}, cover: null, data: { type: 'trip', id: trip.id}, lang: 'fr' })
             saveProfile(userId)
             const message = { text: "response.add" }
             return { message, data: trip }

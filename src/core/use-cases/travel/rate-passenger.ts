@@ -2,9 +2,10 @@ import { InvalidParamError, MissingParamError, ServerError } from "../../../util
 import { DbConnection } from "../../../utils/helpers"
 
 export default  ({
-    saveProfile
+    saveProfile,
+    notifyUser
 }: any = {}) => {
-    if (!saveProfile) throw new ServerError()
+    if (!saveProfile || !notifyUser) throw new ServerError()
     return ({
         travelId,
         rating,
@@ -33,7 +34,7 @@ export default  ({
                 await prisma.user.update({ where: {id: userId}, data: { rating: averageRating}})
                 saveProfile(userId)
             }
-
+            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title'}, messageRef: { text: 'notification.rateTravelDriver.message'}, cover: null, data: { type: 'travel', id: travelId}, lang: 'fr' })
             const message = { text: "response.edit"}
             return { message }
           

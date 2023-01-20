@@ -199,6 +199,8 @@ model Trip {
   status         Int       @default(3)
   departureDate  String
   departureTime  String
+  departureAddress String?
+  arrivalAddress String?
   description    String?
   createdAt      DateTime  @default(now())
   canceledAt     DateTime?
@@ -206,6 +208,7 @@ model Trip {
   cancelReason   String?
   startedAt      DateTime?
   finishedAt     DateTime?
+
   // stops Stop[]
   routes         Route[]
   user           User      @relation(fields: [userId], references: [id])
@@ -234,6 +237,8 @@ model Route {
   tripId         Int
   departureDate  String?
   departureTime  String?
+  departureAddress String?
+  arrivalAddress String?
   distance       Int
   duration       Int
   price          Int
@@ -251,6 +256,8 @@ model Travel {
   userId          Int
   routeId         Int
   seats           Int
+  departureAddress String?
+  arrivalAddress String?
   status          Int              @default(3)
   description     String?
   createdAt       DateTime         @default(now())

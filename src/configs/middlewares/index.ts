@@ -1,4 +1,5 @@
 import adminCheck from './admin-check'
+import apiCheck from './api-check'
 import authCheck from './auth-check'
 import contentType from './content-type'
 import cors from './cors'
@@ -13,6 +14,7 @@ export {
     adminCheck,
     driverCheck,
     authCheck,
+    apiCheck,
     contentType,
     cors,
     fileUpload,

@@ -4,9 +4,9 @@ import { DbConnection } from "../../../utils/helpers";
 
 export default function makeRemove({
     tripDb,
-    notifyDevice
+    notifyUser
 }: any = {}) {
-    if (!tripDb || !notifyDevice) throw new ServerError()
+    if (!tripDb || !notifyUser) throw new ServerError()
     const getLast48hours = (date: Date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2, date.getHours(), date.getMinutes());
     }
@@ -81,6 +81,7 @@ export default function makeRemove({
                             await prisma.payment.update({ where: { id: payment.id }, data: { status: 0, deletedAt: new Date() } })
                             await prisma.refund.create({ data: { id: payment.id,  amount: payment.amount, user: { connect: { id: travel.userId}}, travel: { connect: { id: travel.id }} } })
                             // notify the user
+                            notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTrip.title'}, messageRef: { text: 'notification.removeTrip.message'}, cover: null, data: { type: 'travel', id: travel.id}, lang: 'fr' })
                         }
                         return true
                     });

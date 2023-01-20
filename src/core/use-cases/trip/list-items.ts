@@ -16,7 +16,7 @@ export default function makeListItems({
         if (!limit) limit = 100
         const where: any = {}
         if (userId) where.userId = userId
-        else where.status = 3
+        // else where.status = 3
         if (date) {
             where.departureDate = date
         }

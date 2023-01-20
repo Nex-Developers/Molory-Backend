@@ -4,7 +4,8 @@ import {
     driverCheck, 
     authCheck, 
     langCheck, 
-    queryParser
+    queryParser,
+    apiCheck
 } from "../../configs/middlewares"
 
 import { 
@@ -25,8 +26,8 @@ export default () => {
     .post(langCheck, authCheck, driverCheck, expressRouterAdapter(postTripController))
     .patch(langCheck, authCheck, driverCheck, expressRouterAdapter(patchTripController))
     .delete(langCheck, authCheck, driverCheck, expressRouterAdapter(deleteTripController))
-    router.patch('/trip-start', langCheck, authCheck, driverCheck, expressRouterAdapter(patchStartTripController))
-    router.patch('/trip-finish', langCheck, authCheck, driverCheck, expressRouterAdapter(patchFinishController))
+    router.patch('/trip-start', langCheck, apiCheck, expressRouterAdapter(patchStartTripController))
+    router.patch('/trip-finish', langCheck, apiCheck, expressRouterAdapter(patchFinishController))
     // router.post('/confirm-trip', langCheck, authCheck, driverCheck, expressRouterAdapter(patchConfirmController))
     return router
 }
