@@ -3,24 +3,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const conventions_1 = require("../../core/conventions");
 const helpers_1 = require("../../utils/helpers");
-function makePostController({ addWithdrawal }) {
+function makePostConfirmController({ confirmRefund }) {
     return function (request) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const reqLog = {
                 date: new Date().toDateString(),
                 time: new Date().toTimeString(),
-                userId: request.ref.id,
-                lastName: request.ref.lastName,
-                firstName: request.ref.firstName,
-                model: 'Withdrawal',
-                path: '/api/withdrawal',
+                userId: 0,
+                lastName: 'Cinetpay',
+                firstName: '',
+                model: 'Refund',
+                path: '/api/refund',
                 modelId: '',
                 action: conventions_1.Action.WRITE,
                 status: conventions_1.LogStatus.FAILED,
-                description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.WRITE} withdrawal `
+                description: `Cinetpay validate refund`
             };
             try {
-                const lang = request.lang, body = request.body, userId = request.ref.id, data = yield addWithdrawal(Object.assign({ userId }, body));
+                const lang = request.lang, body = request.body, data = yield confirmRefund(Object.assign({}, body));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 reqLog.modelId = data.id;
                 reqLog.description += data.id;
@@ -36,5 +36,5 @@ function makePostController({ addWithdrawal }) {
         });
     };
 }
-exports.default = makePostController;
-//# sourceMappingURL=post.js.map
+exports.default = makePostConfirmController;
+//# sourceMappingURL=post-confirm.js.map

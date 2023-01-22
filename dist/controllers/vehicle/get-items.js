@@ -20,7 +20,7 @@ function makeGetItemsController({ listVehicles }) {
                 description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.READ} all vehicles`
             };
             try {
-                const lang = request.lang, body = request.body, data = yield listVehicles(Object.assign({}, body));
+                const lang = request.lang, body = request.body, data = yield listVehicles(Object.assign({ userId: request.ref.id }, body));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 reqLog.description += ` (${data.count}) from ${data.startAt} to ${data.startAt + data.limit}`;
                 helpers_1.LogManager.save(reqLog);

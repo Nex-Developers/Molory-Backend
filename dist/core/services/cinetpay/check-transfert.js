@@ -5,17 +5,15 @@ const tslib_1 = require("tslib");
 const makeCheckCinetpayTransfert = ({ axios, cinetpayLogin } = {}) => {
     return ({ id }) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
         try {
-            const token = yield cinetpayLogin;
+            const token = yield cinetpayLogin();
             if (!token)
                 return;
             const { data } = yield axios
-                .get('https://client.cinetpay.com/v1/transfer/check/money', {
-                token,
-                lang: 'en',
-                transaction_id: id
-            });
-            console.log(data);
-            return data.data;
+                .get(`https://client.cinetpay.com/v1/transfer/check/money?token=${token}&transaction_id=${id}`);
+            let res;
+            if (data.code == 0)
+                res = data.data[0];
+            return res;
         }
         catch (err) {
             console.log(err.message);

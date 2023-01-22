@@ -10,19 +10,32 @@ exports.default = ({ notifyUser }) => {
         const prisma = helpers_1.DbConnection.prisma;
         return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
             console.log(' Finish trip', +id);
-            const { userId, status, startedAt, routes } = yield prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, routes: { select: { id: true } } } });
+            const { userId, status, startedAt, routes } = yield prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, routes: { select: { id: true, fees: true, price: true, travels: { select: { id: true, userId: true, seats: true, status: true } } } } } });
             if (status === 0)
                 throw new errors_1.UnauthorizedError();
             if (status === 1)
                 throw new errors_1.AlreadyDoneError(startedAt.toString());
             yield prisma.trip.update({ where: { id }, data: { status: 1, finishedAt: new Date() } });
-            const payments = yield prisma.payment.findMany({ where: { tripId: id, status: 1 }, select: { amount: true } });
-            const total = payments.reduce((total, payment) => total + payment.amount, 0);
-            yield prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: total } } });
+            yield prisma.travel.updateMany({ where: { route: { tripId: id }, status: { gt: 1 } }, data: { status: 1 } });
+            let incomes, commission = 0;
+            const promises = routes.map((route) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
+                const promises2 = route.travels.map(travel => {
+                    if (travel.status == 2) {
+                        incomes += route.price * travel.seats;
+                        commission += route.fees * travel.seats;
+                    }
+                });
+                return yield Promise.all(promises2);
+            }));
+            yield Promise.all(promises);
+            console.log(`------> Trip ${id} finished with incomes for the driver of ${incomes} and a commission for the company of ${commission}`);
+            yield prisma.transfer.create({ data: { tripId: id, userId, amount: incomes, commission } });
+            yield prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: incomes } } });
             notifyUser({ id: userId, titleRef: { text: 'notification.finishTrip.title' }, messageRef: { text: 'notification.finishTrip.message' }, cover: null, data: { type: 'trip', id }, lang: 'fr' });
-            const routesIds = routes.map(r => r.id);
-            const travels = yield prisma.travel.findMany({ where: { id: { in: routesIds } }, select: { id: true, userId: true } });
-            travels.forEach(({ id, userId }) => notifyUser({ id: userId, titleRef: { text: 'notification.startTravel.title' }, messageRef: { text: 'notification.startTravel.message' }, cover: null, data: { type: 'travel', id }, lang: 'fr' }));
+            routes.forEach(route => route.travels.forEach(({ id, userId, status }) => {
+                if (status == 2)
+                    notifyUser({ id: userId, titleRef: { text: 'notification.finishTravel.title' }, messageRef: { text: 'notification.finishTravel.message' }, cover: null, data: { type: 'travel', id }, lang: 'fr' });
+            }));
             const message = { text: "response.edit" };
             return { message };
         }));

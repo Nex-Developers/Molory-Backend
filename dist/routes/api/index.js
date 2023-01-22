@@ -10,12 +10,14 @@ const notification_1 = (0, tslib_1.__importDefault)(require("./notification"));
 const preference_1 = (0, tslib_1.__importDefault)(require("./preference"));
 const pricing_1 = (0, tslib_1.__importDefault)(require("./pricing"));
 const question_1 = (0, tslib_1.__importDefault)(require("./question"));
+const refund_1 = (0, tslib_1.__importDefault)(require("./refund"));
 const route_1 = (0, tslib_1.__importDefault)(require("./route"));
 const travel_1 = (0, tslib_1.__importDefault)(require("./travel"));
 const trip_1 = (0, tslib_1.__importDefault)(require("./trip"));
 const user_1 = (0, tslib_1.__importDefault)(require("./user"));
 const vehicle_1 = (0, tslib_1.__importDefault)(require("./vehicle"));
 const vehicle_type_1 = (0, tslib_1.__importDefault)(require("./vehicle-type"));
+const withdrawal_1 = (0, tslib_1.__importDefault)(require("./withdrawal"));
 exports.default = (router) => {
     router.use((0, logs_1.default)());
     router.use('/auth', (0, authentication_1.default)());
@@ -32,6 +34,8 @@ exports.default = (router) => {
     router.use((0, question_1.default)());
     router.use((0, answer_1.default)());
     router.use((0, notification_1.default)());
+    router.use((0, withdrawal_1.default)());
+    router.use((0, refund_1.default)());
     return router;
 };
 //# sourceMappingURL=index.js.map

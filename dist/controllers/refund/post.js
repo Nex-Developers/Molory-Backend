@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const conventions_1 = require("../../core/conventions");
 const helpers_1 = require("../../utils/helpers");
-function makePostController({ addWithdrawal }) {
+function makePostController({ addRefund }) {
     return function (request) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const reqLog = {
@@ -12,15 +12,15 @@ function makePostController({ addWithdrawal }) {
                 userId: request.ref.id,
                 lastName: request.ref.lastName,
                 firstName: request.ref.firstName,
-                model: 'Withdrawal',
-                path: '/api/withdrawal',
+                model: 'Refund',
+                path: '/api/refund',
                 modelId: '',
                 action: conventions_1.Action.WRITE,
                 status: conventions_1.LogStatus.FAILED,
-                description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.WRITE} withdrawal `
+                description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.WRITE} refund `
             };
             try {
-                const lang = request.lang, body = request.body, userId = request.ref.id, data = yield addWithdrawal(Object.assign({ userId }, body));
+                const lang = request.lang, body = request.body, userId = request.ref.id, data = yield addRefund(Object.assign({ userId }, body));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 reqLog.modelId = data.id;
                 reqLog.description += data.id;
