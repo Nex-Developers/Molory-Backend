@@ -1,37 +1,32 @@
 import { ServerError } from './../../../utils/errors/server-error';
+import url from 'url'
+
 export const makeAddCinetpayContacts = ({
     axios,
     cinetpayLogin
 }: any ={}) => {
     return async ({
-        phoneNumber,
+        phone,
+        prefix,
         lastName,
         firstName,
         email,
     }) => {
         try {
-            const token = await cinetpayLogin
+            const token = await cinetpayLogin()
+            console.log(token)
             if (!token) throw new ServerError()
-            const prefix = phoneNumber.substring(0,3);
-            const phone = phoneNumber.substring(3, phoneNumber.length)
             console.log(prefix, phone)
             const name = firstName + ' ' + lastName
-            const { data } = await axios
-            .post('https://client.cinetpay.com/v1/transfer/check/balance', {
-                token,
-                lang: 'en',
-                data: {
-                    prefix,
-                    phone,
-                    name,
-                    surname: '',
-                    email
-                }
-            })
-            console.log(data)
-            return true 
+            const params = new url.URLSearchParams()
+            if (!email) email = "noemail@molory.com"
+            const q = [{ prefix, phone, name, email, surname: firstName}]
+            params.append('data', JSON.stringify(q))
+            const {data} = await axios
+            .post(`https://client.cinetpay.com/v1/transfer/contact?token=${token}`, params)
+            return data.code==0?true:false
         } catch (err) {
-            console.log(err.message)
+            console.log(err.response.data);
             return null
         }
     }

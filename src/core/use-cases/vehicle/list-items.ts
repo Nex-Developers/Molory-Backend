@@ -6,13 +6,15 @@ export default function makeListItems({
     if (!vehicleDb) throw new ServerError()
     return async ({
         startAt,
-        limit
+        limit,
+        userId
     }: any = {}) => {
         if (!startAt) startAt = 0
         if (!limit) limit = 100
         const data = await vehicleDb.findMany({ 
             startAt, 
             limit, 
+            where: { userId },
             select: {
                 id: true,
                 type: true,

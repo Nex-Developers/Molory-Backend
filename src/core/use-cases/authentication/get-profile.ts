@@ -38,7 +38,15 @@ export default function makeGetProfile({
                 driverLicenseRejectionMessage: true,
                 driverLicenseModifiedAt: true,
                 signUpMethod: true,
-                vehicles: true,
+                vehicles: { select: {
+                    id: true,
+                    type: true,
+                    model: true,
+                    color: true,
+                    numberPlate: true,
+                    registrationDoc: true,
+                    createdAt: true
+                }},
                 passengerReviews: { select: {
                     rating: true,
                     comment: true,

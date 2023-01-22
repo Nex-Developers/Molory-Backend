@@ -22,7 +22,7 @@ export default function makeGetItemController({
 
         try {
             const lang = request.lang,
-                body = request.params;
+                body = request.params
                 if (request.ref.role !== 'admin') body.userId = request.ref.id
                   // if query
                 // body.qery = qery

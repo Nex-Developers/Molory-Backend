@@ -1,0 +1,71 @@
+{
+    "signup": {
+      "title": "Compte Molory activé avec succès!",
+      "message": "Félicitations :name, votre compte Molory a été créé avec succès ! Vous pouvez désormais vous connecter et explorer les différentes fonctionnalités de notre plateforme."
+    },
+    "otpVerified": {
+      "title": "Numero verifié!!! ",
+      "message": "Votre numéro de téléphone :phoneNumber a ete verfié avec success.  Bon voyage avec Molory!"
+    },
+    "driverActivated": {
+      "title": "Statut mis a jour!",
+      "message": "Bonjour :name, nous sommes heureux de vous informer que vous pouvez désormais publier des trajets sur notre plateforme. Vous pouvez proposer des trajets réguliers ou ponctuels, en indiquant les détails du voyage (itinéraire, horaire, tarif, etc.)."
+    },
+    "addTrip": {
+      "title": "Trajet publié!",
+      "message": "Félicitations, votre trajet est disponible est publié. Les voyageurs peuvent desormais reserver les places disponibles."
+    },
+    "startTrip": {
+      "title": "Bon Voyage!",
+      "message": "Votre trajet vient de commencé. Molory vous rappelle à la prudence."
+    },
+    "finishTrip": {
+      "title": "Trajet terminé!",
+      "message": "Votre trajet  est terminé. Nous venons de virer :amount sur votre compte. N'oubliez pas de laisser des notes et avis aux passagers."
+    },
+    "removeTrip": {
+      "title": "Réservation annulée!",
+      "message": "Un client a annulé sa réservation. Veuillez consulter les details de votre trajet pour en savoir plus."
+    },
+    "addTravel": {
+      "title": "Réservation effectuée!",
+      "message": "Votre reservation pour a été validé avec success. Veuillez contacter le chauffeur pour convenier du lieu de départ."
+    },
+    "startTravel": {
+      "title": "Bon Voyage!",
+      "message": "Votre voyage a commencé."
+    },
+    "finishTravel": {
+      "title": "Voyage terminé!",
+      "message": "Votre voyage est terminé. N'oublliez pas de laisser un note et un avis au conducteur."
+    },
+    "rateTravelDriver": {
+      "title": "Note et avis",
+      "message": "Un passager a laissé un avis sur votre trajet. Veuillez consulter les details du trajet pour en savoir plus."
+    },
+    "rateTravelPassenger": {
+      "title": "Note et avis",
+      "message": "Le conducteur du trajet vous a laissé un avis.  Veuillez consulter les details de votre réservation pour en savoir plus"
+    },
+    "removeTravel": {
+      "title": "Réservation annulée!",
+      "message": "Votre voyage a été annulé par le conducteur. Veuillez consulter les details de votre réservation pour en savoir plus."
+    },
+    "withdrawal": {
+        "title": "",
+        "message": ""
+    },
+    "withdralConfirmed": {
+        "title": "",
+        "message": ""
+    },
+    "refund": {
+        "title": "",
+        "message": ""
+    },
+    "refundConfirmed": {
+        "title": "",
+        "message": ""
+    }
+
+  }

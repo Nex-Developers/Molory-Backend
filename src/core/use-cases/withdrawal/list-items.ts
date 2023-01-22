@@ -5,36 +5,27 @@ export default function makeListItems({
 }: any = {}) {
     if (!withdrawalDb) throw new ServerError()
     return async ({
+        userId,
         startAt,
         limit
     }: any = {}) => {
         if (!startAt) startAt = 0
         if (!limit) limit = 100
+          let where
+        if (userId) where= { walletId:userId }
+
         const data = await withdrawalDb.findMany({ 
             startAt, 
-            limit, 
+            limit,
+            where, 
+            orderBy: { createdAt: 'desc' },
             select: {
-                type: true,
                 method: true,
                 amount: true,
                 accessNumber: true,
                 status: true,
-                wallet: {
-                    select: {
-                        id: true,
-                        balance: true,
-                        user: {
-                            select: {
-                                id: true,
-                                avatar: true,
-                                lastName: true,
-                                firstName: true,
-                                phoneNumber: true,
-                                role: true
-                            }
-                        }
-                    }
-                }
+                createdAt: true,
+                validatedAt: true
             }
         })
         return { data }

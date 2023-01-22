@@ -23,7 +23,7 @@ export default function makeGetItemsController({
         try {
             const lang = request.lang,
                 body = request.body,
-                data = await listVehicles({...body})
+                data = await listVehicles({userId: request.ref.id,...body})
                 reqLog.status = LogStatus.SUCCEEDED
                 reqLog.description += ` (${ data.count }) from ${ data.startAt} to ${ data.startAt + data.limit }`
                 LogManager.save(reqLog)

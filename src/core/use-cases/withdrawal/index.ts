@@ -1,6 +1,7 @@
 import { WithdrawalDb } from "../../../db"
 import { addCinetpayContacts, checkCinetpayTransfert, cinetpayTransfert } from "../../services/cinetpay"
-import makeList from "../newsletter/list"
+import { saveProfile } from "../../services/firebase"
+import makeList from "./list-items"
 import makeAdd from "./add"
 import makeConfirm from "./confirm"
 import makeListItemInfos from "./list-item-infos"
@@ -9,16 +10,16 @@ import makeRemove from "./remove"
 const withdrawalDb = new WithdrawalDb()
 // const walletDb = new WalletDb()
 
-const addWithdrawal = makeAdd({ addCinetpayContacts, cinetpayTransfert  })
+const addWithdrawal = makeAdd({ addCinetpayContacts, cinetpayTransfert, saveProfile  })
 const confirmWithdrawal = makeConfirm({ checkCinetpayTransfert })
 const removeWithdrawal = makeRemove({ withdrawalDb })
-const listWidrawals = makeList({ withdrawalDb })
-const listWidrawalInfos = makeListItemInfos({ withdrawalDb })
+const listWithdrawals = makeList({ withdrawalDb })
+const listWithdrawalInfos = makeListItemInfos({ withdrawalDb })
 
 export {
     addWithdrawal,
     confirmWithdrawal,
     removeWithdrawal,
-    listWidrawals,
-    listWidrawalInfos
+    listWithdrawals,
+    listWithdrawalInfos
 }

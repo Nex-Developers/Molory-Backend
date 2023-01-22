@@ -2,7 +2,7 @@ import { ServerError } from "../../../utils/errors"
 
 export default function makeList({
     newsletterDb
-}: any = {}) {
+}: any ={}) {
     if (!newsletterDb) throw new ServerError()
     return async ({
         startAt,

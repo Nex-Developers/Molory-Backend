@@ -7,12 +7,14 @@ import notification from "./notification"
 import preference from "./preference"
 import pricing from "./pricing"
 import question from "./question"
+import refund from "./refund"
 import route from "./route"
 import travel from "./travel"
 import trip from "./trip"
 import user from "./user"
 import vehicle from "./vehicle"
 import vehicleType from "./vehicle-type"
+import withdrawal from "./withdrawal"
 
 export default (router) => {
     router.use(logs())
@@ -30,5 +32,7 @@ export default (router) => {
     router.use(question())
     router.use(answer())
     router.use(notification())
+    router.use(withdrawal())
+    router.use(refund())
     return router
 }

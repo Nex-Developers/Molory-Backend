@@ -4,15 +4,12 @@ export const makeGetCinetpayBalance = ({
 }: any ={}) => {
     return async () => {
         try {
-            const token = await cinetpayLogin
+            const token = await cinetpayLogin()
             if (!token) return
             const { data } = await axios
-            .get('https://client.cinetpay.com/v1/transfer/check/balance', {
-                token,
-                lang: 'en'
-            })
+            .get(`https://client.cinetpay.com/v1/transfer/check/balance?token=${token}`)
             console.log(data)
-            const balance = data.data.available
+            const balance = data.data[0][0].available
             return balance 
         } catch (err) {
             console.log(err.message)

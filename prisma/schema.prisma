@@ -77,6 +77,7 @@ model User {
   passengerReviews               PassengerReview[]
   driverReviews DriverReview[]
   country                       Country?       @relation(fields: [countryId], references: [id])
+  transfers           Transfer[]
 }
 
 model Device {
@@ -216,6 +217,7 @@ model Trip {
   driverReviews DriverReview[]
   passengerReviews PassengerReview[]
   payments        Payment[]
+  transfer        Transfer?
 }
 
 model Stop {
@@ -306,6 +308,18 @@ model DriverReview {
   user      User @relation(fields: [userId], references: [id])
 }
 
+model Transfer {
+  tripId Int @id
+  userId Int 
+  amount Int
+  commission Int
+  createdAt      DateTime  @default(now())
+  updatedAt DateTime?
+  deletedAt      DateTime?
+  trip      Trip @relation(fields: [tripId], references: [id])
+  user      User @relation(fields: [userId], references: [id])
+}
+
 model Payment {
   id             String    @id
   travelId       Int       @unique
@@ -329,10 +343,12 @@ model Withdrawal {
   id           String    @id
   walletId     Int
   method       String?
+  transactionId String?
   amount       Int
   accessNumber String?
   createdAt    DateTime  @default(now())
   validatedAt  DateTime?
+  deletedAt      DateTime?
   status       Int       @default(3) //2-wating 1-success 0-canceled
   wallet       Wallet    @relation(fields: [walletId], references: [id])
 }
@@ -342,10 +358,12 @@ model Refund {
   travelId     Int @unique
   userId       Int
   method       String?
+  transactionId String?
   amount       Int
   accessNumber String?
   createdAt    DateTime  @default(now())
   validatedAt  DateTime?
+  deletedAt      DateTime?
   status       Int       @default(3) //3-available 2-In process 1-success 0-canceled
   user         User      @relation(fields: [userId], references: [id])
   travel        Travel    @relation(fields: [travelId], references: [id])
