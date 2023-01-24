@@ -5,6 +5,7 @@ import { IHttpRequest, IHttpResponse } from '../../core/conventions'
 export default function makeExpressRouterAdapter() {
   return function  expressRouterAdapter(controller, responseFormat?: string, download?: boolean) {
     return async (req: Request | any, res: Response) => {
+      console.log(req)
       const httpRequest: IHttpRequest = {
         body: req.body,
         params: req.params,

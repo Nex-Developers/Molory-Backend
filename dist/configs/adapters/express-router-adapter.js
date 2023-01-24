@@ -4,6 +4,7 @@ const tslib_1 = require("tslib");
 function makeExpressRouterAdapter() {
     return function expressRouterAdapter(controller, responseFormat, download) {
         return (req, res) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            console.log(req);
             const httpRequest = {
                 body: req.body,
                 params: req.params,
