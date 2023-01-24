@@ -9,6 +9,7 @@ import jsonParser from './json-parser'
 import langCheck from './lang-check'
 import queryParser from './query-parser'
 import tmpAuthCheck from './tmp-auth-check'
+import urlEncodeParser from './url-encode-parser'
 
 export {
     adminCheck,
@@ -19,6 +20,7 @@ export {
     cors,
     fileUpload,
     jsonParser,
+    urlEncodeParser,
     langCheck,
     queryParser,
     tmpAuthCheck

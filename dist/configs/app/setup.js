@@ -9,6 +9,7 @@ exports.default = app => {
     app.disable('x-powered-by');
     app.use(middlewares_1.cors);
     app.use(middlewares_1.jsonParser);
+    app.use(middlewares_1.urlEncodeParser);
     app.use(middlewares_1.contentType);
     app.use(express_1.default.static('public'));
     app.engine('.html', ejs_1.default.renderFile);

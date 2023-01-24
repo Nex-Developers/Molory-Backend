@@ -4,13 +4,15 @@ import express from 'express'
 import { 
   cors,
   jsonParser,
-  contentType 
+  contentType, 
+  urlEncodeParser
 } from '../middlewares'
 
 export default app => {
   app.disable('x-powered-by')
   app.use(cors)
   app.use(jsonParser)
+  app.use(urlEncodeParser)
   app.use(contentType)
   app.use(express.static('public'))
   app.engine ('.html', ejs.renderFile);

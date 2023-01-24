@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.tmpAuthCheck = exports.queryParser = exports.langCheck = exports.jsonParser = exports.fileUpload = exports.cors = exports.contentType = exports.apiCheck = exports.authCheck = exports.driverCheck = exports.adminCheck = void 0;
+exports.tmpAuthCheck = exports.queryParser = exports.langCheck = exports.urlEncodeParser = exports.jsonParser = exports.fileUpload = exports.cors = exports.contentType = exports.apiCheck = exports.authCheck = exports.driverCheck = exports.adminCheck = void 0;
 const tslib_1 = require("tslib");
 const admin_check_1 = (0, tslib_1.__importDefault)(require("./admin-check"));
 exports.adminCheck = admin_check_1.default;
@@ -24,4 +24,6 @@ const query_parser_1 = (0, tslib_1.__importDefault)(require("./query-parser"));
 exports.queryParser = query_parser_1.default;
 const tmp_auth_check_1 = (0, tslib_1.__importDefault)(require("./tmp-auth-check"));
 exports.tmpAuthCheck = tmp_auth_check_1.default;
+const url_encode_parser_1 = (0, tslib_1.__importDefault)(require("./url-encode-parser"));
+exports.urlEncodeParser = url_encode_parser_1.default;
 //# sourceMappingURL=index.js.map
