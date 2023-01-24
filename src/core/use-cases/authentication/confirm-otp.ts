@@ -3,8 +3,6 @@ import { DbConnection, CacheManager } from "../../../utils/helpers"
 
 export default function makeConfirmOtp({
     getOtp,
-    userDb,
-    deviceDb,
     generateToken,
     saveToken,
     removeOtp,
@@ -12,7 +10,7 @@ export default function makeConfirmOtp({
     saveProfile,
     notifyDevice
 }: any = {}) {
-    if (!saveProfile || !notifyDevice || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken) throw new ServerError()
+    if (!saveProfile || !notifyDevice || !getOtp || !generateToken || !saveToken || !removeOtp || !removeTmpToken) throw new ServerError()
     return async function confirmOtp({
         token,
         phoneNumber,
@@ -61,13 +59,13 @@ export default function makeConfirmOtp({
             const otpIndex = await getOtp({ phoneNumber, otp })
             if (otpIndex === null || otpIndex === undefined) throw new OtpIncorrectError('')
             // cas of sigup
-            let user = await userDb.findFirst({ where: { phoneNumber } })
+            let user = await prisma.user.findFirst({ where: { phoneNumber } })
             const phoneNumberVerifiedAt = new Date()
             let firstAuth = false
             return await prisma.$transaction(async (_) => {
                 if (!user) {
                     firstAuth = true
-                    user = await userDb.insertOne({
+                    user = await prisma.user.create({
                         data: {
                             phoneNumber,
                             phoneNumberVerifiedAt,
@@ -80,11 +78,11 @@ export default function makeConfirmOtp({
                             signUpMethod: "phoneNumber",
                         }
                     })
-                } else user = await userDb.updateOne({ where: { id: user.id }, data: { phoneNumberVerifiedAt } })
+                } else user = await prisma.user.update({ where: { id: user.id }, data: { phoneNumberVerifiedAt } })
                 console.log(user)
                 if (device.id && device.platform && device.token) {
-                    const savedDevice = await deviceDb.findFirst({ where: { id: device.id, userId: user.id } })
-                    if (!savedDevice || savedDevice.token != device.token) await deviceDb.insertOne({
+                    const savedDevice = await prisma.device.findUnique({ where: { id_userId: { id: device.id, userId: user.id} } })
+                    if (!savedDevice ) await prisma.device.create({
                         data: {
                             id: device.id,
                             userId: user.id,
@@ -92,6 +90,7 @@ export default function makeConfirmOtp({
                             platform: device.platform
                         }
                     })
+                    else if (savedDevice.token != device.token) await prisma.device.update({ where: { id_userId: { id: device.id, userId: user.id }}, data: { token: device.token, updatedAt: new Date() } })
                 }
 
                 const { title, body, data, cover } = await notifyDevice({ deviceTokens: [device["token"]], titleRef: { text: 'notification.otpVerified.title'}, messageRef: { text: 'notification.otpVerified.message', params: { phoneNumber }}, cover: null, data: null, lang: 'fr' })

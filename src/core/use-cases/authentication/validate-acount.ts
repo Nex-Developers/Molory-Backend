@@ -1,11 +1,8 @@
 import { AccountNotFoundError, InvalidParamError, MissingParamError, OtpIncorrectError, ServerError } from "../../../utils/errors"
-import { CacheManager } from "../../../utils/helpers"
+import { CacheManager, DbConnection } from "../../../utils/helpers"
 
 export default function makeValidateAccount({
-    prisma,
     getOtp,
-    userDb,
-    deviceDb,
     generateToken,
     saveToken,
     removeOtp,
@@ -15,7 +12,7 @@ export default function makeValidateAccount({
     saveNotification,
     saveProfile
 }: any = {}) {
-    if (!saveProfile || !prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !saveNotification || !publicationDb) throw new ServerError()
+    if (!saveProfile || !getOtp || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !saveNotification || !publicationDb) throw new ServerError()
     return async function confirmOtp({
         token,
         email,
@@ -24,6 +21,7 @@ export default function makeValidateAccount({
         device,
         changeAuthParam,
     }: any = {}) {
+        const prisma = DbConnection.prisma
         if (!email) throw new MissingParamError('email')
         if (!otp) throw new MissingParamError('otp')
         if (!token || !lang) throw new ServerError()
@@ -66,14 +64,14 @@ export default function makeValidateAccount({
             const otpIndex = await getOtp({ phoneNumber: email, otp })
             if (otpIndex === null || otpIndex === undefined) throw new OtpIncorrectError('')
 
-            let user = await userDb.findFirst({ where: { email } })
+            let user = await prisma.user.findFirst({ where: { email } })
             const emailVerifiedAt = new Date()
             return await prisma.$transaction(async (_) => {
                 if (!user) {
                     throw new AccountNotFoundError('email')
-                } else user = await userDb.updateOne({ where: { id: user.id }, data: { emailVerifiedAt, status: 2 } })
-                const savedDevice = await deviceDb.findFirst({ where: { id: device.id, userId: user.id } })
-                if (!savedDevice || savedDevice.token != device.token) await deviceDb.insertOne({
+                } else user = await prisma.user.update({ where: { id: user.id }, data: { emailVerifiedAt, status: 2 } })
+                const savedDevice = await prisma.device.findUnique({ where: { id_userId:{ id: device.id, userId: user.id }} })
+                if (!savedDevice) await prisma.device.create({
                     data: {
                         id: device["id"],
                         userId: user["id"],
@@ -81,6 +79,7 @@ export default function makeValidateAccount({
                         platform: device["platform"]
                     }
                 })
+                else if (savedDevice.token != device.token) await prisma.device.update({ where: { id_userId: { id: device.id, userId: user.id}}, data: { token: device.token, updatedAt: new Date()} })
                 const authToken = await generateToken({ id: user.id, role: user.role })
                 await saveToken({ token: authToken })
                 await removeOtp({ phoneNumber: email })

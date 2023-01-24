@@ -2,11 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-function makeSetPassword({ prisma, userDb, deviceDb, generateToken, saveToken, removeOtp, verifyToken, comparePasswords, removeTmpToken, hashPassword, getOtp } = {}) {
-    if (!prisma || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !hashPassword || !getOtp || !comparePasswords)
+const helpers_1 = require("../../../utils/helpers");
+function makeSetPassword({ generateToken, saveToken, removeOtp, verifyToken, comparePasswords, removeTmpToken, hashPassword, getOtp } = {}) {
+    if (!generateToken || !saveToken || !removeOtp || !removeTmpToken || !hashPassword || !getOtp || !comparePasswords)
         throw new errors_1.ServerError();
     return function setPassword({ token, password, lang, device } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            const prisma = helpers_1.DbConnection.prisma;
             if (!device)
                 throw new errors_1.MissingParamError('device');
             if (!token || !lang)
@@ -17,7 +19,7 @@ function makeSetPassword({ prisma, userDb, deviceDb, generateToken, saveToken, r
             const otpIndex = yield getOtp({ phoneNumber: email, otp });
             if (otpIndex === null || otpIndex === undefined)
                 throw new errors_1.InvalidParamError('token');
-            let user = yield userDb.findFirst({ where: { email } });
+            let user = yield prisma.user.findFirst({ where: { email } });
             return yield prisma.$transaction((_) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
                 if (!user) {
                     throw new errors_1.AccountNotFoundError('email');
@@ -26,10 +28,10 @@ function makeSetPassword({ prisma, userDb, deviceDb, generateToken, saveToken, r
                 if (isSamePassword)
                     throw new errors_1.InvalidParamError('Same password');
                 password = yield hashPassword({ password });
-                user = yield userDb.updateOne({ where: { id: user.id }, data: { password } });
-                const savedDevice = yield deviceDb.findFirst({ where: { id: device.id, userId: user.id } });
-                if (!savedDevice || savedDevice.token != device.token)
-                    yield deviceDb.insertOne({
+                user = yield prisma.user.update({ where: { id: user.id }, data: { password } });
+                const savedDevice = yield prisma.device.findFirst({ where: { id: device.id, userId: user.id } });
+                if (!savedDevice)
+                    yield prisma.device.create({
                         data: {
                             id: device["id"],
                             userId: user["id"],
@@ -37,6 +39,8 @@ function makeSetPassword({ prisma, userDb, deviceDb, generateToken, saveToken, r
                             platform: device["platform"]
                         }
                     });
+                else if (savedDevice.token != device.token)
+                    yield prisma.device.update({ where: { id_userId: { id: device.id, userId: user.id } }, data: { token: device.token, updatedAt: new Date() } });
                 const authToken = yield generateToken({ id: user.id, role: user.role });
                 yield saveToken({ token: authToken });
                 yield removeOtp({ phoneNumber: email });

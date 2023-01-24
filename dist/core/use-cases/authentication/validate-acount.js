@@ -3,11 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, notifyDevice, publicationDb, saveNotification, saveProfile } = {}) {
-    if (!saveProfile || !prisma || !getOtp || !userDb || !deviceDb || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !saveNotification || !publicationDb)
+function makeValidateAccount({ getOtp, generateToken, saveToken, removeOtp, removeTmpToken, notifyDevice, publicationDb, saveNotification, saveProfile } = {}) {
+    if (!saveProfile || !getOtp || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !saveNotification || !publicationDb)
         throw new errors_1.ServerError();
     return function confirmOtp({ token, email, otp, lang, device, changeAuthParam, } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            const prisma = helpers_1.DbConnection.prisma;
             if (!email)
                 throw new errors_1.MissingParamError('email');
             if (!otp)
@@ -51,17 +52,17 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                 const otpIndex = yield getOtp({ phoneNumber: email, otp });
                 if (otpIndex === null || otpIndex === undefined)
                     throw new errors_1.OtpIncorrectError('');
-                let user = yield userDb.findFirst({ where: { email } });
+                let user = yield prisma.user.findFirst({ where: { email } });
                 const emailVerifiedAt = new Date();
                 return yield prisma.$transaction((_) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
                     if (!user) {
                         throw new errors_1.AccountNotFoundError('email');
                     }
                     else
-                        user = yield userDb.updateOne({ where: { id: user.id }, data: { emailVerifiedAt, status: 2 } });
-                    const savedDevice = yield deviceDb.findFirst({ where: { id: device.id, userId: user.id } });
-                    if (!savedDevice || savedDevice.token != device.token)
-                        yield deviceDb.insertOne({
+                        user = yield prisma.user.update({ where: { id: user.id }, data: { emailVerifiedAt, status: 2 } });
+                    const savedDevice = yield prisma.device.findUnique({ where: { id_userId: { id: device.id, userId: user.id } } });
+                    if (!savedDevice)
+                        yield prisma.device.create({
                             data: {
                                 id: device["id"],
                                 userId: user["id"],
@@ -69,6 +70,8 @@ function makeValidateAccount({ prisma, getOtp, userDb, deviceDb, generateToken, 
                                 platform: device["platform"]
                             }
                         });
+                    else if (savedDevice.token != device.token)
+                        yield prisma.device.update({ where: { id_userId: { id: device.id, userId: user.id } }, data: { token: device.token, updatedAt: new Date() } });
                     const authToken = yield generateToken({ id: user.id, role: user.role });
                     yield saveToken({ token: authToken });
                     yield removeOtp({ phoneNumber: email });

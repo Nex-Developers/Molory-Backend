@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { DeviceDb, PublicationDb, UserDb, WalletDb } from "../../../db"
+import { PublicationDb, UserDb, WalletDb } from "../../../db"
 import { askToConfirmEmail, askToResetPassword, emailConfirmationView, isValidEmail } from "../../services/email"
 import { generateOtp, getOtp, removeOtp, saveOtp, sendOtp } from "../../services/otp"
 import { comparePasswords, hashPassword } from "../../services/password"
@@ -35,17 +35,16 @@ import { saveNotification, saveProfile } from "../../services/firebase"
 const prisma = new PrismaClient()
 const userDb = new UserDb()
 const walletDb =  new WalletDb()
-const deviceDb = new DeviceDb()
 const publicationDb = new PublicationDb()
 
 const addEmailAuth =  makeAddEmailAuth({ userDb, generateToken, saveTmpToken, askToConfirmEmail, isValidEmail, hashPassword })
 const checkEmail = makeCheckEmail({ userDb, generateToken, saveTmpToken, generateOtp, saveOtp, askToConfirmEmail })
-const checkPassword = makeCheckPassword({  userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, comparePasswords })
+const checkPassword = makeCheckPassword({  generateToken, saveToken, removeOtp, removeTmpToken, comparePasswords })
 const signInWithEmailAndPassword = makeSignInWithEmailAndPassword({ userDb, comparePasswords, generateToken, saveToken })
 const signInWithPhoneNumber = makeSignInWithPhoneNumber({ generateOtp, saveOtp, sendOtp, generateToken, saveTmpToken, userDb })
-const confirmOtp = makeConfirmOtp({ prisma, notifyDevice, saveProfile, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken })
+const confirmOtp = makeConfirmOtp({ prisma, notifyDevice, saveProfile, getOtp, generateToken, saveToken, removeOtp, removeTmpToken })
 const signUp = makeSignUp({ userDb, askToConfirmEmail, isValidEmail, hashPassword, generateToken, saveTmpToken, generateOtp, saveOtp, saveProfile})
-const validateAccount = makeValidateAccount({  saveProfile, prisma, getOtp, userDb, deviceDb, generateToken, saveToken, removeOtp, removeTmpToken, notifyDevice, saveNotification, publicationDb })
+const validateAccount = makeValidateAccount({  saveProfile, getOtp, generateToken, saveToken, removeOtp, removeTmpToken, notifyDevice, saveNotification, publicationDb })
 const confirmEmail = makeConfirmEmail({ removeTmpToken, verifyToken, emailConfirmationView, userDb })
 const changePassword = makeChangePassword({ comparePasswords, hashPassword, userDb })
 const setProfile = makeSetProfile({ userDb, notifyDevice, publicationDb, saveProfile })
@@ -56,7 +55,7 @@ const updateIdCard = makeUpdateIdCard({ saveProfile, userDb })
 const updateDriverLicense = makeUpdateDriverLicense({ saveProfile, userDb })
 const recoverPassword = makeRecoverPassword({ userDb, generateToken, saveTmpToken, askToResetPassword, generateOtp, saveOtp })
 const removePassword = makeRemovePassword({ getOtp, verifyToken, userDb, generateToken, saveTmpToken, removeTmpToken })
-const setPassword = makeSetPassword({ prisma, userDb, deviceDb, verifyToken, generateToken, saveToken, removeOtp, removeTmpToken, hashPassword, comparePasswords, getOtp })
+const setPassword = makeSetPassword({ verifyToken, generateToken, saveToken, removeOtp, removeTmpToken, hashPassword, comparePasswords, getOtp })
 const signOut = makeSignOut({ removeToken })
 const removeAccount = makeRemoveAccount({saveProfile, userDb, removeToken})
 const changeEmail = makeChangeEmail({ userDb, generateOtp, generateToken, removeToken, saveTmpToken, askToConfirmEmail, isValidEmail })
