@@ -24,7 +24,7 @@ function makeConfirm({ checkCinetpayTransfert, notifyUser } = {}) {
                 notifyUser({ id: withDrawal.walletId, titleRef: { text: 'notification.withdralConfirmed.title' }, messageRef: { text: 'notification.withdralConfirmed.message' }, cover: null, data: { type: 'withdrawal', id: client_transaction_id }, lang: 'fr' });
             }
             else {
-                yield prisma.withdrawal.update({ where: { id: client_transaction_id }, data: { status: 0, validatedAt: transactionData.validated_at } });
+                yield prisma.withdrawal.update({ where: { id: client_transaction_id }, data: { status: 0, validatedAt: new Date(transactionData.validated_at) } });
                 yield prisma.wallet.update({ where: { id: withDrawal.walletId }, data: { balance: { increment: withDrawal.amount } } });
             }
         }
