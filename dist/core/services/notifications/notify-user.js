@@ -20,7 +20,7 @@ function makeNotifyUser({ sendNotification, addInCollection, translate } = {}) {
                     data.id = data.id.toString();
                 if (deviceTokens.length)
                     sendNotification(deviceTokens, title, body, data, cover);
-                addInCollection('users', id.toString(), 'notifications', { type: data.type, title, body, data, cover });
+                addInCollection('users', id.toString(), 'notifications', { type: data.type, title, message: body, data, cover });
                 prisma.publication.create({
                     data: {
                         title,
