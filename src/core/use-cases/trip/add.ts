@@ -13,6 +13,11 @@ export default function makeAdd({
     // calculPrice
 }: any = {}) {
     if (!saveProfile || !calculMatrix || !addTask || !notifyUser) throw new ServerError()
+
+    const reformateDate = (date: string) => {
+        return date.split("-").reverse().join("-")
+    }
+
     const getDayPlusQuater = (date: Date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + 15);
     }
@@ -157,7 +162,8 @@ export default function makeAdd({
                 }
             })
             // add Task,
-            const tripDate = new Date(trip.departureDate + ' ' + trip.departureTime)
+            const formatedDate = reformateDate(trip.departureDate)
+            const tripDate = new Date(formatedDate + ' ' + trip.departureTime)
             const timer = getDayPlusQuater(tripDate)
             addTask({ timer, path: 'trip-start', params: { id: trip.id } })
             // notify device

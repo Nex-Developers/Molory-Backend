@@ -6,12 +6,13 @@ import makeAdd from "./add"
 import makeConfirm from "./confirm"
 import makeListItemInfos from "./list-item-infos"
 import makeRemove from "./remove"
+import { notifyUser } from "../../services/notifications"
 
 const withdrawalDb = new WithdrawalDb()
 // const walletDb = new WalletDb()
 
-const addWithdrawal = makeAdd({ addCinetpayContacts, cinetpayTransfert, saveProfile  })
-const confirmWithdrawal = makeConfirm({ checkCinetpayTransfert })
+const addWithdrawal = makeAdd({ addCinetpayContacts, cinetpayTransfert, saveProfile, notifyUser  })
+const confirmWithdrawal = makeConfirm({ checkCinetpayTransfert, notifyUser })
 const removeWithdrawal = makeRemove({ withdrawalDb })
 const listWithdrawals = makeList({ withdrawalDb })
 const listWithdrawalInfos = makeListItemInfos({ withdrawalDb })

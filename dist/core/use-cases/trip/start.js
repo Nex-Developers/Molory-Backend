@@ -6,6 +6,9 @@ const helpers_1 = require("../../../utils/helpers");
 exports.default = ({ notifyUser, addTask }) => {
     if (!notifyUser || !addTask)
         throw new errors_1.ServerError();
+    const reformateDate = (date) => {
+        return date.split("-").reverse().join("-");
+    };
     const getNextDay = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1, date.getHours(), date.getMinutes());
     };
@@ -22,7 +25,8 @@ exports.default = ({ notifyUser, addTask }) => {
             const routesIds = routes.map(route => route.id);
             const travels = yield prisma.travel.findMany({ where: { routeId: { in: routesIds }, status: 2 }, select: { id: true, userId: true } });
             travels.forEach(({ id, userId }) => notifyUser({ id: userId, titleRef: { text: 'notification.startTravel.title' }, messageRef: { text: 'notification.startTravel.message' }, cover: null, data: { type: 'travel', id }, lang: 'fr' }));
-            const date = new Date(departureDate + ' ' + departureTime);
+            const formatedDate = reformateDate(departureDate);
+            const date = new Date(formatedDate + ' ' + departureTime);
             const timer = getNextDay(date);
             yield addTask({ path: 'trip-finish', timer, params: { id } });
             const message = { text: "response.edit" };

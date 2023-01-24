@@ -2,7 +2,8 @@ import { ServerError } from "../../../utils/errors"
 import { DbConnection } from "../../../utils/helpers"
 
 export default function makeConfirm({
-    checkCinetpayTransfert
+    checkCinetpayTransfert,
+    notifyUser
 }: any = {}) {
     if (!checkCinetpayTransfert) throw new ServerError()
     return async ({
@@ -27,6 +28,7 @@ export default function makeConfirm({
             if(transactionData.transfer_valid == 'Y') {
                 await prisma.withdrawal.update({ where: { id: client_transaction_id }, data: { status: 1, method: transactionData.operator, validatedAt: transactionData.validated_at }})
                 // notify the user
+                notifyUser({ id: withDrawal.walletId, titleRef: { text: 'notification.withdralConfirmed.title'}, messageRef: { text: 'notification.withdralConfirmed.message'}, cover: null, data: { type: 'withdrawal', id: client_transaction_id}, lang: 'fr' })
             }
             else {
                 await prisma.withdrawal.update({ where: { id: client_transaction_id }, data: { status: 0, validatedAt: transactionData.validated_at }})

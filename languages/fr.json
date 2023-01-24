@@ -120,6 +120,22 @@
     "removeTravel": {
       "title": "Réservation annulée!",
       "message": "Votre voyage a été annulé par le conducteur. Veuillez consulter les details de votre réservation pour en savoir plus."
+    },
+    "withdrawal": {
+        "title": "Retrait en cours",
+        "message": "Vous venez d'initié un retrait. Nous vous notifirions quand cela sera effectué."
+    },
+    "withdralConfirmed": {
+        "title": "Retrait Confirmé",
+        "message": "Votre retrait vient d'etre confirmé. Veuillez consulter votre solde Mobile Money."
+    },
+    "refund": {
+        "title": "Retrait en cours",
+        "message": "Vous venez d'initié un retrait. Nous vous notifirions quand cela sera effectué."
+    },
+    "refundConfirmed": {
+        "title": "Retrait Confirmé",
+        "message": "Votre retrait vient d'etre confirmé. Veuillez consulter votre solde Mobile Money."
     }
 
   }

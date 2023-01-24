@@ -7,6 +7,10 @@ export default ({
 }) => {
     if (!notifyUser || !addTask) throw new ServerError()
 
+    const reformateDate = (date: string) => {
+        return date.split("-").reverse().join("-")
+    }
+
     const getNextDay = (date: Date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1, date.getHours(), date.getMinutes());
     }
@@ -27,7 +31,8 @@ export default ({
            const routesIds = routes.map( route => route.id)
            const travels = await prisma.travel.findMany({ where: { routeId: { in: routesIds }, status: 2}, select: {id: true, userId: true}})
            travels.forEach(({id,  userId}) =>  notifyUser({ id: userId, titleRef: { text: 'notification.startTravel.title'}, messageRef: { text: 'notification.startTravel.message'}, cover: null, data: { type: 'travel', id}, lang: 'fr' }))            // add finish task
-            const date = new Date(departureDate + ' ' + departureTime)
+           const formatedDate = reformateDate(departureDate) 
+           const date = new Date(formatedDate + ' ' + departureTime)
             const timer = getNextDay(date)
             await addTask({ path: 'trip-finish', timer, params: { id }})
             const message = { text: "response.edit" }

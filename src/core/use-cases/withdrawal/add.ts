@@ -5,9 +5,10 @@ import { v4 } from 'uuid'
 
 export default function makeAdd({
     addCinetpayContacts,
-    cinetpayTransfert
+    cinetpayTransfert,
+    notifyUser
 }: any = {}) {
-    if (!addCinetpayContacts || !cinetpayTransfert) throw new ServerError()
+    if (!addCinetpayContacts || !cinetpayTransfert || !notifyUser) throw new ServerError()
     
     const generateUid = async (prisma) => {
         const uid = v4()
@@ -38,6 +39,7 @@ export default function makeAdd({
     //    else alert admin about widrawals balance.
         await prisma.withdrawal.create({ data: { id, amount: balance, accessNumber:prefix + phone, status, transactionId, wallet: { connect: { id: userId}} }})
         await prisma.wallet.update({ where: { id: userId }, data: { balance: 0}})
+        notifyUser({ id: userId, titleRef: { text: 'notification.withdrawal.title'}, messageRef: { text: 'notification.withdrawal.message'}, cover: null, data: { type: 'withdrawal', id}, lang: 'fr' })
         const message = { text: "response.add" }
         return { message, id }
     } 

@@ -5,8 +5,8 @@ const invalid_param_error_1 = require("./../../../utils/errors/invalid-param-err
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
 const uuid_1 = require("uuid");
-function makeAdd({ addCinetpayContacts, cinetpayTransfert } = {}) {
-    if (!addCinetpayContacts || !cinetpayTransfert)
+function makeAdd({ addCinetpayContacts, cinetpayTransfert, notifyUser } = {}) {
+    if (!addCinetpayContacts || !cinetpayTransfert || !notifyUser)
         throw new errors_1.ServerError();
     const generateUid = (prisma) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const uid = (0, uuid_1.v4)();
@@ -35,6 +35,7 @@ function makeAdd({ addCinetpayContacts, cinetpayTransfert } = {}) {
             status = 2;
         yield prisma.withdrawal.create({ data: { id, amount: balance, accessNumber: prefix + phone, status, transactionId, wallet: { connect: { id: userId } } } });
         yield prisma.wallet.update({ where: { id: userId }, data: { balance: 0 } });
+        notifyUser({ id: userId, titleRef: { text: 'notification.withdrawal.title' }, messageRef: { text: 'notification.withdrawal.message' }, cover: null, data: { type: 'withdrawal', id }, lang: 'fr' });
         const message = { text: "response.add" };
         return { message, id };
     });

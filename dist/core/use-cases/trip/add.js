@@ -7,6 +7,9 @@ const helpers_1 = require("../../../utils/helpers");
 function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile } = {}) {
     if (!saveProfile || !calculMatrix || !addTask || !notifyUser)
         throw new errors_1.ServerError();
+    const reformateDate = (date) => {
+        return date.split("-").reverse().join("-");
+    };
     const getDayPlusQuater = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + 15);
     };
@@ -135,7 +138,8 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile } = {}) {
                     }
                 }
             });
-            const tripDate = new Date(trip.departureDate + ' ' + trip.departureTime);
+            const formatedDate = reformateDate(trip.departureDate);
+            const tripDate = new Date(formatedDate + ' ' + trip.departureTime);
             const timer = getDayPlusQuater(tripDate);
             addTask({ timer, path: 'trip-start', params: { id: trip.id } });
             notifyUser({ id: userId, titleRef: { text: 'notification.addTrip.title' }, messageRef: { text: 'notification.addTrip.message' }, cover: null, data: { type: 'trip', id: trip.id }, lang: 'fr' });

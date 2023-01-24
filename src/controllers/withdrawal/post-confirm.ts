@@ -21,8 +21,10 @@ export default function makePostConfirmController({
         } 
         try {
             const lang = request.lang,
-                body = request.body,
-                data = await confirmWithdrawal({...body})
+                body = request.body
+                console.log(JSON.stringify(body));
+                
+                const data = await confirmWithdrawal({...body.data[0]})
                 reqLog.status = LogStatus.SUCCEEDED
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)

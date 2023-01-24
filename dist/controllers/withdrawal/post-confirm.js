@@ -20,7 +20,9 @@ function makePostConfirmController({ confirmWithdrawal }) {
                 description: `Cinetpay validate withdrawal`
             };
             try {
-                const lang = request.lang, body = request.body, data = yield confirmWithdrawal(Object.assign({}, body));
+                const lang = request.lang, body = request.body;
+                console.log(JSON.stringify(body));
+                const data = yield confirmWithdrawal(Object.assign({}, body.data[0]));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 helpers_1.LogManager.save(reqLog);
                 return helpers_1.HttpResponse.ok(data, lang);
