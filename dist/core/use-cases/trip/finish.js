@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-exports.default = ({ notifyUser }) => {
-    if (!notifyUser)
+exports.default = ({ notifyUser, saveTrip, saveTravel }) => {
+    if (!notifyUser || !saveTrip || !saveTravel)
         throw new errors_1.ServerError();
     return ({ id }) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
@@ -33,9 +33,12 @@ exports.default = ({ notifyUser }) => {
             yield prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: incomes } } });
             notifyUser({ id: userId, titleRef: { text: 'notification.finishTrip.title' }, messageRef: { text: 'notification.finishTrip.message' }, cover: null, data: { type: 'trip', id }, lang: 'fr' });
             routes.forEach(route => route.travels.forEach(({ id, userId, status }) => {
-                if (status == 2)
+                if (status == 2) {
                     notifyUser({ id: userId, titleRef: { text: 'notification.finishTravel.title' }, messageRef: { text: 'notification.finishTravel.message' }, cover: null, data: { type: 'travel', id }, lang: 'fr' });
+                    saveTravel(id);
+                }
             }));
+            saveTrip(id);
             const message = { text: "response.edit" };
             return { message };
         }));

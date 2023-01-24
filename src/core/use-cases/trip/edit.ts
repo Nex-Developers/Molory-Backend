@@ -1,9 +1,10 @@
 import { MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeEdit({
-    tripDb
+    tripDb,
+    saveTrip
 }: any = {}) {
-    if (!tripDb) throw new ServerError()
+    if (!tripDb || !saveTrip) throw new ServerError()
     return async ({
         id,
         description
@@ -12,6 +13,7 @@ export default function makeEdit({
         if (!description) throw new MissingParamError('description')
 
         await tripDb.updateOne({ where: { id}, data: { description } })
+        saveTrip(id)
         const message = { text: "response.edit" }
         return { message }
     } 

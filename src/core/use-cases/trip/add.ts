@@ -9,10 +9,11 @@ export default function makeAdd({
     calculMatrix,
     addTask,
     notifyUser,
-    saveProfile
+    saveProfile,
+    saveTrip
     // calculPrice
 }: any = {}) {
-    if (!saveProfile || !calculMatrix || !addTask || !notifyUser) throw new ServerError()
+    if (!saveProfile || !calculMatrix || !addTask || !notifyUser || !saveTrip) throw new ServerError()
 
     const reformateDate = (date: string) => {
         return date.split("-").reverse().join("-")
@@ -169,6 +170,7 @@ export default function makeAdd({
             // notify device
             notifyUser({ id: userId, titleRef: { text: 'notification.addTrip.title'}, messageRef: { text: 'notification.addTrip.message'}, cover: null, data: { type: 'trip', id: trip.id}, lang: 'fr' })
             saveProfile(userId)
+            saveTrip(trip.id)
             const message = { text: "response.add" }
             return { message, data: trip }
         })

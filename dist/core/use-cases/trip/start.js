@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-exports.default = ({ notifyUser, addTask }) => {
-    if (!notifyUser || !addTask)
+exports.default = ({ notifyUser, addTask, saveTrip, saveTravel }) => {
+    if (!notifyUser || !addTask || !saveTrip || !saveTravel)
         throw new errors_1.ServerError();
     const reformateDate = (date) => {
         return date.split("-").reverse().join("-");
@@ -24,11 +24,15 @@ exports.default = ({ notifyUser, addTask }) => {
             notifyUser({ id: userId, titleRef: { text: 'notification.startTrip.title' }, messageRef: { text: 'notification.startTrip.message' }, cover: null, data: { type: 'trip', id }, lang: 'fr' });
             const routesIds = routes.map(route => route.id);
             const travels = yield prisma.travel.findMany({ where: { routeId: { in: routesIds }, status: 2 }, select: { id: true, userId: true } });
-            travels.forEach(({ id, userId }) => notifyUser({ id: userId, titleRef: { text: 'notification.startTravel.title' }, messageRef: { text: 'notification.startTravel.message' }, cover: null, data: { type: 'travel', id }, lang: 'fr' }));
+            travels.forEach(({ id, userId }) => {
+                notifyUser({ id: userId, titleRef: { text: 'notification.startTravel.title' }, messageRef: { text: 'notification.startTravel.message' }, cover: null, data: { type: 'travel', id }, lang: 'fr' });
+                saveTravel(id);
+            });
             const formatedDate = reformateDate(departureDate);
             const date = new Date(formatedDate + ' ' + departureTime);
             const timer = getNextDay(date);
             yield addTask({ path: 'trip-finish', timer, params: { id } });
+            saveTrip(id);
             const message = { text: "response.edit" };
             return { message };
         }));

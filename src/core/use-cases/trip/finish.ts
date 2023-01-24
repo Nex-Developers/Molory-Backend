@@ -2,9 +2,11 @@ import { AlreadyDoneError, ServerError, UnauthorizedError } from "../../../utils
 import { DbConnection } from "../../../utils/helpers"
 
 export default ({
-    notifyUser
+    notifyUser,
+    saveTrip,
+    saveTravel
 }) => {
-    if (!notifyUser) throw new ServerError()
+    if (!notifyUser || !saveTrip || !saveTravel) throw new ServerError()
     return async ({
         id
     }) => {
@@ -39,8 +41,12 @@ export default ({
             notifyUser({ id: userId, titleRef: { text: 'notification.finishTrip.title'}, messageRef: { text: 'notification.finishTrip.message'}, cover: null, data: { type: 'trip', id}, lang: 'fr' })
             // xxxxx notify passengers the trip is finished and they are allowed to rate the driver
             routes.forEach(route => route.travels.forEach(({id,  userId, status}) => {
-             if(status == 2) notifyUser({ id: userId, titleRef: { text: 'notification.finishTravel.title'}, messageRef: { text: 'notification.finishTravel.message'}, cover: null, data: { type: 'travel', id}, lang: 'fr' })
-            }))            // add finish task
+             if(status == 2) {
+                notifyUser({ id: userId, titleRef: { text: 'notification.finishTravel.title'}, messageRef: { text: 'notification.finishTravel.message'}, cover: null, data: { type: 'travel', id}, lang: 'fr' })
+                saveTravel(id)
+            }
+            }))     
+            saveTrip(id)       // add finish task
             const message = { text: "response.edit" }
             return { message }
         })

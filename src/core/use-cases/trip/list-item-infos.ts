@@ -120,7 +120,7 @@ export default function makeListItemInfos({
         const data = {
             id: res.id,
             seats: res.seats,
-            remainingSeats: res.seats,
+            remainingSeats: res.remainingSeats,
             status: res.status,
             departureDate: res.departureDate,
             departureTime: res.departureTime,

@@ -10,7 +10,7 @@ const routeDb = new RouteDb()
 const addRoute = makeAdd({ routeDb })
 const editRoute = makeEdit({ routeDb })
 const listRoutes = makeListItems({ routeDb })
-const listRouteInfos = makeListItemInfos({ routeDb })
+const listRouteInfos = makeListItemInfos()
 const removeRoute = makeRemove({ routeDb })
 
 export {

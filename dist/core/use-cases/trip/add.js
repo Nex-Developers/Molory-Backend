@@ -4,8 +4,8 @@ const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 const helpers_1 = require("../../../utils/helpers");
-function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile } = {}) {
-    if (!saveProfile || !calculMatrix || !addTask || !notifyUser)
+function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = {}) {
+    if (!saveProfile || !calculMatrix || !addTask || !notifyUser || !saveTrip)
         throw new errors_1.ServerError();
     const reformateDate = (date) => {
         return date.split("-").reverse().join("-");
@@ -144,6 +144,7 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile } = {}) {
             addTask({ timer, path: 'trip-start', params: { id: trip.id } });
             notifyUser({ id: userId, titleRef: { text: 'notification.addTrip.title' }, messageRef: { text: 'notification.addTrip.message' }, cover: null, data: { type: 'trip', id: trip.id }, lang: 'fr' });
             saveProfile(userId);
+            saveTrip(trip.id);
             const message = { text: "response.add" };
             return { message, data: trip };
         }));

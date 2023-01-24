@@ -1,9 +1,134 @@
-// export default function makeSaveNotification({
-//     addInCollection
-// }: any = {}){
-//     return  async ({
-//         id
-//     }:any = {}) => {
-//         return await addInCollection('users', receiverId.toString(), 'travels', data)
-//     }
-// }
+import { ServerError } from './../../../utils/errors/server-error';
+import { DbConnection } from "../../../utils/helpers"
+
+export default function makeSaveNotification({
+    setInCollection
+}: any = {}){
+    if (!setInCollection) throw new ServerError()
+
+    const orderPreferences = (data: any[]) => {
+        return data.sort((a, b) => a.question.id - b.question.id)
+    }
+
+    return  async (id: number) => {
+        const prisma = DbConnection.prisma
+        const travel = await prisma.travel.findUnique({ where: { id }, 
+            select: {
+                id: true,
+                seats: true,
+                status: true,
+                description: true,
+                passengerReview: { select: {
+                    rating: true,
+                    comment: true,
+                    createdAt: true,
+                  updatedAt: true
+                }},
+                driverReview: { select: {
+                    rating: true,
+                    comment: true,
+                    createdAt: true,
+                  updatedAt: true
+                }},
+                route: {
+                    select: {
+                        id: true,
+                        price: true,
+                        distance: true,
+                        duration: true,
+                        departureDate: true,
+                        departureTime: true,
+                        stops: true,
+                        trip: {
+                            select: {
+                                status: true,
+                                departureDate: true,
+                                departureTime: true,
+                                user: {
+                                    select: {
+                                        id: true,
+                                        avatar: true,
+                                        firstName: true,
+                                        lastName: true,
+                                        phoneNumber: true,
+                                        rating: true,
+                                        passengerReviews: { select: {
+                                            rating: true,
+                                            comment: true,
+                                            createdAt: true,
+                                            updatedAt: true
+                                        }},
+                                        driverReviews: { select: {
+                                            rating: true,
+                                            comment: true,
+                                            createdAt: true,
+                                            updatedAt: true
+                                        }},
+                                        preferences: {
+                                            select: {
+                                                question: {
+                                                    select: {
+                                                        id: true,
+                                                        value: true,
+                                                    }
+                                                },
+                                                answer: {
+                                                    select: {
+                                                        id: true,
+                                                        index: true,
+                                                        value: true,
+                                                    }
+                                                }
+                                            }
+                                        },
+                                    }
+                                }, vehicle: {
+                                    select: {
+                                        id: true,
+                                        numberPlate: true,
+                                        model: true,
+                                        type: true,
+                                        color: true
+                                    }
+                                },
+                            }
+                        }
+                    }
+                },
+                user: {
+                    select: {
+                        id: true,
+                        avatar: true,
+                        firstName: true,
+                        lastName: true,
+                        phoneNumber: true,
+                    }
+                },
+                createdAt: true
+            }
+        })
+        const { trip, ...route } = travel.route
+        const { user, vehicle, ..._trip }: any = trip
+        const allReviews: any[] = user.passengerReviews.concat(user.driverReviews)
+        user.reviews = allReviews.sort((a, b) =>  b.createdAt - a.createdAt)
+        user.preferences =  orderPreferences(user.preferences)
+        delete user.driverReviews
+        delete user.passengerReviews
+
+       const  data ={
+            id,
+            seats: travel.seats,
+            status: travel.status,
+            description: travel.description,
+            createdAt: travel.createdAt,
+            passengerReview: travel.passengerReview,
+            driverReview: travel.driverReview,
+            route,
+            trip: _trip,
+            driver: user,
+            user: travel.user,
+            vehicle
+        }
+        return await setInCollection('users', travel.user.id.toString(), 'travels', id.toString() , data)
+    }
+}

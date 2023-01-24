@@ -1,5 +1,5 @@
 import { PaymentDb, RouteDb, TravelDb } from "../../../db"
-import { saveProfile } from "../../services/firebase"
+import { saveProfile, saveTravel, saveTrip } from "../../services/firebase"
 import { notifyUser } from "../../services/notifications"
 // import { DbConnection } from "../../../utils/helpers"
 // import { getPaymentState } from "../../services/payment"
@@ -21,10 +21,10 @@ const addTravel = makeAdd({ travelDb, routeDb, paymentDb })
 const editTravel = makeEdit({ travelDb })
 const listTravels = makeListItems({ travelDb })
 const listTravelInfos = makeListItemInfos({ travelDb })
-const removeTravel = makeRemove({ travelDb, notifyUser })
-const confirmPayment = makeConfirmPayment({ saveProfile, notifyUser })
-const rateDriver = makeRateDriver({ saveProfile, notifyUser })
-const ratePassenger = makeRatePassenger({ saveProfile, notifyUser })
+const removeTravel = makeRemove({ travelDb, notifyUser, saveTrip, saveTravel })
+const confirmPayment = makeConfirmPayment({ saveProfile, notifyUser, saveTravel, saveTrip })
+const rateDriver = makeRateDriver({ saveProfile, notifyUser, saveTravel, saveTrip })
+const ratePassenger = makeRatePassenger({ saveProfile, notifyUser, saveTravel, saveTrip })
 
 export {
     addTravel,

@@ -3,9 +3,11 @@ import { DbConnection } from "../../../utils/helpers"
 
 export default ({
     notifyUser,
-    addTask
+    addTask,
+    saveTrip,
+    saveTravel
 }) => {
-    if (!notifyUser || !addTask) throw new ServerError()
+    if (!notifyUser || !addTask || !saveTrip || !saveTravel) throw new ServerError()
 
     const reformateDate = (date: string) => {
         return date.split("-").reverse().join("-")
@@ -30,11 +32,15 @@ export default ({
             notifyUser({ id: userId, titleRef: { text: 'notification.startTrip.title'}, messageRef: { text: 'notification.startTrip.message'}, cover: null, data: { type: 'trip', id}, lang: 'fr' })
            const routesIds = routes.map( route => route.id)
            const travels = await prisma.travel.findMany({ where: { routeId: { in: routesIds }, status: 2}, select: {id: true, userId: true}})
-           travels.forEach(({id,  userId}) =>  notifyUser({ id: userId, titleRef: { text: 'notification.startTravel.title'}, messageRef: { text: 'notification.startTravel.message'}, cover: null, data: { type: 'travel', id}, lang: 'fr' }))            // add finish task
+           travels.forEach(({id,  userId}) =>  {
+            notifyUser({ id: userId, titleRef: { text: 'notification.startTravel.title'}, messageRef: { text: 'notification.startTravel.message'}, cover: null, data: { type: 'travel', id}, lang: 'fr' })
+            saveTravel(id)
+           })            // add finish task
            const formatedDate = reformateDate(departureDate) 
            const date = new Date(formatedDate + ' ' + departureTime)
             const timer = getNextDay(date)
             await addTask({ path: 'trip-finish', timer, params: { id }})
+            saveTrip(id)
             const message = { text: "response.edit" }
             return { message }
         })

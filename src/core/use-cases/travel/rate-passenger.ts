@@ -3,9 +3,11 @@ import { DbConnection } from "../../../utils/helpers"
 
 export default  ({
     saveProfile,
+    saveTravel,
+    saveTrip,
     notifyUser
 }: any = {}) => {
-    if (!saveProfile || !notifyUser) throw new ServerError()
+    if (!saveProfile || !saveTravel || !saveTrip || !notifyUser) throw new ServerError()
     return ({
         travelId,
         rating,
@@ -39,6 +41,8 @@ export default  ({
                 await prisma.user.update({ where: {id: userId}, data: { rating: Number(averageRating.toFixed(1))}})
                 saveProfile(userId)
             }
+            saveTravel(travelId)
+            saveTrip(tripId)
             notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title'}, messageRef: { text: 'notification.rateTravelDriver.message'}, cover: null, data: { type: 'travel', id: travelId}, lang: 'fr' })
             const message = { text: "response.edit"}
             return { message }

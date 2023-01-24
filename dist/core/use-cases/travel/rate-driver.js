@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-exports.default = ({ saveProfile, notifyUser } = {}) => {
-    if (!saveProfile || !notifyUser)
+exports.default = ({ saveProfile, saveTravel, saveTrip, notifyUser } = {}) => {
+    if (!saveProfile || !saveTravel || !saveTrip || !notifyUser)
         throw new errors_1.ServerError();
     return ({ travelId, rating, comment }) => {
         if (!travelId)
@@ -42,6 +42,8 @@ exports.default = ({ saveProfile, notifyUser } = {}) => {
                 yield prisma.user.update({ where: { id: userId }, data: { rating: Number(averageRating.toFixed(1)) } });
                 saveProfile(userId);
             }
+            saveTravel(travelId);
+            saveTrip(route.trip.id);
             notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title' }, messageRef: { text: 'notification.rateTravelDriver.message' }, cover: null, data: { type: 'travel', id: travelId }, lang: 'fr' });
             const message = { text: "response.edit" };
             return { message };

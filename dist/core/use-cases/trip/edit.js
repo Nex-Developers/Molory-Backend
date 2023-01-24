@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-function makeEdit({ tripDb } = {}) {
-    if (!tripDb)
+function makeEdit({ tripDb, saveTrip } = {}) {
+    if (!tripDb || !saveTrip)
         throw new errors_1.ServerError();
     return ({ id, description } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!id)
@@ -11,6 +11,7 @@ function makeEdit({ tripDb } = {}) {
         if (!description)
             throw new errors_1.MissingParamError('description');
         yield tripDb.updateOne({ where: { id }, data: { description } });
+        saveTrip(id);
         const message = { text: "response.edit" };
         return { message };
     });

@@ -1,19 +1,38 @@
-import { MissingParamError, ServerError } from "../../../utils/errors"
+import { MissingParamError } from "../../../utils/errors"
+import { DbConnection } from "../../../utils/helpers"
 
-export default function makeListItemInfos({
-    routeDb
-}: any = {}) {
-    if (!routeDb) throw new ServerError()
+export default function makeListItemInfos() {
     return async ({
         id
     }: any = {}) => {
+        const prisma = DbConnection.prisma
         if (!id) throw new MissingParamError('id')
 
-        const data = await routeDb.findFirst({ 
+        const res = await prisma.route.findUnique({ 
             where: {
                 id
             }, 
             select: {
+                id: true,
+                departureDate: true,
+                departureTime: true,
+                distance: true,
+                duration: true,
+                price: true,
+                fees: true,
+                principal: true,
+                remainingSeats: true,
+                stops: {
+                    select: {
+                        id: true,
+                        type: true,
+                        principal: true,
+                        longitude: true,
+                        latitude: true,
+                        address: true,
+                        town: true
+                    }
+                },
                 trip:{
                     select: {
                         id: true,
@@ -25,30 +44,68 @@ export default function makeListItemInfos({
                         user: {
                             select: {
                                 id: true,
-                                avatar:true,
-                                lastName: true,
+                                avatar: true,
                                 firstName: true,
-                                gender: true,
-                                idCardStatus: true,
-                                driverLicenseStatus: true,
+                                lastName: true,
+                                phoneNumber: true,
                                 rating: true,
-                                preferences: true
+                                passengerReviews: { select: {
+                                    rating: true,
+                                    comment: true,
+                                    createdAt: true,
+                                    updatedAt: true
+                                }},
+                                driverReviews: { select: {
+                                    rating: true,
+                                    comment: true,
+                                    createdAt: true,
+                                    updatedAt: true
+                                }},
+                                preferences: {
+                                    select: {
+                                        question: {
+                                            select: {
+                                                id: true,
+                                                value: true,
+                                            }
+                                        },
+                                        answer: {
+                                            select: {
+                                                id: true,
+                                                index: true,
+                                                value: true,
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         },
                         vehicle: {
                             select: {
                                 id: true,
-                                type: true,
-                                color: true,
                                 numberPlate: true,
-                                registrationDoc: true
+                                model: true,
+                                type: true,
+                                color: true
                             }
                         }
                     }
                 }, 
-                stops: true
             }
         })
+
+        const data = {
+            id: res.id,
+            remainingSeats: res.remainingSeats,
+            departureDate: res.departureDate,
+            departureTime: res.departureTime,
+            distance: res.distance,
+            duration: res.duration,
+            price: res.price + res.fees,
+            stops: res.stops,
+            driver: res.trip.user,
+            vehicle: res.trip.vehicle
+        }
         return { data }
     } 
 }

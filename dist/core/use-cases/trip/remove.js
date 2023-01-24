@@ -4,8 +4,8 @@ const tslib_1 = require("tslib");
 const unauthorized_error_1 = require("./../../../utils/errors/unauthorized-error");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-function makeRemove({ tripDb, notifyUser } = {}) {
-    if (!tripDb || !notifyUser)
+function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
+    if (!tripDb || !notifyUser || !saveTrip || !saveTravel)
         throw new errors_1.ServerError();
     const getLast48hours = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2, date.getHours(), date.getMinutes());
@@ -82,12 +82,14 @@ function makeRemove({ tripDb, notifyUser } = {}) {
                             yield prisma.payment.update({ where: { id: payment.id }, data: { status: 0, deletedAt: new Date() } });
                             yield prisma.refund.create({ data: { id: payment.id, amount: payment.amount, user: { connect: { id: travel.userId } }, travel: { connect: { id: travel.id } } } });
                             notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTrip.title' }, messageRef: { text: 'notification.removeTrip.message' }, cover: null, data: { type: 'travel', id: travel.id }, lang: 'fr' });
+                            saveTravel(travel.id);
                         }
                         return true;
                     }));
                     return Promise.all(promises2).then(() => true);
                 }));
                 return Promise.all(promises).then(() => {
+                    saveTrip(id);
                     const message = { text: 'response.remove' };
                     return { message };
                 });
