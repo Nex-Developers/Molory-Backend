@@ -10,7 +10,9 @@ exports.default = () => {
     router.route('/withdrawal')
         .get(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(withdrawal_1.getWithdrawalsController))
         .post(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(withdrawal_1.postWithdrawalcontroller));
-    router.post('/withdrawal-confirmation', (0, adapters_1.expressRouterAdapter)(withdrawal_1.postConfirmwithdrawalcontroller));
+    router.route('/withdrawal-confirmation')
+        .get((req, res) => res.send('success'))
+        .post((0, adapters_1.expressRouterAdapter)(withdrawal_1.postConfirmwithdrawalcontroller));
     return router;
 };
 //# sourceMappingURL=withdrawal.js.map

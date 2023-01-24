@@ -17,6 +17,8 @@ export default () => {
     router.route('/withdrawal')
     .get(langCheck, authCheck, driverCheck, expressRouterAdapter(getWithdrawalsController))
     .post(langCheck, authCheck, driverCheck, expressRouterAdapter(postWithdrawalcontroller))
-    router.post('/withdrawal-confirmation', expressRouterAdapter(postConfirmwithdrawalcontroller))
+    router.route('/withdrawal-confirmation')
+    .get((req, res) =>  res.send('success') )
+    .post(expressRouterAdapter(postConfirmwithdrawalcontroller))
     return router
 }
