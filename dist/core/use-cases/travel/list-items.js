@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
+const helpers_1 = require("../../../utils/helpers");
 function makeListItems({ travelDb } = {}) {
     if (!travelDb)
         throw new errors_1.ServerError();
@@ -9,6 +10,7 @@ function makeListItems({ travelDb } = {}) {
         return data.sort((a, b) => a.question.id - b.question.id);
     };
     return ({ userId, startAt, limit } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        const prisma = helpers_1.DbConnection.prisma;
         if (!startAt)
             startAt = 0;
         if (!limit)
@@ -16,9 +18,7 @@ function makeListItems({ travelDb } = {}) {
         const where = {};
         if (userId)
             where.userId = userId;
-        const res = yield travelDb.findMany({
-            startAt,
-            limit,
+        const res = yield prisma.travel.findMany({
             where,
             orderBy: {
                 id: 'desc'
@@ -115,6 +115,7 @@ function makeListItems({ travelDb } = {}) {
                         phoneNumber: true,
                     }
                 },
+                refund: true,
                 createdAt: true
             }
         });
@@ -141,7 +142,8 @@ function makeListItems({ travelDb } = {}) {
                 trip: _trip,
                 driver: user,
                 user: item.user,
-                vehicle
+                vehicle,
+                refund: item.refund
             });
         });
         return { data };

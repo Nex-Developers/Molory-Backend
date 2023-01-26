@@ -1,4 +1,5 @@
 import { ServerError } from "../../../utils/errors"
+import { DbConnection } from "../../../utils/helpers"
 
 export default function makeListItems({
     travelDb
@@ -12,13 +13,13 @@ export default function makeListItems({
         startAt,
         limit
     }: any = {}) => {
+        const prisma = DbConnection.prisma
+
         if (!startAt) startAt = 0
         if (!limit) limit = 100
         const where: any = {}
         if (userId) where.userId = userId
-        const res = await travelDb.findMany({
-            startAt,
-            limit,
+        const res = await prisma.travel.findMany({
             where,
             orderBy: {
                 id: 'desc'
@@ -115,6 +116,7 @@ export default function makeListItems({
                         phoneNumber: true,
                     }
                 },
+                refund: true,
                 createdAt: true
             }
         })
@@ -122,7 +124,7 @@ export default function makeListItems({
         
         res.forEach(item => {
             const { trip, ...route } = item.route
-            const { user, vehicle, ..._trip } = trip
+            const { user, vehicle, ..._trip }: any = trip
             const allReviews: any[] = user.passengerReviews.concat(user.driverReviews)
             user.reviews = allReviews.sort((a, b) =>  b.createdAt - a.createdAt)
             user.preferences =  orderPreferences(user.preferences)
@@ -143,7 +145,8 @@ export default function makeListItems({
                 trip: _trip,
                 driver: user,
                 user: item.user,
-                vehicle
+                vehicle,
+                refund: item.refund
             })
         })
 

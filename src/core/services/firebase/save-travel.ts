@@ -96,6 +96,7 @@ export default function makeSaveNotification({
                         }
                     }
                 },
+                refund: true,
                 user: {
                     select: {
                         id: true,
@@ -130,7 +131,8 @@ export default function makeSaveNotification({
             trip: _trip,
             driver: user,
             user: travel.user,
-            vehicle
+            vehicle,
+            refund: travel.refund
         }
         return await setInCollection('users', travel.user.id.toString(), 'travels', id.toString() , data)
     }
