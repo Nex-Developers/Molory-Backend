@@ -18,11 +18,11 @@ export default function makeAdd({
         if (!prefix) throw new MissingParamError('prefix')
         const { amount, status, user} = await prisma.refund.findUnique({ where: { id }, select: { amount: true, status: true, user: { select: { lastName: true, firstName: true, email: true}}}})
         const { firstName, lastName, email } = user
-        if(status !== 3) throw new AlreadyDoneError('some time')
+        if(status !== 4) throw new AlreadyDoneError('some time')
         await addCinetpayContacts({ firstName, lastName, email, phone, prefix})
         const transactionId = await cinetpayTransfert({ id, amount, phone, prefix, path: 'refund-confirmation' })
         let newStatus = 3
-        if(!transactionId) newStatus = 2
+        if(transactionId) newStatus = 2
         await prisma.refund.update({ where: { id }, data: { transactionId, status: newStatus }})
         const message = { text: "response.add" }
         return { message, id }

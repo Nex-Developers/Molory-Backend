@@ -15,12 +15,12 @@ function makeAdd({ addCinetpayContacts, cinetpayTransfert } = {}) {
             throw new errors_1.MissingParamError('prefix');
         const { amount, status, user } = yield prisma.refund.findUnique({ where: { id }, select: { amount: true, status: true, user: { select: { lastName: true, firstName: true, email: true } } } });
         const { firstName, lastName, email } = user;
-        if (status !== 3)
+        if (status !== 4)
             throw new already_done_error_1.AlreadyDoneError('some time');
         yield addCinetpayContacts({ firstName, lastName, email, phone, prefix });
         const transactionId = yield cinetpayTransfert({ id, amount, phone, prefix, path: 'refund-confirmation' });
         let newStatus = 3;
-        if (!transactionId)
+        if (transactionId)
             newStatus = 2;
         yield prisma.refund.update({ where: { id }, data: { transactionId, status: newStatus } });
         const message = { text: "response.add" };
