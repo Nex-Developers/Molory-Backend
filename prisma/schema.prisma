@@ -364,7 +364,7 @@ model Refund {
   createdAt    DateTime  @default(now())
   validatedAt  DateTime?
   deletedAt      DateTime?
-  status       Int       @default(3) //3-available 2-In process 1-success 0-canceled
+  status       Int       @default(4) //available   //3-waiting 2-In process 1-success 0-canceled
   user         User      @relation(fields: [userId], references: [id])
   travel        Travel    @relation(fields: [travelId], references: [id])
 

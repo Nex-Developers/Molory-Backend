@@ -18,8 +18,11 @@ function makeAdd({ addCinetpayContacts, cinetpayTransfert } = {}) {
         if (status !== 3)
             throw new already_done_error_1.AlreadyDoneError('some time');
         yield addCinetpayContacts({ firstName, lastName, email, phone, prefix });
-        yield cinetpayTransfert({ id, amount, phone, prefix, path: 'refund-confirmation' });
-        yield prisma.refund.update({ where: { id }, data: { status: 2 } });
+        const transactionId = yield cinetpayTransfert({ id, amount, phone, prefix, path: 'refund-confirmation' });
+        let newStatus = 3;
+        if (!transactionId)
+            newStatus = 2;
+        yield prisma.refund.update({ where: { id }, data: { transactionId, status: newStatus } });
         const message = { text: "response.add" };
         return { message, id };
     });

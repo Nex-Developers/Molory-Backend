@@ -20,8 +20,10 @@ export default function makeAdd({
         const { firstName, lastName, email } = user
         if(status !== 3) throw new AlreadyDoneError('some time')
         await addCinetpayContacts({ firstName, lastName, email, phone, prefix})
-        await cinetpayTransfert({ id, amount, phone, prefix, path: 'refund-confirmation' })
-        await prisma.refund.update({ where: { id }, data: {  status: 2 }})
+        const transactionId = await cinetpayTransfert({ id, amount, phone, prefix, path: 'refund-confirmation' })
+        let newStatus = 3
+        if(!transactionId) newStatus = 2
+        await prisma.refund.update({ where: { id }, data: { transactionId, status: newStatus }})
         const message = { text: "response.add" }
         return { message, id }
     } 
