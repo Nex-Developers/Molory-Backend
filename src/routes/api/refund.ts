@@ -7,18 +7,18 @@ import {
 } from "../../configs/middlewares"
 
 import { 
-  getWithdrawalsController,
-  postWithdrawalcontroller,
-  postConfirmwithdrawalcontroller 
-} from "../../controllers/withdrawal"
+  getRefundsController,
+  postConfirmRefundcontroller,
+  postRefundcontroller 
+} from "../../controllers/refund"
 
 export default () => {
     const router = express.Router()
-    router.route('/withdrawal')
-    .get(langCheck, authCheck, driverCheck, expressRouterAdapter(getWithdrawalsController))
-    .post(langCheck, authCheck, driverCheck, expressRouterAdapter(postWithdrawalcontroller))
-    router.route('/withdrawal-confirmation')
+    router.route('/refund')
+    .get(langCheck, authCheck, driverCheck, expressRouterAdapter(getRefundsController))
+    .post(langCheck, authCheck, driverCheck, expressRouterAdapter(postRefundcontroller))
+    router.route('/refund-confirmation')
     .get((req, res) =>  res.send('success'))
-    .post(expressRouterAdapter(postConfirmwithdrawalcontroller))
+    .post(expressRouterAdapter(postConfirmRefundcontroller))
     return router
 }

@@ -4,15 +4,15 @@ const tslib_1 = require("tslib");
 const express_1 = (0, tslib_1.__importDefault)(require("express"));
 const adapters_1 = require("../../configs/adapters");
 const middlewares_1 = require("../../configs/middlewares");
-const withdrawal_1 = require("../../controllers/withdrawal");
+const refund_1 = require("../../controllers/refund");
 exports.default = () => {
     const router = express_1.default.Router();
-    router.route('/withdrawal')
-        .get(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(withdrawal_1.getWithdrawalsController))
-        .post(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(withdrawal_1.postWithdrawalcontroller));
-    router.route('/withdrawal-confirmation')
+    router.route('/refund')
+        .get(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(refund_1.getRefundsController))
+        .post(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(refund_1.postRefundcontroller));
+    router.route('/refund-confirmation')
         .get((req, res) => res.send('success'))
-        .post((0, adapters_1.expressRouterAdapter)(withdrawal_1.postConfirmwithdrawalcontroller));
+        .post((0, adapters_1.expressRouterAdapter)(refund_1.postConfirmRefundcontroller));
     return router;
 };
 //# sourceMappingURL=refund.js.map
