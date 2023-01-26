@@ -5,7 +5,7 @@ export default function makeConfirm({
     checkCinetpayTansfert,
     notifyUser
 }: any = {}) {
-    if (!checkCinetpayTansfert) throw new ServerError()
+    if (!checkCinetpayTansfert || !notifyUser) throw new ServerError()
     return async ({
         transaction_id,
         client_transaction_id,

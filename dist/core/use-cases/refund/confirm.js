@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
 function makeConfirm({ checkCinetpayTansfert, notifyUser } = {}) {
-    if (!checkCinetpayTansfert)
+    if (!checkCinetpayTansfert || !notifyUser)
         throw new errors_1.ServerError();
     return ({ transaction_id, client_transaction_id, amount, sending_status, validated_at } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         console.log(transaction_id, client_transaction_id, amount, sending_status, validated_at);
