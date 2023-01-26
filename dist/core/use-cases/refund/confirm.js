@@ -3,15 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-function makeConfirm({ checkCinetpayTansfert, notifyUser } = {}) {
-    if (!checkCinetpayTansfert || !notifyUser)
+function makeConfirm({ checkCinetpayTransfert, notifyUser } = {}) {
+    if (!checkCinetpayTransfert || !notifyUser)
         throw new errors_1.ServerError();
     return ({ transaction_id, client_transaction_id, amount, sending_status, validated_at } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         console.log(transaction_id, client_transaction_id, amount, sending_status, validated_at);
         const prisma = helpers_1.DbConnection.prisma;
         const refund = yield prisma.refund.findUnique({ where: { id: client_transaction_id } });
         if (refund.status === 2) {
-            const transactionData = yield checkCinetpayTansfert({ id: transaction_id });
+            const transactionData = yield checkCinetpayTransfert({ id: transaction_id });
             console.log(transactionData);
             if (!transactionData)
                 return;

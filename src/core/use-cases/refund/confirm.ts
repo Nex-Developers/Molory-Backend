@@ -2,10 +2,10 @@ import { ServerError } from "../../../utils/errors"
 import { DbConnection } from "../../../utils/helpers"
 
 export default function makeConfirm({
-    checkCinetpayTansfert,
+    checkCinetpayTransfert,
     notifyUser
 }: any = {}) {
-    if (!checkCinetpayTansfert || !notifyUser) throw new ServerError()
+    if (!checkCinetpayTransfert || !notifyUser) throw new ServerError()
     return async ({
         transaction_id,
         client_transaction_id,
@@ -17,7 +17,7 @@ export default function makeConfirm({
         const prisma = DbConnection.prisma
         const refund = await prisma.refund.findUnique({ where: { id:  client_transaction_id}})
         if(refund.status === 2) {
-           const transactionData = await checkCinetpayTansfert({ id: transaction_id})
+           const transactionData = await checkCinetpayTransfert({ id: transaction_id})
            console.log(transactionData)  
            if(!transactionData) return
             if(transactionData.amount !== refund.amount) {
