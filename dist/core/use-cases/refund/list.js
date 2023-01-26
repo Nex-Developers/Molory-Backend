@@ -15,9 +15,12 @@ function makeList() {
         const data = yield prisma.refund.findMany({
             where,
             select: {
+                id: true,
                 method: true,
                 amount: true,
                 accessNumber: true,
+                createdAt: true,
+                validatedAt: true,
                 status: true,
                 user: { select: {
                         id: true,
