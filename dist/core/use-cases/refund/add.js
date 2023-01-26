@@ -13,8 +13,8 @@ function makeAdd({ addCinetpayContacts, cinetpayTransfert } = {}) {
             throw new errors_1.MissingParamError('phone');
         if (!prefix)
             throw new errors_1.MissingParamError('prefix');
-        const { firstName, lastName, email } = yield prisma.user.findUnique({ where: { id }, select: { lastName: true, firstName: true, email: true } });
-        const { amount, status } = yield prisma.refund.findUnique({ where: { id }, select: { amount: true, status: true } });
+        const { amount, status, user } = yield prisma.refund.findUnique({ where: { id }, select: { amount: true, status: true, user: { select: { lastName: true, firstName: true, email: true } } } });
+        const { firstName, lastName, email } = user;
         if (status !== 3)
             throw new already_done_error_1.AlreadyDoneError('some time');
         yield addCinetpayContacts({ firstName, lastName, email, phone, prefix });

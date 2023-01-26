@@ -22,8 +22,6 @@ function makePostConfirmController({ confirmRefund }) {
             try {
                 const lang = request.lang, body = request.body, data = yield confirmRefund(Object.assign({}, body));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
-                reqLog.modelId = data.id;
-                reqLog.description += data.id;
                 helpers_1.LogManager.save(reqLog);
                 return helpers_1.HttpResponse.ok(data, lang);
             }

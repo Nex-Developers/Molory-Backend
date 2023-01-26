@@ -43,7 +43,7 @@ exports.default = ({ saveProfile, saveTravel, saveTrip, notifyUser } = {}) => {
             }
             saveTravel(travelId);
             saveTrip(tripId);
-            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title' }, messageRef: { text: 'notification.rateTravelDriver.message' }, cover: null, data: { type: 'travel', id: travelId }, lang: 'fr' });
+            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelPassenger.title' }, messageRef: { text: 'notification.rateTravelPassenger.message' }, cover: null, data: { type: 'travel', id: travelId }, lang: 'fr' });
             const message = { text: "response.edit" };
             return { message };
         }));

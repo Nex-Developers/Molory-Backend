@@ -24,8 +24,6 @@ export default function makePostConfirmController({
                 body = request.body,
                 data = await confirmRefund({...body})
                 reqLog.status = LogStatus.SUCCEEDED
-                reqLog.modelId = data.id
-                reqLog.description += data.id
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)
         } catch (err) {
