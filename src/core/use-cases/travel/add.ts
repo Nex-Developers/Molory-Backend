@@ -46,26 +46,6 @@ export default function makeAdd({
         await CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt }))
         const message = { text: "response.add" }
         return { message, payment: { id, amount, createdAt }}
-        // const { id, payment } = await travelDb.insertOne({
-        //     data: {
-        //         userId,
-        //         routeId,
-        //         seats,
-        //         description,
-        //         payment: {
-        //             create: {
-        //                 userId,
-        //                 amount: price * seats
-        //             }
-        //         }
-        //     },
-        //     include: {
-        //         payment: true
-        //     }
-        // })
-
-        // const message = { text: "response.add" }
-        // return { message, id, payment }
     }
 
 

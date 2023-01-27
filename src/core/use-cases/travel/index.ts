@@ -11,6 +11,12 @@ import makeListItems from "./list-items"
 import makeRemove from "./remove"
 import makeRateDriver from "./rate-driver"
 import makeRatePassenger from "./rate-passenger"
+import makeAskToStart from "./ask-to-start"
+import makeAskToEnd from "./ask-to-end"
+import makeConfirmStart from "./confirm-start"
+import makeConfirmEnd from "./confirm-end"
+import makeSelfConfirmEnd from "./self-confirm-end"
+import { addTask } from "../../services/task"
 
 const travelDb = new TravelDb()
 const routeDb = new RouteDb()
@@ -25,6 +31,11 @@ const removeTravel = makeRemove({ travelDb, notifyUser, saveTrip, saveTravel })
 const confirmPayment = makeConfirmPayment({ saveProfile, notifyUser, saveTravel, saveTrip })
 const rateDriver = makeRateDriver({ saveProfile, notifyUser, saveTravel, saveTrip })
 const ratePassenger = makeRatePassenger({ saveProfile, notifyUser, saveTravel, saveTrip })
+const askToStart = makeAskToStart({ notifyUser, saveTravel})
+const askToEnd = makeAskToEnd({ notifyUser, addTask ,saveTravel })
+const confirmStart = makeConfirmStart({ notifyUser, addTask, saveTravel, saveTrip })
+const confirmEnd = makeConfirmEnd({ notifyUser, addTask, saveTravel, saveTrip })
+const selfConfirmEnd = makeSelfConfirmEnd({ notifyUser, addTask, saveTravel, saveTrip })
 
 export {
     addTravel,
@@ -34,5 +45,10 @@ export {
     removeTravel,
     confirmPayment,
     rateDriver,
-    ratePassenger
+    ratePassenger,
+    askToStart,
+    askToEnd,
+    confirmStart,
+    confirmEnd,
+    selfConfirmEnd
 }

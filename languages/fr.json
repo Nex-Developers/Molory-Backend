@@ -136,6 +136,26 @@
     "refundConfirmed": {
         "title": "Retrait Confirmé",
         "message": "Votre retrait vient d'etre confirmé. Veuillez consulter votre solde Mobile Money."
+    },
+    "AskStartTravel": {
+      "title": "Confirmez le debut de Trajet",
+      "message": "Votre trajet a t'il demarrer? Sinon n'oubliez de nous laiser les raisons."
+    },
+    "AskStopTravel": {
+      "title": "Confirmez la fin du trajet",
+      "message": "Votre trajet est il arrivé à destination? Sinon n'oubliez de nous laiser les raisons."
+    },
+    "confirmTravelStarted": {
+      "title": "Bon Voyage!",
+      "message": "Vous venez de confirmer le debut de votre trajet. Molory vous souhaite un bon voyage!"
+    },
+    "confirmTravelEnded": {
+      "title": "Voyage terminé",
+      "message": "Vous venez de confirmer la fin de votre voyage. Molory vous souhaite la binevenue."
+    },
+    "selfConfirmTravelEnded": {
+      "title": "Voyage terminé",
+      "message": "Suite a aucun signalement constaté 6h après rapport á l'heure de fin du trajet. Molory a validé votre reservation."
     }
 
   }

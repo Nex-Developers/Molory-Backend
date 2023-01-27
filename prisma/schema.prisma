@@ -260,7 +260,7 @@ model Travel {
   seats           Int
   departureAddress String?
   arrivalAddress String?
-  status          Int              @default(3)
+  status          Int              @default(5) //5-active 4-waiting for start confirm 3-started 2-waiting for end confirm 1-finished 0-canceled -1-abadoned -2-contested
   description     String?
   createdAt       DateTime         @default(now())
   deletedAt       DateTime?
@@ -269,6 +269,8 @@ model Travel {
   canceledAt      DateTime?
   canceledBy      String?
   cancelReason    String?
+  notStartedReason String?
+  notEndedReason String?
   // driverRating    Int?
   // passengerRating Int?
   rating          Float?           

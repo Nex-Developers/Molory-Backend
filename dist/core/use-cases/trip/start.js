@@ -16,18 +16,12 @@ exports.default = ({ notifyUser, addTask, saveTrip, saveTravel }) => {
         console.log(' Start trip', +id);
         const prisma = helpers_1.DbConnection.prisma;
         return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
-            const { userId, departureDate, departureTime, status, startedAt, routes } = yield prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureDate: true, departureTime: true, routes: { select: { id: true } } } });
+            const { userId, departureDate, departureTime, status, startedAt } = yield prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureDate: true, departureTime: true } });
             if (status !== 3)
                 throw new errors_1.AlreadyDoneError(startedAt === null || startedAt === void 0 ? void 0 : startedAt.toString());
             yield prisma.trip.update({ where: { id }, data: { status: 2, startedAt: new Date() } });
             yield prisma.travel.updateMany({ where: { route: { tripId: id }, status: { gt: 1 } }, data: { status: 2 } });
             notifyUser({ id: userId, titleRef: { text: 'notification.startTrip.title' }, messageRef: { text: 'notification.startTrip.message' }, cover: null, data: { type: 'trip', id }, lang: 'fr' });
-            const routesIds = routes.map(route => route.id);
-            const travels = yield prisma.travel.findMany({ where: { routeId: { in: routesIds }, status: 2 }, select: { id: true, userId: true } });
-            travels.forEach(({ id, userId }) => {
-                notifyUser({ id: userId, titleRef: { text: 'notification.startTravel.title' }, messageRef: { text: 'notification.startTravel.message' }, cover: null, data: { type: 'travel', id }, lang: 'fr' });
-                saveTravel(id);
-            });
             const formatedDate = reformateDate(departureDate);
             const date = new Date(formatedDate + ' ' + departureTime);
             const timer = getNextDay(date);
