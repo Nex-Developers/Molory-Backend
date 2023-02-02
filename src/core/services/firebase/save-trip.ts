@@ -3,10 +3,10 @@ import { DbConnection } from "../../../utils/helpers"
 
 export default function makeSaveNotification({
     setInCollection
-}: any = {}){
+}: any = {}) {
     if (!setInCollection) throw new ServerError()
 
-    return  async (id: number) => {
+    return async (id: number) => {
         const prisma = DbConnection.prisma
         const res = await prisma.trip.findUnique({
             where: {
@@ -56,18 +56,24 @@ export default function makeSaveNotification({
                             select: {
                                 id: true,
                                 seats: true,
-                                passengerReview: { select: {
-                                    rating: true,
-                                    comment: true,
-                                    createdAt: true,
-                                  updatedAt: true
-                                }},
-                                driverReview: { select: {
-                                    rating: true,
-                                    comment: true,
-                                    createdAt: true,
-                                  updatedAt: true
-                                }},
+                                passengerReview: {
+                                    select: {
+                                        rating: true,
+                                        comment: true,
+                                        createdAt: true,
+                                        updatedAt: true,
+                                        by: true
+                                    }
+                                },
+                                driverReview: {
+                                    select: {
+                                        rating: true,
+                                        comment: true,
+                                        createdAt: true,
+                                        updatedAt: true,
+                                        by: true
+                                    }
+                                },
                                 status: true,
                                 createdAt: true,
                                 user: {
@@ -88,7 +94,7 @@ export default function makeSaveNotification({
         })
         const passengers = []
         const route = res.routes.find(route => route.principal)
-       const promises = res.routes.map(async  item => {
+        const promises = res.routes.map(async item => {
             const route = {
                 id: item.id,
                 distance: item.distance,
@@ -99,18 +105,19 @@ export default function makeSaveNotification({
                 fees: item.fees,
                 stops: item.stops,
             }
-            const promises = item.travels.map( booking =>{
-                
+            const promises = item.travels.map(booking => {
+
                 const user = booking.user
-                const travel = { id: booking.id, route, seats: booking.seats,
-                     passengerReview: booking.passengerReview,
-                      driverReview: booking.driverReview,
-                      status: booking.status,
-                      createdAt: booking.createdAt
-                    }
-               return  passengers.push({ user, travel})
+                const travel = {
+                    id: booking.id, route, seats: booking.seats,
+                    passengerReview: booking.passengerReview,
+                    driverReview: booking.driverReview,
+                    status: booking.status,
+                    createdAt: booking.createdAt
+                }
+                return passengers.push({ user, travel })
             })
-            return await  Promise.all(promises)
+            return await Promise.all(promises)
         })
         await Promise.all(promises)
         delete route.travels
@@ -126,7 +133,7 @@ export default function makeSaveNotification({
             vehicle: res.vehicle,
             passengers
         }
-        return await setInCollection('users', res.user.id.toString(), 'trips', id.toString() , data)
+        return await setInCollection('users', res.user.id.toString(), 'trips', id.toString(), data)
 
     }
 }

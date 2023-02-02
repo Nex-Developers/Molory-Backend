@@ -28,7 +28,7 @@ export default ({
             const {  userId, status, route  } = await prisma.travel.findUnique({ where: { id }, select: { userId: true, status: true, route: true}})
             if (status !== 3) throw new AlreadyDoneError('unkown date')
             await prisma.travel.update({ where: { id}, data: { status: 2 }})
-             notifyUser({ id: userId, titleRef: { text: 'notification.AskStopTravel.title'}, messageRef: { text: 'notification.AskStopTravel.message'}, cover: null, data: { type: 'travel', id}, lang: 'fr' })
+             notifyUser({ id: userId, titleRef: { text: 'notification.AskStopTravel.title'}, messageRef: { text: 'notification.AskStopTravel.message'}, cover: null, data: { path: 'end-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
             await saveTravel(id)
             const formatedDate = reformateDate(route.departureDate)
             const date = new Date(formatedDate + ' ' + route.departureTime)

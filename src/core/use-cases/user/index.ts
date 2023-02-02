@@ -1,8 +1,8 @@
 
-import { PublicationDb, UserDb, WalletDb } from "../../../db"
+import { UserDb, WalletDb } from "../../../db"
 import { askToConfirmEmail, isValidEmail } from "../../services/email"
 import { saveProfile } from "../../services/firebase"
-import { notifyDevice } from "../../services/notifications"
+import { notifyUser } from "../../services/notifications"
 import { hashPassword } from "../../services/password"
 import { generateToken, saveTmpToken } from "../../services/token"
 import { deleteAvatarFile } from "../../services/upload"
@@ -24,7 +24,6 @@ import makeValidateUserIdCard from "./validate-user-id-card"
 
 const userDb = new UserDb()
 const walletDb = new WalletDb()
-const publicationDb = new PublicationDb()
 
 const listUsers = makeListUsers({ userDb })
 const listToValidateUsers = makeListToValidateUsers({ userDb })
@@ -38,8 +37,8 @@ const unblockUser = makeUnblockUser({ userDb })
 const listRemovedUsers = makeListRemovedUsers({ userDb })
 const listRemovedUserInfos = makeListRemovedUserInfos({ userDb })
 const editUserAvatar = makeEditUserAvatar({ userDb, deleteAvatarFile })
-const validateUserIdCard = makeValidateUserIdCard({ userDb, publicationDb, notifyDevice, walletDb, saveProfile })
-const validateDriverLicense = makeValidateDriverLicense({ userDb, publicationDb, notifyDevice, walletDb, saveProfile })
+const validateUserIdCard = makeValidateUserIdCard({ userDb, notifyUser, walletDb, saveProfile })
+const validateDriverLicense = makeValidateDriverLicense({ userDb, notifyUser, walletDb, saveProfile })
 const rateUser = makeRateUser({ userDb })
 
 export {

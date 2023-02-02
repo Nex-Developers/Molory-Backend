@@ -38,11 +38,11 @@ export default ({
             await prisma.transfer.create({ data: { tripId: id, userId, amount: incomes, commission }})
             await prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: incomes }}})
             // notify driver that his trip is finished and his money is provided
-            notifyUser({ id: userId, titleRef: { text: 'notification.finishTrip.title'}, messageRef: { text: 'notification.finishTrip.message'}, cover: null, data: { type: 'trip', id}, lang: 'fr' })
+            notifyUser({ id: userId, titleRef: { text: 'notification.finishTrip.title'}, messageRef: { text: 'notification.finishTrip.message'}, cover: null,  data: { path: 'end-trip', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'trip' })
             // xxxxx notify passengers the trip is finished and they are allowed to rate the driver
-            routes.forEach(route => route.travels.forEach(({id,  userId, status}) => {
+            routes.forEach(route => route.travels.forEach(({id, status}) => {
              if(status == 2) {
-                notifyUser({ id: userId, titleRef: { text: 'notification.finishTravel.title'}, messageRef: { text: 'notification.finishTravel.message'}, cover: null, data: { type: 'travel', id}, lang: 'fr' })
+                // notifyUser({ id: userId, titleRef: { text: 'notification.finishTravel.title'}, messageRef: { text: 'notification.finishTravel.message'}, cover: null, data: { type: 'travel', id}, lang: 'fr' })
                 saveTravel(id)
             }
             }))     

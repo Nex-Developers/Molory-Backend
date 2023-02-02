@@ -38,7 +38,7 @@ export default ({
                 const timer = getCalculatedtDate(date, route.duration * 60)
                 console.log(timer)
                 await addTask({ path: 'ask-travel-finish', timer, params: { id }})
-                notifyUser({ id: userId, titleRef: { text: 'notification.confirmTravelStarted.title'}, messageRef: { text: 'notification.confirmTravelStarted.message'}, cover: null, data: { type: 'travel', id}, lang: 'fr' })
+                notifyUser({ id: userId, titleRef: { text: 'notification.confirmTravelStarted.title'}, messageRef: { text: 'notification.confirmTravelStarted.message'}, cover: null, data: { path: 'start-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
 
            } else {
             // updatewith reason

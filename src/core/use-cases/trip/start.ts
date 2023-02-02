@@ -29,7 +29,7 @@ export default ({
             await prisma.trip.update({ where: { id }, data: { status: 2, startedAt: new Date() }})
             await prisma.travel.updateMany({ where: { route: { tripId: id }, status: { gt: 1 }}, data: { status: 2 }})
             // notify driver that his trip shall start
-            notifyUser({ id: userId, titleRef: { text: 'notification.startTrip.title'}, messageRef: { text: 'notification.startTrip.message'}, cover: null, data: { type: 'trip', id}, lang: 'fr' })
+            notifyUser({ id: userId, titleRef: { text: 'notification.startTrip.title'}, messageRef: { text: 'notification.startTrip.message'}, cover: null,  data: { path: 'start-trip', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'trip' })
           // add finish task
            const formatedDate = reformateDate(departureDate) 
            const date = new Date(formatedDate + ' ' + departureTime)

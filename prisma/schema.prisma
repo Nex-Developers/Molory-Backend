@@ -285,6 +285,7 @@ model Travel {
 model PassengerReview {
   travelId  Int       @id
   userId Int
+  by String?
   tripId Int
   rating    Float?
   comment   String?
@@ -300,6 +301,7 @@ model DriverReview {
   travelId  Int       @id
   tripId    Int 
   userId    Int
+  by String?
   rating    Float?
   comment   String?
   createdAt DateTime  @default(now())

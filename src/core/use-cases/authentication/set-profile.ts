@@ -3,11 +3,11 @@ import { ServerError, MissingParamError } from "../../../utils/errors"
 
 export default function makeSetProfile({
     userDb,
-    notifyDevice,
+    notifyUser,
     publicationDb,
     saveProfile
 }: any = {}) {
-    if (!userDb || !publicationDb || !notifyDevice || !saveProfile) throw new ServerError()
+    if (!userDb || !publicationDb || !notifyUser || !saveProfile) throw new ServerError()
     return async function setProfile({
         id,
         lang,
@@ -33,25 +33,10 @@ export default function makeSetProfile({
             return { message }
         }
         const res: any = { id, firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang }
-        // const deviceTokens = user.devices.map(device => device.token)
-        // const { title, body, data, cover } = await notifyDevice({ deviceTokens, titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: null, lang: 'fr' })
-        // await publicationDb.insertOne({
-        //     data: {
-        //         title,
-        //         message: body,
-        //         data: data ? JSON.stringify(data) : null,
-        //         picture: cover,
-        //         notifications: {
-        //             create: {
-        //                user: {
-        //                     connect: { id: user.id}
-        //                }
-        //             }
-        //         }
-        //     }
-        // })
+
         user = await userDb.updateOne({ where: { id }, data: res })
         saveProfile(id)
+        notifyUser({ id, titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: { path: 'complete-profile', id: id.toString(), res: 'SUCCESS' } , lang: 'fr', type:  'authentication' })
         user.birthDay =  moment(user.birthDay).format('DD-MM-YYYY')
         const message = { text: 'auth.message.profileUpdated' }
         return { message, user }

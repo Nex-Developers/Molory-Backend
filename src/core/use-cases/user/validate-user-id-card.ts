@@ -4,12 +4,11 @@ export default function makeValidateUserIdCard({
     userDb,
     walletDb,
     saveProfile,
-    notifyDevice,
-    publicationDb
+    notifyUser,
     // sendMail,
     // sendSms
 }: any = {}) {
-    if (!userDb || !walletDb || !saveProfile || !notifyDevice || !publicationDb) throw new ServerError()
+    if (!userDb || !walletDb || !saveProfile || !notifyUser ) throw new ServerError()
     return async function ({
         userId,
         response,
@@ -36,27 +35,7 @@ export default function makeValidateUserIdCard({
             const wallet = await walletDb.findFirst({ where: { id: userId } })
             if (!wallet) await walletDb.insertOne({ data: { id: userId } })
             const deviceTokens = user.devices.map(device => device.token)  
-            const { title, body, data, cover } = await notifyDevice({ deviceTokens, titleRef: {text: 'notification.driverActivated.title'}, messageRef:{ text: 'notification.driverActivated.message', params: { name: user.lastName}  }, cover: null, data: null, lang: 'fr' })
-                await publicationDb.insertOne({
-                    data: {
-                        title,
-                        message: body,
-                        data: data ? JSON.stringify(data) : null,
-                        picture: cover,
-                        notifications: {
-                            create: {
-                                user: {
-                                    connect: { id: userId }
-                                }
-                            }
-                        }
-                    }
-                })
-            // await sendMail({
-            //     to: user.email,
-            //     subject: "Your account has been validated",
-            //     text: `Your account has been validated`
-            // })
+            notifyUser({ deviceTokens, titleRef: {text: 'notification.driverActivated.title'}, messageRef:{ text: 'notification.driverActivated.message', params: { name: user.lastName}  }, cover: null,  data: { path: 'validate-id-card', id: userId.toString(), res:'INFOS'}, lang: 'fr', type: 'user' })
         }
         saveProfile(userId)
         const message = { text: "response.edit" }

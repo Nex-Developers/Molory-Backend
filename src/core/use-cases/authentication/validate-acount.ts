@@ -7,12 +7,10 @@ export default function makeValidateAccount({
     saveToken,
     removeOtp,
     removeTmpToken,
-    notifyDevice,
-    publicationDb,
-    saveNotification,
+    notifyUser,
     saveProfile
 }: any = {}) {
-    if (!saveProfile || !getOtp || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !saveNotification || !publicationDb) throw new ServerError()
+    if (!saveProfile || !getOtp || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyUser ) throw new ServerError()
     return async function confirmOtp({
         token,
         email,
@@ -84,24 +82,8 @@ export default function makeValidateAccount({
                 await saveToken({ token: authToken })
                 await removeOtp({ phoneNumber: email })
                 await removeTmpToken({ token })
-                const { title, body, data, cover } = await notifyDevice({ deviceTokens: [device["token"]], titleRef: {text: 'notification.signup.title'}, messageRef:{ text: 'notification.signup.message', params: { name: user.firstName}}, cover: null, data: null, lang: 'fr' })
-                await publicationDb.insertOne({
-                    data: {
-                        title,
-                        message: body,
-                        data: data ? JSON.stringify(data) : null,
-                        picture: cover,
-                        notifications: {
-                            create: {
-                                user: {
-                                    connect: { id: user.id }
-                                }
-                            }
-                        }
-                    }
-                })
+                notifyUser({ id: user.id, titleRef: {text: 'notification.signup.title'}, messageRef:{ text: 'notification.signup.message', params: { name: user.firstName}}, cover: null, data:{ path: 'confirm-email', id: user.id.toString(), res: 'SUCCESS'} , lang: 'fr', type: 'authentication' })
                 saveProfile(user.id)
-                saveNotification({ receiversIds: [user.id], notification: { type: 'sigup', title, message: body, data, picture: cover } })
                 const message = { text: 'auth.message.emailVerified' }
                 return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, signUpMethod: user.signUpMethod, createdAt: user.createdAt }, message }
             })

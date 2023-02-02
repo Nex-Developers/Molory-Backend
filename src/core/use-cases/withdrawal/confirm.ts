@@ -28,7 +28,7 @@ export default function makeConfirm({
             if(transactionData.transfer_valid == 'Y') {
                 await prisma.withdrawal.update({ where: { id: client_transaction_id }, data: { status: 1, method: transactionData.operator, validatedAt: new Date(transactionData.validated_at) }})
                 // notify the user
-                notifyUser({ id: withDrawal.walletId, titleRef: { text: 'notification.withdralConfirmed.title'}, messageRef: { text: 'notification.withdralConfirmed.message'}, cover: null, data: { type: 'withdrawal', id: client_transaction_id}, lang: 'fr' })
+                notifyUser({ id: withDrawal.walletId, titleRef: { text: 'notification.withdralConfirmed.title'}, messageRef: { text: 'notification.withdralConfirmed.message'}, cover: null, data: { path:'confirm-withdrawal', id: client_transaction_id, res:'SUCCESS'}, lang: 'fr', type: 'withdrawal' })
             }
             else {
                 await prisma.withdrawal.update({ where: { id: client_transaction_id }, data: { status: 0, validatedAt: new Date(transactionData.validated_at) }})

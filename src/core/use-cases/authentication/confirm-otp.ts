@@ -8,9 +8,9 @@ export default function makeConfirmOtp({
     removeOtp,
     removeTmpToken,
     saveProfile,
-    notifyDevice
+    notifyUser
 }: any = {}) {
-    if (!saveProfile || !notifyDevice || !getOtp || !generateToken || !saveToken || !removeOtp || !removeTmpToken) throw new ServerError()
+    if (!saveProfile || !notifyUser || !getOtp || !generateToken || !saveToken || !removeOtp || !removeTmpToken) throw new ServerError()
     return async function confirmOtp({
         token,
         phoneNumber,
@@ -93,22 +93,7 @@ export default function makeConfirmOtp({
                     else if (savedDevice.token != device.token) await prisma.device.update({ where: { id_userId: { id: device.id, userId: user.id }}, data: { token: device.token, updatedAt: new Date() } })
                 }
 
-                const { title, body, data, cover } = await notifyDevice({ deviceTokens: [device["token"]], titleRef: { text: 'notification.otpVerified.title'}, messageRef: { text: 'notification.otpVerified.message', params: { phoneNumber }}, cover: null, data: null, lang: 'fr' })
-                await prisma.publication.create({
-                    data: {
-                        title,
-                        message: body,
-                        data: data ? JSON.stringify(data) : null,
-                        picture: cover,
-                        notifications: {
-                            create: {
-                                user: {
-                                    connect: { id: user.id }
-                                }
-                            }
-                        }
-                    }
-                })
+                notifyUser({ id: user.id, titleRef: { text: 'notification.otpVerified.title'}, messageRef: { text: 'notification.otpVerified.message', params: { phoneNumber }}, cover: null, data: { path: 'confirm-otp', id: user.id.toString(), res: 'SUCCESS' } , lang: 'fr', type:  'authentication' })
                 const authToken = await generateToken({ id: user.id, role: user.role })
                 await saveToken({ token: authToken })
                 await removeOtp({ phoneNumber })

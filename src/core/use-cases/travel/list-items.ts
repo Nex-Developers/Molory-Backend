@@ -33,13 +33,15 @@ export default function makeListItems({
                     rating: true,
                     comment: true,
                     createdAt: true,
-                  updatedAt: true
+                  updatedAt: true,
+                  by: true
                 }},
                 driverReview: { select: {
                     rating: true,
                     comment: true,
                     createdAt: true,
-                  updatedAt: true
+                  updatedAt: true,
+                  by: true
                 }},
                 route: {
                     select: {

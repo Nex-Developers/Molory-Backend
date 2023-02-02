@@ -22,7 +22,7 @@ export default function makePostRateDriverController({
         try {
             const lang = request.lang,
                 body = request.body,
-                data = await rateDriver({...body})
+                data = await rateDriver({...body, by: request.ref.firstName})
                 reqLog.status = LogStatus.SUCCEEDED
                 // reqLog.modelId = data.id
                 // reqLog.description += data.id

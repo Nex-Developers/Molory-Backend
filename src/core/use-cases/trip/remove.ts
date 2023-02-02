@@ -83,7 +83,7 @@ export default function makeRemove({
                             await prisma.payment.update({ where: { id: payment.id }, data: { status: 0, deletedAt: new Date() } })
                             await prisma.refund.create({ data: { id: payment.id,  amount: payment.amount, user: { connect: { id: travel.userId}}, travel: { connect: { id: travel.id }} } })
                             // notify the user
-                            notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTrip.title'}, messageRef: { text: 'notification.removeTrip.message'}, cover: null, data: { type: 'travel', id: travel.id}, lang: 'fr' })
+                            notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTrip.title'}, messageRef: { text: 'notification.removeTrip.message'}, cover: null,  data: { path: 'cancel-trip', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'trip' })
                             saveTravel(travel.id)
                         }
                         return true

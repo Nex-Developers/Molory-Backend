@@ -13,7 +13,8 @@ export default function makeNotifyUser({
         messageRef,
         cover,
         data,
-        lang
+        lang,
+        type
     }: any = {}) {
         if (!titleRef || !messageRef) throw new ServerError()
         const title = translate(lang, titleRef.text, titleRef.params)
@@ -25,22 +26,22 @@ export default function makeNotifyUser({
             const deviceTokens = devices.map(device => device.token).filter(token => token)
             if (data.id) data.id = data.id.toString()
             if (deviceTokens.length) sendNotification(deviceTokens, title, body, data, cover)
-            addInCollection('users', id.toString(),'notifications', { type: data.type, title, message: body, data, cover})
-            prisma.publication.create({
-                data: {
-                    title,
-                    message: body,
-                    data: data ? JSON.stringify(data) : null,
-                    picture: cover,
-                    notifications: {
-                        create: {
-                            user: {
-                                connect: { id }
-                            }
-                        }
-                    }
-                }
-            })
+            addInCollection('users', id.toString(),'notifications', { type, title, message: body, data, picture:cover})
+            // prisma.publication.create({
+            //     data: {
+            //         title,
+            //         message: body,
+            //         data: data ? JSON.stringify(data) : null,
+            //         picture: cover,
+            //         notifications: {
+            //             create: {
+            //                 user: {
+            //                     connect: { id }
+            //                 }
+            //             }
+            //         }
+            //     }
+            // })
             return
         } catch (err) {
             console.log(err.message)

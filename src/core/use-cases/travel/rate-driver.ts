@@ -11,10 +11,12 @@ export default ({
     return ({
         travelId,
         rating,
-        comment
+        comment,
+        by
     }) => {
         if (!travelId) throw new MissingParamError("travelId")
         if (!rating && !comment) throw new MissingParamError("rating or comment")
+        if (!by) throw new MissingParamError("by")
         if (rating) {
             if (typeof rating === "string") rating = Number(rating)
             if (rating < 0 && rating > 5 ) throw new InvalidParamError('rating')  
@@ -28,8 +30,8 @@ export default ({
             const userId = route.trip.userId
             const tripId = route.trip.id
             const review = await prisma.driverReview.findUnique({ where: { travelId }})
-           if(!review) await prisma.driverReview.create({ data: { travelId, tripId, userId, rating, comment}})
-           else await prisma.driverReview.update({ where: { travelId}, data: {tripId, userId, rating, comment }})
+           if(!review) await prisma.driverReview.create({ data: { travelId, tripId, userId, rating, comment, by}})
+           else await prisma.driverReview.update({ where: { travelId}, data: {tripId, userId, rating, comment, by }})
 
            if(rating)  {
                 const dirverRatings = await prisma.driverReview.findMany({ where: { userId }, select: { rating: true}})
@@ -44,7 +46,7 @@ export default ({
             }
             saveTravel(travelId)
             saveTrip(route.trip.id)
-            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title'}, messageRef: { text: 'notification.rateTravelDriver.message'}, cover: null, data: { type: 'travel', id: travelId}, lang: 'fr' })
+            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title'}, messageRef: { text: 'notification.rateTravelDriver.message'}, cover: null, data: {path:'rate-driver', id: travelId.toString(), res: 'INFOS'}, lang: 'fr', type: 'travel' })
             const message = { text: "response.edit"}
             return { message }
           

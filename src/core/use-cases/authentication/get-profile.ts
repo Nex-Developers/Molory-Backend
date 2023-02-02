@@ -38,27 +38,35 @@ export default function makeGetProfile({
                 driverLicenseRejectionMessage: true,
                 driverLicenseModifiedAt: true,
                 signUpMethod: true,
-                vehicles: { select: {
-                    id: true,
-                    type: true,
-                    model: true,
-                    color: true,
-                    numberPlate: true,
-                    registrationDoc: true,
-                    createdAt: true
-                }},
-                passengerReviews: { select: {
-                    rating: true,
-                    comment: true,
-                    createdAt: true,
-                    updatedAt: true
-                }},
-                driverReviews: { select: {
-                    rating: true,
-                    comment: true,
-                    createdAt: true,
-                    updatedAt: true
-                }},
+                vehicles: {
+                    select: {
+                        id: true,
+                        type: true,
+                        model: true,
+                        color: true,
+                        numberPlate: true,
+                        registrationDoc: true,
+                        createdAt: true
+                    }
+                },
+                passengerReviews: {
+                    select: {
+                        rating: true,
+                        comment: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        by: true
+                    }
+                },
+                driverReviews: {
+                    select: {
+                        rating: true,
+                        comment: true,
+                        createdAt: true,
+                        updatedAt: true,
+                        by: true
+                    }
+                },
                 preferences: {
                     select: {
                         question: {
@@ -107,7 +115,7 @@ export default function makeGetProfile({
             })
         }
         const allReviews: any[] = res.passengerReviews.concat(res.driverReviews)
-        const reviews = allReviews.sort((a, b) =>  b.createdAt - a.createdAt)
+        const reviews = allReviews.sort((a, b) => b.createdAt - a.createdAt)
         const data: any = {
             id,
             avatar: res.avatar,

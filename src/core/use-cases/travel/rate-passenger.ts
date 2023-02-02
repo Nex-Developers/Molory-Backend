@@ -11,10 +11,12 @@ export default  ({
     return ({
         travelId,
         rating,
-        comment
+        comment,
+        by
     }) => {
         if (!travelId) throw new MissingParamError("travelId")
         if (!rating && !comment) throw new MissingParamError("rating or comment")
+        if (!by) throw new MissingParamError("by")
         if (rating) {
             if (typeof rating === "string") rating = Number(rating)
             if (rating < 0 && rating > 5 ) throw new InvalidParamError('rating')  
@@ -27,7 +29,7 @@ export default  ({
             const {userId, route } = travel
             const tripId = route.tripId
             const review = await prisma.passengerReview.findUnique({ where: { travelId }})
-            if(!review) await prisma.passengerReview.create({ data: { travelId, tripId, userId, rating, comment}})
+            if(!review) await prisma.passengerReview.create({ data: { travelId, tripId, userId, rating, comment, by}})
             else await prisma.passengerReview.update({ where: { travelId}, data: {tripId, userId, rating, comment }})
 
             if(rating) {
@@ -43,10 +45,9 @@ export default  ({
             }
             saveTravel(travelId)
             saveTrip(tripId)
-            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelPassenger.title'}, messageRef: { text: 'notification.rateTravelPassenger.message'}, cover: null, data: { type: 'travel', id: travelId}, lang: 'fr' })
+            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelPassenger.title'}, messageRef: { text: 'notification.rateTravelPassenger.message'}, cover: null, data: { path:'rate-passenger', id: travelId.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
             const message = { text: "response.edit"}
             return { message }
-          
         })
     }
 }
