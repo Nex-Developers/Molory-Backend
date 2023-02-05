@@ -17,7 +17,7 @@ exports.default = ({ notifyUser, saveTravel }) => {
             if (status !== 5)
                 throw new errors_1.AlreadyDoneError('unkown date');
             yield prisma.travel.update({ where: { id }, data: { status: 4 } });
-            notifyUser({ id: userId, titleRef: { text: 'notification.AskStartTravel.title' }, messageRef: { text: 'notification.AskStartTravel.message' }, cover: null, data: { path: 'end-travel', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
+            notifyUser({ id: userId, titleRef: { text: 'notification.AskStartTravel.title' }, messageRef: { text: 'notification.AskStartTravel.message' }, cover: null, data: { path: 'start-travel', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
             yield saveTravel(id);
             const message = { text: "response.edit" };
             return { message };

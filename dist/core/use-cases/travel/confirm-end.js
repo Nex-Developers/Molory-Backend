@@ -28,7 +28,7 @@ exports.default = ({ notifyUser, addTask, saveTrip, saveTravel }) => {
             const date = new Date(formatedDate + ' ' + route.departureTime);
             if (response) {
                 yield prisma.travel.update({ where: { id }, data: { status: 1, startedAt: new Date() } });
-                notifyUser({ id: userId, titleRef: { text: 'notification.confirmTravelEnded.title' }, messageRef: { text: 'notification.confirmTravelEnded.message' }, cover: null, data: { path: 'start-travel', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
+                notifyUser({ id: userId, titleRef: { text: 'notification.confirmTravelEnded.title' }, messageRef: { text: 'notification.confirmTravelEnded.message' }, cover: null, data: { path: 'travel-ended', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
             }
             else {
                 yield prisma.travel.update({ where: { id }, data: { notEndedReason: reason } });
