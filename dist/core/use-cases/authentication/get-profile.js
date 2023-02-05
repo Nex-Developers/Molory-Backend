@@ -39,7 +39,8 @@ function makeGetProfile({ userDb, walletDb } = {}) {
                     driverLicenseRejectionMessage: true,
                     driverLicenseModifiedAt: true,
                     signUpMethod: true,
-                    vehicles: { select: {
+                    vehicles: {
+                        select: {
                             id: true,
                             type: true,
                             model: true,
@@ -47,19 +48,26 @@ function makeGetProfile({ userDb, walletDb } = {}) {
                             numberPlate: true,
                             registrationDoc: true,
                             createdAt: true
-                        } },
-                    passengerReviews: { select: {
+                        }
+                    },
+                    passengerReviews: {
+                        select: {
                             rating: true,
                             comment: true,
                             createdAt: true,
-                            updatedAt: true
-                        } },
-                    driverReviews: { select: {
+                            updatedAt: true,
+                            by: true
+                        }
+                    },
+                    driverReviews: {
+                        select: {
                             rating: true,
                             comment: true,
                             createdAt: true,
-                            updatedAt: true
-                        } },
+                            updatedAt: true,
+                            by: true
+                        }
+                    },
                     preferences: {
                         select: {
                             question: {

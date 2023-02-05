@@ -51,7 +51,7 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
             yield prisma.payment.update({ where: { id: payment.id }, data: { status: 0 } });
             saveTravel(id);
             saveTrip(route.trip.id);
-            notifyUser({ id: route.trip.userId, titleRef: { text: 'notification.removeTravel.title' }, messageRef: { text: 'notification.removeTravel.message' }, cover: null, data: { type: 'travel', id }, lang: 'fr' });
+            notifyUser({ id: route.trip.userId, titleRef: { text: 'notification.removeTravel.title' }, messageRef: { text: 'notification.removeTravel.message' }, cover: null, data: { path: 'cancel-travel', id: id.toString(), res: 'DANGER' }, lang: 'fr', type: 'travel' });
             const message = { text: 'response.remove' };
             return { message };
         }));

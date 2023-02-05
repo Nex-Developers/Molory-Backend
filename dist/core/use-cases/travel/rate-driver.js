@@ -6,11 +6,13 @@ const helpers_1 = require("../../../utils/helpers");
 exports.default = ({ saveProfile, saveTravel, saveTrip, notifyUser } = {}) => {
     if (!saveProfile || !saveTravel || !saveTrip || !notifyUser)
         throw new errors_1.ServerError();
-    return ({ travelId, rating, comment }) => {
+    return ({ travelId, rating, comment, by }) => {
         if (!travelId)
             throw new errors_1.MissingParamError("travelId");
         if (!rating && !comment)
             throw new errors_1.MissingParamError("rating or comment");
+        if (!by)
+            throw new errors_1.MissingParamError("by");
         if (rating) {
             if (typeof rating === "string")
                 rating = Number(rating);
@@ -27,9 +29,9 @@ exports.default = ({ saveProfile, saveTravel, saveTrip, notifyUser } = {}) => {
             const tripId = route.trip.id;
             const review = yield prisma.driverReview.findUnique({ where: { travelId } });
             if (!review)
-                yield prisma.driverReview.create({ data: { travelId, tripId, userId, rating, comment } });
+                yield prisma.driverReview.create({ data: { travelId, tripId, userId, rating, comment, by } });
             else
-                yield prisma.driverReview.update({ where: { travelId }, data: { tripId, userId, rating, comment } });
+                yield prisma.driverReview.update({ where: { travelId }, data: { tripId, userId, rating, comment, by } });
             if (rating) {
                 const dirverRatings = yield prisma.driverReview.findMany({ where: { userId }, select: { rating: true } });
                 const passengerRatings = yield prisma.passengerReview.findMany({ where: { userId }, select: { rating: true } });
@@ -44,7 +46,7 @@ exports.default = ({ saveProfile, saveTravel, saveTrip, notifyUser } = {}) => {
             }
             saveTravel(travelId);
             saveTrip(route.trip.id);
-            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title' }, messageRef: { text: 'notification.rateTravelDriver.message' }, cover: null, data: { type: 'travel', id: travelId }, lang: 'fr' });
+            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title' }, messageRef: { text: 'notification.rateTravelDriver.message' }, cover: null, data: { path: 'rate-driver', id: travelId.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
             const message = { text: "response.edit" };
             return { message };
         }));

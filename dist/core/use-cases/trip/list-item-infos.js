@@ -54,18 +54,24 @@ function makeListItemInfos({ tripDb } = {}) {
                             select: {
                                 id: true,
                                 seats: true,
-                                passengerReview: { select: {
+                                passengerReview: {
+                                    select: {
                                         rating: true,
                                         comment: true,
                                         createdAt: true,
-                                        updatedAt: true
-                                    } },
-                                driverReview: { select: {
+                                        updatedAt: true,
+                                        by: true
+                                    }
+                                },
+                                driverReview: {
+                                    select: {
                                         rating: true,
                                         comment: true,
                                         createdAt: true,
-                                        updatedAt: true
-                                    } },
+                                        updatedAt: true,
+                                        by: true
+                                    }
+                                },
                                 status: true,
                                 createdAt: true,
                                 user: {
@@ -98,7 +104,8 @@ function makeListItemInfos({ tripDb } = {}) {
             };
             const promises = item.travels.map(booking => {
                 const user = booking.user;
-                const travel = { id: booking.id, route, seats: booking.seats,
+                const travel = {
+                    id: booking.id, route, seats: booking.seats,
                     passengerReview: booking.passengerReview,
                     driverReview: booking.driverReview,
                     status: booking.status,

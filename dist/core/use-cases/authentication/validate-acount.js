@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-function makeValidateAccount({ getOtp, generateToken, saveToken, removeOtp, removeTmpToken, notifyDevice, publicationDb, saveNotification, saveProfile } = {}) {
-    if (!saveProfile || !getOtp || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyDevice || !saveNotification || !publicationDb)
+function makeValidateAccount({ getOtp, generateToken, saveToken, removeOtp, removeTmpToken, notifyUser, saveProfile } = {}) {
+    if (!saveProfile || !getOtp || !generateToken || !saveToken || !removeOtp || !removeTmpToken || !notifyUser)
         throw new errors_1.ServerError();
     return function confirmOtp({ token, email, otp, lang, device, changeAuthParam, } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -76,24 +76,8 @@ function makeValidateAccount({ getOtp, generateToken, saveToken, removeOtp, remo
                     yield saveToken({ token: authToken });
                     yield removeOtp({ phoneNumber: email });
                     yield removeTmpToken({ token });
-                    const { title, body, data, cover } = yield notifyDevice({ deviceTokens: [device["token"]], titleRef: { text: 'notification.signup.title' }, messageRef: { text: 'notification.signup.message', params: { name: user.firstName } }, cover: null, data: null, lang: 'fr' });
-                    yield publicationDb.insertOne({
-                        data: {
-                            title,
-                            message: body,
-                            data: data ? JSON.stringify(data) : null,
-                            picture: cover,
-                            notifications: {
-                                create: {
-                                    user: {
-                                        connect: { id: user.id }
-                                    }
-                                }
-                            }
-                        }
-                    });
+                    notifyUser({ id: user.id, titleRef: { text: 'notification.signup.title' }, messageRef: { text: 'notification.signup.message', params: { name: user.firstName } }, cover: null, data: { path: 'confirm-email', id: user.id.toString(), res: 'SUCCESS' }, lang: 'fr', type: 'authentication' });
                     saveProfile(user.id);
-                    saveNotification({ receiversIds: [user.id], notification: { type: 'sigup', title, message: body, data, picture: cover } });
                     const message = { text: 'auth.message.emailVerified' };
                     return { token: authToken, data: { id: user.id, avatar: user.avatar, firstName: user.firstName, lastName: user.lastName, phoneNumber: user.phoneNumber, email: user.email, birthDay: user.birthDay, signUpMethod: user.signUpMethod, createdAt: user.createdAt }, message };
                 }));

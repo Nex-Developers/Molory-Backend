@@ -79,7 +79,7 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser }) {
             saveProfile(travel.userId);
             saveTravel(travel.id);
             saveTrip(trip.id);
-            notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title' }, messageRef: { text: 'notification.addTravel.message' }, cover: null, data: { type: 'travel', id }, lang: 'fr' });
+            notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title' }, messageRef: { text: 'notification.addTravel.message' }, cover: null, data: { path: 'add-travel', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
             const message = { text: "response.add", data: travel };
             return { message };
         }));

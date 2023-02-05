@@ -20,7 +20,7 @@ function makePostRatePassengerController({ ratePassenger }) {
                 description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.WRITE} passenger rating`
             };
             try {
-                const lang = request.lang, body = request.body, data = yield ratePassenger(Object.assign({}, body));
+                const lang = request.lang, body = request.body, data = yield ratePassenger(Object.assign(Object.assign({}, body), { by: request.ref.firstName }));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 helpers_1.LogManager.save(reqLog);
                 return helpers_1.HttpResponse.ok(data, lang);

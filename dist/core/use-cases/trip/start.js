@@ -21,7 +21,7 @@ exports.default = ({ notifyUser, addTask, saveTrip, saveTravel }) => {
                 throw new errors_1.AlreadyDoneError(startedAt === null || startedAt === void 0 ? void 0 : startedAt.toString());
             yield prisma.trip.update({ where: { id }, data: { status: 2, startedAt: new Date() } });
             yield prisma.travel.updateMany({ where: { route: { tripId: id }, status: { gt: 1 } }, data: { status: 2 } });
-            notifyUser({ id: userId, titleRef: { text: 'notification.startTrip.title' }, messageRef: { text: 'notification.startTrip.message' }, cover: null, data: { type: 'trip', id }, lang: 'fr' });
+            notifyUser({ id: userId, titleRef: { text: 'notification.startTrip.title' }, messageRef: { text: 'notification.startTrip.message' }, cover: null, data: { path: 'start-trip', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' });
             const formatedDate = reformateDate(departureDate);
             const date = new Date(formatedDate + ' ' + departureTime);
             const timer = getNextDay(date);

@@ -142,7 +142,7 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
             const tripDate = new Date(formatedDate + ' ' + trip.departureTime);
             const timer = getDayPlusQuater(tripDate);
             addTask({ timer, path: 'trip-start', params: { id: trip.id } });
-            notifyUser({ id: userId, titleRef: { text: 'notification.addTrip.title' }, messageRef: { text: 'notification.addTrip.message' }, cover: null, data: { type: 'trip', id: trip.id }, lang: 'fr' });
+            notifyUser({ id: userId, titleRef: { text: 'notification.addTrip.title' }, messageRef: { text: 'notification.addTrip.message' }, cover: null, data: { path: 'add-trip', id: trip.id.toString(), res: 'SUCCESS' }, lang: 'fr', type: 'trip' });
             saveProfile(userId);
             saveTrip(trip.id);
             const message = { text: "response.add" };

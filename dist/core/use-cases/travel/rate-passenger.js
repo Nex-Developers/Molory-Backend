@@ -6,11 +6,13 @@ const helpers_1 = require("../../../utils/helpers");
 exports.default = ({ saveProfile, saveTravel, saveTrip, notifyUser } = {}) => {
     if (!saveProfile || !saveTravel || !saveTrip || !notifyUser)
         throw new errors_1.ServerError();
-    return ({ travelId, rating, comment }) => {
+    return ({ travelId, rating, comment, by }) => {
         if (!travelId)
             throw new errors_1.MissingParamError("travelId");
         if (!rating && !comment)
             throw new errors_1.MissingParamError("rating or comment");
+        if (!by)
+            throw new errors_1.MissingParamError("by");
         if (rating) {
             if (typeof rating === "string")
                 rating = Number(rating);
@@ -26,7 +28,7 @@ exports.default = ({ saveProfile, saveTravel, saveTrip, notifyUser } = {}) => {
             const tripId = route.tripId;
             const review = yield prisma.passengerReview.findUnique({ where: { travelId } });
             if (!review)
-                yield prisma.passengerReview.create({ data: { travelId, tripId, userId, rating, comment } });
+                yield prisma.passengerReview.create({ data: { travelId, tripId, userId, rating, comment, by } });
             else
                 yield prisma.passengerReview.update({ where: { travelId }, data: { tripId, userId, rating, comment } });
             if (rating) {
@@ -43,7 +45,7 @@ exports.default = ({ saveProfile, saveTravel, saveTrip, notifyUser } = {}) => {
             }
             saveTravel(travelId);
             saveTrip(tripId);
-            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelPassenger.title' }, messageRef: { text: 'notification.rateTravelPassenger.message' }, cover: null, data: { type: 'travel', id: travelId }, lang: 'fr' });
+            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelPassenger.title' }, messageRef: { text: 'notification.rateTravelPassenger.message' }, cover: null, data: { path: 'rate-passenger', id: travelId.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
             const message = { text: "response.edit" };
             return { message };
         }));

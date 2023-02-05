@@ -6,7 +6,7 @@ const helpers_1 = require("../../../utils/helpers");
 function makeNotifyUser({ sendNotification, addInCollection, translate } = {}) {
     if (!sendNotification || !addInCollection || !translate)
         throw new errors_1.ServerError();
-    return function notifyUser({ id, titleRef, messageRef, cover, data, lang } = {}) {
+    return function notifyUser({ id, titleRef, messageRef, cover, data, lang, type } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             if (!titleRef || !messageRef)
                 throw new errors_1.ServerError();
@@ -20,22 +20,7 @@ function makeNotifyUser({ sendNotification, addInCollection, translate } = {}) {
                     data.id = data.id.toString();
                 if (deviceTokens.length)
                     sendNotification(deviceTokens, title, body, data, cover);
-                addInCollection('users', id.toString(), 'notifications', { type: data.type, title, message: body, data, cover });
-                prisma.publication.create({
-                    data: {
-                        title,
-                        message: body,
-                        data: data ? JSON.stringify(data) : null,
-                        picture: cover,
-                        notifications: {
-                            create: {
-                                user: {
-                                    connect: { id }
-                                }
-                            }
-                        }
-                    }
-                });
+                addInCollection('users', id.toString(), 'notifications', { type, title, message: body, data, picture: cover });
                 return;
             }
             catch (err) {

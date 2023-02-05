@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
-function makeValidateDriverLicense({ userDb, walletDb, saveProfile, notifyDevice, publicationDb } = {}) {
-    if (!userDb || !walletDb || !saveProfile || !notifyDevice || !publicationDb)
+function makeValidateDriverLicense({ userDb, walletDb, saveProfile, notifyUser, } = {}) {
+    if (!userDb || !walletDb || !saveProfile || !notifyUser)
         throw new errors_1.ServerError();
     return function ({ userId, response, cardNumber } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -28,22 +28,7 @@ function makeValidateDriverLicense({ userDb, walletDb, saveProfile, notifyDevice
                 if (!wallet)
                     yield walletDb.insertOne({ data: { id: userId } });
                 const deviceTokens = user.devices.map(device => device.token);
-                const { title, body, data, cover } = yield notifyDevice({ deviceTokens, titleRef: { text: 'notification.driverActivated.title' }, messageRef: { text: 'notification.driverActivated.message', params: { name: user.lastName } }, cover: null, data: null, lang: 'fr' });
-                yield publicationDb.insertOne({
-                    data: {
-                        title,
-                        message: body,
-                        data: data ? JSON.stringify(data) : null,
-                        picture: cover,
-                        notifications: {
-                            create: {
-                                user: {
-                                    connect: { id: userId }
-                                }
-                            }
-                        }
-                    }
-                });
+                notifyUser({ deviceTokens, titleRef: { text: 'notification.driverActivated.title' }, messageRef: { text: 'notification.driverActivated.message', params: { name: user.lastName } }, cover: null, data: { path: 'validate-driver-license', id: userId.toString(), res: 'INFOS' }, lang: 'fr', type: 'user' });
             }
             saveProfile(userId);
             const message = { text: "response.edit" };

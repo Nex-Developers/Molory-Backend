@@ -56,13 +56,15 @@ function makeSaveNotification({ setInCollection } = {}) {
                                                 rating: true,
                                                 comment: true,
                                                 createdAt: true,
-                                                updatedAt: true
+                                                updatedAt: true,
+                                                by: true
                                             } },
                                         driverReviews: { select: {
                                                 rating: true,
                                                 comment: true,
                                                 createdAt: true,
-                                                updatedAt: true
+                                                updatedAt: true,
+                                                by: true
                                             } },
                                         preferences: {
                                             select: {

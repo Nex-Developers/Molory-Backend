@@ -15,13 +15,20 @@ function makeConfirm({ checkCinetpayTransfert, notifyUser } = {}) {
             console.log(transactionData);
             if (!transactionData)
                 return;
-            if (transactionData.amount !== refund.amount) {
+            if (+transactionData.amount !== refund.amount) {
                 console.log('transaction amount mismatch', transactionData.amount, refund.amount);
                 return;
             }
-            if (transactionData.status == '00') {
+            let res;
+            if (transactionData.transfer_valid == 'Y') {
+                res = 'SUCCESS';
                 yield prisma.refund.update({ where: { id: client_transaction_id }, data: { status: 1, validatedAt: new Date(validated_at) } });
-                notifyUser({ id: refund.userId, titleRef: { text: 'notification.withdralConfirmed.title' }, messageRef: { text: 'notification.withdralConfirmed.message' }, cover: null, data: { type: 'withdrawal', id: client_transaction_id }, lang: 'fr' });
+                notifyUser({ id: refund.userId, titleRef: { text: 'notification.withdralConfirmed.title' }, messageRef: { text: 'notification.withdralConfirmed.message' }, cover: null, data: { path: 'confirm-refund', id: client_transaction_id, res }, lang: 'fr' });
+            }
+            else {
+                res = 'WARNING';
+                yield prisma.refund.update({ where: { id: client_transaction_id }, data: { status: 3, validatedAt: new Date(validated_at) } });
+                notifyUser({ id: refund.userId, titleRef: { text: 'notification.withdralConfirmed.title' }, messageRef: { text: 'notification.withdralConfirmed.message' }, cover: null, data: { path: 'confirm-refund', id: client_transaction_id, res }, lang: 'fr' });
             }
         }
     });
