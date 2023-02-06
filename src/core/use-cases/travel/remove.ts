@@ -44,7 +44,7 @@ export default function makeRemove({
                     canceledAt: true 
                 }})
             if (status === 0) throw new AlreadyDoneError(canceledAt.toString())
-            if(status !== 3) throw new UnauthorizedError()
+            if(status < 4 ) throw new UnauthorizedError()
             // annulation  
             await prisma.travel.update({ where: { id }, data: { status: 0, cancelReason, canceledAt: new Date(), } })
             // reset seats

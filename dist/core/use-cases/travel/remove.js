@@ -33,7 +33,7 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
                 } });
             if (status === 0)
                 throw new errors_1.AlreadyDoneError(canceledAt.toString());
-            if (status !== 3)
+            if (status < 4)
                 throw new errors_1.UnauthorizedError();
             yield prisma.travel.update({ where: { id }, data: { status: 0, cancelReason, canceledAt: new Date(), } });
             yield prisma.route.update({ where: { id: route.id }, data: { remainingSeats: { increment: seats } } });
