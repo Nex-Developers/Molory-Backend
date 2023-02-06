@@ -83,7 +83,7 @@
     },
     "addTrip": {
       "title": "Trajet publié!",
-      "message": "Félicitations, votre trajet est disponible est publié. Les voyageurs peuvent desormais reserver les places disponibles."
+      "message": "Félicitations, votre trajet a été publié avec succès. Les voyageurs pourront désormais réserver les places disponibles."
     },
     "startTrip": {
       "title": "Bon Voyage!",
@@ -99,7 +99,7 @@
     },
     "addTravel": {
       "title": "Réservation effectuée!",
-      "message": "Votre reservation pour a été validé avec success. Veuillez contacter le chauffeur pour convenier du lieu de départ."
+      "message": "Votre reservation a été validé avec success. Veuillez contacter le chauffeur pour que vous conveniez du lieu de départ."
     },
     "bookTrip": {
       "title": "Réservation effectuée!",
