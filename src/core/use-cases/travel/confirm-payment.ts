@@ -20,7 +20,7 @@ export default function makeConfirmPayment({
     }
 
     const getDatePlusQuater = (date: Date) => {
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + 15);
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
     }
     
     return async ({
@@ -104,7 +104,8 @@ export default function makeConfirmPayment({
             saveProfile(travel.userId)
             saveTravel(travel.id)
             saveTrip(trip.id)
-            notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title'}, messageRef: { text: 'notification.addTravel.message'}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
+            notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title'}, messageRef: { text: 'notification.addTravel.message'}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'SUCCESS'}, lang: 'fr', type: 'travel' })
+            notifyUser({ id: trip.userId, titleRef: { text: 'notification.bookTrip.title'}, messageRef: { text: 'notification.bookTrip.message'}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
             const formatedDate = reformateDate(travel.route.departureDate) 
             const date = new Date(formatedDate + ' ' + travel.route.departureTime)
              const timer = getDatePlusQuater(date)

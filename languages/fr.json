@@ -101,6 +101,10 @@
       "title": "Réservation effectuée!",
       "message": "Votre reservation pour a été validé avec success. Veuillez contacter le chauffeur pour convenier du lieu de départ."
     },
+    "bookTrip": {
+      "title": "Réservation effectuée!",
+      "message": "Votre trajet a été reservé. Veuillez consulter les details de votre trajet."
+    },
     "startTravel": {
       "title": "Bon Voyage!",
       "message": "Votre voyage a commencé."
