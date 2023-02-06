@@ -38,8 +38,7 @@ export default function makeValidateDriverLicense({
             await userDb.updateOne({ where: { id: userId }, data: res })
             const wallet = await walletDb.findFirst({ where: { id: userId } })
             if (!wallet) await walletDb.insertOne({ data: { id: userId } })
-            const deviceTokens = user.devices.map(device => device.token)  
-            notifyUser({ deviceTokens, titleRef: {text: 'notification.driverActivated.title'}, messageRef:{ text: 'notification.driverActivated.message', params: { name: user.lastName}  }, cover: null, data: { path: 'validate-driver-license', id: userId.toString(), res:'INFOS'}, lang: 'fr', type: 'user' })
+            notifyUser({ id: userId, titleRef: {text: 'notification.driverActivated.title'}, messageRef:{ text: 'notification.driverActivated.message', params: { name: user.lastName}  }, cover: null, data: { path: 'validate-driver-license', id: userId.toString(), res:'INFOS'}, lang: 'fr', type: 'user' })
         }
         saveProfile(userId)
         const message = { text: "response.edit" }
