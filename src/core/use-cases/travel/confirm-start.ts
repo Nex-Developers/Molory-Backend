@@ -37,7 +37,7 @@ export default ({
             await prisma.travel.update({ where: { id}, data: { status: 3, startedAt: new Date()}})
                 const timer = getCalculatedtDate(date, route.duration * 60)
                 console.log(timer)
-                await addTask({ path: 'ask-travel-finish', timer, params: { id }})
+                await addTask({ path: 'ask-to-end-travel', timer, params: { id }})
                 notifyUser({ id: userId, titleRef: { text: 'notification.confirmTravelStarted.title'}, messageRef: { text: 'notification.confirmTravelStarted.message'}, cover: null, data: { path: 'travel-started', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
 
            } else {
@@ -45,7 +45,7 @@ export default ({
             console.log(" No response => ", reason)
             await prisma.travel.update({ where: { id}, data: { notStartedReason: reason }})
             const timer = getCalculatedtDate(date, 30)
-            await addTask({ path: 'ask-travel-start', timer, params: { id }})
+            await addTask({ path: 'ask-to-travel-start', timer, params: { id }})
            }
             await saveTravel(id)
             saveTrip(route.tripId)

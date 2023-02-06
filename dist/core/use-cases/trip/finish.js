@@ -16,7 +16,6 @@ exports.default = ({ notifyUser, saveTrip, saveTravel }) => {
             if (status === 1)
                 throw new errors_1.AlreadyDoneError(startedAt.toString());
             yield prisma.trip.update({ where: { id }, data: { status: 1, finishedAt: new Date() } });
-            yield prisma.travel.updateMany({ where: { route: { tripId: id }, status: { gt: 1 } }, data: { status: 1 } });
             let incomes, commission = 0;
             const promises = routes.map((route) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
                 const promises2 = route.travels.map(travel => {

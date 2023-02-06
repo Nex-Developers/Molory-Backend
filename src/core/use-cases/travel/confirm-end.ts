@@ -34,7 +34,7 @@ export default ({
             const date = new Date(formatedDate + ' ' + route.departureTime)
             if (response) {
                 await prisma.travel.update({ where: { id }, data: { status: 1, startedAt: new Date() } })
-                notifyUser({ id: userId, titleRef: { text: 'notification.confirmTravelEnded.title' }, messageRef: { text: 'notification.confirmTravelEnded.message' }, cover: null, data: { path: 'travel-ended', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
+                notifyUser({ id: userId, titleRef: { text: 'notification.confirmTravelEnded.title' }, messageRef: { text: 'notification.confirmTravelEnded.message' }, cover: null, data: { path: 'travel-ended', id: id.toString(), res:'SUCCCESS'}, lang: 'fr', type: 'travel' })
             } else {
                 // updatewith reason
                 await prisma.travel.update({ where: { id}, data: { notEndedReason: reason }})

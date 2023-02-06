@@ -88,7 +88,8 @@ function makeConfirmOtp({ getOtp, generateToken, saveToken, removeOtp, removeTmp
                         else if (savedDevice.token != device.token)
                             yield prisma.device.update({ where: { id_userId: { id: device.id, userId: user.id } }, data: { token: device.token, updatedAt: new Date() } });
                     }
-                    notifyUser({ id: user.id, titleRef: { text: 'notification.otpVerified.title' }, messageRef: { text: 'notification.otpVerified.message', params: { phoneNumber } }, cover: null, data: { path: 'confirm-otp', id: user.id.toString(), res: 'SUCCESS' }, lang: 'fr', type: 'authentication' });
+                    if (firstAuth)
+                        notifyUser({ id: user.id, titleRef: { text: 'notification.otpVerified.title' }, messageRef: { text: 'notification.otpVerified.message', params: { phoneNumber } }, cover: null, data: { path: 'confirm-otp', id: user.id.toString(), res: 'SUCCESS' }, lang: 'fr', type: 'authentication' });
                     const authToken = yield generateToken({ id: user.id, role: user.role });
                     yield saveToken({ token: authToken });
                     yield removeOtp({ phoneNumber });

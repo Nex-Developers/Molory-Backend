@@ -14,7 +14,7 @@ exports.default = ({ notifyUser, saveTravel }) => {
         const prisma = helpers_1.DbConnection.prisma;
         return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
             const { userId, status } = yield prisma.travel.findUnique({ where: { id }, select: { userId: true, status: true } });
-            if (status !== 5)
+            if (status < 4)
                 throw new errors_1.AlreadyDoneError('unkown date');
             yield prisma.travel.update({ where: { id }, data: { status: 4 } });
             notifyUser({ id: userId, titleRef: { text: 'notification.AskStartTravel.title' }, messageRef: { text: 'notification.AskStartTravel.message' }, cover: null, data: { path: 'start-travel', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });

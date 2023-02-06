@@ -3,9 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser }) {
+function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, addTask }) {
     if (!saveProfile || !saveTravel || !saveTrip || !notifyUser)
         throw new errors_1.ServerError();
+    const reformateDate = (date) => {
+        return date.split("-").reverse().join("-");
+    };
+    const getDatePlusQuater = (date) => {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + 15);
+    };
     return ({ id, status, amount, method, reference, validatedAt, } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
         console.log('Confirm-payment called with ', id, status, amount);
@@ -57,7 +63,8 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser }) {
                     user: {
                         connect: { id: data.userId }
                     }
-                }
+                },
+                include: { route: true }
             });
             if (principal) {
                 yield prisma.route.update({ where: { id: data.routeId }, data: { remainingSeats: { decrement: data.seats, } } });
@@ -80,6 +87,10 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser }) {
             saveTravel(travel.id);
             saveTrip(trip.id);
             notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title' }, messageRef: { text: 'notification.addTravel.message' }, cover: null, data: { path: 'add-travel', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
+            const formatedDate = reformateDate(travel.route.departureDate);
+            const date = new Date(formatedDate + ' ' + travel.route.departureTime);
+            const timer = getDatePlusQuater(date);
+            yield addTask({ path: 'ask-to-start-travel', timer, params: { id: travel.id } });
             const message = { text: "response.add", data: travel };
             return { message };
         }));

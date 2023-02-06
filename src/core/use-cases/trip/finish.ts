@@ -17,7 +17,7 @@ export default ({
             if (status === 0) throw new UnauthorizedError()
             if (status === 1) throw new AlreadyDoneError(startedAt.toString())
             await prisma.trip.update({ where: { id }, data: { status: 1, finishedAt: new Date() }})
-            await prisma.travel.updateMany({ where: { route: { tripId: id }, status: { gt: 1 }}, data: { status: 1 }})
+            // await prisma.travel.updateMany({ where: { route: { tripId: id }, status: { gt: 1 }}, data: { status: 1 }})
             // const payments = await prisma.payment.findMany({ where: {  tripId: id , status: 1  }, select: { amount: true }})
 
             // const total = payments.reduce((total, payment) => total + payment.amount, 0)

@@ -10,9 +10,19 @@ export default function makeConfirmPayment({
     saveProfile,
     saveTravel,
     saveTrip,
-    notifyUser
+    notifyUser,
+    addTask
 }) {
     if (!saveProfile || !saveTravel || !saveTrip  || !notifyUser) throw new ServerError()
+    
+    const reformateDate = (date: string) => {
+        return date.split("-").reverse().join("-")
+    }
+
+    const getDatePlusQuater = (date: Date) => {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + 15);
+    }
+    
     return async ({
         id,
         status,
@@ -68,7 +78,8 @@ export default function makeConfirmPayment({
                     user: {
                         connect: { id: data.userId}
                     }
-                }
+                },
+                include: { route: true}
             })
             // remove seats from trip avalaibleSeats
             if (principal) {
@@ -94,6 +105,10 @@ export default function makeConfirmPayment({
             saveTravel(travel.id)
             saveTrip(trip.id)
             notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title'}, messageRef: { text: 'notification.addTravel.message'}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
+            const formatedDate = reformateDate(travel.route.departureDate) 
+            const date = new Date(formatedDate + ' ' + travel.route.departureTime)
+             const timer = getDatePlusQuater(date)
+            await addTask({ path: 'ask-to-start-travel', timer, params: { id: travel.id }})
             const message = { text: "response.add", data: travel }
             return { message }
         })

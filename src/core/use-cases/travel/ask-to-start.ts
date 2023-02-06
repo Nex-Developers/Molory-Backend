@@ -15,7 +15,7 @@ export default ({
         const prisma = DbConnection.prisma
         return await prisma.$transaction( async () => {
             const {  userId, status  } = await prisma.travel.findUnique({ where: { id }, select: { userId: true, status: true}})
-            if (status !== 5) throw new AlreadyDoneError('unkown date')
+            if (status < 4 ) throw new AlreadyDoneError('unkown date')
             await prisma.travel.update({ where: { id}, data: { status: 4 }})
              notifyUser({ id: userId, titleRef: { text: 'notification.AskStartTravel.title'}, messageRef: { text: 'notification.AskStartTravel.message'}, cover: null, data: { path: 'start-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
             await saveTravel(id)

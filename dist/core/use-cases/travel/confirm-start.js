@@ -30,14 +30,14 @@ exports.default = ({ notifyUser, addTask, saveTrip, saveTravel }) => {
                 yield prisma.travel.update({ where: { id }, data: { status: 3, startedAt: new Date() } });
                 const timer = getCalculatedtDate(date, route.duration * 60);
                 console.log(timer);
-                yield addTask({ path: 'ask-travel-finish', timer, params: { id } });
+                yield addTask({ path: 'ask-to-end-travel', timer, params: { id } });
                 notifyUser({ id: userId, titleRef: { text: 'notification.confirmTravelStarted.title' }, messageRef: { text: 'notification.confirmTravelStarted.message' }, cover: null, data: { path: 'travel-started', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
             }
             else {
                 console.log(" No response => ", reason);
                 yield prisma.travel.update({ where: { id }, data: { notStartedReason: reason } });
                 const timer = getCalculatedtDate(date, 30);
-                yield addTask({ path: 'ask-travel-start', timer, params: { id } });
+                yield addTask({ path: 'ask-to-travel-start', timer, params: { id } });
             }
             yield saveTravel(id);
             saveTrip(route.tripId);
