@@ -11,7 +11,7 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
         return date.split("-").reverse().join("-");
     };
     const getDayPlusQuater = (date) => {
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + 15);
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
     };
     return ({ userId, vehicleId, seats, date, time, price, fees, stops, description } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!userId)

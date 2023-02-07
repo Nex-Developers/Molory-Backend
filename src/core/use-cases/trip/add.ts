@@ -20,7 +20,7 @@ export default function makeAdd({
     }
 
     const getDayPlusQuater = (date: Date) => {
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + 15);
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
     }
 
     return async ({

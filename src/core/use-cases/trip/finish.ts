@@ -35,8 +35,11 @@ export default ({
             await Promise.all(promises)
             // notifyAdmin
             console.log(`------> Trip ${id} finished with incomes for the driver of ${incomes} and a commission for the company of ${commission}`)
+           if (incomes) {
             await prisma.transfer.create({ data: { tripId: id, userId, amount: incomes, commission }})
             await prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: incomes }}})
+           }
+      
             // notify driver that his trip is finished and his money is provided
             notifyUser({ id: userId, titleRef: { text: 'notification.finishTrip.title'}, messageRef: { text: 'notification.finishTrip.message'}, cover: null,  data: { path: 'end-trip', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'trip' })
             // xxxxx notify passengers the trip is finished and they are allowed to rate the driver

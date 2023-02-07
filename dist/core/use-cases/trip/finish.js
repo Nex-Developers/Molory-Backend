@@ -28,8 +28,10 @@ exports.default = ({ notifyUser, saveTrip, saveTravel }) => {
             }));
             yield Promise.all(promises);
             console.log(`------> Trip ${id} finished with incomes for the driver of ${incomes} and a commission for the company of ${commission}`);
-            yield prisma.transfer.create({ data: { tripId: id, userId, amount: incomes, commission } });
-            yield prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: incomes } } });
+            if (incomes) {
+                yield prisma.transfer.create({ data: { tripId: id, userId, amount: incomes, commission } });
+                yield prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: incomes } } });
+            }
             notifyUser({ id: userId, titleRef: { text: 'notification.finishTrip.title' }, messageRef: { text: 'notification.finishTrip.message' }, cover: null, data: { path: 'end-trip', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' });
             routes.forEach(route => route.travels.forEach(({ id, status }) => {
                 if (status == 2) {
