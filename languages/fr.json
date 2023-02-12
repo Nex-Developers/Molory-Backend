@@ -91,7 +91,7 @@
     },
     "finishTrip": {
       "title": "Trajet terminé!",
-      "message": "Votre trajet  est terminé. Nous venons de virer :amount sur votre compte. N'oubliez pas de laisser des notes et avis aux passagers."
+      "message": "Votre trajet est terminé. Vous pouvez à présent gérer votre portefeuille et n'oubliez pas de laissez des notes et avis aux passagers"
     },
     "removeTrip": {
       "title": "Réservation annulée!",
@@ -111,7 +111,7 @@
     },
     "finishTravel": {
       "title": "Voyage terminé!",
-      "message": "Votre voyage est terminé. N'oublliez pas de laisser un note et un avis au conducteur."
+      "message": "Votre trajet est terminé. Molory espère vous revoir très bientôt. N'oubliez pas de laissez vos notes et avis au conducteur."
     },
     "rateTravelDriver": {
       "title": "Note et avis",
