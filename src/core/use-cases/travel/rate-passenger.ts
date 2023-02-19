@@ -24,7 +24,7 @@ export default  ({
         const prisma = DbConnection.prisma
 
         return prisma.$transaction( async() => {
-            const travel = await prisma.travel.findUnique({ where: { id: travelId }, select: { userId: true,  route: { select: { tripId: true } }}})
+            const travel = await prisma.travel.findUnique({ where: { id: travelId }, select: { userId: true, departureAddress: true, departureDate: true, arrivalAddress: true, departureTime: true, route: { select: { tripId: true } }}})
             if (!travel) throw new InvalidParamError('travelId')
             const {userId, route } = travel
             const tripId = route.tripId
@@ -45,7 +45,7 @@ export default  ({
             }
             saveTravel(travelId)
             saveTrip(tripId)
-            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelPassenger.title'}, messageRef: { text: 'notification.rateTravelPassenger.message'}, cover: null, data: { path:'rate-passenger', id: travelId.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
+            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelPassenger.title'}, messageRef: { text: 'notification.rateTravelPassenger.message', params: { departure: travel.departureAddress, arrival: travel.arrivalAddress, date: travel.departureDate, time: travel.departureTime }}, cover: null, data: { path:'rate-passenger', id: travelId.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
             const message = { text: "response.edit"}
             return { message }
         })

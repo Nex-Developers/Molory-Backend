@@ -17,10 +17,10 @@ export default ({
         if (!id) throw new MissingParamError('id')
         const prisma = DbConnection.prisma
         return await prisma.$transaction(async () => {
-            const { userId, status, startedAt, route } = await prisma.travel.findUnique({ where: { id }, select: { route: true, userId: true, status: true, startedAt: true } })
+            const { userId, status, startedAt, departureAddress, arrivalAddress, departureDate, departureTime, route } = await prisma.travel.findUnique({ where: { id }, select: { route: true, userId: true, status: true, startedAt: true, departureAddress: true, departureDate: true, arrivalAddress: true, departureTime: true } })
             if (status !== 2) throw new AlreadyDoneError(startedAt?.toString())
             await prisma.travel.update({ where: { id }, data: { status: 1, startedAt: new Date() } })
-            notifyUser({ id: userId, titleRef: { text: 'notification.selfConfirmTravelEnded.title' }, messageRef: { text: 'notification.selfConfirmTravelEnded.message' }, cover: null, data: { path: 'end-travel', id: id.toString(), res:'WARNING'}, lang: 'fr', type: 'travel' })
+            notifyUser({ id: userId, titleRef: { text: 'notification.selfConfirmTravelEnded.title' }, messageRef: { text: 'notification.selfConfirmTravelEnded.message', params: { departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime }}, cover: null, data: { path: 'end-travel', id: id.toString(), res:'WARNING'}, lang: 'fr', type: 'travel' })
             await saveTravel(id)
             saveTrip(route.tripId)
             const message = { text: "response.edit" }

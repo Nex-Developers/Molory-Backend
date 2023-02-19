@@ -21,7 +21,7 @@ exports.default = ({ saveProfile, saveTravel, saveTrip, notifyUser } = {}) => {
         }
         const prisma = helpers_1.DbConnection.prisma;
         return prisma.$transaction(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
-            const travel = yield prisma.travel.findUnique({ where: { id: travelId }, select: { route: { select: { trip: { select: { id: true, userId: true } } } } } });
+            const travel = yield prisma.travel.findUnique({ where: { id: travelId }, select: { route: { select: { trip: { select: { id: true, departureAddress: true, arrivalAddress: true, departureDate: true, departureTime: true, userId: true } } } } } });
             if (!travel)
                 throw new errors_1.InvalidParamError('travelId');
             const { route } = travel;
@@ -46,7 +46,7 @@ exports.default = ({ saveProfile, saveTravel, saveTrip, notifyUser } = {}) => {
             }
             saveTravel(travelId);
             saveTrip(route.trip.id);
-            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title' }, messageRef: { text: 'notification.rateTravelDriver.message' }, cover: null, data: { path: 'rate-driver', id: travelId.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
+            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title' }, messageRef: { text: 'notification.rateTravelDriver.message', params: { departure: travel.route.trip.departureAddress, arrival: travel.route.trip.arrivalAddress, date: travel.route.trip.departureDate, time: travel.route.trip.departureTime } }, cover: null, data: { path: 'rate-driver', id: travelId.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
             const message = { text: "response.edit" };
             return { message };
         }));

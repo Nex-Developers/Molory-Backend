@@ -33,9 +33,9 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
         if (!reference)
             reference = null;
         return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            const { remainingSeats, principal, trip } = yield prisma.route.findUnique({
+            const { remainingSeats, principal, trip, departureAddress, departureDate, departureTime, arrivalAddress } = yield prisma.route.findUnique({
                 where: { id: data.routeId },
-                select: { remainingSeats: true, principal: true, trip: true }
+                select: { remainingSeats: true, principal: true, trip: true, departureAddress: true, departureTime: true, departureDate: true, arrivalAddress: true }
             });
             if (!trip.remainingSeats)
                 throw new errors_1.InvalidParamError('Unvailable seats');
@@ -45,6 +45,10 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
                 data: {
                     seats: data.seats,
                     description: data.description,
+                    departureAddress,
+                    arrivalAddress,
+                    departureDate,
+                    departureTime,
                     payment: {
                         create: {
                             id,
@@ -86,8 +90,8 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
             saveProfile(travel.userId);
             saveTravel(travel.id);
             saveTrip(trip.id);
-            notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title' }, messageRef: { text: 'notification.addTravel.message' }, cover: null, data: { path: 'add-travel', id: id.toString(), res: 'SUCCESS' }, lang: 'fr', type: 'travel' });
-            notifyUser({ id: trip.userId, titleRef: { text: 'notification.bookTrip.title' }, messageRef: { text: 'notification.bookTrip.message' }, cover: null, data: { path: 'add-travel', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
+            notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title' }, messageRef: { text: 'notification.addTravel.message', params: { seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime } }, cover: null, data: { path: 'add-travel', id: id.toString(), res: 'SUCCESS' }, lang: 'fr', type: 'travel' });
+            notifyUser({ id: trip.userId, titleRef: { text: 'notification.bookTrip.title' }, messageRef: { text: 'notification.bookTrip.message', params: { seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime } }, cover: null, data: { path: 'add-travel', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
             const formatedDate = reformateDate(travel.route.departureDate);
             const date = new Date(formatedDate + ' ' + travel.route.departureTime);
             const timer = getDatePlusQuater(date);

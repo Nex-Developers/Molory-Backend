@@ -37,6 +37,8 @@ export default function makeRemove({
                         principal: true,
                         departureDate: true,
                         departureTime: true,
+                        departureAddress: true,
+                        arrivalAddress: true,
                         trip: { select: { id: true, userId: true } }
                     }},
                     seats: true,
@@ -66,7 +68,8 @@ export default function makeRemove({
             // Notify driver
             saveTravel(id)
             saveTrip(route.trip.id)
-            notifyUser({ id: route.trip.userId, titleRef: { text: 'notification.removeTravel.title'}, messageRef: { text: 'notification.removeTravel.message'}, cover: null, data: { path: 'cancel-travel', id: id.toString(), res:'DANGER'}, lang: 'fr', type: 'travel' })
+            notifyUser({ id: userId, titleRef: { text: 'notification.cancelTravel.title'}, messageRef: { text: 'notification.cancelTravel.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime }}, cover: null, data: { path: 'cancel-travel', id: id.toString(), res:'DANGER'}, lang: 'fr', type: 'travel' })
+            notifyUser({ id: route.trip.userId, titleRef: { text: 'notification.removeTravel.title'}, messageRef: { text: 'notification.removeTravel.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime }}, cover: null, data: { path: 'cancel-travel', id: id.toString(), res:'DANGER'}, lang: 'fr', type: 'travel' })
             const message = { text: 'response.remove' }
             return { message }
         })

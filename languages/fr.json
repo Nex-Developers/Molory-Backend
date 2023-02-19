@@ -83,27 +83,27 @@
     },
     "addTrip": {
       "title": "Trajet publié!",
-      "message": "Félicitations, votre trajet a été publié avec succès. Les voyageurs pourront désormais réserver les places disponibles."
+      "message": "Félicitations, votre trajet :departure - :arrival pour le :date à :time a été publié avec succès. Les voyageurs pourront désormais réserver les places disponibles."
     },
     "startTrip": {
       "title": "Bon Voyage!",
-      "message": "Votre trajet vient de commencé. Molory vous rappelle à la prudence."
+      "message": "Votre trajet :departure - :arrival de :time vient de commencé. Molory vous rappelle à la prudence."
     },
     "finishTrip": {
       "title": "Trajet terminé!",
-      "message": "Votre trajet est terminé. Vous pouvez à présent gérer votre portefeuille et n'oubliez pas de laissez des notes et avis aux passagers"
+      "message": "Votre trajet :departure - :arrival du :date à :time est terminé. Vous pouvez à présent gérer votre portefeuille et n'oubliez pas de laissez des notes et avis aux passagers"
     },
     "removeTrip": {
       "title": "Réservation annulée!",
-      "message": "Un client a annulé sa réservation. Veuillez consulter les details de votre trajet pour en savoir plus."
+      "message": "Un client a annulé sa réservation pour le trajet :departure - :arrival du :date à :time. Veuillez consulter les details de votre trajet pour en savoir plus."
     },
     "addTravel": {
       "title": "Réservation effectuée!",
-      "message": "Votre reservation a été validé avec success. Veuillez contacter le chauffeur pour que vous conveniez du lieu de départ."
+      "message": "Votre reservation de :seats place(s) pour :departure - :arrival du :date à :time a été validé avec success. Veuillez contacter le chauffeur pour que vous conveniez du lieu de départ."
     },
     "bookTrip": {
       "title": "Réservation effectuée!",
-      "message": "Votre trajet a été reservé. Veuillez consulter les details de votre trajet."
+      "message": "Une reservation de :seats place(s) vient effectué sur votre trajet :departure - :arrival du :date de :time. Veuillez consulter les details de votre trajet."
     },
     "startTravel": {
       "title": "Bon Voyage!",
@@ -111,23 +111,23 @@
     },
     "finishTravel": {
       "title": "Voyage terminé!",
-      "message": "Votre trajet est terminé. Molory espère vous revoir très bientôt. N'oubliez pas de laissez vos notes et avis au conducteur."
+      "message": "Votre trajet :departure - :arrival du :date de :time est terminé. Molory espère vous revoir très bientôt. N'oubliez pas de laissez vos notes et avis au conducteur."
     },
     "rateTravelDriver": {
       "title": "Note et avis",
-      "message": "Un passager a laissé un avis sur votre trajet. Veuillez consulter les details du trajet pour en savoir plus."
+      "message": "Un passager a laissé un avis sur votre trajet :departure - :arrival du :date de :time. Veuillez consulter les details du trajet pour en savoir plus."
     },
     "rateTravelPassenger": {
       "title": "Note et avis",
-      "message": "Le conducteur du trajet vous a laissé un avis.  Veuillez consulter les details de votre réservation pour en savoir plus"
+      "message": "Le conducteur du trajet :departure - :arrival du :date de :time vous a laissé un avis.  Veuillez consulter les details de votre réservation pour en savoir plus"
     },
     "removeTravel": {
       "title": "Réservation annulée!",
-      "message": "Votre voyage a été annulé par le conducteur. Veuillez consulter les details de votre réservation pour en savoir plus."
+      "message": "Votre voyage :departure - :arrival du :date à :time a été annulé par le conducteur. Veuillez consulter les details de votre réservation pour en savoir plus."
     },
     "withdrawal": {
         "title": "Retrait en cours",
-        "message": "Vous venez d'initié un retrait. Nous vous notifirions quand cela sera effectué."
+        "message": "Vous venez d'initié un retrait. Nous vous notifierions quand cela sera effectué."
     },
     "withdralConfirmed": {
         "title": "Retrait Confirmé",
@@ -143,23 +143,23 @@
     },
     "AskStartTravel": {
       "title": "Confirmez le debut de Trajet",
-      "message": "Votre trajet a t'il demarrer? Sinon n'oubliez de nous laiser les raisons."
+      "message": "Votre trajet :departure - :arrival du :date à :time a t'il demarrer? Sinon n'oubliez de nous laiser les raisons."
     },
     "AskStopTravel": {
       "title": "Confirmez la fin du trajet",
-      "message": "Votre trajet est il arrivé à destination? Sinon n'oubliez de nous laiser les raisons."
+      "message": "Pour votre trajet :departure - :arrival du :date à :time, etes-vous arrivé à destination? Sinon n'oubliez de nous laiser les raisons."
     },
     "confirmTravelStarted": {
       "title": "Bon Voyage!",
-      "message": "Vous venez de confirmer le debut de votre trajet. Molory vous souhaite un bon voyage!"
+      "message": "Vous venez de confirmer le debut de votre trajet :departure - :arrival du :date de :time. Molory vous souhaite un bon voyage!"
     },
     "confirmTravelEnded": {
       "title": "Voyage terminé",
-      "message": "Vous venez de confirmer la fin de votre voyage. Molory vous souhaite la binevenue."
+      "message": "Vous venez de confirmer la fin de votre voyage :departure - :arrival du :date de :time. Molory vous souhaite la binevenue."
     },
     "selfConfirmTravelEnded": {
       "title": "Voyage terminé",
-      "message": "Suite a aucun signalement constaté 6h après rapport á l'heure de fin du trajet. Molory a validé votre reservation."
+      "message": "Suite a aucun signalement constaté 6h après rapport á l'heure de fin du trajet :departure - :arrival du :date de :time, Molory a validé votre reservation."
     }
 
   }

@@ -10,7 +10,7 @@ exports.default = ({ notifyUser, saveTrip, saveTravel }) => {
         const prisma = helpers_1.DbConnection.prisma;
         return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
             console.log(' Finish trip', +id);
-            const { userId, status, startedAt, routes } = yield prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, routes: { select: { id: true, fees: true, price: true, travels: { select: { id: true, userId: true, seats: true, status: true } } } } } });
+            const { userId, status, startedAt, departureAddress, arrivalAddress, departureDate, departureTime, routes } = yield prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureAddress: true, arrivalAddress: true, departureDate: true, departureTime: true, routes: { select: { id: true, fees: true, price: true, travels: { select: { id: true, userId: true, seats: true, status: true } } } } } });
             if (status === 0)
                 throw new errors_1.UnauthorizedError();
             if (status === 1)
@@ -32,7 +32,7 @@ exports.default = ({ notifyUser, saveTrip, saveTravel }) => {
                 yield prisma.transfer.create({ data: { tripId: id, userId, amount: incomes, commission } });
                 yield prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: incomes } } });
             }
-            notifyUser({ id: userId, titleRef: { text: 'notification.finishTrip.title' }, messageRef: { text: 'notification.finishTrip.message' }, cover: null, data: { path: 'end-trip', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' });
+            notifyUser({ id: userId, titleRef: { text: 'notification.finishTrip.title' }, messageRef: { text: 'notification.finishTrip.message', params: { departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime } }, cover: null, data: { path: 'end-trip', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' });
             routes.forEach(route => route.travels.forEach(({ id, status }) => {
                 if (status == 2) {
                     saveTravel(id);

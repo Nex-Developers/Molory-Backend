@@ -13,7 +13,7 @@ export default ({
         const prisma = DbConnection.prisma
         return await prisma.$transaction( async () => {
             console.log(' Finish trip', + id)
-            const {  userId, status, startedAt, routes } = await prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, routes: { select: { id: true, fees: true, price: true, travels: { select: { id: true, userId: true, seats: true, status: true}}}} }})
+            const {  userId, status, startedAt, departureAddress, arrivalAddress, departureDate, departureTime, routes } = await prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureAddress: true, arrivalAddress: true, departureDate: true, departureTime: true, routes: { select: { id: true, fees: true, price: true, travels: { select: { id: true, userId: true, seats: true, status: true}}}} }})
             if (status === 0) throw new UnauthorizedError()
             if (status === 1) throw new AlreadyDoneError(startedAt.toString())
             await prisma.trip.update({ where: { id }, data: { status: 1, finishedAt: new Date() }})
@@ -41,7 +41,7 @@ export default ({
            }
       
             // notify driver that his trip is finished and his money is provided
-            notifyUser({ id: userId, titleRef: { text: 'notification.finishTrip.title'}, messageRef: { text: 'notification.finishTrip.message'}, cover: null,  data: { path: 'end-trip', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'trip' })
+            notifyUser({ id: userId, titleRef: { text: 'notification.finishTrip.title'}, messageRef: { text: 'notification.finishTrip.message', params: { departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime}}, cover: null,  data: { path: 'end-trip', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'trip' })
             // xxxxx notify passengers the trip is finished and they are allowed to rate the driver
             routes.forEach(route => route.travels.forEach(({id, status}) => {
              if(status == 2) {

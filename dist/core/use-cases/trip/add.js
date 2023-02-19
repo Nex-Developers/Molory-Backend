@@ -55,10 +55,17 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
             if (!arrivals.length)
                 throw new errors_1.MissingParamError('arrival');
             const routes = [];
+            let departureAddress, arrivalAddress;
             for (const departure of departures) {
+                if (departure.principa) {
+                    departureAddress = departure.address.substring(0, departure.address.indexOf(","));
+                }
                 for (const arrival of arrivals) {
                     if (departure.address === arrival.address)
                         break;
+                    if (arrival.principa) {
+                        arrivalAddress = arrival.address.substring(0, arrival.address.indexOf(","));
+                    }
                     const principal = (departure.principal && arrival.principal) ? true : false;
                     const { distance, duration } = yield calculMatrix({ departure, arrival });
                     let departureDate = date;
@@ -101,6 +108,8 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
                     remainingSeats: seats,
                     departureDate: date,
                     departureTime: time,
+                    departureAddress,
+                    arrivalAddress,
                     description,
                     user: {
                         connect: { id: userId }
@@ -142,7 +151,7 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
             const tripDate = new Date(formatedDate + ' ' + trip.departureTime);
             const timer = getDayPlusQuater(tripDate);
             addTask({ timer, path: 'trip-start', params: { id: trip.id } });
-            notifyUser({ id: userId, titleRef: { text: 'notification.addTrip.title' }, messageRef: { text: 'notification.addTrip.message' }, cover: null, data: { path: 'add-trip', id: trip.id.toString(), res: 'SUCCESS' }, lang: 'fr', type: 'trip' });
+            notifyUser({ id: userId, titleRef: { text: 'notification.addTrip.title' }, messageRef: { text: 'notification.addTrip.message', params: { departure: departureAddress, arrival: arrivalAddress, date, time } }, cover: null, data: { path: 'add-trip', id: trip.id.toString(), res: 'SUCCESS' }, lang: 'fr', type: 'trip' });
             saveProfile(userId);
             saveTrip(trip.id);
             const message = { text: "response.add" };

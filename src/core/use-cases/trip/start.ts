@@ -23,13 +23,13 @@ export default ({
         console.log(' Start trip', + id)
         const prisma = DbConnection.prisma
         return await prisma.$transaction( async () => {
-            const {  userId, departureDate, departureTime, status, startedAt } = await prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureDate: true, departureTime: true}})
+            const {  userId, departureDate, departureTime, departureAddress, arrivalAddress, status, startedAt } = await prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureDate: true, departureTime: true, departureAddress: true, arrivalAddress: true }})
             if (status !== 3) throw new AlreadyDoneError(startedAt?.toString())
            // if (status === 2) throw new AlreadyDoneError(startedAt.toString())
             await prisma.trip.update({ where: { id }, data: { status: 2, startedAt: new Date() }})
             // await prisma.travel.updateMany({ where: { route: { tripId: id }, status: { gt: 4 }}, data: { status:  4}})
             // notify driver that his trip shall start
-            notifyUser({ id: userId, titleRef: { text: 'notification.startTrip.title'}, messageRef: { text: 'notification.startTrip.message'}, cover: null,  data: { path: 'start-trip', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'trip' })
+            notifyUser({ id: userId, titleRef: { text: 'notification.startTrip.title'}, messageRef: { text: 'notification.startTrip.message', params: { departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime}}, cover: null,  data: { path: 'start-trip', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'trip' })
           // add finish task
            const formatedDate = reformateDate(departureDate) 
            const date = new Date(formatedDate + ' ' + departureTime)

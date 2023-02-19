@@ -21,14 +21,14 @@ exports.default = ({ notifyUser, addTask, saveTrip, saveTravel }) => {
             response = false;
         const prisma = helpers_1.DbConnection.prisma;
         return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
-            const { userId, status, startedAt, route } = yield prisma.travel.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, route: true } });
+            const { userId, status, startedAt, departureAddress, arrivalAddress, departureDate, departureTime, route } = yield prisma.travel.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureAddress: true, arrivalAddress: true, departureDate: true, departureTime: true, route: true } });
             if (status !== 2)
                 throw new errors_1.AlreadyDoneError(startedAt === null || startedAt === void 0 ? void 0 : startedAt.toString());
             const formatedDate = reformateDate(route.departureDate);
             const date = new Date(formatedDate + ' ' + route.departureTime);
             if (response) {
                 yield prisma.travel.update({ where: { id }, data: { status: 1, startedAt: new Date() } });
-                notifyUser({ id: userId, titleRef: { text: 'notification.confirmTravelEnded.title' }, messageRef: { text: 'notification.confirmTravelEnded.message' }, cover: null, data: { path: 'travel-ended', id: id.toString(), res: 'SUCCCESS' }, lang: 'fr', type: 'travel' });
+                notifyUser({ id: userId, titleRef: { text: 'notification.confirmTravelEnded.title' }, messageRef: { text: 'notification.confirmTravelEnded.message', params: { departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime } }, cover: null, data: { path: 'travel-ended', id: id.toString(), res: 'SUCCCESS' }, lang: 'fr', type: 'travel' });
             }
             else {
                 yield prisma.travel.update({ where: { id }, data: { notEndedReason: reason } });

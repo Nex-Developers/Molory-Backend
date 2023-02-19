@@ -25,10 +25,10 @@ export default ({
         if(!id) throw new MissingParamError('id')
         const prisma = DbConnection.prisma
         return await prisma.$transaction( async () => {
-            const {  userId, status  } = await prisma.travel.findUnique({ where: { id }, select: { userId: true, status: true }})
+            const {  userId, status, arrivalAddress, departureAddress, departureDate, departureTime  } = await prisma.travel.findUnique({ where: { id }, select: { userId: true, status: true, departureAddress: true, arrivalAddress: true, departureDate: true, departureTime: true}})
             if (status < 3) throw new AlreadyDoneError('unkown date')
             await prisma.travel.update({ where: { id}, data: { status: 2 }})
-             notifyUser({ id: userId, titleRef: { text: 'notification.AskStopTravel.title'}, messageRef: { text: 'notification.AskStopTravel.message'}, cover: null, data: { path: 'end-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
+             notifyUser({ id: userId, titleRef: { text: 'notification.AskStopTravel.title'}, messageRef: { text: 'notification.AskStopTravel.message', params: { departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime }}, cover: null, data: { path: 'end-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
             await saveTravel(id)
             // const formatedDate = reformateDate(route.departureDate)
             // const date = new Date(formatedDate + ' ' + route.departureTime)

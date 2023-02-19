@@ -49,9 +49,9 @@ export default function makeConfirmPayment({
         if (!reference) reference = null
         return await prisma.$transaction(async () => {
             // check remaining seats
-            const { remainingSeats, principal, trip } = await prisma.route.findUnique({
+            const { remainingSeats, principal, trip, departureAddress, departureDate, departureTime, arrivalAddress } = await prisma.route.findUnique({
                 where: { id: data.routeId },
-                select: { remainingSeats: true, principal: true, trip: true }
+                select: { remainingSeats: true, principal: true, trip: true, departureAddress: true, departureTime: true, departureDate: true, arrivalAddress: true }
             })
             if (!trip.remainingSeats) throw new InvalidParamError('Unvailable seats')
             if (data.seats > remainingSeats) throw new InvalidParamError('Missing ' + (data.seats - remainingSeats) + ' seats')
@@ -60,6 +60,10 @@ export default function makeConfirmPayment({
                 data: {
                     seats: data.seats,
                     description: data.description,
+                    departureAddress,
+                    arrivalAddress,
+                    departureDate,
+                    departureTime,
                     payment: {
                         create: {
                             id,
@@ -104,8 +108,8 @@ export default function makeConfirmPayment({
             saveProfile(travel.userId)
             saveTravel(travel.id)
             saveTrip(trip.id)
-            notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title'}, messageRef: { text: 'notification.addTravel.message'}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'SUCCESS'}, lang: 'fr', type: 'travel' })
-            notifyUser({ id: trip.userId, titleRef: { text: 'notification.bookTrip.title'}, messageRef: { text: 'notification.bookTrip.message'}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
+            notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title'}, messageRef: { text: 'notification.addTravel.message', params: { seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime}}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'SUCCESS'}, lang: 'fr', type: 'travel' })
+            notifyUser({ id: trip.userId, titleRef: { text: 'notification.bookTrip.title'}, messageRef: { text: 'notification.bookTrip.message', params: { seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime}}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
             const formatedDate = reformateDate(travel.route.departureDate) 
             const date = new Date(formatedDate + ' ' + travel.route.departureTime)
              const timer = getDatePlusQuater(date)
