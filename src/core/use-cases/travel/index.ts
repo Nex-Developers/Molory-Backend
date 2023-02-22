@@ -17,6 +17,7 @@ import makeConfirmStart from "./confirm-start"
 import makeConfirmEnd from "./confirm-end"
 import makeSelfConfirmEnd from "./self-confirm-end"
 import { addTask } from "../../services/task"
+import makeReport from "./report"
 
 const travelDb = new TravelDb()
 const routeDb = new RouteDb()
@@ -36,6 +37,7 @@ const askToEnd = makeAskToEnd({ notifyUser, addTask ,saveTravel })
 const confirmStart = makeConfirmStart({ notifyUser, addTask, saveTravel, saveTrip })
 const confirmEnd = makeConfirmEnd({ notifyUser, addTask, saveTravel, saveTrip })
 const selfConfirmEnd = makeSelfConfirmEnd({ notifyUser, addTask, saveTravel, saveTrip })
+const travelReport = makeReport()
 
 export {
     addTravel,
@@ -50,5 +52,6 @@ export {
     askToEnd,
     confirmStart,
     confirmEnd,
-    selfConfirmEnd
+    selfConfirmEnd,
+    travelReport
 }

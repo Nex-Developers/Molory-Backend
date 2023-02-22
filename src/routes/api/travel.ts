@@ -21,6 +21,7 @@ import {
     postRateDriverController,
     postRatePassengerController,
     postTravelController,
+    postTravelReportController,
 } from "../../controllers/travel"
 
 export default () => {
@@ -39,5 +40,6 @@ export default () => {
     router.post('/self-confirm-travel-ended', langCheck, expressRouterAdapter(postConfirmEnded))
     router.post('/confirm-travel-started', langCheck, authCheck, expressRouterAdapter(postConfirmStarted))
     router.post('/confirm-travel-ended', langCheck,authCheck, expressRouterAdapter(postConfirmEnded))
+    router.post('/travel-report', langCheck, authCheck, expressRouterAdapter(postTravelReportController))
     return router
 }

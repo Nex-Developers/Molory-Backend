@@ -78,6 +78,7 @@ model User {
   driverReviews                 DriverReview[]
   country                       Country?          @relation(fields: [countryId], references: [id])
   transfers                     Transfer[]
+  reports                       TravelReport[]
 }
 
 model Device {
@@ -287,24 +288,28 @@ model Travel {
 }
 
 model TravelReport {
-  id          Int       @id
+  id          Int       @id @default(autoincrement())
   travelId    Int
   title       String
   description String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime?
   deletedAt   DateTime?
+  userId      Int
+  status      Int? @default(2)
   travel      Travel    @relation(fields: [travelId], references: [id])
+  user        User @relation(fields: [userId], references: [id])
 }
 
 model TripReport {
-  id          Int       @id
+  id          Int       @id @default(autoincrement())
   tripId      Int
   title       String
   description String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime?
   deletedAt   DateTime?
+  status      Int? @default(2)
   trip        Trip      @relation(fields: [tripId], references: [id])
 }
 
@@ -442,7 +447,6 @@ model Notification {
   status        Int         @default(2)
   publication   Publication @relation(fields: [publicationId], references: [id])
   user          User        @relation(fields: [receiverId], references: [id])
-
   @@id([publicationId, receiverId])
 }
 

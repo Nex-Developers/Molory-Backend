@@ -15,7 +15,8 @@ import {
     patchTripController,
     postTripController,
     patchStartTripController,
-    patchFinishController
+    patchFinishController,
+    postTripReportController
 } from "../../controllers/trip"
 
 export default () => {
@@ -28,6 +29,7 @@ export default () => {
     .delete(langCheck, authCheck, driverCheck, expressRouterAdapter(deleteTripController))
     router.patch('/trip-start', langCheck, apiCheck, expressRouterAdapter(patchStartTripController))
     router.patch('/trip-finish', langCheck, apiCheck, expressRouterAdapter(patchFinishController))
+    router.post('/trip-report', langCheck, authCheck, driverCheck, expressRouterAdapter(postTripReportController))
     // router.post('/confirm-trip', langCheck, authCheck, driverCheck, expressRouterAdapter(patchConfirmController))
     return router
 }

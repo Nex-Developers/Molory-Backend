@@ -12,6 +12,7 @@ import makeRemove from "./remove"
 import makeStart from "./start"
 import makeFinish from "./finish"
 import { saveProfile, saveTravel, saveTrip } from "../../services/firebase"
+import makeReport from "./report"
 
 const tripDb = new TripDb()
 const vehicleDb = new VehicleDb()
@@ -28,6 +29,7 @@ const removeTrip = makeRemove({ tripDb, notifyUser, saveTrip, saveTravel })
 
 const editTrip = makeEdit({ tripDb, saveTrip })
 const confirmTrip = makeConfirm({ tripDb })
+const tripReport = makeReport()
 
 export {
     addTrip,
@@ -37,5 +39,6 @@ export {
     listTrips,
     listTripInfos,
     removeTrip,
-    confirmTrip
+    confirmTrip,
+    tripReport
 }

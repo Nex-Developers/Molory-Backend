@@ -1,4 +1,5 @@
-import { addTravel, askToEnd, askToStart, confirmEnd, confirmPayment, confirmStart, editTravel, listTravelInfos, listTravels, rateDriver, ratePassenger, removeTravel, selfConfirmEnd } from "../../core/use-cases/travel"
+import { addTravel, askToEnd, askToStart, confirmEnd, confirmPayment, confirmStart, editTravel, listTravelInfos, listTravels, rateDriver, ratePassenger, removeTravel, selfConfirmEnd, travelReport } from "../../core/use-cases/travel"
+
 import makeDeleteController from "./delete"
 import makeGetItemController from "./get-item"
 import makeGetItemsController from "./get-items"
@@ -12,6 +13,7 @@ import makePostNotifyController from "./post-notify"
 import makePostRateDriverController from "./post-rate-driver"
 import makePostRatePassengerController from "./post-rate-passenger"
 import makePostSelfConfirmEndedController from "./post-self-confirm-ended"
+import makePostTravelReportController from "./post-travel-report"
 
 
 const getTravelsController = makeGetItemsController({ listTravels })
@@ -27,7 +29,7 @@ const postAskToEndController = makePostAskToEndController({ askToEnd })
 const postConfirmStarted = makePostConfirmStartedController({ confirmStart })
 const postConfirmEnded = makePostConfirmEndedController({ confirmEnd })
 const postSelfConfirm = makePostSelfConfirmEndedController({ selfConfirmEnd })
-
+const postTravelReportController = makePostTravelReportController({ travelReport })
 
 export {
     getTravelsController,
@@ -42,5 +44,6 @@ export {
     postAskToEndController,
     postConfirmStarted,
     postConfirmEnded,
-    postSelfConfirm
+    postSelfConfirm,
+    postTravelReportController
 }
