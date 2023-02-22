@@ -89,7 +89,15 @@ export default function makeSaveNotification({
                         }
                     }
                 },
-                createdAt: true
+                createdAt: true,
+                reports: {
+                    select: {
+                        id: true,
+                        title: true,
+                        description: true,
+                        createdAt: true
+                    }
+                }
             }
         })
         const passengers = []
@@ -131,7 +139,8 @@ export default function makeSaveNotification({
             description: res.description,
             route,
             vehicle: res.vehicle,
-            passengers
+            passengers,
+            reports: res.reports
         }
         return await setInCollection('users', res.user.id.toString(), 'trips', id.toString(), data)
 

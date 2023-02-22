@@ -91,7 +91,15 @@ export default function makeListItemInfos({
                         }
                     }
                 },
-                createdAt: true
+                createdAt: true,
+                reports: {
+                    select: {
+                        id: true,
+                        title: true,
+                        description: true,
+                        createdAt: true
+                    }
+                }
             }
         })
 
@@ -135,7 +143,8 @@ export default function makeListItemInfos({
             user: res.user,
             route,
             vehicle: res.vehicle,
-            passengers
+            passengers,
+            reports: res.reports
         }
         return { data }
     }

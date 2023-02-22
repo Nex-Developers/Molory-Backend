@@ -119,7 +119,24 @@ export default function makeListItems({
                     }
                 },
                 refund: true,
-                createdAt: true
+                createdAt: true,
+                reports: {
+                    select: {
+                        id: true,
+                        title: true,
+                        description: true,
+                        createdAt: true,
+                        user: { 
+                            select: {
+                                id: true,
+                                avatar: true,
+                                firstName: true,
+                                lastName: true,
+                                phoneNumber: true,
+                            }
+                        }
+                    }
+                }
             }
         })
         const data = [];
@@ -148,7 +165,8 @@ export default function makeListItems({
                 driver: user,
                 user: item.user,
                 vehicle,
-                refund: item.refund
+                refund: item.refund,
+                reports: item.reports
             })
         })
 
