@@ -4,6 +4,7 @@ import configuration from "./configuration"
 import logs from "./logs"
 import newsletter from "./newsletter"
 import notification from "./notification"
+import payment from "./payment"
 import preference from "./preference"
 import pricing from "./pricing"
 import question from "./question"
@@ -33,6 +34,7 @@ export default (router) => {
     router.use(answer())
     router.use(notification())
     router.use(withdrawal())
+    router.use(payment())
     router.use(refund())
     return router
 }

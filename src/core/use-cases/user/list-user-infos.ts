@@ -19,6 +19,7 @@ export default function makeListUserInfos({
                 gender: true,
                 role: true,
                 rating: true,
+                createdAt: true,
                 // reviewsReceived: true,
                 phoneNumber: true,
                 profileCompletedAt: true,
@@ -81,6 +82,7 @@ export default function makeListUserInfos({
                 reviewsReceived: data.reviewsReceived,
                 vehicles: data.vehicles,
                 preferences: data.preferences,
+                createdAt: data.createdAt,
                 documents: [
                     {
                         name: "ID Card",

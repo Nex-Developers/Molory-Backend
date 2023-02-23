@@ -11,13 +11,13 @@ export default function makeListItems({
     }: any = {}) => {
         if (!startAt) startAt = 0
         if (!limit) limit = 100
-          let where
-        if (userId) where= { walletId:userId }
+        let where
+        if (userId) where = { walletId: userId }
 
-        const data = await withdrawalDb.findMany({ 
-            startAt, 
+        const data = await withdrawalDb.findMany({
+            startAt,
             limit,
-            where, 
+            where,
             orderBy: { createdAt: 'desc' },
             select: {
                 method: true,
@@ -25,9 +25,27 @@ export default function makeListItems({
                 accessNumber: true,
                 status: true,
                 createdAt: true,
-                validatedAt: true
+                validatedAt: true,
+                user: {
+                    select: {
+                        id: true,
+                        avatar: true,
+                        firstName: true,
+                        lastName: true,
+                        phoneNumber: true
+                    }
+                }
             }
         })
-        return { data }
-    } 
+        return {
+            data: data.map(item => {
+                const { user, ...res } = item
+                return {
+                    ...res,
+                    ...user
+                }
+            })
+        }
+
+    }
 }

@@ -1,3 +1,4 @@
+import moment from "moment"
 import { ServerError } from "../../../utils/errors"
 import { DbConnection } from "../../../utils/helpers"
 
@@ -29,6 +30,10 @@ export default function makeListItems({
                 seats: true,
                 status: true,
                 description: true,
+                departureAddress: true,
+                arrivalAddress: true,
+                departureDate: true,
+                departureTime: true,
                 passengerReview: { select: {
                     rating: true,
                     comment: true,
@@ -157,7 +162,11 @@ export default function makeListItems({
                 seats: item.seats,
                 status: item.status,
                 description: item.description,
-                createdAt: item.createdAt,
+                departureAddress: item.departureAddress,
+                arrivalAddress: item.arrivalAddress,
+                departureDate: item.departureDate,
+                departureTime: item.departureTime,
+                createdAt: moment(item.createdAt).format('DD-MM-YYYY HH:mm'),
                 passengerReview: item.passengerReview,
                 driverReview: item.driverReview,
                 route,

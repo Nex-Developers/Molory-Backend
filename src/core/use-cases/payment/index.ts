@@ -1,10 +1,10 @@
 import { PaymentDb } from "../../../db"
-import makeList from "../newsletter/list"
 import makeListItemInfos from "./list-item-infos"
+import makeListItems from "./list-items"
 
 const paymentDb = new PaymentDb()
 
-const listPayments = makeList({ paymentDb })
+const listPayments = makeListItems({ paymentDb })
 const listPaymentInfos = makeListItemInfos({ paymentDb })
 
 export {

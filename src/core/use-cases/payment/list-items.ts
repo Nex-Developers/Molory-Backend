@@ -10,9 +10,9 @@ export default function makeListItems({
     }: any = {}) => {
         if (!startAt) startAt = 0
         if (!limit) limit = 100
-        const data = await paymentDb.findMany({ 
-            startAt, 
-            limit, 
+        const data = await paymentDb.findMany({
+            startAt,
+            limit,
             select: {
                 id: true,
                 method: true,
@@ -33,13 +33,24 @@ export default function makeListItems({
                         role: true
                     }
                 },
-                travel: { select: {
-                    id: true,
-                    status: true,
-                    createdAt: true
-                }}
+                travel: {
+                    select: {
+                        id: true,
+                        status: true,
+                        createdAt: true
+                    }
+                }
             }
         })
-        return { data }
-    } 
+
+        return {
+            data: data.map(item => {
+                const { user, ...res } = item
+                return {
+                    ...res,
+                    ...user
+                }
+            })
+        }
+    }
 }
