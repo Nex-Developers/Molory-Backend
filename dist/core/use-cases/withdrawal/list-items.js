@@ -24,10 +24,24 @@ function makeListItems({ withdrawalDb } = {}) {
                 accessNumber: true,
                 status: true,
                 createdAt: true,
-                validatedAt: true
+                validatedAt: true,
+                user: {
+                    select: {
+                        id: true,
+                        avatar: true,
+                        firstName: true,
+                        lastName: true,
+                        phoneNumber: true
+                    }
+                }
             }
         });
-        return { data };
+        return {
+            data: data.map(item => {
+                const { user } = item, res = (0, tslib_1.__rest)(item, ["user"]);
+                return Object.assign(Object.assign({}, res), user);
+            })
+        };
     });
 }
 exports.default = makeListItems;

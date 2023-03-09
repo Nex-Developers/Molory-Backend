@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.selfConfirmEnd = exports.confirmEnd = exports.confirmStart = exports.askToEnd = exports.askToStart = exports.ratePassenger = exports.rateDriver = exports.confirmPayment = exports.removeTravel = exports.listTravelInfos = exports.listTravels = exports.editTravel = exports.addTravel = void 0;
+exports.travelReport = exports.selfConfirmEnd = exports.confirmEnd = exports.confirmStart = exports.askToEnd = exports.askToStart = exports.ratePassenger = exports.rateDriver = exports.confirmPayment = exports.removeTravel = exports.listTravelInfos = exports.listTravels = exports.editTravel = exports.addTravel = void 0;
 const tslib_1 = require("tslib");
 const db_1 = require("../../../db");
 const firebase_1 = require("../../services/firebase");
@@ -19,6 +19,7 @@ const confirm_start_1 = (0, tslib_1.__importDefault)(require("./confirm-start"))
 const confirm_end_1 = (0, tslib_1.__importDefault)(require("./confirm-end"));
 const self_confirm_end_1 = (0, tslib_1.__importDefault)(require("./self-confirm-end"));
 const task_1 = require("../../services/task");
+const report_1 = (0, tslib_1.__importDefault)(require("./report"));
 const travelDb = new db_1.TravelDb();
 const routeDb = new db_1.RouteDb();
 const paymentDb = new db_1.PaymentDb();
@@ -48,4 +49,6 @@ const confirmEnd = (0, confirm_end_1.default)({ notifyUser: notifications_1.noti
 exports.confirmEnd = confirmEnd;
 const selfConfirmEnd = (0, self_confirm_end_1.default)({ notifyUser: notifications_1.notifyUser, addTask: task_1.addTask, saveTravel: firebase_1.saveTravel, saveTrip: firebase_1.saveTrip });
 exports.selfConfirmEnd = selfConfirmEnd;
+const travelReport = (0, report_1.default)();
+exports.travelReport = travelReport;
 //# sourceMappingURL=index.js.map

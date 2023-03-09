@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.confirmTrip = exports.removeTrip = exports.listTripInfos = exports.listTrips = exports.editTrip = exports.finishTrip = exports.startTrip = exports.addTrip = void 0;
+exports.tripReport = exports.confirmTrip = exports.removeTrip = exports.listTripInfos = exports.listTrips = exports.editTrip = exports.finishTrip = exports.startTrip = exports.addTrip = void 0;
 const tslib_1 = require("tslib");
 const db_1 = require("../../../db");
 const map_1 = require("../../services/map");
@@ -16,6 +16,7 @@ const remove_1 = (0, tslib_1.__importDefault)(require("./remove"));
 const start_1 = (0, tslib_1.__importDefault)(require("./start"));
 const finish_1 = (0, tslib_1.__importDefault)(require("./finish"));
 const firebase_1 = require("../../services/firebase");
+const report_1 = (0, tslib_1.__importDefault)(require("./report"));
 const tripDb = new db_1.TripDb();
 const vehicleDb = new db_1.VehicleDb();
 const pricingDb = new db_1.PricingDb();
@@ -35,4 +36,6 @@ const editTrip = (0, edit_1.default)({ tripDb, saveTrip: firebase_1.saveTrip });
 exports.editTrip = editTrip;
 const confirmTrip = (0, confirm_1.default)({ tripDb });
 exports.confirmTrip = confirmTrip;
+const tripReport = (0, report_1.default)();
+exports.tripReport = tripReport;
 //# sourceMappingURL=index.js.map

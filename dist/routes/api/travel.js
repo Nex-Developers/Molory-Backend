@@ -21,6 +21,7 @@ exports.default = () => {
     router.post('/self-confirm-travel-ended', middlewares_1.langCheck, (0, adapters_1.expressRouterAdapter)(travel_1.postConfirmEnded));
     router.post('/confirm-travel-started', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(travel_1.postConfirmStarted));
     router.post('/confirm-travel-ended', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(travel_1.postConfirmEnded));
+    router.post('/travel-report', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(travel_1.postTravelReportController));
     return router;
 };
 //# sourceMappingURL=travel.js.map

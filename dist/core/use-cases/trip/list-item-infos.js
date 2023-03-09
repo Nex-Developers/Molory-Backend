@@ -86,7 +86,14 @@ function makeListItemInfos({ tripDb } = {}) {
                         }
                     }
                 },
-                createdAt: true
+                createdAt: true,
+                reports: {
+                    select: {
+                        id: true,
+                        description: true,
+                        createdAt: true
+                    }
+                }
             }
         });
         const passengers = [];
@@ -128,7 +135,8 @@ function makeListItemInfos({ tripDb } = {}) {
             user: res.user,
             route,
             vehicle: res.vehicle,
-            passengers
+            passengers,
+            reports: res.reports
         };
         return { data };
     });

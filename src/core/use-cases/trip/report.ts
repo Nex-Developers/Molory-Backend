@@ -6,14 +6,12 @@ export default function makeReport() {
 
     return async ({
         tripId,
-        title,
         description, 
     }: any = {}) => {
         if (!tripId) throw new MissingParamError('tripId')
-        if (!title) throw new MissingParamError('title')
         if (!description) throw new MissingParamError('description')
      
-        await prisma.tripReport.create({ data: { title, description, trip: { connect: { id: tripId}}  }})
+        await prisma.tripReport.create({ data: { description, trip: { connect: { id: tripId}}  }})
         const message = { text: "response.add" }
         return { message }
     } 

@@ -93,7 +93,6 @@ export default function makeSaveNotification({
                 reports: {
                     select: {
                         id: true,
-                        title: true,
                         description: true,
                         createdAt: true
                     }

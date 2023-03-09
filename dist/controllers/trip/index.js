@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.patchFinishController = exports.patchStartTripController = exports.deleteTripController = exports.patchTripController = exports.postTripController = exports.getTripController = exports.getTripsController = void 0;
+exports.postTripReportController = exports.patchFinishController = exports.patchStartTripController = exports.deleteTripController = exports.patchTripController = exports.postTripController = exports.getTripController = exports.getTripsController = void 0;
 const tslib_1 = require("tslib");
 const trip_1 = require("../../core/use-cases/trip");
 const delete_1 = (0, tslib_1.__importDefault)(require("./delete"));
@@ -10,6 +10,7 @@ const patch_1 = (0, tslib_1.__importDefault)(require("./patch"));
 const patch_start_1 = (0, tslib_1.__importDefault)(require("./patch-start"));
 const patch_finish_1 = (0, tslib_1.__importDefault)(require("./patch-finish"));
 const post_1 = (0, tslib_1.__importDefault)(require("./post"));
+const post_trip_report_1 = (0, tslib_1.__importDefault)(require("./post-trip-report"));
 const getTripsController = (0, get_items_1.default)({ listTrips: trip_1.listTrips });
 exports.getTripsController = getTripsController;
 const getTripController = (0, get_item_1.default)({ listTripInfos: trip_1.listTripInfos });
@@ -24,4 +25,6 @@ const patchStartTripController = (0, patch_start_1.default)({ startTrip: trip_1.
 exports.patchStartTripController = patchStartTripController;
 const patchFinishController = (0, patch_finish_1.default)({ finishTrip: trip_1.finishTrip });
 exports.patchFinishController = patchFinishController;
+const postTripReportController = (0, post_trip_report_1.default)({ tripReport: trip_1.tripReport });
+exports.postTripReportController = postTripReportController;
 //# sourceMappingURL=index.js.map

@@ -86,7 +86,14 @@ function makeSaveNotification({ setInCollection } = {}) {
                         }
                     }
                 },
-                createdAt: true
+                createdAt: true,
+                reports: {
+                    select: {
+                        id: true,
+                        description: true,
+                        createdAt: true
+                    }
+                }
             }
         });
         const passengers = [];
@@ -127,7 +134,8 @@ function makeSaveNotification({ setInCollection } = {}) {
             description: res.description,
             route,
             vehicle: res.vehicle,
-            passengers
+            passengers,
+            reports: res.reports
         };
         return yield setInCollection('users', res.user.id.toString(), 'trips', id.toString(), data);
     });

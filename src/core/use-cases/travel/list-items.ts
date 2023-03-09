@@ -128,7 +128,6 @@ export default function makeListItems({
                 reports: {
                     select: {
                         id: true,
-                        title: true,
                         description: true,
                         createdAt: true,
                         user: { 

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
+const moment_1 = (0, tslib_1.__importDefault)(require("moment"));
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
 function makeListItems({ travelDb } = {}) {
@@ -28,6 +29,10 @@ function makeListItems({ travelDb } = {}) {
                 seats: true,
                 status: true,
                 description: true,
+                departureAddress: true,
+                arrivalAddress: true,
+                departureDate: true,
+                departureTime: true,
                 passengerReview: { select: {
                         rating: true,
                         comment: true,
@@ -118,7 +123,23 @@ function makeListItems({ travelDb } = {}) {
                     }
                 },
                 refund: true,
-                createdAt: true
+                createdAt: true,
+                reports: {
+                    select: {
+                        id: true,
+                        description: true,
+                        createdAt: true,
+                        user: {
+                            select: {
+                                id: true,
+                                avatar: true,
+                                firstName: true,
+                                lastName: true,
+                                phoneNumber: true,
+                            }
+                        }
+                    }
+                }
             }
         });
         const data = [];
@@ -137,7 +158,11 @@ function makeListItems({ travelDb } = {}) {
                 seats: item.seats,
                 status: item.status,
                 description: item.description,
-                createdAt: item.createdAt,
+                departureAddress: item.departureAddress,
+                arrivalAddress: item.arrivalAddress,
+                departureDate: item.departureDate,
+                departureTime: item.departureTime,
+                createdAt: (0, moment_1.default)(item.createdAt).format('DD-MM-YYYY HH:mm'),
                 passengerReview: item.passengerReview,
                 driverReview: item.driverReview,
                 route,
@@ -145,7 +170,8 @@ function makeListItems({ travelDb } = {}) {
                 driver: user,
                 user: item.user,
                 vehicle,
-                refund: item.refund
+                refund: item.refund,
+                reports: item.reports
             });
         });
         return { data };

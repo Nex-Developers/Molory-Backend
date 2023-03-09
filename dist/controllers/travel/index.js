@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postSelfConfirm = exports.postConfirmEnded = exports.postConfirmStarted = exports.postAskToEndController = exports.postAskToStartController = exports.postRatePassengerController = exports.postRateDriverController = exports.postNotifyController = exports.deleteTravelController = exports.patchTravelController = exports.postTravelController = exports.getTravelController = exports.getTravelsController = void 0;
+exports.postTravelReportController = exports.postSelfConfirm = exports.postConfirmEnded = exports.postConfirmStarted = exports.postAskToEndController = exports.postAskToStartController = exports.postRatePassengerController = exports.postRateDriverController = exports.postNotifyController = exports.deleteTravelController = exports.patchTravelController = exports.postTravelController = exports.getTravelController = exports.getTravelsController = void 0;
 const tslib_1 = require("tslib");
 const travel_1 = require("../../core/use-cases/travel");
 const delete_1 = (0, tslib_1.__importDefault)(require("./delete"));
@@ -16,6 +16,7 @@ const post_notify_1 = (0, tslib_1.__importDefault)(require("./post-notify"));
 const post_rate_driver_1 = (0, tslib_1.__importDefault)(require("./post-rate-driver"));
 const post_rate_passenger_1 = (0, tslib_1.__importDefault)(require("./post-rate-passenger"));
 const post_self_confirm_ended_1 = (0, tslib_1.__importDefault)(require("./post-self-confirm-ended"));
+const post_travel_report_1 = (0, tslib_1.__importDefault)(require("./post-travel-report"));
 const getTravelsController = (0, get_items_1.default)({ listTravels: travel_1.listTravels });
 exports.getTravelsController = getTravelsController;
 const getTravelController = (0, get_item_1.default)({ listTravelInfos: travel_1.listTravelInfos });
@@ -42,4 +43,6 @@ const postConfirmEnded = (0, post_confirm_ended_1.default)({ confirmEnd: travel_
 exports.postConfirmEnded = postConfirmEnded;
 const postSelfConfirm = (0, post_self_confirm_ended_1.default)({ selfConfirmEnd: travel_1.selfConfirmEnd });
 exports.postSelfConfirm = postSelfConfirm;
+const postTravelReportController = (0, post_travel_report_1.default)({ travelReport: travel_1.travelReport });
+exports.postTravelReportController = postTravelReportController;
 //# sourceMappingURL=index.js.map

@@ -107,7 +107,23 @@ function makeSaveNotification({ setInCollection } = {}) {
                         phoneNumber: true,
                     }
                 },
-                createdAt: true
+                createdAt: true,
+                reports: {
+                    select: {
+                        id: true,
+                        description: true,
+                        createdAt: true,
+                        user: {
+                            select: {
+                                id: true,
+                                avatar: true,
+                                firstName: true,
+                                lastName: true,
+                                phoneNumber: true,
+                            }
+                        }
+                    }
+                }
             }
         });
         const _a = travel.route, { trip } = _a, route = (0, tslib_1.__rest)(_a, ["trip"]);
@@ -132,7 +148,8 @@ function makeSaveNotification({ setInCollection } = {}) {
             driver: user,
             user: travel.user,
             vehicle,
-            refund: travel.refund
+            refund: travel.refund,
+            reports: travel.reports
         };
         return yield setInCollection('users', travel.user.id.toString(), 'travels', id.toString(), data);
     });

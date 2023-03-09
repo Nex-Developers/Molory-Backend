@@ -95,7 +95,6 @@ export default function makeListItemInfos({
                 reports: {
                     select: {
                         id: true,
-                        title: true,
                         description: true,
                         createdAt: true
                     }

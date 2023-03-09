@@ -15,6 +15,7 @@ exports.default = () => {
         .delete(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(trip_1.deleteTripController));
     router.patch('/trip-start', middlewares_1.langCheck, middlewares_1.apiCheck, (0, adapters_1.expressRouterAdapter)(trip_1.patchStartTripController));
     router.patch('/trip-finish', middlewares_1.langCheck, middlewares_1.apiCheck, (0, adapters_1.expressRouterAdapter)(trip_1.patchFinishController));
+    router.post('/trip-report', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(trip_1.postTripReportController));
     return router;
 };
 //# sourceMappingURL=trip.js.map

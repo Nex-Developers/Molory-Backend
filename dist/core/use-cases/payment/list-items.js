@@ -33,14 +33,21 @@ function makeListItems({ paymentDb } = {}) {
                         role: true
                     }
                 },
-                travel: { select: {
+                travel: {
+                    select: {
                         id: true,
                         status: true,
                         createdAt: true
-                    } }
+                    }
+                }
             }
         });
-        return { data };
+        return {
+            data: data.map(item => {
+                const { user } = item, res = (0, tslib_1.__rest)(item, ["user"]);
+                return Object.assign(Object.assign({}, res), user);
+            })
+        };
     });
 }
 exports.default = makeListItems;

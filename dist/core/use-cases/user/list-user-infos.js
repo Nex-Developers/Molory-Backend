@@ -20,6 +20,7 @@ function makeListUserInfos({ userDb } = {}) {
                     gender: true,
                     role: true,
                     rating: true,
+                    createdAt: true,
                     phoneNumber: true,
                     profileCompletedAt: true,
                     idCardFront: true,
@@ -74,6 +75,7 @@ function makeListUserInfos({ userDb } = {}) {
                     reviewsReceived: data.reviewsReceived,
                     vehicles: data.vehicles,
                     preferences: data.preferences,
+                    createdAt: data.createdAt,
                     documents: [
                         {
                             name: "ID Card",

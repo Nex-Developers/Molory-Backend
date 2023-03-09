@@ -7,6 +7,7 @@ const configuration_1 = (0, tslib_1.__importDefault)(require("./configuration"))
 const logs_1 = (0, tslib_1.__importDefault)(require("./logs"));
 const newsletter_1 = (0, tslib_1.__importDefault)(require("./newsletter"));
 const notification_1 = (0, tslib_1.__importDefault)(require("./notification"));
+const payment_1 = (0, tslib_1.__importDefault)(require("./payment"));
 const preference_1 = (0, tslib_1.__importDefault)(require("./preference"));
 const pricing_1 = (0, tslib_1.__importDefault)(require("./pricing"));
 const question_1 = (0, tslib_1.__importDefault)(require("./question"));
@@ -35,6 +36,7 @@ exports.default = (router) => {
     router.use((0, answer_1.default)());
     router.use((0, notification_1.default)());
     router.use((0, withdrawal_1.default)());
+    router.use((0, payment_1.default)());
     router.use((0, refund_1.default)());
     return router;
 };
