@@ -57,14 +57,16 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
             const routes = [];
             let departureAddress, arrivalAddress;
             for (const departure of departures) {
-                if (departure.principa) {
-                    departureAddress = departure.address.substring(0, departure.address.indexOf(","));
+                const routeDepartureAddress = departure.address.substring(0, departure.address.indexOf(","));
+                if (departure.principal) {
+                    departureAddress = routeDepartureAddress;
                 }
                 for (const arrival of arrivals) {
                     if (departure.address === arrival.address)
                         break;
-                    if (arrival.principa) {
-                        arrivalAddress = arrival.address.substring(0, arrival.address.indexOf(","));
+                    const routeArrivalAddress = arrival.address.substring(0, arrival.address.indexOf(","));
+                    if (arrival.principal) {
+                        arrivalAddress = routeArrivalAddress;
                     }
                     const principal = (departure.principal && arrival.principal) ? true : false;
                     const { distance, duration } = yield calculMatrix({ departure, arrival });
@@ -83,6 +85,8 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
                     routes.push({
                         departureDate,
                         departureTime,
+                        arrivalAddress: routeArrivalAddress,
+                        departureAddress: routeDepartureAddress,
                         distance,
                         duration,
                         price,
@@ -102,6 +106,7 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
                 return route;
             });
             calculatedRoutes.unshift(principalRoute);
+            console.log(departureAddress, arrivalAddress);
             const trip = yield prisma.trip.create({
                 data: {
                     seats,
