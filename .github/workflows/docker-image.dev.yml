@@ -2,10 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "deploy" ]
   pull_request:
-    branches: [ "main" ]
-  
+    branches: [ "deploy" ]
 
 jobs:
 
@@ -26,7 +25,7 @@ jobs:
       with:
         push: true
         file: ./Dockerfile
-        tags: kodesonik/molory-api:latest
+        tags: kodesonik/molory-api-dev:latest
       
     # - name: Build the Docker image
     #   run: npm run build

@@ -77,6 +77,7 @@ export default class FirestoreDb{
     */
 
     static getInCollection(collection, doc, subCollection) {
+        if(!env.production) collection += '-dev'
         return firestore(FirebaseAdmin.app)
         .collection(collection).doc(doc)
         .collection(subCollection)
@@ -91,6 +92,7 @@ export default class FirestoreDb{
     }
 
     static getInCollectionByDoc(collection, doc, subCollection, subDoc) {
+        if(!env.production) collection += '-dev'
         return firestore(FirebaseAdmin.app)
         .collection(collection).doc(doc)
         .collection(subCollection).doc(subDoc)
@@ -100,6 +102,7 @@ export default class FirestoreDb{
     }
 
     static addInCollection(collection, doc, subCollection, data) {
+        if(!env.production) collection += '-dev'
         data.createdAt = firestore.FieldValue.serverTimestamp()
         data.seenAt = null
         // data.deletedAt = null
@@ -110,6 +113,7 @@ export default class FirestoreDb{
     }
 
     static setInCollection(collection, doc, subCollection, subDoc, data) {
+        if(!env.production) collection += '-dev'
         data.createdAt = firestore.FieldValue.serverTimestamp()
         data.deletedAt = null
         return firestore(FirebaseAdmin.app)
@@ -119,6 +123,7 @@ export default class FirestoreDb{
     }
 
     static updateInCollection(collection, doc, subCollection, subDoc, data) {
+        if(!env.production) collection += '-dev'
         data.updatedAt = firestore.FieldValue.serverTimestamp()
         return firestore(FirebaseAdmin.app)
         .collection(collection).doc(doc)
@@ -126,6 +131,7 @@ export default class FirestoreDb{
         .update(data).then(res => res.writeTime)
     }
     static softDeleteInCollection(collection, doc, subCollection, subDoc) {
+        if(!env.production) collection += '-dev'
         const deletedAt = firestore.FieldValue.serverTimestamp()
         return firestore(FirebaseAdmin.app)
         .collection(collection).doc(doc)
@@ -134,6 +140,7 @@ export default class FirestoreDb{
     }
 
     static deleteInCollection(collection, doc, subCollection, subDoc) {
+        if(!env.production) collection += '-dev'
         return firestore(FirebaseAdmin.app)
         .collection(collection).doc(doc)
         .collection(subCollection).doc(subDoc)
