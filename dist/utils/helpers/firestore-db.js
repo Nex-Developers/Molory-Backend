@@ -66,6 +66,8 @@ class FirestoreDb {
             .delete();
     }
     static getInCollection(collection, doc, subCollection) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app)
             .collection(collection).doc(doc)
             .collection(subCollection)
@@ -77,6 +79,8 @@ class FirestoreDb {
         });
     }
     static getInCollectionByDoc(collection, doc, subCollection, subDoc) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app)
             .collection(collection).doc(doc)
             .collection(subCollection).doc(subDoc)
@@ -85,6 +89,8 @@ class FirestoreDb {
         });
     }
     static addInCollection(collection, doc, subCollection, data) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         data.createdAt = firebase_admin_1.firestore.FieldValue.serverTimestamp();
         data.seenAt = null;
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app)
@@ -93,6 +99,8 @@ class FirestoreDb {
             .add(data).then(res => res.id);
     }
     static setInCollection(collection, doc, subCollection, subDoc, data) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         data.createdAt = firebase_admin_1.firestore.FieldValue.serverTimestamp();
         data.deletedAt = null;
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app)
@@ -101,6 +109,8 @@ class FirestoreDb {
             .set(data).then(res => res.writeTime);
     }
     static updateInCollection(collection, doc, subCollection, subDoc, data) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         data.updatedAt = firebase_admin_1.firestore.FieldValue.serverTimestamp();
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app)
             .collection(collection).doc(doc)
@@ -108,6 +118,8 @@ class FirestoreDb {
             .update(data).then(res => res.writeTime);
     }
     static softDeleteInCollection(collection, doc, subCollection, subDoc) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         const deletedAt = firebase_admin_1.firestore.FieldValue.serverTimestamp();
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app)
             .collection(collection).doc(doc)
@@ -115,6 +127,8 @@ class FirestoreDb {
             .update({ deletedAt }).then(res => res.writeTime);
     }
     static deleteInCollection(collection, doc, subCollection, subDoc) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app)
             .collection(collection).doc(doc)
             .collection(subCollection).doc(subDoc)

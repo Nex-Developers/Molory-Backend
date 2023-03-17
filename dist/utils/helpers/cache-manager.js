@@ -14,36 +14,54 @@ class CacheManager {
             console.error('redis connection failed ', error);
         });
     }
+    static selectDb() {
+        const makeAsync = (0, util_1.promisify)(CacheManager.client.select).bind(CacheManager.client);
+        return makeAsync(environment_1.env.redis.db);
+    }
     static arrayPush(array, value) {
         const makeAsync = (0, util_1.promisify)(CacheManager.client.lpush).bind(CacheManager.client);
-        return makeAsync(array, value);
+        return CacheManager.selectDb().then(() => {
+            return makeAsync(array, value);
+        });
     }
     static findInArray(array, value) {
         const getAsync = (0, util_1.promisify)(CacheManager.client.lpos).bind(CacheManager.client);
-        return getAsync(array, value);
+        return CacheManager.selectDb().then(() => {
+            return getAsync(array, value);
+        });
     }
     static removetAt(array, value) {
         const makeAsync = (0, util_1.promisify)(CacheManager.client.lrem).bind(CacheManager.client);
-        return makeAsync(array, 1, value);
+        return CacheManager.selectDb().then(() => {
+            return makeAsync(array, 1, value);
+        });
     }
     static remove(key) {
         const makeAsync = (0, util_1.promisify)(CacheManager.client.del).bind(CacheManager.client);
-        return makeAsync(key);
+        return CacheManager.selectDb().then(() => {
+            return makeAsync(key);
+        });
     }
     static set(key, value, ttl = null) {
         CacheManager.client.set(key, value);
-        if (ttl)
-            CacheManager.client.expire(key, ttl);
+        return CacheManager.selectDb().then(() => {
+            if (ttl)
+                CacheManager.client.expire(key, ttl);
+        });
     }
     static get(key) {
         const getAsync = (0, util_1.promisify)(CacheManager.client.get).bind(CacheManager.client);
-        return getAsync(key);
+        return CacheManager.selectDb().then(() => {
+            return getAsync(key);
+        });
     }
     static find(key, val) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            const res = yield CacheManager.get(key);
-            console.log('result', res);
-            return res === val;
+            return CacheManager.selectDb().then(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+                const res = yield CacheManager.get(key);
+                console.log('result', res);
+                return res === val;
+            }));
         });
     }
 }

@@ -38,6 +38,7 @@ exports.default = {
         host: process.env.REDIS_HOST,
         port: process.env.REDIS_PORT,
         password: process.env.REDIS_PASSWORD,
+        db: 0
     },
     token: {
         expireTime: process.env.TOKEN_EXPIRE_TIME,
