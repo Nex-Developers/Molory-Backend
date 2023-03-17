@@ -4,13 +4,13 @@ const tslib_1 = require("tslib");
 const dotenv_1 = (0, tslib_1.__importDefault)(require("dotenv"));
 dotenv_1.default.config();
 exports.default = {
-    production: true,
+    production: process.env.MY_ENV === 'production' ? true : false,
     url: process.env.BASE_URL,
     taskUrl: process.env.TASK_URL || 'http://molory-task:8087/api/task',
-    port: process.env.PORT,
+    port: process.env.PORT || 8086,
     lang: {
         default: 'en',
-        path: 'languages/',
+        path: 'languages/'
     },
     logs: {
         file: 'logs/data.xlsx'

@@ -1,16 +1,16 @@
 import dotenv from 'dotenv'
 dotenv.config()
 export default {
-    production: true,
+    production: process.env.MY_ENV === 'production'?true: false,
     url: process.env.BASE_URL,
     taskUrl: process.env.TASK_URL || 'http://molory-task:8087/api/task',
-    port: process.env.PORT,
+    port: process.env.PORT || 8086,
     lang: {
         default: 'en',
-        path: 'languages/',
+        path: 'languages/'
     },
     logs: {
-        file: 'logs/data.xlsx'
+        file:  'logs/data.xlsx'
     },
     db: {
         softDelete: true

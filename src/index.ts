@@ -1,5 +1,6 @@
 import app from "./configs/app"
 import { env } from "./configs/environment"
+import environment from "./configs/environment/environment"
 import initializer from "./initializer"
 import { CacheManager, DbConnection, Mailer } from "./utils/helpers"
 import FirebaseAdmin from "./utils/helpers/firebase-admin"
@@ -23,7 +24,10 @@ try {
         //      null, 
         //      null)
         // await SmsServer.send(['22890494008'], 'Test Nemo SMS service API for Molory service')
-        app.listen(env.port, () => console.log(`Server running at http://localhost:${env.port}`))
+        app.listen(env.port, () => {
+            console.log(`env args production: `, environment.production )
+            console.log(`Server  running at http://localhost:${env.port} since `, new Date())
+        })
     }
     startApp()
 } catch (err) {

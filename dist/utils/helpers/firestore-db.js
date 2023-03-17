@@ -2,8 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const firebase_admin_1 = require("firebase-admin");
 const _1 = require(".");
+const environment_1 = require("../../configs/environment");
 class FirestoreDb {
     static get(collection) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app)
             .collection(collection)
             .where('deletedAt', '==', null)
@@ -14,6 +17,8 @@ class FirestoreDb {
         });
     }
     static getByDoc(collection, doc) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app)
             .collection(collection).doc(doc)
             .get().then(res => {
@@ -21,6 +26,8 @@ class FirestoreDb {
         });
     }
     static add(collection, data) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         data.createdAt = firebase_admin_1.firestore.FieldValue.serverTimestamp();
         data.deletedAt = null;
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app)
@@ -29,23 +36,31 @@ class FirestoreDb {
             .then(res => res.id);
     }
     static set(collection, doc, data) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app)
             .collection(collection).doc(doc)
             .set(data).then(res => res.writeTime);
     }
     static update(collection, doc, data) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         data.updatedAt = firebase_admin_1.firestore.FieldValue.serverTimestamp();
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app).
             collection(collection).doc(doc)
             .update(data).then(res => res.writeTime);
     }
     static softDelete(collection, doc) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         const deletedAt = firebase_admin_1.firestore.FieldValue.serverTimestamp();
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app).
             collection(collection).doc(doc)
             .update({ deletedAt }).then(res => res.writeTime);
     }
     static delete(collection, doc) {
+        if (!environment_1.env.production)
+            collection += '-dev';
         return (0, firebase_admin_1.firestore)(_1.FirebaseAdmin.app)
             .collection(collection).doc(doc)
             .delete();

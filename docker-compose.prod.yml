@@ -1,101 +1,23 @@
 version: "3.8"
 services:
-  nginx:
-    image: nginx:stable-alpine
-    ports:
-      - "81:80"
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-  node-api:
-    container_name: molory-api
-    image: kodesonik/molory-api
-    restart: always
-    build:
+  molory-api:
+    container_name: molory-api-prod
+    build: 
       context: .
-
-      args:
+      args: 
         NODE_ENV: production
-        PORT: 8081
-
+        PORT: 8087
+    ports:
+      - "8087:8087"
+    volumes:
+      - ./:/app
+      # - /app/node_modules
     env_file:
       - ./.env
-    depends_on:
-      - db
-      - cache
-      - nginx
-
-    volumes:
-      - /root/app-data/logs:/app/logs
-      - /root/app-data/uploads:/app/public/uploads
-    command: bash -c "npm install && npm install -g pm2 && npx prisma db push &&  pm2-runtime dist"
-  node-api-test:
-    container_name: molory-api-test
-    image: kodesonik/molory-api
-    restart: always
-    build:
-      context: .
-
-      args:
-        NODE_ENV: production
-        PORT: 8082
-    env_file:
-      - ./.env.test
-    depends_on:
-      - db
-      - cache
-      - nginx
-
-    volumes:
-      - /root/app-data/logs-test:/app/logs
-      - /root/app-data/uploads-test:/app/public/uploads
-    command: bash -c "npm install && npm install -g pm2 && npx prisma db push &&  pm2-runtime dist" 
-  node-task:
-    container_name: molory-task
-    image: kodesonik/molory-task
-    restart: always
-    build:
-      context: .
-      args:
-
-        NODE_ENV: production
-        PORT: 8082
-    env_file:
-      - ./.env.task
-    command: bash -c "npm install -g pm2  && pm2-runtime dist"
-
-  admin:
-    container_name: molory-admin
-
-    image: kodesonik/molory-admin
-    restart: always
-    build:
-      context: ./admin/
-    env_file:
-      - ./admin/.env
-    command: yarn start
-  db:
-    container_name: molory-db
-    image: postgres:14-alpine
-    restart: always
-    volumes:
-      - postgre-db:/var/lib/postgresql/data
-      - /var/lib/postgresql/data/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
-    environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_PASSWORD: forza12
-  cache:
-    container_name: molory-cache
-    image: redis
-    restart: always
-    volumes:
-      - redis_data:/data
-
-  adminer:
-    container_name: db
-    image: adminer
-    ports:
-      - 8080:8080
-volumes:
-  postgre-db:
-    driver: local
-  redis_data:
+    # environment:
+    #   - NODE_ENV=development
+    command: sh -c "npx prisma db push && npm run dev"
+networks:
+  default:
+    name: utils_default
+    external: true

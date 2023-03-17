@@ -5,13 +5,15 @@ services:
     build: 
       context: .
       args: 
-        NODE_ENV: development
+        NODE_ENV: production
         PORT: 8086
     ports:
       - "8086:8086"
     volumes:
       - ./:/app
       # - /app/node_modules
+    environment:
+      - NODE_ENV=production
     env_file:
       - ./.env.dev
     # environment:

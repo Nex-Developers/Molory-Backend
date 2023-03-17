@@ -1,5 +1,6 @@
 import { firestore } from "firebase-admin";
 import { FirebaseAdmin } from ".";
+import { env } from "../../configs/environment";
 
 
 export default class FirestoreDb{
@@ -9,6 +10,7 @@ export default class FirestoreDb{
     */
 
     static get(collection) {
+        if(!env.production) collection += '-dev'
         return firestore(FirebaseAdmin.app)
         .collection(collection)
         .where('deletedAt', '==', null)
@@ -20,6 +22,7 @@ export default class FirestoreDb{
     }
 
     static getByDoc(collection, doc) {
+        if(!env.production) collection += '-dev'
         return firestore(FirebaseAdmin.app)
         .collection(collection).doc(doc)
         .get().then(res => {
@@ -28,6 +31,7 @@ export default class FirestoreDb{
     }
 
     static add(collection, data) {
+        if(!env.production) collection += '-dev'
         data.createdAt = firestore.FieldValue.serverTimestamp()
         data.deletedAt = null
         return firestore(FirebaseAdmin.app)
@@ -37,6 +41,7 @@ export default class FirestoreDb{
     }
 
     static set(collection, doc, data) {
+        if(!env.production) collection += '-dev'
         // data.createdAt = firestore.FieldValue.serverTimestamp()
         // data.deletedAt = null
         return firestore(FirebaseAdmin.app)
@@ -45,6 +50,7 @@ export default class FirestoreDb{
     }
 
     static update(collection, doc, data) {
+        if(!env.production) collection += '-dev'
         data.updatedAt = firestore.FieldValue.serverTimestamp()
         return firestore(FirebaseAdmin.app).
         collection(collection).doc(doc)
@@ -52,6 +58,7 @@ export default class FirestoreDb{
     }
 
     static softDelete(collection, doc) {
+        if(!env.production) collection += '-dev'
         const deletedAt = firestore.FieldValue.serverTimestamp()
         return firestore(FirebaseAdmin.app).
         collection(collection).doc(doc)
@@ -59,6 +66,7 @@ export default class FirestoreDb{
     }
 
     static delete(collection, doc) {
+        if(!env.production) collection += '-dev'
         return firestore(FirebaseAdmin.app)
         .collection(collection).doc(doc)
         .delete()
