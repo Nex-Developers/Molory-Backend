@@ -93,6 +93,10 @@
       "title": "Trajet publié!",
       "message": "Félicitations, votre trajet :departure - :arrival pour le :date à :time a été publié avec succès. Les voyageurs pourront désormais réserver les places disponibles."
     },
+    "cancelTrip": {
+      "title": "Trajet annulé!",
+      "message": "Votre trajet :departure - :arrival pour le :date à :time a été publié avec succès. Les voyageurs pourront désormais réserver les places disponibles."
+    },
     "startTrip": {
       "title": "Bon Voyage!",
       "message": "Votre trajet :departure - :arrival de :time vient de commencé. Molory vous rappelle à la prudence."
@@ -100,10 +104,6 @@
     "finishTrip": {
       "title": "Trajet terminé!",
       "message": "Votre trajet :departure - :arrival du :date à :time est terminé. Vous pouvez à présent gérer votre portefeuille et n'oubliez pas de laissez des notes et avis aux passagers"
-    },
-    "removeTrip": {
-      "title": "Réservation annulée!",
-      "message": "Un client a annulé sa réservation pour le trajet :departure - :arrival du :date à :time. Veuillez consulter les details de votre trajet pour en savoir plus."
     },
     "addTravel": {
       "title": "Réservation effectuée!",
@@ -132,6 +132,10 @@
     "removeTravel": {
       "title": "Réservation annulée!",
       "message": "Votre voyage :departure - :arrival du :date à :time a été annulé par le conducteur. Veuillez consulter les details de votre réservation pour en savoir plus."
+    },
+    "cancelTravel": {
+      "title": "Réservation annulée!",
+      "message": "Vous avez annulé votre réservation pour le trajet :departure - :arrival du :date à :time. Veuillez consulter les details de votre trajet pour en savoir plus."
     },
     "withdrawal": {
         "title": "Retrait en cours",
