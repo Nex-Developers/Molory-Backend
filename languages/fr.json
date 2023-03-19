@@ -95,7 +95,11 @@
     },
     "cancelTrip": {
       "title": "Trajet annulé!",
-      "message": "Votre trajet :departure - :arrival pour le :date à :time a été publié avec succès. Les voyageurs pourront désormais réserver les places disponibles."
+      "message": "Votre trajet :departure - :arrival pour le :date à :time a été annulé avec succès."
+    },
+    "removeTrip": {
+      "title": "Réservation annulée!",
+      "message": "Le passager :firstName :lastName a annulé sa réservation sur le trajet :departure - :arrival du :date à :time."
     },
     "startTrip": {
       "title": "Bon Voyage!",
@@ -131,11 +135,11 @@
     },
     "removeTravel": {
       "title": "Réservation annulée!",
-      "message": "Votre voyage :departure - :arrival du :date à :time a été annulé par le conducteur. Veuillez consulter les details de votre réservation pour en savoir plus."
+      "message": "Votre voyage :departure - :arrival du :date à :time a été annulé par l'auteur du trajet. Veuillez consulter les details du trajet pour vous faire rembourser. Merci pour votre compréhension."
     },
     "cancelTravel": {
       "title": "Réservation annulée!",
-      "message": "Vous avez annulé votre réservation pour le trajet :departure - :arrival du :date à :time. Veuillez consulter les details de votre trajet pour en savoir plus."
+      "message": "Vous avez annulé votre réservation pour le trajet :departure - :arrival du :date à :time. Veuillez consulter les details du trajet pour vous faire rembourser."
     },
     "withdrawal": {
         "title": "Retrait en cours",

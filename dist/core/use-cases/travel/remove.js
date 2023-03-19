@@ -16,10 +16,15 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
         if (!cancelReason)
             throw new errors_1.MissingParamError('cancelReason');
         return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            const { userId, route, seats, payment, status, canceledAt } = yield prisma.travel.findUnique({ where: { id },
+            const { userId, user, route, seats, payment, status, canceledAt } = yield prisma.travel.findUnique({ where: { id },
                 select: {
                     userId: true,
                     status: true,
+                    user: { select: {
+                            lastName: true,
+                            firstName: true
+                        }
+                    },
                     route: { select: {
                             id: true,
                             principal: true,
@@ -54,7 +59,7 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
             saveTravel(id);
             saveTrip(route.trip.id);
             notifyUser({ id: userId, titleRef: { text: 'notification.cancelTravel.title' }, messageRef: { text: 'notification.cancelTravel.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime } }, cover: null, data: { path: 'cancel-travel', id: id.toString(), res: 'DANGER' }, lang: 'fr', type: 'travel' });
-            notifyUser({ id: route.trip.userId, titleRef: { text: 'notification.removeTravel.title' }, messageRef: { text: 'notification.removeTravel.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime } }, cover: null, data: { path: 'cancel-travel', id: id.toString(), res: 'DANGER' }, lang: 'fr', type: 'travel' });
+            notifyUser({ id: route.trip.userId, titleRef: { text: 'notification.removeTrip.title' }, messageRef: { text: 'notification.removeTrip.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime, firstName: user.firstName, lastName: user.lastName } }, cover: null, data: { path: 'cancel-travel', id: id.toString(), res: 'DANGER' }, lang: 'fr', type: 'travel' });
             const message = { text: 'response.remove' };
             return { message };
         }));
