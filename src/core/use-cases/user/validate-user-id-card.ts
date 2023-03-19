@@ -34,7 +34,8 @@ export default function makeValidateUserIdCard({
             await userDb.updateOne({ where: { id: userId }, data: res })
             const wallet = await walletDb.findFirst({ where: { id: userId } })
             if (!wallet) await walletDb.insertOne({ data: { id: userId } })
-            notifyUser({ id: userId, titleRef: {text: 'notification.driverActivated.title'}, messageRef:{ text: 'notification.driverActivated.message', params: { name: user.lastName}  }, cover: null,  data: { path: 'validate-id-card', id: userId.toString(), res:'INFOS'}, lang: 'fr', type: 'user' })
+            notifyUser({ id: userId, titleRef: {text: 'notification.idCardValidated.title'}, messageRef:{ text: 'notification.idCardValidated.message', params: { name: user.lastName}  }, cover: null,  data: { path: 'validate-id-card', id: userId.toString(), res:'INFOS'}, lang: 'fr', type: 'user' })
+            if (user.driverLicenseStatus == 1) notifyUser({ id: userId, titleRef: {text: 'notification.driverActivated.title'}, messageRef:{ text: 'notification.driverActivated.message', params: { name: user.lastName}  }, cover: null,  data: { path: 'validate-id-card', id: userId.toString(), res:'INFOS'}, lang: 'fr', type: 'user' })
         }
         saveProfile(userId)
         const message = { text: "response.edit" }

@@ -77,9 +77,17 @@
       "title": "Numero verifié!!! ",
       "message": "Votre numéro de téléphone :phoneNumber a ete verfié avec success.  Bon voyage avec Molory!"
     },
+    "idCardValidated": {
+      "title": "Mise à jour du statut.",
+      "message": "Bonjour :name, votre carte d'identité a été validé avec succès. Bon voyage avec Molory."
+    },
+    "driverLicenseValidated": {
+      "title": "Mise à jour du statut.",
+      "message": "Bonjour :name,  votre permis de conduire a été validé avec succès. Bon voyage avec Molory."
+    },
     "driverActivated": {
-      "title": "Statut mis a jour!",
-      "message": "Bonjour :name, nous sommes heureux de vous informer que vous pouvez désormais publier des trajets sur notre plateforme. Vous pouvez proposer des trajets réguliers ou ponctuels, en indiquant les détails du voyage (itinéraire, horaire, tarif, etc.)."
+      "title": "Mise à jour du statut.",
+      "message": "Bonjour :name, Vous êtes désormais en mesure de publier des trajets sur la plateforme. Bon voyage avec Molor."
     },
     "addTrip": {
       "title": "Trajet publié!",

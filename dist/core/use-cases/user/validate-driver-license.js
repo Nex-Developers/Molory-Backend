@@ -27,7 +27,9 @@ function makeValidateDriverLicense({ userDb, walletDb, saveProfile, notifyUser, 
                 const wallet = yield walletDb.findFirst({ where: { id: userId } });
                 if (!wallet)
                     yield walletDb.insertOne({ data: { id: userId } });
-                notifyUser({ id: userId, titleRef: { text: 'notification.driverActivated.title' }, messageRef: { text: 'notification.driverActivated.message', params: { name: user.lastName } }, cover: null, data: { path: 'validate-driver-license', id: userId.toString(), res: 'INFOS' }, lang: 'fr', type: 'user' });
+                notifyUser({ id: userId, titleRef: { text: 'notification.driverLicenseValidated.title' }, messageRef: { text: 'notification.driverLicenseValidated.message', params: { name: user.lastName } }, cover: null, data: { path: 'validate-driver-license', id: userId.toString(), res: 'INFOS' }, lang: 'fr', type: 'user' });
+                if (user.idCardStatus == 1)
+                    notifyUser({ id: userId, titleRef: { text: 'notification.driverActivated.title' }, messageRef: { text: 'notification.driverActivated.message', params: { name: user.lastName } }, cover: null, data: { path: 'validate-id-card', id: userId.toString(), res: 'INFOS' }, lang: 'fr', type: 'user' });
             }
             saveProfile(userId);
             const message = { text: "response.edit" };
