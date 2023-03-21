@@ -99,7 +99,7 @@
     },
     "removeTrip": {
       "title": "Réservation annulée!",
-      "message": "Le passager :firstName :lastName a annulé sa réservation sur le trajet :departure - :arrival du :date à :time."
+      "message": "Le passager :name a annulé sa réservation sur le trajet :departure - :arrival du :date à :time."
     },
     "startTrip": {
       "title": "Bon Voyage!",

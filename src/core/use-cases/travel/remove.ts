@@ -76,7 +76,7 @@ export default function makeRemove({
             saveTravel(id)
             saveTrip(route.trip.id)
             notifyUser({ id: userId, titleRef: { text: 'notification.cancelTravel.title'}, messageRef: { text: 'notification.cancelTravel.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime }}, cover: null, data: { path: 'cancel-travel', id: id.toString(), res:'DANGER'}, lang: 'fr', type: 'travel' })
-            notifyUser({ id: route.trip.userId, titleRef: { text: 'notification.removeTrip.title'}, messageRef: { text: 'notification.removeTrip.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime, firstName: user.firstName , lastName: user.lastName }}, cover: null, data: { path: 'cancel-travel', id: id.toString(), res:'DANGER'}, lang: 'fr', type: 'travel' })
+            notifyUser({ id: route.trip.userId, titleRef: { text: 'notification.removeTrip.title'}, messageRef: { text: 'notification.removeTrip.message', params: { name: user.firstName, departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime }}, cover: null, data: { path: 'cancel-travel', id: id.toString(), res:'DANGER'}, lang: 'fr', type: 'travel' })
             const message = { text: 'response.remove' }
             return { message }
         })
