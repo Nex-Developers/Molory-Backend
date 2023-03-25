@@ -26,24 +26,14 @@ export default function makeListItems({
                 status: true,
                 createdAt: true,
                 validatedAt: true,
-                user: {
-                    select: {
-                        id: true,
-                        avatar: true,
-                        firstName: true,
-                        lastName: true,
-                        phoneNumber: true
-                    }
-                }
+                walletId: true,
             }
         })
         return {
             data: data.map(item => {
-                const { user, ...res } = item
-                return {
-                    ...res,
-                    ...user
-                }
+                const { walletId, ...res } = item
+                console.log(walletId)
+                return res
             })
         }
 

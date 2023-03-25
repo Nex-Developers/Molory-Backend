@@ -25,21 +25,14 @@ function makeListItems({ withdrawalDb } = {}) {
                 status: true,
                 createdAt: true,
                 validatedAt: true,
-                user: {
-                    select: {
-                        id: true,
-                        avatar: true,
-                        firstName: true,
-                        lastName: true,
-                        phoneNumber: true
-                    }
-                }
+                walletId: true,
             }
         });
         return {
             data: data.map(item => {
-                const { user } = item, res = (0, tslib_1.__rest)(item, ["user"]);
-                return Object.assign(Object.assign({}, res), user);
+                const { walletId } = item, res = (0, tslib_1.__rest)(item, ["walletId"]);
+                console.log(walletId);
+                return res;
             })
         };
     });
