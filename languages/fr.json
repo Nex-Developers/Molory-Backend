@@ -87,7 +87,7 @@
     },
     "driverActivated": {
       "title": "Mise à jour du statut.",
-      "message": "Bonjour :name, Vous êtes désormais en mesure de publier des trajets sur la plateforme. Bon voyage avec Molor."
+      "message": "Bonjour :name, Vous êtes désormais en mesure de publier des trajets sur la plateforme. Bon voyage avec Molory."
     },
     "addTrip": {
       "title": "Trajet publié!",
@@ -171,7 +171,7 @@
     },
     "confirmTravelEnded": {
       "title": "Voyage terminé",
-      "message": "Vous venez de confirmer la fin de votre voyage :departure - :arrival du :date de :time. Molory vous souhaite la binevenue."
+      "message": "Vous venez de confirmer la fin de votre voyage :departure - :arrival du :date de :time. Molory vous souhaite la bienvenue."
     },
     "selfConfirmTravelEnded": {
       "title": "Voyage terminé",
