@@ -1,4 +1,4 @@
-import { MissingParamError, ServerError } from "../../../utils/errors"
+import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 import moment from 'moment'
 import { DbConnection } from "../../../utils/helpers"
 
@@ -43,7 +43,9 @@ export default function makeAdd({
         if (!time) throw new MissingParamError('time')
         if (!stops && !stops.length) throw new MissingParamError('stops')
         if (!description) description = null
-
+        if (new Date(date + ' ' + time) < new Date()) {
+            throw new InvalidParamError('time')
+        }
         const prisma = DbConnection.prisma
         return await prisma.$transaction(async () => {
             const departures = JSON.parse(JSON.stringify(stops)).filter(stop => stop.type === 'departure' || stop.type === 'both')
@@ -75,13 +77,13 @@ export default function makeAdd({
             let departureAddress, arrivalAddress
             for (const departure of departures) {
                 const routeDepartureAddress = departure.address.substring(0, departure.address.indexOf(","))
-                if (departure.principal){
+                if (departure.principal) {
                     departureAddress = routeDepartureAddress
                 }
                 for (const arrival of arrivals) {
                     if (departure.address === arrival.address) break
                     const routeArrivalAddress = arrival.address.substring(0, arrival.address.indexOf(","))
-                    if (arrival.principal){
+                    if (arrival.principal) {
                         arrivalAddress = routeArrivalAddress
                     }
                     const principal = (departure.principal && arrival.principal) ? true : false
@@ -140,7 +142,7 @@ export default function makeAdd({
                     arrivalAddress,
                     description,
                     user: {
-                        connect: { id: userId}
+                        connect: { id: userId }
                     },
                     routes: {
                         create: calculatedRoutes
@@ -181,7 +183,7 @@ export default function makeAdd({
             const timer = getDayPlusQuater(tripDate)
             addTask({ timer, path: 'trip-start', params: { id: trip.id } })
             // notify device
-            notifyUser({ id: userId, titleRef: { text: 'notification.addTrip.title'}, messageRef: { text: 'notification.addTrip.message', params: { departure: departureAddress, arrival: arrivalAddress, date, time}}, cover: null, data: { path: 'add-trip', id: trip.id.toString(), res:'SUCCESS'}, lang: 'fr', type: 'trip' })
+            notifyUser({ id: userId, titleRef: { text: 'notification.addTrip.title' }, messageRef: { text: 'notification.addTrip.message', params: { departure: departureAddress, arrival: arrivalAddress, date, time } }, cover: null, data: { path: 'add-trip', id: trip.id.toString(), res: 'SUCCESS' }, lang: 'fr', type: 'trip' })
             saveProfile(userId)
             saveTrip(trip.id)
             const message = { text: "response.add" }

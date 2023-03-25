@@ -32,6 +32,9 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
             throw new errors_1.MissingParamError('stops');
         if (!description)
             description = null;
+        if (new Date(date + ' ' + time) < new Date()) {
+            throw new errors_1.InvalidParamError('time');
+        }
         const prisma = helpers_1.DbConnection.prisma;
         return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const departures = JSON.parse(JSON.stringify(stops)).filter(stop => stop.type === 'departure' || stop.type === 'both');
