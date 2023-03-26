@@ -49,6 +49,6 @@ const confirmEnd = (0, confirm_end_1.default)({ notifyUser: notifications_1.noti
 exports.confirmEnd = confirmEnd;
 const selfConfirmEnd = (0, self_confirm_end_1.default)({ notifyUser: notifications_1.notifyUser, addTask: task_1.addTask, saveTravel: firebase_1.saveTravel, saveTrip: firebase_1.saveTrip });
 exports.selfConfirmEnd = selfConfirmEnd;
-const travelReport = (0, report_1.default)();
+const travelReport = (0, report_1.default)({ saveTravel: firebase_1.saveTravel, saveTrip: firebase_1.saveTrip, notifyUser: notifications_1.notifyUser });
 exports.travelReport = travelReport;
 //# sourceMappingURL=index.js.map

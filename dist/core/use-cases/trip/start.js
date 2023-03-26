@@ -10,7 +10,7 @@ exports.default = ({ notifyUser, addTask, saveTrip, saveTravel }) => {
         return date.split("-").reverse().join("-");
     };
     const getNextDay = (date) => {
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1, date.getHours(), date.getMinutes());
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
     };
     return ({ id }) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
         console.log(' Start trip', +id);

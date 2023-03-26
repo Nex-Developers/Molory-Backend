@@ -44,8 +44,9 @@ export default  ({
                 saveProfile(userId)
             }
             saveTravel(travelId)
-            saveTrip(tripId)
-            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelPassenger.title'}, messageRef: { text: 'notification.rateTravelPassenger.message', params: { departure: travel.departureAddress, arrival: travel.arrivalAddress, date: travel.departureDate, time: travel.departureTime }}, cover: null, data: { path:'rate-passenger', id: travelId.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
+            saveTrip(tripId)           
+            const { firstName } = await prisma.user.findUnique({ where: {id: by}, select: { firstName: true}})
+            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelPassenger.title'}, messageRef: { text: 'notification.rateTravelPassenger.message', params: {name: firstName ,departure: travel.departureAddress, arrival: travel.arrivalAddress, date: travel.departureDate, time: travel.departureTime }}, cover: null, data: { path:'rate-passenger', id: travelId.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
             const message = { text: "response.edit"}
             return { message }
         })

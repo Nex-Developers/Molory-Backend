@@ -83,7 +83,7 @@ export default function makeConfirmPayment({
                         connect: { id: data.userId}
                     }
                 },
-                include: { route: true}
+                include: { route: true, user: true}
             })
             // remove seats from trip avalaibleSeats
             if (principal) {
@@ -109,11 +109,12 @@ export default function makeConfirmPayment({
             saveTravel(travel.id)
             saveTrip(trip.id)
             notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title'}, messageRef: { text: 'notification.addTravel.message', params: { seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime}}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'SUCCESS'}, lang: 'fr', type: 'travel' })
-            notifyUser({ id: trip.userId, titleRef: { text: 'notification.bookTrip.title'}, messageRef: { text: 'notification.bookTrip.message', params: { seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime}}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
+            notifyUser({ id: trip.userId, titleRef: { text: 'notification.bookTrip.title'}, messageRef: { name: travel.user.firstName ,text: 'notification.bookTrip.message', params: { seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime}}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
             const formatedDate = reformateDate(travel.route.departureDate) 
             const date = new Date(formatedDate + ' ' + travel.route.departureTime)
              const timer = getDatePlusQuater(date)
             await addTask({ path: 'ask-to-start-travel', timer, params: { id: travel.id }})
+            delete data.user
             const message = { text: "response.add", data: travel }
             return { message }
         })

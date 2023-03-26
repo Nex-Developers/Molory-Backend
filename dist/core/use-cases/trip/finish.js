@@ -19,7 +19,7 @@ exports.default = ({ notifyUser, saveTrip, saveTravel }) => {
             let incomes, commission = 0;
             const promises = routes.map((route) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
                 const promises2 = route.travels.map(travel => {
-                    if (travel.status == 2) {
+                    if (travel.status == 2 || travel.status == 1) {
                         incomes += route.price * travel.seats;
                         commission += route.fees * travel.seats;
                     }

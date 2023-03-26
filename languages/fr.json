@@ -115,7 +115,7 @@
     },
     "bookTrip": {
       "title": "Réservation effectuée!",
-      "message": "Une reservation de :seats place(s) vient effectué sur votre trajet :departure - :arrival du :date de :time. Veuillez consulter les details de votre trajet."
+      "message": ":name vient effectué une réservation de :seats place(s) sur votre trajet :departure - :arrival du :date de :time. Veuillez consulter les details de votre trajet."
     },
     "startTravel": {
       "title": "Bon Voyage!",
@@ -127,11 +127,11 @@
     },
     "rateTravelDriver": {
       "title": "Note et avis",
-      "message": "Un passager a laissé un avis sur votre trajet :departure - :arrival du :date de :time. Veuillez consulter les details du trajet pour en savoir plus."
+      "message": ":name a laissé un avis sur votre trajet :departure - :arrival du :date de :time. Veuillez consulter les details du trajet pour en savoir plus."
     },
     "rateTravelPassenger": {
       "title": "Note et avis",
-      "message": "Le conducteur du trajet :departure - :arrival du :date de :time vous a laissé un avis.  Veuillez consulter les details de votre réservation pour en savoir plus"
+      "message": ":name, conducteur du trajet :departure - :arrival du :date de :time vous a laissé un avis.  Veuillez consulter les details de votre réservation pour en savoir plus"
     },
     "removeTravel": {
       "title": "Réservation annulée!",

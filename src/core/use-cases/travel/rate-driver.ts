@@ -32,7 +32,7 @@ export default ({
             const review = await prisma.driverReview.findUnique({ where: { travelId }})
            if(!review) await prisma.driverReview.create({ data: { travelId, tripId, userId, rating, comment, by}})
            else await prisma.driverReview.update({ where: { travelId}, data: {tripId, userId, rating, comment, by }})
-
+        
            if(rating)  {
                 const dirverRatings = await prisma.driverReview.findMany({ where: { userId }, select: { rating: true}})
                 const passengerRatings = await prisma.passengerReview.findMany({ where: { userId}, select: { rating: true}})
@@ -46,7 +46,8 @@ export default ({
             }
             saveTravel(travelId)
             saveTrip(route.trip.id)
-            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title'}, messageRef: { text: 'notification.rateTravelDriver.message', params: { departure: travel.route.trip.departureAddress, arrival: travel.route.trip.arrivalAddress, date: travel.route.trip.departureDate, time: travel.route.trip.departureTime }}, cover: null, data: {path:'rate-driver', id: travelId.toString(), res: 'INFOS'}, lang: 'fr', type: 'travel' })
+            const { firstName } = await prisma.user.findUnique({ where: {id: by}, select: { firstName: true}})
+            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title'}, messageRef: { text: 'notification.rateTravelDriver.message', params: { name:  firstName,departure: travel.route.trip.departureAddress, arrival: travel.route.trip.arrivalAddress, date: travel.route.trip.departureDate, time: travel.route.trip.departureTime }}, cover: null, data: {path:'rate-driver', id: travelId.toString(), res: 'INFOS'}, lang: 'fr', type: 'travel' })
             const message = { text: "response.edit"}
             return { message }
           

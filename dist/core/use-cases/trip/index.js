@@ -36,6 +36,6 @@ const editTrip = (0, edit_1.default)({ tripDb, saveTrip: firebase_1.saveTrip });
 exports.editTrip = editTrip;
 const confirmTrip = (0, confirm_1.default)({ tripDb });
 exports.confirmTrip = confirmTrip;
-const tripReport = (0, report_1.default)();
+const tripReport = (0, report_1.default)({ saveTrip: firebase_1.saveTrip, saveTravel: firebase_1.saveTravel, notifyUser: notifications_1.notifyUser });
 exports.tripReport = tripReport;
 //# sourceMappingURL=index.js.map

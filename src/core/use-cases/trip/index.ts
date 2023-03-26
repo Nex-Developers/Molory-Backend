@@ -29,7 +29,7 @@ const removeTrip = makeRemove({ tripDb, notifyUser, saveTrip, saveTravel })
 
 const editTrip = makeEdit({ tripDb, saveTrip })
 const confirmTrip = makeConfirm({ tripDb })
-const tripReport = makeReport({ saveTrip })
+const tripReport = makeReport({ saveTrip, saveTravel, notifyUser })
 
 export {
     addTrip,

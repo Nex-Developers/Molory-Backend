@@ -25,7 +25,7 @@ export default ({
             let incomes, commission = 0
            const promises =  routes.map( async route => {
                 const promises2 = route.travels.map(  travel => {
-                  if(travel.status == 2)  {
+                  if(travel.status == 2 || travel.status == 1)   {
                     incomes += route.price * travel.seats
                     commission += route.fees * travel.seats
                   }
