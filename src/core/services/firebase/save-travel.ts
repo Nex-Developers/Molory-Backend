@@ -45,6 +45,7 @@ export default function makeSaveNotification({
                                 status: true,
                                 departureDate: true,
                                 departureTime: true,
+                                description: true,
                                 user: {
                                     select: {
                                         id: true,
@@ -114,6 +115,7 @@ export default function makeSaveNotification({
                         id: true,
                         description: true,
                         createdAt: true,
+                        interrupted: true,
                         user: { 
                             select: {
                                 id: true,

@@ -94,7 +94,8 @@ export default function makeSaveNotification({
                     select: {
                         id: true,
                         description: true,
-                        createdAt: true
+                        createdAt: true,
+                        interrupted: true,
                     }
                 }
             }

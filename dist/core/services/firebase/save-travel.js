@@ -44,6 +44,7 @@ function makeSaveNotification({ setInCollection } = {}) {
                                 status: true,
                                 departureDate: true,
                                 departureTime: true,
+                                description: true,
                                 user: {
                                     select: {
                                         id: true,
@@ -113,6 +114,7 @@ function makeSaveNotification({ setInCollection } = {}) {
                         id: true,
                         description: true,
                         createdAt: true,
+                        interrupted: true,
                         user: {
                             select: {
                                 id: true,

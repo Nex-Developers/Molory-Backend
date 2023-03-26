@@ -115,7 +115,7 @@
     },
     "bookTrip": {
       "title": "Réservation effectuée!",
-      "message": ":name vient effectué une réservation de :seats place(s) sur votre trajet :departure - :arrival du :date de :time. Veuillez consulter les details de votre trajet."
+      "message": ":name vient effectuer‚ une réservation de :seats place(s) sur votre trajet :departure - :arrival du :date de :time. Veuillez consulter les details de votre trajet."
     },
     "startTravel": {
       "title": "Bon Voyage!",

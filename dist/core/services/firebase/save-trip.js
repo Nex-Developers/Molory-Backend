@@ -91,7 +91,8 @@ function makeSaveNotification({ setInCollection } = {}) {
                     select: {
                         id: true,
                         description: true,
-                        createdAt: true
+                        createdAt: true,
+                        interrupted: true,
                     }
                 }
             }
