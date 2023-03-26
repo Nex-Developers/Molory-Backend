@@ -295,6 +295,7 @@ model TravelReport {
   updatedAt   DateTime?
   deletedAt   DateTime?
   userId      Int
+  interrupted Boolean @default(false)
   status      Int? @default(2)
   travel      Travel    @relation(fields: [travelId], references: [id])
   user        User @relation(fields: [userId], references: [id])
