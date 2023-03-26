@@ -91,7 +91,7 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
             saveTravel(travel.id);
             saveTrip(trip.id);
             notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title' }, messageRef: { text: 'notification.addTravel.message', params: { seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime } }, cover: null, data: { path: 'add-travel', id: id.toString(), res: 'SUCCESS' }, lang: 'fr', type: 'travel' });
-            notifyUser({ id: trip.userId, titleRef: { text: 'notification.bookTrip.title' }, messageRef: { name: travel.user.firstName, text: 'notification.bookTrip.message', params: { seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime } }, cover: null, data: { path: 'add-travel', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
+            notifyUser({ id: trip.userId, titleRef: { text: 'notification.bookTrip.title' }, messageRef: { text: 'notification.bookTrip.message', params: { name: travel.user.firstName, seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime } }, cover: null, data: { path: 'add-travel', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
             const formatedDate = reformateDate(travel.route.departureDate);
             const date = new Date(formatedDate + ' ' + travel.route.departureTime);
             const timer = getDatePlusQuater(date);

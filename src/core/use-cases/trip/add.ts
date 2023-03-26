@@ -1,4 +1,4 @@
-import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
+import { MissingParamError, ServerError } from "../../../utils/errors"
 import moment from 'moment'
 import { DbConnection } from "../../../utils/helpers"
 
@@ -43,9 +43,9 @@ export default function makeAdd({
         if (!time) throw new MissingParamError('time')
         if (!stops && !stops.length) throw new MissingParamError('stops')
         if (!description) description = null
-        if (new Date(date + ' ' + time) < new Date()) {
-            throw new InvalidParamError('time')
-        }
+        // if ( moment(date + ' ' + time).format('YYYY-MM-DD HH:MM')) {
+        //     throw new InvalidParamError('time')
+        // }
         const prisma = DbConnection.prisma
         return await prisma.$transaction(async () => {
             const departures = JSON.parse(JSON.stringify(stops)).filter(stop => stop.type === 'departure' || stop.type === 'both')
