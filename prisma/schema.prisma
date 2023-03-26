@@ -295,10 +295,10 @@ model TravelReport {
   updatedAt   DateTime?
   deletedAt   DateTime?
   userId      Int
-  interrupted Boolean @default(false)
-  status      Int? @default(2)
+  interrupted Boolean   @default(false)
+  status      Int?      @default(2)
   travel      Travel    @relation(fields: [travelId], references: [id])
-  user        User @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
 }
 
 model TripReport {
@@ -308,7 +308,8 @@ model TripReport {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime?
   deletedAt   DateTime?
-  status      Int? @default(2)
+  interrupted Boolean   @default(false)
+  status      Int?      @default(2)
   trip        Trip      @relation(fields: [tripId], references: [id])
 }
 
@@ -446,6 +447,7 @@ model Notification {
   status        Int         @default(2)
   publication   Publication @relation(fields: [publicationId], references: [id])
   user          User        @relation(fields: [receiverId], references: [id])
+
   @@id([publicationId, receiverId])
 }
 

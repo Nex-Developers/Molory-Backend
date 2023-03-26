@@ -37,7 +37,7 @@ const askToEnd = makeAskToEnd({ notifyUser, addTask ,saveTravel })
 const confirmStart = makeConfirmStart({ notifyUser, addTask, saveTravel, saveTrip })
 const confirmEnd = makeConfirmEnd({ notifyUser, addTask, saveTravel, saveTrip })
 const selfConfirmEnd = makeSelfConfirmEnd({ notifyUser, addTask, saveTravel, saveTrip })
-const travelReport = makeReport()
+const travelReport = makeReport({ saveTravel, saveTrip, notifyUser })
 
 export {
     addTravel,
