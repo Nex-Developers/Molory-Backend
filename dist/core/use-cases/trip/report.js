@@ -34,7 +34,7 @@ function makeReport({ notifyUser, saveTravel, saveTrip }) {
             }));
             return Promise.all(promises).then(() => {
                 saveTrip(tripId);
-                notifyUser({ id: userId, titleRef: { text: 'notification.interruptTrip.title' }, messageRef: { text: 'notification.interruptTrip.message' }, cover: null, data: { path: 'cancel-trip', id: tripId.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' });
+                notifyUser({ id: userId, titleRef: { text: 'notification.interruptTrip.title' }, messageRef: { text: 'notification.interruptTrip.message', params: { reason: description } }, cover: null, data: { path: 'cancel-trip', id: tripId.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' });
                 return;
             });
         }

@@ -139,7 +139,7 @@
     },
     "interruptTrip": {
       "title": "Abandon de trajet!",
-      "message": "Votre conducteur pour :departure - :arrival du :date à :time a été contraint d'abandonner en cours de chemin. Veuillez consulter les details du trajet pour vous faire rembourser. Merci pour votre compréhension."
+      "message": "L'auteur du trajet :departure - :arrival du :date à :time a été contraint d'abandonner en cours de chemin pour la raison suivante \" :reason  \". Veuillez consulter les details du trajet pour vous faire rembourser. Merci pour votre compréhension."
     },
     "cancelTravel": {
       "title": "Réservation annulée!",
