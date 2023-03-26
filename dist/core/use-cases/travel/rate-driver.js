@@ -46,8 +46,7 @@ exports.default = ({ saveProfile, saveTravel, saveTrip, notifyUser } = {}) => {
             }
             saveTravel(travelId);
             saveTrip(route.trip.id);
-            const { firstName } = yield prisma.user.findUnique({ where: { id: by }, select: { firstName: true } });
-            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title' }, messageRef: { text: 'notification.rateTravelDriver.message', params: { name: firstName, departure: travel.route.trip.departureAddress, arrival: travel.route.trip.arrivalAddress, date: travel.route.trip.departureDate, time: travel.route.trip.departureTime } }, cover: null, data: { path: 'rate-driver', id: travelId.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
+            notifyUser({ id: userId, titleRef: { text: 'notification.rateTravelDriver.title' }, messageRef: { text: 'notification.rateTravelDriver.message', params: { name: by, departure: travel.route.trip.departureAddress, arrival: travel.route.trip.arrivalAddress, date: travel.route.trip.departureDate, time: travel.route.trip.departureTime } }, cover: null, data: { path: 'rate-driver', id: travelId.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' });
             const message = { text: "response.edit" };
             return { message };
         }));
