@@ -137,6 +137,10 @@
       "title": "Réservation annulée!",
       "message": "Votre voyage :departure - :arrival du :date à :time a été annulé par l'auteur du trajet. Veuillez consulter les details du trajet pour vous faire rembourser. Merci pour votre compréhension."
     },
+    "interruptTrip": {
+      "title": "Abandon de trajet!",
+      "message": "Votre conducteur pour :departure - :arrival du :date à :time a été contraint d'abandonner en cours de chemin. Veuillez consulter les details du trajet pour vous faire rembourser. Merci pour votre compréhension."
+    },
     "cancelTravel": {
       "title": "Réservation annulée!",
       "message": "Vous avez annulé votre réservation pour le trajet :departure - :arrival du :date à :time. Veuillez consulter les details du trajet pour vous faire rembourser."
