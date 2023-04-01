@@ -41,6 +41,20 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
                 throw new errors_1.InvalidParamError('Unvailable seats');
             if (data.seats > remainingSeats)
                 throw new errors_1.InvalidParamError('Missing ' + (data.seats - remainingSeats) + ' seats');
+            const payment = {
+                create: {
+                    id,
+                    amount: data.amount,
+                    reference,
+                    validatedAt,
+                    method,
+                    status: 1,
+                    user: { connect: { id: data.userId } },
+                    trip: { connect: { id: trip.id } },
+                }
+            };
+            if (promotionId)
+                payment.create.promotion = { connect: { id: promotionId } };
             const travel = yield prisma.travel.create({
                 data: {
                     seats: data.seats,
@@ -49,19 +63,7 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
                     arrivalAddress,
                     departureDate,
                     departureTime,
-                    payment: {
-                        create: {
-                            id,
-                            amount: data.amount,
-                            reference,
-                            validatedAt,
-                            method,
-                            status: 1,
-                            user: { connect: { id: data.userId } },
-                            trip: { connect: { id: trip.id } },
-                            promotion: { connect: { id: promotionId } }
-                        }
-                    },
+                    payment,
                     route: {
                         connect: { id: data.routeId }
                     },
