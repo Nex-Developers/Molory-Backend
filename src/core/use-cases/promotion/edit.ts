@@ -14,7 +14,7 @@ export default function makeEdit() {
     }: Partial<Promotion>) => {
         const prisma = DbConnection.prisma
         const data: Partial<Promotion> = {}
-        if (name) data.name = name
+        if (name) data.name = name.toUpperCase()
         if (discount) data.discount
         if (description) data.description = description
         if (limit) data.limit = limit

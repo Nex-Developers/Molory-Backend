@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPromotionController = exports.getPromotionsController = exports.deletePromotionController = exports.patchPromotionController = exports.postPromotionController = void 0;
+const tslib_1 = require("tslib");
+const promotion_1 = require("../../core/use-cases/promotion");
+const delete_1 = (0, tslib_1.__importDefault)(require("./delete"));
+const get_item_1 = (0, tslib_1.__importDefault)(require("./get-item"));
+const get_items_1 = (0, tslib_1.__importDefault)(require("./get-items"));
+const patch_1 = (0, tslib_1.__importDefault)(require("./patch"));
+const post_1 = (0, tslib_1.__importDefault)(require("./post"));
+const postPromotionController = (0, post_1.default)({ addPromotion: promotion_1.addPromotion });
+exports.postPromotionController = postPromotionController;
+const patchPromotionController = (0, patch_1.default)({ editPromotion: promotion_1.editPromotion });
+exports.patchPromotionController = patchPromotionController;
+const deletePromotionController = (0, delete_1.default)({ removePromotion: promotion_1.removePromotion });
+exports.deletePromotionController = deletePromotionController;
+const getPromotionsController = (0, get_items_1.default)({ listPromotions: promotion_1.listPromotions });
+exports.getPromotionsController = getPromotionsController;
+const getPromotionController = (0, get_item_1.default)({ findPromotion: promotion_1.findPromotion });
+exports.getPromotionController = getPromotionController;
+//# sourceMappingURL=index.js.map

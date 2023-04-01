@@ -1,0 +1,20 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.findPromotion = exports.removePromotion = exports.listPromotions = exports.editPromotion = exports.addPromotion = void 0;
+const tslib_1 = require("tslib");
+const add_1 = (0, tslib_1.__importDefault)(require("./add"));
+const edit_1 = (0, tslib_1.__importDefault)(require("./edit"));
+const find_1 = (0, tslib_1.__importDefault)(require("./find"));
+const list_items_1 = (0, tslib_1.__importDefault)(require("./list-items"));
+const remove_1 = (0, tslib_1.__importDefault)(require("./remove"));
+const addPromotion = (0, add_1.default)();
+exports.addPromotion = addPromotion;
+const editPromotion = (0, edit_1.default)();
+exports.editPromotion = editPromotion;
+const listPromotions = (0, list_items_1.default)();
+exports.listPromotions = listPromotions;
+const removePromotion = (0, remove_1.default)();
+exports.removePromotion = removePromotion;
+const findPromotion = (0, find_1.default)();
+exports.findPromotion = findPromotion;
+//# sourceMappingURL=index.js.map

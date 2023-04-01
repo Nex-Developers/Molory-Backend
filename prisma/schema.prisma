@@ -470,7 +470,7 @@ model Setting {
 
 model Promotion {
   id          Int       @id @default(autoincrement())
-  name        String
+  name        String @unique
   discount    Float
   description String?
   limit       Int?
@@ -480,4 +480,5 @@ model Promotion {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
   deletedAt   DateTime?
+  status     Int @default(1)
 }

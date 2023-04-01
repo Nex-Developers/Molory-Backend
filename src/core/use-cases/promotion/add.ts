@@ -16,7 +16,7 @@ export default function makeAdd() {
         if (!discount) throw new MissingParamError('discount')
         if (startAt) startAt = new Date(startAt)
         if (endAt) endAt = new Date(endAt)
-        const { id } = await prisma.promotion.create({ data: { name, discount, limit, description, startAt, endAt } })
+        const { id } = await prisma.promotion.create({ data: { name: name.toUpperCase(), discount, limit, description, startAt, endAt } })
         const message = { text: "response.add" }
         return { message, id }
     } 

@@ -10,6 +10,7 @@ const notification_1 = (0, tslib_1.__importDefault)(require("./notification"));
 const payment_1 = (0, tslib_1.__importDefault)(require("./payment"));
 const preference_1 = (0, tslib_1.__importDefault)(require("./preference"));
 const pricing_1 = (0, tslib_1.__importDefault)(require("./pricing"));
+const promotion_1 = (0, tslib_1.__importDefault)(require("./promotion"));
 const question_1 = (0, tslib_1.__importDefault)(require("./question"));
 const refund_1 = (0, tslib_1.__importDefault)(require("./refund"));
 const route_1 = (0, tslib_1.__importDefault)(require("./route"));
@@ -38,6 +39,7 @@ exports.default = (router) => {
     router.use((0, withdrawal_1.default)());
     router.use((0, payment_1.default)());
     router.use((0, refund_1.default)());
+    router.use((0, promotion_1.default)());
     return router;
 };
 //# sourceMappingURL=index.js.map

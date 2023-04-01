@@ -8,6 +8,7 @@ import {
 
 import { 
     deletePromotionController,
+    getPromotionController,
     getPromotionsController,
     patchPromotionController,
     postPromotionController,
@@ -15,6 +16,7 @@ import {
 
 export default () => {
     const router = express.Router()
+    router.get('/promotion/:name', langCheck, authCheck, expressRouterAdapter(getPromotionController))
     router.route('/promotion')
     .get(langCheck, authCheck, expressRouterAdapter(getPromotionsController))
     .post(langCheck, authCheck, expressRouterAdapter(postPromotionController))
