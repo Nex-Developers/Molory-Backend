@@ -25,6 +25,7 @@ export default function makeConfirmPayment({
     
     return async ({
         id,
+        promotionId,
         status,
         amount,
         method,
@@ -73,7 +74,8 @@ export default function makeConfirmPayment({
                             method,
                             status: 1,
                             user: { connect: { id: data.userId }},
-                            trip: { connect: { id:  trip.id}}
+                            trip: { connect: { id:  trip.id}},
+                            promotion: { connect: { id: promotionId }}
                         }
                     },
                     route: {
