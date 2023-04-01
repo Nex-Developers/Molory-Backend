@@ -7,6 +7,7 @@ import notification from "./notification"
 import payment from "./payment"
 import preference from "./preference"
 import pricing from "./pricing"
+import promotion from "./promotion"
 import question from "./question"
 import refund from "./refund"
 import route from "./route"
@@ -36,5 +37,6 @@ export default (router) => {
     router.use(withdrawal())
     router.use(payment())
     router.use(refund())
+    router.use(promotion())
     return router
 }
