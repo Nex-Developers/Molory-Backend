@@ -8,7 +8,9 @@ function makeFind() {
         const prisma = helpers_1.DbConnection.prisma;
         const data = yield prisma.promotion.findFirst({ where: { name: name.toUpperCase(), deletedAt: null } });
         if (!data)
-            throw new errors_1.InvalidParamError('name');
+            throw new errors_1.ResourceNotFoundError('Promotion');
+        if (!data.status)
+            throw new errors_1.ResourceExpiredError("Promotion");
         return { data };
     });
 }

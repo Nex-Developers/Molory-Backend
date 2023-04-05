@@ -1,6 +1,6 @@
 import { MissingParamError, ServerError } from "../../../utils/errors"
 import { v4 } from 'uuid'
-import { CacheManager } from "../../../utils/helpers"
+import { CacheManager, DbConnection } from "../../../utils/helpers"
 export default function makeAdd({
     travelDb,
     routeDb,
@@ -19,9 +19,10 @@ export default function makeAdd({
         userId,
         routeId,
         seats,
-        description
+        description,
+        promotionId
     }: any = {}) => {
-
+        const prisma = DbConnection.prisma
         if (!userId) throw new MissingParamError('userId')
         if (!routeId) throw new MissingParamError('routeId')
         if (!seats) throw new MissingParamError('seats')
@@ -38,12 +39,16 @@ export default function makeAdd({
         if (!remainingSeats) throw new Error('Unvailable Resource')
 
         if (seats > remainingSeats) throw new Error('Remaining ' + remainingSeats + ' seats')
-
+        let applyDiscount = 1
+        if (promotionId) {
+            const { discount } = await prisma.promotion.findUnique({ where: { id: promotionId}})
+            applyDiscount = discount
+        } 
         const id = await generateUid()
         console.log(id)
-        const amount = (price + fees ) * seats
+        const amount = (price + fees ) * seats * applyDiscount
         const createdAt = new Date()
-        await CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt }))
+        await CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }))
         const message = { text: "response.add" }
         return { message, payment: { id, amount, createdAt }}
     }

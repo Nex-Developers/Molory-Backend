@@ -16,7 +16,8 @@ function makeAdd({ travelDb, routeDb, paymentDb } = {}) {
             return yield generateUid();
         return uid;
     });
-    return ({ userId, routeId, seats, description } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ userId, routeId, seats, description, promotionId } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+        const prisma = helpers_1.DbConnection.prisma;
         if (!userId)
             throw new errors_1.MissingParamError('userId');
         if (!routeId)
@@ -33,11 +34,16 @@ function makeAdd({ travelDb, routeDb, paymentDb } = {}) {
             throw new Error('Unvailable Resource');
         if (seats > remainingSeats)
             throw new Error('Remaining ' + remainingSeats + ' seats');
+        let applyDiscount = 1;
+        if (promotionId) {
+            const { discount } = yield prisma.promotion.findUnique({ where: { id: promotionId } });
+            applyDiscount = discount;
+        }
         const id = yield generateUid();
         console.log(id);
-        const amount = (price + fees) * seats;
+        const amount = (price + fees) * seats * applyDiscount;
         const createdAt = new Date();
-        yield helpers_1.CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt }));
+        yield helpers_1.CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }));
         const message = { text: "response.add" };
         return { message, payment: { id, amount, createdAt } };
     });

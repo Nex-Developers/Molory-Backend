@@ -12,7 +12,7 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
     const getDatePlusQuater = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
     };
-    return ({ id, promotionId, status, amount, method, reference, validatedAt, } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ id, status, amount, method, reference, validatedAt, } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
         console.log('Confirm-payment called with ', id, status, amount);
         if (!status) {
@@ -53,8 +53,8 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
                     trip: { connect: { id: trip.id } },
                 }
             };
-            if (promotionId)
-                payment.create.promotion = { connect: { id: promotionId } };
+            if (data.promotionId)
+                payment.create.promotion = { connect: { id: data.promotionId } };
             const travel = yield prisma.travel.create({
                 data: {
                     seats: data.seats,

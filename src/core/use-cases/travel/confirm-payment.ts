@@ -25,7 +25,6 @@ export default function makeConfirmPayment({
     
     return async ({
         id,
-        promotionId,
         status,
         amount,
         method,
@@ -69,7 +68,7 @@ export default function makeConfirmPayment({
                     trip: { connect: { id:  trip.id}},
                 }
             }
-            if(promotionId)  payment.create.promotion = { connect: { id: promotionId }}
+            if(data.promotionId)  payment.create.promotion = { connect: { id: data.promotionId }}
 
             const travel = await prisma.travel.create({
                 data: {

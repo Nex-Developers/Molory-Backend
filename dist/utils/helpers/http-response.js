@@ -43,6 +43,12 @@ class HttpResponse {
                 method = () => _this.unauthorizedError(lang);
                 break;
             case 'ExpiredParamError':
+                method = () => _this.badRequest(err, lang);
+                break;
+            case 'ResourceNotFoundError':
+                method = () => _this.badRequest(err, lang);
+                break;
+            case 'ResourceExpiredError':
                 method = () => _this.forbiddenError(err, lang);
                 break;
             default:

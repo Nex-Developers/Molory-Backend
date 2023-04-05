@@ -1,0 +1,1 @@
+{"version":3,"file":"resource-expired-error.js","sourceRoot":"","sources":["../../../src/utils/errors/resource-expired-error.ts"],"names":[],"mappings":";;;AAAA,wDAAoD;AAEpD,MAAa,oBAAqB,SAAQ,yBAAW;IACnD,YAAa,SAAiB,EAAE,OAAO,GAAG,eAAe;QACvD,KAAK,CAAE,sBAAsB,EAAE,OAAO,EAAE,EAAG,SAAS,EAAE,CAAC,CAAA;IACzD,CAAC;CACF;AAJD,oDAIC"}
