@@ -32,6 +32,7 @@ function makeSignInWithPhoneNumber({ generateOtp, saveOtp, sendOtp, generateToke
             const token = yield generateToken({ phoneNumber });
             yield saveTmpToken({ token });
             yield saveOtp({ phoneNumber, otp });
+            yield sendOtp({ phoneNumber, otp });
             const message = { text: 'auth.message.signinWithPhone', params: { phoneNumber } };
             return { token, message };
         });

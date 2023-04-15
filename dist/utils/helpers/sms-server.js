@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const messagebird_1 = (0, tslib_1.__importDefault)(require("messagebird"));
 const environment_1 = require("../../configs/environment");
+const util_1 = require("util");
 class SmsServer {
     static send(phoneNumbers, message) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -11,12 +12,13 @@ class SmsServer {
                 'recipients': phoneNumbers,
                 'body': message
             };
-            SmsServer.messaging.messages.create(params, function (err, response) {
-                if (err) {
-                    return console.log(err);
-                }
-                console.log(response);
-            });
+            const makeAsync = (0, util_1.promisify)(SmsServer.messaging.messages.create).bind(SmsServer.messaging.messages);
+            try {
+                return makeAsync(params);
+            }
+            catch (err) {
+                console.log('Message bird error: ', err.message);
+            }
         });
     }
 }

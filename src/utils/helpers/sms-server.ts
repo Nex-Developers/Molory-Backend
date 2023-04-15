@@ -1,5 +1,6 @@
 import messagebird from 'messagebird'
 import { env } from '../../configs/environment';
+import { promisify } from "util"
 
 export default class SmsServer{
     
@@ -11,13 +12,12 @@ export default class SmsServer{
         'recipients': phoneNumbers,
         'body': message
         };
-
-        SmsServer.messaging.messages.create(params, function (err, response) {
-        if (err) {
-            return console.log(err);
+        const makeAsync = promisify(SmsServer.messaging.messages.create).bind(SmsServer.messaging.messages)
+        try {
+            return makeAsync(params)
+        } catch (err) {
+            console.log('Message bird error: ', err.message)
         }
-        console.log(response);
-        });
     }
 }
 // import axios from 'axios'
