@@ -24,8 +24,8 @@ exports.default = {
     },
     sms: {
         url: process.env.SMS_API_URL,
-        token: '17005282-216d-46c4-8067-db958f22526d',
-        key: 'qMmBD3wQSgviVmiWxh1Nyhtec',
+        token: process.env.SMS_CLIENT_ID,
+        key: process.env.SMS_API_KEY,
         sender: process.env.SMS_SENDER_ID
     },
     mail: {

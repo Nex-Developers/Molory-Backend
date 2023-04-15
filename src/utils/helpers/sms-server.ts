@@ -4,15 +4,16 @@ import { promisify } from "util"
 
 export default class SmsServer{
     
-    static messaging = messagebird.initClient(env.sms.key);
 
     static async send(phoneNumbers: string[], message) {
+        console.log(env.sms.key)
+    const messaging = messagebird.initClient(env.sms.key);
     const params = {
         'originator': env.sms.sender,
         'recipients': phoneNumbers,
         'body': message
         };
-        const makeAsync = promisify(SmsServer.messaging.messages.create).bind(SmsServer.messaging.messages)
+        const makeAsync = promisify(messaging.messages.create).bind(messaging.messages)
         try {
             return makeAsync(params)
         } catch (err) {

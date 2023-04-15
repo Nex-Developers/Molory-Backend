@@ -7,12 +7,14 @@ const util_1 = require("util");
 class SmsServer {
     static send(phoneNumbers, message) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            console.log(environment_1.env.sms.key);
+            const messaging = messagebird_1.default.initClient(environment_1.env.sms.key);
             const params = {
                 'originator': environment_1.env.sms.sender,
                 'recipients': phoneNumbers,
                 'body': message
             };
-            const makeAsync = (0, util_1.promisify)(SmsServer.messaging.messages.create).bind(SmsServer.messaging.messages);
+            const makeAsync = (0, util_1.promisify)(messaging.messages.create).bind(messaging.messages);
             try {
                 return makeAsync(params);
             }
@@ -23,5 +25,4 @@ class SmsServer {
     }
 }
 exports.default = SmsServer;
-SmsServer.messaging = messagebird_1.default.initClient(environment_1.env.sms.key);
 //# sourceMappingURL=sms-server.js.map
