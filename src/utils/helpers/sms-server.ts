@@ -1,3 +1,25 @@
+import messagebird from 'messagebird'
+import { env } from '../../configs/environment';
+
+export default class SmsServer{
+    
+    static messaging = messagebird.initClient(env.sms.key);
+
+    static async send(phoneNumbers: string[], message) {
+    const params = {
+        'originator': env.sms.sender,
+        'recipients': phoneNumbers,
+        'body': message
+        };
+
+        SmsServer.messaging.messages.create(params, function (err, response) {
+        if (err) {
+            return console.log(err);
+        }
+        console.log(response);
+        });
+    }
+}
 // import axios from 'axios'
 // import { env } from '../../configs/environment'
 
@@ -40,20 +62,20 @@
 //     }
 // }
 
-import { Vonage } from '@vonage/server-sdk'
+// import { Vonage } from '@vonage/server-sdk'
 
 
-export default class SmsServer {
-    static credentials: any = {
-        apiKey: 'ebf64a21',
-        apiSecret: 'N3VVLO1bogVEPQRS'
-      };
-     static vonage = new Vonage(SmsServer.credentials)
+// export default class SmsServer {
+//     static credentials: any = {
+//         apiKey: 'ebf64a21',
+//         apiSecret: 'N3VVLO1bogVEPQRS'
+//       };
+//      static vonage = new Vonage(SmsServer.credentials)
     
-    static async send(phoneNumbers: string[], message) {
-        await SmsServer.vonage.sms.send({to: phoneNumbers[0], from: 'Molory', text: message})
-        .then(resp => { console.log('Message sent successfully'); console.log(resp); return resp })
-        .catch(err => { console.log('There was an error sending the messages.', err.meesage); return});        
+//     static async send(phoneNumbers: string[], message) {
+//         await SmsServer.vonage.sms.send({to: phoneNumbers[0], from: 'Molory', text: message})
+//         .then(resp => { console.log('Message sent successfully'); console.log(resp); return resp })
+//         .catch(err => { console.log('There was an error sending the messages.', err.meesage); return});        
         
-    }
-}
+//     }
+// }
