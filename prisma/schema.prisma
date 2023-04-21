@@ -81,6 +81,17 @@ model User {
   reports                       TravelReport[]
 }
 
+model UserArchive {
+  id          Int       @id
+  email       String?
+  phoneNumber String?
+  firstName   String
+  lastName    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  deletedAt   DateTime?
+}
+
 model Device {
   id        String
   userId    Int
@@ -356,9 +367,9 @@ model Transfer {
 }
 
 model Payment {
-  id             String    @id
-  promotionId    Int?    
-  travelId       Int       @unique
+  id             String     @id
+  promotionId    Int?
+  travelId       Int        @unique
   tripId         Int
   userId         Int
   method         String?
@@ -366,13 +377,13 @@ model Payment {
   receivedAmount Int?
   reference      String?
   accessNumber   String?
-  createdAt      DateTime  @default(now())
+  createdAt      DateTime   @default(now())
   deletedAt      DateTime?
   validatedAt    DateTime?
-  status         Int       @default(2) //2-wating 1-success 0-canceled
-  travel         Travel    @relation(fields: [travelId], references: [id])
-  user           User      @relation(fields: [userId], references: [id])
-  trip           Trip      @relation(fields: [tripId], references: [id])
+  status         Int        @default(2) //2-wating 1-success 0-canceled
+  travel         Travel     @relation(fields: [travelId], references: [id])
+  user           User       @relation(fields: [userId], references: [id])
+  trip           Trip       @relation(fields: [tripId], references: [id])
   promotion      Promotion? @relation(fields: [promotionId], references: [id])
 }
 
@@ -472,7 +483,7 @@ model Setting {
 
 model Promotion {
   id          Int       @id @default(autoincrement())
-  name        String @unique
+  name        String    @unique
   discount    Float
   description String?
   limit       Int?
@@ -481,6 +492,6 @@ model Promotion {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
   deletedAt   DateTime?
-  status     Int @default(1)
-  payments   Payment[]
+  status      Int       @default(1)
+  payments    Payment[]
 }
