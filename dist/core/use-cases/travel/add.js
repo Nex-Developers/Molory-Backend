@@ -36,7 +36,9 @@ function makeAdd({ travelDb, routeDb, paymentDb } = {}) {
             throw new Error('Remaining ' + remainingSeats + ' seats');
         let applyDiscount = 1;
         if (promotionId) {
-            const { discount } = yield prisma.promotion.findUnique({ where: { id: promotionId } });
+            const { discount, isForDriver } = yield prisma.promotion.findUnique({ where: { id: promotionId } });
+            if (isForDriver)
+                throw new errors_1.InvalidParamError(promotionId);
             applyDiscount = discount;
         }
         const id = yield generateUid();

@@ -13,7 +13,7 @@ export default ({
         const prisma = DbConnection.prisma
         return await prisma.$transaction( async () => {
             console.log(' Finish trip', + id)
-            const {  userId, status, startedAt, departureAddress, arrivalAddress, departureDate, departureTime, routes } = await prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureAddress: true, arrivalAddress: true, departureDate: true, departureTime: true, routes: { select: { id: true, fees: true, price: true, travels: { select: { id: true, userId: true, seats: true, status: true}}}} }})
+            const {  userId, status, startedAt, departureAddress, arrivalAddress, departureDate, departureTime, routes, promotionId } = await prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureAddress: true, arrivalAddress: true, departureDate: true, departureTime: true,  promotionId: true, routes: { select: { id: true, fees: true, price: true, travels: { select: { id: true, userId: true, seats: true, status: true}}}} }})
             if (status === 0) throw new UnauthorizedError()
             if (status === 1) throw new AlreadyDoneError(startedAt.toString())
             await prisma.trip.update({ where: { id }, data: { status: 1, finishedAt: new Date() }})
@@ -22,24 +22,30 @@ export default ({
 
             // const total = payments.reduce((total, payment) => total + payment.amount, 0)
             
-            let incomes, commission = 0
+            let incomes = 0, commission = 0
+          
            const promises =  routes.map( async route => {
                 const promises2 = route.travels.map(  travel => {
                   if(travel.status == 2 || travel.status == 1)   {
-                    incomes += route.price * travel.seats
+                    incomes += route.price * travel.seats 
                     commission += route.fees * travel.seats
                   }
                 })
                 return await Promise.all(promises2)
             })
             await Promise.all(promises)
+            if (promotionId) {
+                const { discount } = await prisma.promotion.findUnique({ where: { id: promotionId}})
+                commission -= commission*discount
+                incomes += incomes*discount
+            } 
             // notifyAdmin
-            console.log(`------> Trip ${id} finished with incomes for the driver of ${incomes} and a commission for the company of ${commission}`)
-           if (incomes) {
+         
+            if (incomes) {
             await prisma.transfer.create({ data: { tripId: id, userId, amount: incomes, commission }})
             await prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: incomes }}})
            }
-      
+           console.log(`------> Trip ${id} finished with incomes for the driver of ${incomes} and a commission for the company of ${commission}.`)
             // notify driver that his trip is finished and his money is provided
             notifyUser({ id: userId, titleRef: { text: 'notification.finishTrip.title'}, messageRef: { text: 'notification.finishTrip.message', params: { departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime}}, cover: null,  data: { path: 'end-trip', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'trip' })
             // xxxxx notify passengers the trip is finished and they are allowed to rate the driver

@@ -221,6 +221,7 @@ model Trip {
   cancelReason     String?
   startedAt        DateTime?
   finishedAt       DateTime?
+  promotionId       Int?
 
   // stops Stop[]
   routes           Route[]
@@ -231,6 +232,7 @@ model Trip {
   payments         Payment[]
   transfer         Transfer?
   reports          TripReport[]
+  promotion         Promotion?  @relation(fields: [promotionId], references: [id])
 }
 
 model Stop {
@@ -487,6 +489,7 @@ model Promotion {
   discount    Float
   description String?
   limit       Int?
+  isForDriver Boolean? @default(false)
   startAt     DateTime  @default(now())
   endAt       DateTime?
   createdAt   DateTime  @default(now())
@@ -494,4 +497,5 @@ model Promotion {
   deletedAt   DateTime?
   status      Int       @default(1)
   payments    Payment[]
+  trips       Trip[]
 }

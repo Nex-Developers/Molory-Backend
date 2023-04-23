@@ -1,4 +1,4 @@
-import { MissingParamError, ServerError } from "../../../utils/errors"
+import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 import moment from 'moment'
 import { DbConnection } from "../../../utils/helpers"
 
@@ -32,7 +32,8 @@ export default function makeAdd({
         price,
         fees,
         stops,
-        description
+        description,
+        promotionId
     }: any = {}) => {
         if (!userId) throw new MissingParamError('userId')
         if (!vehicleId) throw new MissingParamError('vehicleId')
@@ -43,6 +44,7 @@ export default function makeAdd({
         if (!time) throw new MissingParamError('time')
         if (!stops && !stops.length) throw new MissingParamError('stops')
         if (!description) description = null
+        if (!promotionId) promotionId = null
         // if ( moment(date + ' ' + time).format('YYYY-MM-DD HH:MM')) {
         //     throw new InvalidParamError('time')
         // }
@@ -132,25 +134,37 @@ export default function makeAdd({
             calculatedRoutes.unshift(principalRoute);
             // console.log(calculatedRoutes);
             console.log(departureAddress, arrivalAddress)
-            const trip = await prisma.trip.create({
-                data: {
-                    seats,
-                    remainingSeats: seats,
-                    departureDate: date,
-                    departureTime: time,
-                    departureAddress,
-                    arrivalAddress,
-                    description,
-                    user: {
-                        connect: { id: userId }
-                    },
-                    routes: {
-                        create: calculatedRoutes
-                    },
-                    vehicle: {
-                        connect: { id: vehicleId }
-                    }
+           
+
+            const data: any = {
+                seats,
+                remainingSeats: seats,
+                departureDate: date,
+                departureTime: time,
+                departureAddress,
+                arrivalAddress,
+                description,
+                user: {
+                    connect: { id: userId }
                 },
+                routes: {
+                    create: calculatedRoutes
+                },
+                vehicle: {
+                    connect: { id: vehicleId }
+                }
+            }
+            
+            if (promotionId) {
+                const { isForDriver } = await prisma.promotion.findUnique({ where: { id: promotionId}})
+                if (!isForDriver) throw new InvalidParamError('promotionId')
+                data.promotion =  {
+                    connect: { id: promotionId}
+                }
+            } 
+
+            const trip = await prisma.trip.create({
+                data,
                 include: {
                     vehicle: {
                         select: {

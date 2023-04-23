@@ -13,7 +13,7 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
     const getDayPlusQuater = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
     };
-    return ({ userId, vehicleId, seats, date, time, price, fees, stops, description } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ userId, vehicleId, seats, date, time, price, fees, stops, description, promotionId } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!userId)
             throw new errors_1.MissingParamError('userId');
         if (!vehicleId)
@@ -32,6 +32,8 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
             throw new errors_1.MissingParamError('stops');
         if (!description)
             description = null;
+        if (!promotionId)
+            promotionId = null;
         const prisma = helpers_1.DbConnection.prisma;
         return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const departures = JSON.parse(JSON.stringify(stops)).filter(stop => stop.type === 'departure' || stop.type === 'both');
@@ -107,25 +109,34 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
             });
             calculatedRoutes.unshift(principalRoute);
             console.log(departureAddress, arrivalAddress);
-            const trip = yield prisma.trip.create({
-                data: {
-                    seats,
-                    remainingSeats: seats,
-                    departureDate: date,
-                    departureTime: time,
-                    departureAddress,
-                    arrivalAddress,
-                    description,
-                    user: {
-                        connect: { id: userId }
-                    },
-                    routes: {
-                        create: calculatedRoutes
-                    },
-                    vehicle: {
-                        connect: { id: vehicleId }
-                    }
+            const data = {
+                seats,
+                remainingSeats: seats,
+                departureDate: date,
+                departureTime: time,
+                departureAddress,
+                arrivalAddress,
+                description,
+                user: {
+                    connect: { id: userId }
                 },
+                routes: {
+                    create: calculatedRoutes
+                },
+                vehicle: {
+                    connect: { id: vehicleId }
+                }
+            };
+            if (promotionId) {
+                const { isForDriver } = yield prisma.promotion.findUnique({ where: { id: promotionId } });
+                if (!isForDriver)
+                    throw new errors_1.InvalidParamError('promotionId');
+                data.promotion = {
+                    connect: { id: promotionId }
+                };
+            }
+            const trip = yield prisma.trip.create({
+                data,
                 include: {
                     vehicle: {
                         select: {

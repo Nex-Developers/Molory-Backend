@@ -1,4 +1,4 @@
-import { MissingParamError, ServerError } from "../../../utils/errors"
+import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 import { v4 } from 'uuid'
 import { CacheManager, DbConnection } from "../../../utils/helpers"
 export default function makeAdd({
@@ -41,8 +41,9 @@ export default function makeAdd({
         if (seats > remainingSeats) throw new Error('Remaining ' + remainingSeats + ' seats')
         let applyDiscount = 1
         if (promotionId) {
-            const { discount } = await prisma.promotion.findUnique({ where: { id: promotionId}})
-            applyDiscount = discount
+            const { discount, isForDriver } = await prisma.promotion.findUnique({ where: { id: promotionId}})
+            if (isForDriver) throw new InvalidParamError(promotionId)
+            applyDiscount = discount;
         } 
         const id = await generateUid()
         console.log(id)
