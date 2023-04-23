@@ -11,7 +11,7 @@ function makeRemoveAccount({ removeToken } = {}) {
             const prisma = helpers_1.DbConnection.prisma;
             const { email, phoneNumber, firstName, lastName } = yield prisma.user.findUnique({ where: { id } });
             yield prisma.userArchive.create({ data: { id, email, phoneNumber, firstName, lastName } });
-            yield prisma.user.update({ where: { id }, data: { email: id, phoneNumber: id, firstName: 'Deleted', lastName: 'Account', deletedAt: new Date() } });
+            yield prisma.user.update({ where: { id }, data: { email: id.toString(), phoneNumber: id.toString(), firstName: 'Deleted', lastName: 'Account', deletedAt: new Date() } });
             yield removeToken({ token });
             const message = { text: 'auth.message.removeAccount' };
             return { message };

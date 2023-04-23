@@ -13,7 +13,7 @@ export default function makeRemoveAccount({
 
         const { email, phoneNumber, firstName, lastName } = await prisma.user.findUnique({ where: { id }})
         await prisma.userArchive.create({ data: { id, email, phoneNumber, firstName, lastName }})
-        await prisma.user.update({ where : { id }, data: { email: id, phoneNumber: id, firstName: 'Deleted', lastName: 'Account', deletedAt: new Date()}})
+        await prisma.user.update({ where : { id }, data: { email: id.toString(), phoneNumber: id.toString(), firstName: 'Deleted', lastName: 'Account', deletedAt: new Date()}})
         await removeToken({ token })
         const message = { text: 'auth.message.removeAccount'}
         return { message }
