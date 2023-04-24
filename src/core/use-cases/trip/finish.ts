@@ -4,6 +4,7 @@ import { DbConnection } from "../../../utils/helpers"
 export default ({
     notifyUser,
     saveTrip,
+    saveProfile,
     saveTravel
 }) => {
     if (!notifyUser || !saveTrip || !saveTravel) throw new ServerError()
@@ -55,7 +56,8 @@ export default ({
                 saveTravel(id)
             }
             }))     
-            saveTrip(id)       // add finish task
+            saveTrip(id)
+            saveProfile(userId)       // add finish task
             const message = { text: "response.edit" }
             return { message }
         })

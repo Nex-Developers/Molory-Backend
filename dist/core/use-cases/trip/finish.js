@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-exports.default = ({ notifyUser, saveTrip, saveTravel }) => {
+exports.default = ({ notifyUser, saveTrip, saveProfile, saveTravel }) => {
     if (!notifyUser || !saveTrip || !saveTravel)
         throw new errors_1.ServerError();
     return ({ id }) => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
@@ -44,6 +44,7 @@ exports.default = ({ notifyUser, saveTrip, saveTravel }) => {
                 }
             }));
             saveTrip(id);
+            saveProfile(userId);
             const message = { text: "response.edit" };
             return { message };
         }));

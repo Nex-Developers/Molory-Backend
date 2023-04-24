@@ -20,7 +20,7 @@ const pricingDb = new PricingDb()
 
 const addTrip = makeAdd({ saveProfile, tripDb, vehicleDb, pricingDb, calculMatrix, calculPrice, notifyUser, addTask, saveTrip })
 const startTrip = makeStart({ notifyUser, addTask, saveTrip, saveTravel })
-const finishTrip = makeFinish({ notifyUser, saveTrip, saveTravel })
+const finishTrip = makeFinish({ notifyUser, saveTrip, saveTravel, saveProfile })
 const listTrips = makeListItems({ tripDb })
 const listTripInfos = makeListItemInfos({ tripDb })
 const removeTrip = makeRemove({ tripDb, notifyUser, saveTrip, saveTravel })
