@@ -64,6 +64,7 @@
     "dotenv": "^14.3.2",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "fedapay": "^1.1.10",
     "firebase-admin": "^11.3.0",
     "formidable": "^2.0.1",
     "jsonwebtoken": "^8.5.1",

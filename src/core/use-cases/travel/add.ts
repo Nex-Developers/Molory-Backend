@@ -4,7 +4,8 @@ import { CacheManager, DbConnection } from "../../../utils/helpers"
 export default function makeAdd({
     travelDb,
     routeDb,
-    paymentDb
+    paymentDb,
+    pay
 }: any = {}) {
     if (!travelDb || !routeDb || !paymentDb) throw new ServerError()
     const generateUid = async () => {
@@ -49,9 +50,12 @@ export default function makeAdd({
         console.log(id)
         const amount = (price + fees ) * seats * applyDiscount
         const createdAt = new Date()
+        const { firstName, lastName, email, phoneNumber } = await prisma.user.findUnique({ where: { id: userId }})
+        const { paymentUrl, transactionId } = await pay({ amount, firstName, lastName, email, phoneNumber}) 
+        console.log(paymentUrl, transactionId);
         await CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }))
         const message = { text: "response.add" }
-        return { message, payment: { id, amount, createdAt }}
+        return { message, payment: { id, amount, createdAt, paymentUrl, transactionId }}
     }
 
 

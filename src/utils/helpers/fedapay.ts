@@ -1,0 +1,49 @@
+import { FedaPay, Transaction } from 'fedapay'
+
+export default class FedapayManager {
+    static app
+    static async connect(): Promise<any> {
+        FedapayManager.app = FedaPay
+        // FedapayManager.app.setApi 
+        FedaPay.setApiKey("sk_sandbox_NQ8nXmFoj7aQHM4Y05AXGgr9")
+        FedaPay.setEnvironment("sandbox")
+        return
+    }
+
+    static async createTransaction(amount: number, firstname: string, lastname: string, email: string, phoneNumber: string) {
+        try {
+        // FedapayManager.app.setApi 
+        FedaPay.setApiKey("sk_sandbox_NQ8nXmFoj7aQHM4Y05AXGgr9")
+        FedaPay.setEnvironment("sandbox")
+        const transaction = await Transaction.create({
+            description: 'Description',
+            amount,
+            callback_url: 'https://molory.xyz/backend/api/confirm-payment',
+            currency: {
+                iso: 'XOF'
+            },
+            customer: {
+                firstname,
+                lastname,
+                email: 'aroamadou@gmail.com',
+                phone_number: {
+                    number: phoneNumber,
+                    country: 'TG'
+                }
+            }
+        });
+        // console.log(transaction)
+        const token = await transaction.generateToken()
+        return { url: token.url, transactionId: transaction.id}
+        } catch (err: any) {
+            console.log(err);
+            return null
+        }
+    }
+
+    static async verifyTransaction(id: number) {
+        const transaction = await Transaction.retrieve(id)
+        return !!(transaction.status == "approved") 
+    }
+
+}

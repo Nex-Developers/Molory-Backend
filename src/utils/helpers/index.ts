@@ -15,6 +15,7 @@ import  GoogleMap from "./google-map"
 import ApiCaller from "./api-caller"
 import FirebaseAdmin from "./firebase-admin"
 import FirestoreDb from "./firestore-db"
+import FedapayManager from "./fedapay"
 
 export {
     Encrypter,
@@ -33,5 +34,6 @@ export {
     GoogleMap,
     ApiCaller,
     FirebaseAdmin,
-    FirestoreDb
+    FirestoreDb,
+    FedapayManager
 }

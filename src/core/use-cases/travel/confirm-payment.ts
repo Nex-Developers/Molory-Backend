@@ -1,20 +1,20 @@
 // import { AlreadyDoneError } from './../../../utils/errors/already-done-error';
 
 
-import { ExpiredParamError, InvalidParamError, ServerError } from "../../../utils/errors"
-import { CacheManager, DbConnection } from "../../../utils/helpers"
+import { ExpiredParamError, InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
+import { CacheManager, DbConnection, FedapayManager } from "../../../utils/helpers"
 
 
-    
+
 export default function makeConfirmPayment({
     saveProfile,
     saveTravel,
     saveTrip,
     notifyUser,
-    addTask
+    addTask,
 }) {
-    if (!saveProfile || !saveTravel || !saveTrip  || !notifyUser) throw new ServerError()
-    
+    if (!saveProfile || !saveTravel || !saveTrip || !notifyUser) throw new ServerError()
+
     const reformateDate = (date: string) => {
         return date.split("-").reverse().join("-")
     }
@@ -22,7 +22,7 @@ export default function makeConfirmPayment({
     const getDatePlusQuater = (date: Date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
     }
-    
+
     return async ({
         id,
         status,
@@ -30,16 +30,20 @@ export default function makeConfirmPayment({
         method,
         reference,
         validatedAt,
+        transactionId
     }: any = {}) => {
         const prisma = DbConnection.prisma
-        console.log('Confirm-payment called with ', id, status, amount)
+        console.log('Confirm-payment called with ', id, status, amount, transactionId)
         if (!status) {
             const message = { text: "response.delete" }
             return { message }
         }
-     
+        if (!transactionId) throw new MissingParamError('transactionId')
+        const res = await FedapayManager.verifyTransaction(transactionId)
+        console.log('Payed transaction', res)
+        if (!res) throw new InvalidParamError(transactionId)
         const saved = await CacheManager.get(id)
-        if(!saved) throw new ExpiredParamError('payement id')
+        if (!saved) throw new ExpiredParamError('payement id')
         const data = JSON.parse(saved)
         if (data.amount != amount) {
             throw new InvalidParamError('amount')
@@ -64,11 +68,11 @@ export default function makeConfirmPayment({
                     validatedAt,
                     method,
                     status: 1,
-                    user: { connect: { id: data.userId }},
-                    trip: { connect: { id:  trip.id}},
+                    user: { connect: { id: data.userId } },
+                    trip: { connect: { id: trip.id } },
                 }
             }
-            if(data.promotionId)  payment.create.promotion = { connect: { id: data.promotionId }}
+            if (data.promotionId) payment.create.promotion = { connect: { id: data.promotionId } }
 
             const travel = await prisma.travel.create({
                 data: {
@@ -83,10 +87,10 @@ export default function makeConfirmPayment({
                         connect: { id: data.routeId }
                     },
                     user: {
-                        connect: { id: data.userId}
+                        connect: { id: data.userId }
                     }
                 },
-                include: { route: true, user: true}
+                include: { route: true, user: true }
             })
             // remove seats from trip avalaibleSeats
             if (principal) {
@@ -111,12 +115,12 @@ export default function makeConfirmPayment({
             saveProfile(travel.userId)
             saveTravel(travel.id)
             saveTrip(trip.id)
-            notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title'}, messageRef: { text: 'notification.addTravel.message', params: { seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime}}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'SUCCESS'}, lang: 'fr', type: 'travel' })
-            notifyUser({ id: trip.userId, titleRef: { text: 'notification.bookTrip.title'}, messageRef: {  text: 'notification.bookTrip.message', params: { name: travel.user.firstName, seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime}}, cover: null, data: { path: 'add-travel', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'travel' })
-            const formatedDate = reformateDate(travel.route.departureDate) 
+            notifyUser({ id: travel.userId, titleRef: { text: 'notification.addTravel.title' }, messageRef: { text: 'notification.addTravel.message', params: { seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime } }, cover: null, data: { path: 'add-travel', id: id.toString(), res: 'SUCCESS' }, lang: 'fr', type: 'travel' })
+            notifyUser({ id: trip.userId, titleRef: { text: 'notification.bookTrip.title' }, messageRef: { text: 'notification.bookTrip.message', params: { name: travel.user.firstName, seats: data.seats, departure: departureAddress, arrival: arrivalAddress, date: departureDate, time: departureTime } }, cover: null, data: { path: 'add-travel', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'travel' })
+            const formatedDate = reformateDate(travel.route.departureDate)
             const date = new Date(formatedDate + ' ' + travel.route.departureTime)
-             const timer = getDatePlusQuater(date)
-            await addTask({ path: 'ask-to-start-travel', timer, params: { id: travel.id }})
+            const timer = getDatePlusQuater(date)
+            await addTask({ path: 'ask-to-start-travel', timer, params: { id: travel.id } })
             delete data.user
             const message = { text: "response.add", data: travel }
             return { message }
