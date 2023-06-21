@@ -5,7 +5,7 @@ export default class FedapayManager {
     static async connect(): Promise<any> {
         FedapayManager.app = FedaPay
         // FedapayManager.app.setApi 
-        FedaPay.setApiKey("sk_sandbox_NQ8nXmFoj7aQHM4Y05AXGgr9")
+        FedaPay.setApiKey("sk_live_5XEQoAGhvm4J0B5bX79A0Qqc")
         FedaPay.setEnvironment("sandbox")
         return
     }
@@ -13,7 +13,7 @@ export default class FedapayManager {
     static async createTransaction(amount: number, firstname: string, lastname: string, email: string, phoneNumber: string) {
         try {
         // FedapayManager.app.setApi 
-        FedaPay.setApiKey("sk_sandbox_NQ8nXmFoj7aQHM4Y05AXGgr9")
+        FedaPay.setApiKey("sk_live_5XEQoAGhvm4J0B5bX79A0Qqc")
         FedaPay.setEnvironment("sandbox")
         const transaction = await Transaction.create({
             description: 'Description',
