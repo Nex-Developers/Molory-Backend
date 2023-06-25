@@ -3,9 +3,10 @@ import { expressRouterAdapter } from "../../configs/adapters"
 import { 
     adminCheck,
     authCheck, 
-    langCheck 
+    fedapayQueryParser, 
+    langCheck
 } from "../../configs/middlewares"
-import { getPaymentsController, postPaymentController } from "../../controllers/payment"
+import { getConfirmPayment, getPaymentsController, postPaymentController } from "../../controllers/payment"
 
 
 
@@ -14,5 +15,6 @@ export default () => {
     router.route('/payment')
     .get(langCheck, authCheck, adminCheck, expressRouterAdapter(getPaymentsController))
     .post(langCheck, authCheck, expressRouterAdapter(postPaymentController))
+    router.get('/validate-payment', langCheck, fedapayQueryParser, expressRouterAdapter(getConfirmPayment))
     return router
 }

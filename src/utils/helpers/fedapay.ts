@@ -42,6 +42,8 @@ export default class FedapayManager {
     }
 
     static async verifyTransaction(id: number) {
+        FedaPay.setApiKey("sk_live_5XEQoAGhvm4J0B5bX79A0Qqc")
+        FedaPay.setEnvironment("live")
         const transaction = await Transaction.retrieve(id)
         return !!(transaction.status == "approved") 
     }

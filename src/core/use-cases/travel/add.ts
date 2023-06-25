@@ -51,7 +51,7 @@ export default function makeAdd({
         const amount = (price + fees ) * seats * applyDiscount
         const createdAt = new Date()
         const { firstName, lastName, email, phoneNumber } = await prisma.user.findUnique({ where: { id: userId }})
-        const { url, transactionId } = await pay({ amount, firstName, lastName, email, phoneNumber}) 
+        const { url, transactionId } = await pay({id, amount: 100, firstName, lastName, email, phoneNumber}) 
         console.log(url, transactionId);
         await CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }))
         const message = { text: "response.add" }

@@ -4,6 +4,7 @@ import authCheck from './auth-check'
 import contentType from './content-type'
 import cors from './cors'
 import driverCheck from './driver-check'
+import fedapayQueryParser from './fedapay-query-parser'
 import fileUpload from './file-upload'
 import jsonParser from './json-parser'
 import langCheck from './lang-check'
@@ -23,5 +24,6 @@ export {
     urlEncodeParser,
     langCheck,
     queryParser,
-    tmpAuthCheck
+    tmpAuthCheck,
+    fedapayQueryParser
 }
