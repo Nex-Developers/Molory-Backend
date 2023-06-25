@@ -1,8 +1,8 @@
 // import { AlreadyDoneError } from './../../../utils/errors/already-done-error';
 
 
-import { ExpiredParamError, InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
-import { CacheManager, DbConnection, FedapayManager } from "../../../utils/helpers"
+import { ExpiredParamError, InvalidParamError, ServerError } from "../../../utils/errors"
+import { CacheManager, DbConnection } from "../../../utils/helpers"
 
 
 
@@ -29,8 +29,7 @@ export default function makeConfirmPayment({
         amount,
         method,
         reference,
-        validatedAt,
-        transactionId
+        validatedAt
     }: any = {}) => {
         const prisma = DbConnection.prisma
         console.log('Confirm-payment called with ', id, status, amount, transactionId)
@@ -38,16 +37,12 @@ export default function makeConfirmPayment({
             const message = { text: "response.delete" }
             return { message }
         }
-        if (!transactionId) throw new MissingParamError('transactionId')
-        const res = await FedapayManager.verifyTransaction(transactionId)
-        console.log('Payed transaction', res)
-        if (!res) throw new InvalidParamError(transactionId)
         const saved = await CacheManager.get(id)
         if (!saved) throw new ExpiredParamError('payement id')
         const data = JSON.parse(saved)
-        if (data.amount != amount) {
-            throw new InvalidParamError('amount')
-        }
+        // if (data.amount != amount) {
+        //     throw new InvalidParamError('amount')
+        // }
         if (!method) method = null
         if (!validatedAt) validatedAt = new Date()
         if (!reference) reference = null
