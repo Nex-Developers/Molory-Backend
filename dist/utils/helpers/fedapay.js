@@ -15,7 +15,7 @@ class FedapayManager {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             try {
                 fedapay_1.FedaPay.setApiKey("sk_live_5XEQoAGhvm4J0B5bX79A0Qqc");
-                fedapay_1.FedaPay.setEnvironment("sandbox");
+                fedapay_1.FedaPay.setEnvironment("live");
                 const transaction = yield fedapay_1.Transaction.create({
                     description: 'Description',
                     amount,

@@ -14,7 +14,7 @@ export default class FedapayManager {
         try {
         // FedapayManager.app.setApi 
         FedaPay.setApiKey("sk_live_5XEQoAGhvm4J0B5bX79A0Qqc")
-        FedaPay.setEnvironment("sandbox")
+        FedaPay.setEnvironment("live")
         const transaction = await Transaction.create({
             description: 'Description',
             amount,

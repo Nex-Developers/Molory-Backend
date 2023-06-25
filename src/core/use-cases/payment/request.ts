@@ -14,7 +14,7 @@ export default function makeRequestPayment({
         const prisma = DbConnection.prisma
         const { firstName, lastName, email, phoneNumber } =  await prisma.user.findUnique({ where: { id: customerId }})
         console.log(firstName, lastName, email, phoneNumber);
-        const res = await pay({ amount, firstName, lastName, email, phoneNumber })
+        const res = await pay({ amount, firstName, lastName, email, phoneNumber: phoneNumber.slice(3, phoneNumber.length) })
         const message = { text: "response.add", res}
         return { message, res }
     } 
