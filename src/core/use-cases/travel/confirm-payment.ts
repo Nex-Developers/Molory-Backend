@@ -32,7 +32,7 @@ export default function makeConfirmPayment({
         validatedAt
     }: any = {}) => {
         const prisma = DbConnection.prisma
-        console.log('Confirm-payment called with ', id, status, amount, transactionId)
+        console.log('Confirm-payment called with ', id, status, amount,  reference)
         if (!status) {
             const message = { text: "response.delete" }
             return { message }

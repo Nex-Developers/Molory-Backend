@@ -18,7 +18,7 @@ export default class FedapayManager {
         const transaction = await Transaction.create({
             description: 'Description',
             amount,
-            callback_url: 'https://molory.xyz/backend/api/confirm-payment',
+            callback_url: 'https://molory.xyz/backend/api/validate-payment',
             currency: {
                 iso: 'XOF'
             },
