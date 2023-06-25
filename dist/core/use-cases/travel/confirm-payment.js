@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, addTask }) {
+function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, addTask, }) {
     if (!saveProfile || !saveTravel || !saveTrip || !notifyUser)
         throw new errors_1.ServerError();
     const reformateDate = (date) => {
@@ -12,13 +12,19 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
     const getDatePlusQuater = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
     };
-    return ({ id, status, amount, method, reference, validatedAt, } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ id, status, amount, method, reference, validatedAt, transactionId } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
-        console.log('Confirm-payment called with ', id, status, amount);
+        console.log('Confirm-payment called with ', id, status, amount, transactionId);
         if (!status) {
             const message = { text: "response.delete" };
             return { message };
         }
+        if (!transactionId)
+            throw new errors_1.MissingParamError('transactionId');
+        const res = yield helpers_1.FedapayManager.verifyTransaction(transactionId);
+        console.log('Payed transaction', res);
+        if (!res)
+            throw new errors_1.InvalidParamError(transactionId);
         const saved = yield helpers_1.CacheManager.get(id);
         if (!saved)
             throw new errors_1.ExpiredParamError('payement id');

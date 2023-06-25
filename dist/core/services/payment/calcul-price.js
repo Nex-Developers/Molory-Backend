@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function makeCalculPrice({} = {}) {
+function makeCalculPrice() {
     return ({ distance, pricing }) => {
         let { unitPrice } = pricing.find(item => item.lowerDistance <= distance && item.upperDistance > distance);
         if (!unitPrice)

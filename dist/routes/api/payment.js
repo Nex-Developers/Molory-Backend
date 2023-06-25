@@ -8,7 +8,8 @@ const payment_1 = require("../../controllers/payment");
 exports.default = () => {
     const router = express_1.default.Router();
     router.route('/payment')
-        .get(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.adminCheck, (0, adapters_1.expressRouterAdapter)(payment_1.getPaymentsController));
+        .get(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.adminCheck, (0, adapters_1.expressRouterAdapter)(payment_1.getPaymentsController))
+        .post(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(payment_1.postPaymentController));
     return router;
 };
 //# sourceMappingURL=payment.js.map

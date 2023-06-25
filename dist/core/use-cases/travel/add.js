@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const uuid_1 = require("uuid");
 const helpers_1 = require("../../../utils/helpers");
-function makeAdd({ travelDb, routeDb, paymentDb } = {}) {
+function makeAdd({ travelDb, routeDb, paymentDb, pay } = {}) {
     if (!travelDb || !routeDb || !paymentDb)
         throw new errors_1.ServerError();
     const generateUid = () => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -45,9 +45,12 @@ function makeAdd({ travelDb, routeDb, paymentDb } = {}) {
         console.log(id);
         const amount = (price + fees) * seats * applyDiscount;
         const createdAt = new Date();
+        const { firstName, lastName, email, phoneNumber } = yield prisma.user.findUnique({ where: { id: userId } });
+        const { paymentUrl, transactionId } = yield pay({ amount, firstName, lastName, email, phoneNumber });
+        console.log(paymentUrl, transactionId);
         yield helpers_1.CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }));
         const message = { text: "response.add" };
-        return { message, payment: { id, amount, createdAt } };
+        return { message, payment: { id, amount, createdAt, paymentUrl, transactionId } };
     });
 }
 exports.default = makeAdd;
