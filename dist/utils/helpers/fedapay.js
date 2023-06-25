@@ -26,9 +26,9 @@ class FedapayManager {
                     customer: {
                         firstname,
                         lastname,
-                        email: 'aroamadou@gmail.com',
+                        email: email || 'aroamadou@gmail.com',
                         phone_number: {
-                            number: phoneNumber,
+                            number: phoneNumber || '90000000',
                             country: 'TG'
                         }
                     }

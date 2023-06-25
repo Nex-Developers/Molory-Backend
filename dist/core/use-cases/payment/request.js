@@ -13,7 +13,7 @@ function makeRequestPayment({ pay } = {}) {
         const prisma = helpers_1.DbConnection.prisma;
         const { firstName, lastName, email, phoneNumber } = yield prisma.user.findUnique({ where: { id: customerId } });
         console.log(firstName, lastName, email, phoneNumber);
-        const res = yield pay({ amount, firstName, lastName, email, phoneNumber: phoneNumber.slice(3, phoneNumber.length) });
+        const res = yield pay({ amount, firstName, lastName, email, phoneNumber });
         const message = { text: "response.add", res };
         return { message, res };
     });
