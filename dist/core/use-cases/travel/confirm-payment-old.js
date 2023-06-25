@@ -12,17 +12,26 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
     const getDatePlusQuater = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
     };
-    return ({ id, status, amount, method, reference, validatedAt } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ id, status, amount, method, reference, validatedAt, transactionId } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
-        console.log('Confirm-payment called with ', id, status, amount, reference);
+        console.log('Confirm-payment called with ', id, status, amount, transactionId);
         if (!status) {
             const message = { text: "response.delete" };
             return { message };
         }
+        if (!transactionId)
+            throw new errors_1.MissingParamError('transactionId');
+        const res = yield helpers_1.FedapayManager.verifyTransaction(transactionId);
+        console.log('Payed transaction', res);
+        if (!res)
+            throw new errors_1.InvalidParamError(transactionId);
         const saved = yield helpers_1.CacheManager.get(id);
         if (!saved)
             throw new errors_1.ExpiredParamError('payement id');
         const data = JSON.parse(saved);
+        if (data.amount != amount) {
+            throw new errors_1.InvalidParamError('amount');
+        }
         if (!method)
             method = null;
         if (!validatedAt)
@@ -103,4 +112,4 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
     });
 }
 exports.default = makeConfirmPayment;
-//# sourceMappingURL=confirm-payment.js.map
+//# sourceMappingURL=confirm-payment-old.js.map

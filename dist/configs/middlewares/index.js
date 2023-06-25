@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.tmpAuthCheck = exports.queryParser = exports.langCheck = exports.urlEncodeParser = exports.jsonParser = exports.fileUpload = exports.cors = exports.contentType = exports.apiCheck = exports.authCheck = exports.driverCheck = exports.adminCheck = void 0;
+exports.fedapayQueryParser = exports.tmpAuthCheck = exports.queryParser = exports.langCheck = exports.urlEncodeParser = exports.jsonParser = exports.fileUpload = exports.cors = exports.contentType = exports.apiCheck = exports.authCheck = exports.driverCheck = exports.adminCheck = void 0;
 const tslib_1 = require("tslib");
 const admin_check_1 = (0, tslib_1.__importDefault)(require("./admin-check"));
 exports.adminCheck = admin_check_1.default;
@@ -14,6 +14,8 @@ const cors_1 = (0, tslib_1.__importDefault)(require("./cors"));
 exports.cors = cors_1.default;
 const driver_check_1 = (0, tslib_1.__importDefault)(require("./driver-check"));
 exports.driverCheck = driver_check_1.default;
+const fedapay_query_parser_1 = (0, tslib_1.__importDefault)(require("./fedapay-query-parser"));
+exports.fedapayQueryParser = fedapay_query_parser_1.default;
 const file_upload_1 = (0, tslib_1.__importDefault)(require("./file-upload"));
 exports.fileUpload = file_upload_1.default;
 const json_parser_1 = (0, tslib_1.__importDefault)(require("./json-parser"));

@@ -10,6 +10,6 @@ const calculPrice = (0, calcul_price_1.default)();
 exports.calculPrice = calculPrice;
 const getPaymentState = (0, get_payment_state_1.default)({ postData: helpers_1.ApiCaller.send });
 exports.getPaymentState = getPaymentState;
-const pay = (0, pay_1.default)({ createTransaction: helpers_1.FedapayManager.createTransaction });
+const pay = (0, pay_1.default)({ createTransaction: helpers_1.FedapayManager.createTransaction, set: helpers_1.FirestoreDb.set });
 exports.pay = pay;
 //# sourceMappingURL=index.js.map
