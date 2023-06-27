@@ -20,7 +20,7 @@ function makeGetConfirmController({ validatePayment }) {
                 description: `Fedapay  ${conventions_1.Action.WRITE} payment `
             };
             try {
-                const lang = request.lang, data = yield validatePayment(Object.assign({}, request.params));
+                const lang = request.lang, data = yield validatePayment({ body: request.body, token: request.token });
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 reqLog.modelId = data.id || '';
                 reqLog.description += data.id;

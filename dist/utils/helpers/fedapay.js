@@ -19,7 +19,6 @@ class FedapayManager {
                 const transaction = yield fedapay_1.Transaction.create({
                     description: 'Description',
                     amount,
-                    callback_url: 'https://molory.xyz/backend/api/validate-payment',
                     currency: {
                         iso: 'XOF'
                     },
@@ -49,6 +48,19 @@ class FedapayManager {
             const transaction = yield fedapay_1.Transaction.retrieve(id);
             return !!(transaction.status == "approved");
         });
+    }
+    static decriptEvent(body, sig) {
+        const endpointSecret = "wh_live_wWCbnh89F7B6yONm_UlPEq_K";
+        let event;
+        try {
+            event = fedapay_1.Webhook.constructEvent(body, sig, endpointSecret);
+            console.log(event);
+            return event;
+        }
+        catch (err) {
+            console.log(err.message);
+            return err;
+        }
     }
 }
 exports.default = FedapayManager;

@@ -10,7 +10,7 @@ exports.default = () => {
     router.route('/payment')
         .get(middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.adminCheck, (0, adapters_1.expressRouterAdapter)(payment_1.getPaymentsController))
         .post(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(payment_1.postPaymentController));
-    router.get('/validate-payment', middlewares_1.langCheck, middlewares_1.fedapayQueryParser, (0, adapters_1.expressRouterAdapter)(payment_1.getConfirmPayment));
+    router.post('/validate-payment', middlewares_1.langCheck, middlewares_1.fedapayQueryParser, (0, adapters_1.expressRouterAdapter)(payment_1.getConfirmPayment));
     return router;
 };
 //# sourceMappingURL=payment.js.map
