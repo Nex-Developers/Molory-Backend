@@ -7,7 +7,7 @@ export default function makeConfirm({
     updateDoc,
     confirmTravel
 }: any = {}) {
-    if (!verifyTransaction || !getByDoc || !updateDoc || !confirmTravel) throw new ServerError()
+    if (!decriptEvent || !verifyTransaction || !getByDoc || !updateDoc || !confirmTravel) throw new ServerError()
     return async ({
         token,
         body

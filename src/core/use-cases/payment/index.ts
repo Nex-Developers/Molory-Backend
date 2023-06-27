@@ -12,7 +12,7 @@ const paymentDb = new PaymentDb()
 const listPayments = makeListItems({ paymentDb })
 const listPaymentInfos = makeListItemInfos({ paymentDb })
 const requestPayment = makeRequestPayment({ pay })
-const validatePayment = makeConfirm({ verifyTransaction: FedapayManager.verifyTransaction, getByDoc: FirestoreDb.getByDoc, updateDoc: FirestoreDb.update, confirmTravel: confirmPayment  })
+const validatePayment = makeConfirm({decriptEvent: FedapayManager.decriptEvent, verifyTransaction: FedapayManager.verifyTransaction, getByDoc: FirestoreDb.getByDoc, updateDoc: FirestoreDb.update, confirmTravel: confirmPayment  })
 
 export {
     listPayments,

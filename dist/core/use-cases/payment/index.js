@@ -17,6 +17,6 @@ const listPaymentInfos = (0, list_item_infos_1.default)({ paymentDb });
 exports.listPaymentInfos = listPaymentInfos;
 const requestPayment = (0, request_1.default)({ pay: payment_1.pay });
 exports.requestPayment = requestPayment;
-const validatePayment = (0, confirm_1.default)({ verifyTransaction: helpers_1.FedapayManager.verifyTransaction, getByDoc: helpers_1.FirestoreDb.getByDoc, updateDoc: helpers_1.FirestoreDb.update, confirmTravel: travel_1.confirmPayment });
+const validatePayment = (0, confirm_1.default)({ decriptEvent: helpers_1.FedapayManager.decriptEvent, verifyTransaction: helpers_1.FedapayManager.verifyTransaction, getByDoc: helpers_1.FirestoreDb.getByDoc, updateDoc: helpers_1.FirestoreDb.update, confirmTravel: travel_1.confirmPayment });
 exports.validatePayment = validatePayment;
 //# sourceMappingURL=index.js.map

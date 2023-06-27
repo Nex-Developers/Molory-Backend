@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 function makeConfirm({ decriptEvent, verifyTransaction, getByDoc, updateDoc, confirmTravel } = {}) {
-    if (!verifyTransaction || !getByDoc || !updateDoc || !confirmTravel)
+    if (!decriptEvent || !verifyTransaction || !getByDoc || !updateDoc || !confirmTravel)
         throw new errors_1.ServerError();
     return ({ token, body } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!token)
