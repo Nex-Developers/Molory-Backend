@@ -21,7 +21,7 @@ export default function makeGetConfirmController({
         } 
         try {
             const lang = request.lang,
-                data = await validatePayment({ ...request.params})
+                data = await validatePayment({body: request.body, token: request.token} )
                 reqLog.status = LogStatus.SUCCEEDED
                 reqLog.modelId = data.id || ''
                 reqLog.description += data.id

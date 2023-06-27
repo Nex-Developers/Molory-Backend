@@ -1,6 +1,7 @@
 import { MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeConfirm({
+    decriptEvent,
     verifyTransaction,
     getByDoc,
     updateDoc,
@@ -8,23 +9,24 @@ export default function makeConfirm({
 }: any = {}) {
     if (!verifyTransaction || !getByDoc || !updateDoc || !confirmTravel) throw new ServerError()
     return async ({
-        id,
-        status
+        token,
+        body
     }: any = {}) => {
-        if (!id) throw new MissingParamError('id')
-        if (!status) throw new MissingParamError('status')
-        console.log(id, status)
-        const res = await verifyTransaction(+id)
+        if (!token) throw new MissingParamError('token')
+        if (!body) throw new MissingParamError('body')
+        console.log(token, body)
+        const event =  decriptEvent(body, token)
+        const res = await verifyTransaction(event.id || event.transaction_id)
         console.log('payment res', res)
       
-        await updateDoc('payments', 'payment-' + id, { status: res ? 1 : 0 })
+        await updateDoc('payments', 'payment-' + event.id, { status: res ? 1 : 0 })
         if (res) {
-            const payment = await getByDoc('payments', 'payment-' + id)
+            const payment = await getByDoc('payments', 'payment-' + event.id)
             console.log(payment)
-            const data = await confirmTravel({ id: payment.paymentId, status: payment.status, amount: payment.amount, method: 'fedapay', reference: payment.id, validatedAt: payment.updatedAt })
-            return data
+            await confirmTravel({ id: payment.paymentId, status: payment.status, amount: payment.amount, method: 'fedapay', reference: payment.id, validatedAt: payment.updatedAt })
+            return { recieved: false}
         } else {
-            const message = { text: "Echec de paiement" }
+            const message = { recieved: true }
             return { message }
         }
     }

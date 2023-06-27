@@ -15,6 +15,6 @@ export default () => {
     router.route('/payment')
     .get(langCheck, authCheck, adminCheck, expressRouterAdapter(getPaymentsController))
     .post(langCheck, authCheck, expressRouterAdapter(postPaymentController))
-    router.get('/validate-payment', langCheck, fedapayQueryParser, expressRouterAdapter(getConfirmPayment))
+    router.post('/validate-payment', langCheck, fedapayQueryParser, expressRouterAdapter(getConfirmPayment))
     return router
 }

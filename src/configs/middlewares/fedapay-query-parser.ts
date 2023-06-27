@@ -1,5 +1,6 @@
 
 export default async (req, res, next) => {
-    req.params = req.query
+    const token = req.headers['x-fedapay-signature'];
+    req.params = { token}
     next()
 }
