@@ -12,11 +12,11 @@ function makeConfirm({ decriptEvent, verifyTransaction, getByDoc, updateDoc, con
             throw new errors_1.MissingParamError('body');
         console.log(token, body);
         const event = decriptEvent(body, token);
-        const res = yield verifyTransaction(event.id || event.transaction_id);
+        const res = yield verifyTransaction(event.entity.id);
         console.log('payment res', res);
-        yield updateDoc('payments', 'payment-' + event.id, { status: res ? 1 : 0 });
+        yield updateDoc('payments', 'payment-' + event.entity.id, { status: res ? 1 : 0 });
         if (res) {
-            const payment = yield getByDoc('payments', 'payment-' + event.id);
+            const payment = yield getByDoc('payments', 'payment-' + event.entity.id);
             console.log(payment);
             yield confirmTravel({ id: payment.paymentId, status: payment.status, amount: payment.amount, method: 'fedapay', reference: payment.id, validatedAt: payment.updatedAt });
             return { recieved: false };

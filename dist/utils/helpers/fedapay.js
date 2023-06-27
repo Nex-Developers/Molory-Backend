@@ -25,7 +25,7 @@ class FedapayManager {
                     customer: {
                         firstname,
                         lastname,
-                        email: email || 'aroamadou@gmail.com',
+                        email: email || 'developer@nex-softwares.com',
                         phone_number: {
                             number: phoneNumber || '90000000',
                             country: 'TG'
@@ -54,7 +54,6 @@ class FedapayManager {
         let event;
         try {
             event = fedapay_1.Webhook.constructEvent(body, sig, endpointSecret);
-            console.log(event);
             return event;
         }
         catch (err) {
