@@ -20,7 +20,7 @@ export default function makePay({
         if (!email) email = ''
         // console.log(firstName, lastName, amount, email);
         const res = await createTransaction(amount, firstName, lastName, email, phoneNumber)
-        await set('payments', 'payment-'+res.transactionId, { firstName, lastName, email, phoneNumber, amount, url: res.url, transactionId: res.transactionId, paymentId: id,  status: 2 } )
+        await set('payments', 'payment-'+res.transactionId, { firstName, lastName, email, phoneNumber, amount, url: res.url, transactionId: res.transactionId, paymentId: id,  status: 2, bookingStatus: 2 } )
         return res
     }
 }
