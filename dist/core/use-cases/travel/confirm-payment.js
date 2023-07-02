@@ -95,7 +95,7 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
             const formatedDate = reformateDate(travel.route.departureDate);
             const date = new Date(formatedDate + ' ' + travel.route.departureTime);
             const timer = getDatePlusQuater(date);
-            yield addTask({ path: 'ask-to-start-travel', timer, params: { id: travel.id } });
+            addTask({ path: 'ask-to-start-travel', timer, params: { id: travel.id } });
             delete data.user;
             const message = { text: "response.add", data: travel };
             return { message, id: travel.id };

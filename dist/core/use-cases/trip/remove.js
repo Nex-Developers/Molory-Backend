@@ -59,7 +59,7 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
                 const principal = routes.find(route => route.principal);
                 console.log(departureDateTime, delay, new Date());
                 if (delay < new Date()) {
-                    const sanction = 0.15 * (principal.price + principal.fees);
+                    const sanction = Math.ceil((0.15 * (principal.price + principal.fees)) / 5) * 5;
                     console.log('sanction ', userId, sanction);
                     yield prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: sanction } } });
                 }
