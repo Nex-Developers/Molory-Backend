@@ -65,7 +65,8 @@ export default function makeRemove({
             const departure = new Date(route.departureDate + ' ' + route.departureTime)
             const delay = getLast48hours(departure)
             if(new Date < delay) {
-                amount = payedAmount * 0.15
+                 
+                 amount = Math.ceil((payedAmount * 0.15) / 5) * 5
                 await prisma.wallet.update({ where: {id: route.trip.userId}, data: { balance: { increment: payedAmount - amount}}})
             }
             // return money
