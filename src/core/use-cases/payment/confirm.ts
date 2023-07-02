@@ -25,7 +25,7 @@ export default function makeConfirm({
         if (status === 1) {
             const payment = await getByDoc('payments', 'payment-' + entity.id)
             console.log(payment)
-            await confirmTravel({ id: payment.paymentId, status: payment.status, amount: payment.amount, method: 'fedapay', reference: payment.id, validatedAt: payment.updatedAt })
+            await confirmTravel({ id: payment.paymentId, status: payment.status, amount: payment.amount, method: 'fedapay', reference: payment.id, validatedAt: new Date() })
             return { recieved: false}
         } else {
             const message = { recieved: true }

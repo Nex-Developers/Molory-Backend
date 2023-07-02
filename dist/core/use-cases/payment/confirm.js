@@ -20,7 +20,7 @@ function makeConfirm({ decriptEvent, verifyTransaction, getByDoc, updateDoc, con
         if (status === 1) {
             const payment = yield getByDoc('payments', 'payment-' + entity.id);
             console.log(payment);
-            yield confirmTravel({ id: payment.paymentId, status: payment.status, amount: payment.amount, method: 'fedapay', reference: payment.id, validatedAt: payment.updatedAt });
+            yield confirmTravel({ id: payment.paymentId, status: payment.status, amount: payment.amount, method: 'fedapay', reference: payment.id, validatedAt: new Date() });
             return { recieved: false };
         }
         else {
