@@ -11,11 +11,11 @@ function makeConfirm({ decriptEvent, verifyTransaction, getByDoc, updateDoc, con
         if (!body)
             throw new errors_1.MissingParamError('body');
         const { entity, name } = body;
-        console.log(name, entity);
+        console.log(name);
         if (!entity && !entity.id)
             return { recieved: false };
         console.log('status', entity.status);
-        const status = entity.status === 'canceled' ? -1 : entity.status === 'failed' ? 0 : entity.status === 'approuved' ? 1 : 2;
+        const status = (entity.status === 'canceled' || entity.status === 'declined') ? 0 : entity.status === 'approved' ? 1 : -1;
         yield updateDoc('payments', 'payment-' + body.entity.id, { status });
         if (status === 1) {
             const payment = yield getByDoc('payments', 'payment-' + body.entity.id);

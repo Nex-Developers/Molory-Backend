@@ -15,13 +15,13 @@ export default function makeConfirm({
         if (!token) throw new MissingParamError('token')
         if (!body) throw new MissingParamError('body')
         const { entity, name } = body
-        console.log(name, entity)
+        console.log(name)
         // const event =  decriptEvent(body, token)
         if (!entity && !entity.id) return { recieved: false }
         // const res = await verifyTransaction(entity.id)
         console.log('status', entity.status)
-        const status = entity.status === 'canceled'?-1:entity.status==='failed'?0:entity.status === 'approuved'?1:2
-        await updateDoc('payments', 'payment-' + body.entity.id, { status })
+        const status = (entity.status === 'canceled' || entity.status==='declined')?0:entity.status === 'approved'?1:-1
+        await updateDoc('payments', 'payment-'+ body.entity.id, { status })
         if (status === 1) {
             const payment = await getByDoc('payments', 'payment-' + body.entity.id)
             console.log(payment)
