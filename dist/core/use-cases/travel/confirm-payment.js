@@ -98,7 +98,7 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
             yield addTask({ path: 'ask-to-start-travel', timer, params: { id: travel.id } });
             delete data.user;
             const message = { text: "response.add", data: travel };
-            return { message };
+            return { message, id: travel.id };
         }));
     });
 }

@@ -19,7 +19,7 @@ function makePay({ createTransaction, set } = {}) {
         if (!email)
             email = '';
         const res = yield createTransaction(amount, firstName, lastName, email, phoneNumber);
-        yield set('payments', 'payment-' + res.transactionId, { firstName, lastName, email, phoneNumber, amount, url: res.url, transactionId: res.transactionId, paymentId: id, status: 2 });
+        yield set('payments', 'payment-' + res.transactionId, { firstName, lastName, email, phoneNumber, amount, url: res.url, transactionId: res.transactionId, paymentId: id, status: 2, bookingStatus: 2 });
         return res;
     });
 }
