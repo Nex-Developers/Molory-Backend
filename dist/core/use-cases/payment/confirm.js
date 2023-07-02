@@ -16,9 +16,9 @@ function makeConfirm({ decriptEvent, verifyTransaction, getByDoc, updateDoc, con
             return { recieved: false };
         console.log('status', entity.status);
         const status = (entity.status === 'canceled' || entity.status === 'declined') ? 0 : entity.status === 'approved' ? 1 : -1;
-        yield updateDoc('payments', 'payment-' + body.entity.id, { status });
+        yield updateDoc('payments', 'payment-' + entity.id, { status });
         if (status === 1) {
-            const payment = yield getByDoc('payments', 'payment-' + body.entity.id);
+            const payment = yield getByDoc('payments', 'payment-' + entity.id);
             console.log(payment);
             yield confirmTravel({ id: payment.paymentId, status: payment.status, amount: payment.amount, method: 'fedapay', reference: payment.id, validatedAt: payment.updatedAt });
             return { recieved: false };

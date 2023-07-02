@@ -21,9 +21,9 @@ export default function makeConfirm({
         // const res = await verifyTransaction(entity.id)
         console.log('status', entity.status)
         const status = (entity.status === 'canceled' || entity.status==='declined')?0:entity.status === 'approved'?1:-1
-        await updateDoc('payments', 'payment-'+ body.entity.id, { status })
+        await updateDoc('payments', 'payment-'+ entity.id, { status })
         if (status === 1) {
-            const payment = await getByDoc('payments', 'payment-' + body.entity.id)
+            const payment = await getByDoc('payments', 'payment-' + entity.id)
             console.log(payment)
             await confirmTravel({ id: payment.paymentId, status: payment.status, amount: payment.amount, method: 'fedapay', reference: payment.id, validatedAt: payment.updatedAt })
             return { recieved: false}
