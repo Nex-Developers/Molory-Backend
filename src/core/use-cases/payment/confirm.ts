@@ -14,14 +14,16 @@ export default function makeConfirm({
     }: any = {}) => {
         if (!token) throw new MissingParamError('token')
         if (!body) throw new MissingParamError('body')
-        console.log(token, body)
-        const event =  decriptEvent(body, token)
-        const res = await verifyTransaction(event.entity.id)
-        console.log('payment res', res)
-      
-        await updateDoc('payments', 'payment-' + event.entity.id, { status: res ? 1 : 0 })
-        if (res) {
-            const payment = await getByDoc('payments', 'payment-' + event.entity.id)
+        const { entity, name } = body
+        console.log(name, entity)
+        // const event =  decriptEvent(body, token)
+        if (!entity && !entity.id) return { recieved: false }
+        // const res = await verifyTransaction(entity.id)
+        console.log('status', entity.status)
+        const status = entity.status === 'canceled'?-1:entity.status==='failed'?0:entity.status === 'approuved'?1:2
+        await updateDoc('payments', 'payment-' + body.entity.id, { status })
+        if (status === 1) {
+            const payment = await getByDoc('payments', 'payment-' + body.entity.id)
             console.log(payment)
             await confirmTravel({ id: payment.paymentId, status: payment.status, amount: payment.amount, method: 'fedapay', reference: payment.id, validatedAt: payment.updatedAt })
             return { recieved: false}

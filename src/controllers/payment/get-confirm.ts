@@ -9,7 +9,7 @@ export default function makeGetConfirmController({
         const reqLog: Log = {
             date: new Date().toDateString(), 
             time: new Date().toTimeString(),
-            userId: request.params.id, 
+            userId: request?.params?.id || "userId", 
             lastName: 'Fedapay',
             firstName: '',
             model: 'Payment',
@@ -23,8 +23,8 @@ export default function makeGetConfirmController({
             const lang = request.lang,
                 data = await validatePayment({body: request.body, token: request.token} )
                 reqLog.status = LogStatus.SUCCEEDED
-                reqLog.modelId = data.id || ''
-                reqLog.description += data.id
+                reqLog.modelId = data?.id || ''
+                reqLog.description += data?.id
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)
         } catch (err) {

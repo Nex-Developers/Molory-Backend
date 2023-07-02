@@ -5,11 +5,12 @@ const conventions_1 = require("../../core/conventions");
 const helpers_1 = require("../../utils/helpers");
 function makeGetConfirmController({ validatePayment }) {
     return function (request) {
+        var _a;
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const reqLog = {
                 date: new Date().toDateString(),
                 time: new Date().toTimeString(),
-                userId: request.params.id,
+                userId: ((_a = request === null || request === void 0 ? void 0 : request.params) === null || _a === void 0 ? void 0 : _a.id) || "userId",
                 lastName: 'Fedapay',
                 firstName: '',
                 model: 'Payment',
@@ -22,8 +23,8 @@ function makeGetConfirmController({ validatePayment }) {
             try {
                 const lang = request.lang, data = yield validatePayment({ body: request.body, token: request.token });
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
-                reqLog.modelId = data.id || '';
-                reqLog.description += data.id;
+                reqLog.modelId = (data === null || data === void 0 ? void 0 : data.id) || '';
+                reqLog.description += data === null || data === void 0 ? void 0 : data.id;
                 helpers_1.LogManager.save(reqLog);
                 return helpers_1.HttpResponse.ok(data, lang);
             }

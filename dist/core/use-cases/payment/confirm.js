@@ -10,13 +10,15 @@ function makeConfirm({ decriptEvent, verifyTransaction, getByDoc, updateDoc, con
             throw new errors_1.MissingParamError('token');
         if (!body)
             throw new errors_1.MissingParamError('body');
-        console.log(token, body);
-        const event = decriptEvent(body, token);
-        const res = yield verifyTransaction(event.entity.id);
-        console.log('payment res', res);
-        yield updateDoc('payments', 'payment-' + event.entity.id, { status: res ? 1 : 0 });
-        if (res) {
-            const payment = yield getByDoc('payments', 'payment-' + event.entity.id);
+        const { entity, name } = body;
+        console.log(name, entity);
+        if (!entity && !entity.id)
+            return { recieved: false };
+        console.log('status', entity.status);
+        const status = entity.status === 'canceled' ? -1 : entity.status === 'failed' ? 0 : entity.status === 'approuved' ? 1 : 2;
+        yield updateDoc('payments', 'payment-' + body.entity.id, { status });
+        if (status === 1) {
+            const payment = yield getByDoc('payments', 'payment-' + body.entity.id);
             console.log(payment);
             yield confirmTravel({ id: payment.paymentId, status: payment.status, amount: payment.amount, method: 'fedapay', reference: payment.id, validatedAt: payment.updatedAt });
             return { recieved: false };
