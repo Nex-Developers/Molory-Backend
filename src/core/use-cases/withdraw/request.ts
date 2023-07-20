@@ -2,10 +2,10 @@ import { MissingParamError, ServerError } from "../../../utils/errors"
 import { DbConnection } from "../../../utils/helpers"
 import { v4 } from 'uuid'
 
-export default function makeRequestPayment({
-    pay
+export default function makeRequest({
+    saveTransaction
 }: any = {}) {
-    if (!pay) throw new ServerError()
+    if (!saveTransaction) throw new ServerError()
 
     const generateUid = async () => {
         const uid = v4()
@@ -14,15 +14,15 @@ export default function makeRequestPayment({
 
     return async ({
         amount,
-        customerId
+        userId
     }: any = {}) => {
-        console.log(amount, customerId);
+        console.log(amount, userId);
         if (!amount) throw new MissingParamError('amount')
         const prisma = DbConnection.prisma
-        const { firstName, lastName, email, phoneNumber } =  await prisma.user.findUnique({ where: { id: customerId }})
+        const { firstName, lastName, email, phoneNumber } =  await prisma.user.findUnique({ where: { id: userId }})
         console.log(firstName, lastName, email, phoneNumber);
         const id = await generateUid()
-        const res = await pay({ id, amount, firstName, lastName, email, phoneNumber })
+        const res = await saveTransaction({ id, amount, firstName, lastName, email, phoneNumber, type: 'withdraw' })
         const message = { text: "response.add", res}
         return { message, res }
     } 

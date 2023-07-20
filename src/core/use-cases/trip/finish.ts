@@ -43,7 +43,7 @@ export default ({
             // notifyAdmin
          
             if (incomes) {
-            await prisma.transfer.create({ data: { tripId: id, userId, amount: incomes, commission }})
+            // await prisma.transaction.create({ data: { tripId: id, walletId: userId, amount: incomes, commission }})
             await prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: incomes }}})
            }
            console.log(`------> Trip ${id} finished with incomes for the driver of ${incomes} and a commission for the company of ${commission}.`)

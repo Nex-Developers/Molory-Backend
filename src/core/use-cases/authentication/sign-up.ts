@@ -38,7 +38,8 @@ export default function makeSignUp({
             let user
             try {
                 user = await prisma.user.create({ data: { firstName, lastName, phoneNumber, email, password, birthDay, role: 'user', language, signUpMethod: "email", gender, profileCompletedAt: new Date(), status: 3 } })
-            } catch (err) {
+                 await prisma.wallet.create({data: { id: user.id }})
+                } catch (err) {
                 console.log(err.message);
                 throw new AccountAllReadyExistError('email');
             }

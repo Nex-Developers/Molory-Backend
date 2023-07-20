@@ -1,11 +1,11 @@
 import { Action, IHttpRequest, IHttpResponse, Log, LogStatus } from "../../core/conventions";
 import { HttpResponse, LogManager } from "../../utils/helpers";
 
-export default function makeGetItemsController({
-    listPayments
+export default function makePostController({
+    requestWithdraw
 }) {
     // use translations
-    return async function (request: IHttpRequest): Promise<IHttpResponse> {
+    return async function(request: IHttpRequest): Promise<IHttpResponse> {
         const reqLog: Log = {
             date: new Date().toDateString(), 
             time: new Date().toTimeString(),
@@ -13,25 +13,25 @@ export default function makeGetItemsController({
             lastName: request.ref.lastName,
             firstName: request.ref.firstName,
             model: 'Payment',
-            path: '/api/payment',
-            modelId: 'all',
-            action: Action.READ,
+            path: '/api/withdraw',
+            modelId: '',
+            action: Action.WRITE,
             status: LogStatus.FAILED,
-            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.READ} all payment`
+            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.REQUEST} withdraw `
         } 
-
         try {
             const lang = request.lang,
-                body = request.params
-                const data = await listPayments({...body})
+                body = request.body,
+                data = await requestWithdraw(body)
                 reqLog.status = LogStatus.SUCCEEDED
-                reqLog.description += ` (${ data.count }) from ${ data.startAt} to ${ data.startAt + data.limit }`
+                reqLog.modelId = data.id
+                reqLog.description += data.id
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)
         } catch (err) {
-            const lang = request.lang
             reqLog.failureReason = err.message
             LogManager.save(reqLog)
+            const lang = request.lang
             return HttpResponse.error(err, lang)()
         }
     }

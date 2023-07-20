@@ -43,10 +43,10 @@ export default function makeConfirmPayment({
         // if (data.amount != amount) {
         //     throw new InvalidParamError('amount')
         // }
-        if (!method) method = null
+        if (!method) method = 'wallet'
         if (!validatedAt) validatedAt = new Date()
         if (!reference) reference = null
-        return await prisma.$transaction(async () => {
+        // return await prisma.$transaction(async () => {
             // check remaining seats
             const { remainingSeats, principal, trip, departureAddress, departureDate, departureTime, arrivalAddress } = await prisma.route.findUnique({
                 where: { id: data.routeId },
@@ -59,8 +59,9 @@ export default function makeConfirmPayment({
                 create: {
                     id,
                     amount: data.amount,
-                    reference,
+                    ref: reference,
                     validatedAt,
+                    type: 'payment',
                     method,
                     status: 1,
                     user: { connect: { id: data.userId } },
@@ -77,7 +78,9 @@ export default function makeConfirmPayment({
                     arrivalAddress,
                     departureDate,
                     departureTime,
-                    payment,
+                    transactions: {
+                        create: payment
+                    },
                     route: {
                         connect: { id: data.routeId }
                     },
@@ -119,7 +122,7 @@ export default function makeConfirmPayment({
             delete data.user
             const message = { text: "response.add", data: travel }
             return { message, id: travel.id }
-        })
+        // })
 
     }
 }

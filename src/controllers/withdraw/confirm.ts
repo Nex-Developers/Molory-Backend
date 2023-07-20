@@ -1,29 +1,30 @@
-import { Action, IHttpRequest, IHttpResponse, Log, LogStatus } from "../../core/conventions";
-import { HttpResponse, LogManager } from "../../utils/helpers";
+import { Action, IHttpRequest, IHttpResponse, Log, LogStatus } from "../../core/conventions"
+import { HttpResponse, LogManager } from "../../utils/helpers"
 
 export default function makePostConfirmController({
-    confirmWithdrawal
+    confirmWithdraw
 }) {
     // use translations
     return async function(request: IHttpRequest): Promise<IHttpResponse> {
         const reqLog: Log = {
             date: new Date().toDateString(), 
             time: new Date().toTimeString(),
-            userId: 0, 
-            lastName: 'Cinetpay',
+            userId: request?.params?.id || "userId", 
+            lastName: 'Fedapay',
             firstName: '',
-            model: 'Withdrawal',
-            path: '/api/withdrawal',
+            model: 'Withdraw',
+            path: '/api/Withdraw',
             modelId: '',
             action: Action.WRITE,
             status: LogStatus.FAILED,
-            description: `Cinetpay validate withdrawal`
+            description: `Fedapay  ${Action.WRITE} withdraw `
         } 
         try {
             const lang = request.lang,
-                body = request.body,
-                data = await confirmWithdrawal({...body})
+                data = await confirmWithdraw({body: request.body, token: request.token} )
                 reqLog.status = LogStatus.SUCCEEDED
+                reqLog.modelId = data?.id || ''
+                reqLog.description += data?.id
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)
         } catch (err) {

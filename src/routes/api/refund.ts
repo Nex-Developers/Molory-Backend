@@ -6,7 +6,6 @@ import {
 } from "../../configs/middlewares"
 
 import { 
-  getRefundsController,
   postConfirmRefundcontroller,
   postRefundcontroller 
 } from "../../controllers/refund"
@@ -14,7 +13,6 @@ import {
 export default () => {
     const router = express.Router()
     router.route('/refund')
-    .get(langCheck, authCheck, expressRouterAdapter(getRefundsController))
     .post(langCheck, authCheck, expressRouterAdapter(postRefundcontroller))
     router.route('/refund-confirmation')
     .get((req, res) =>  res.send('success'))

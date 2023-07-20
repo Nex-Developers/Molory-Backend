@@ -1,4 +1,4 @@
-import { FedaPay, Transaction, Webhook } from 'fedapay'
+import { FedaPay, Payout, Transaction, Webhook } from 'fedapay'
 
 export default class FedapayManager {
     static app
@@ -40,6 +40,29 @@ export default class FedapayManager {
             return null
         }
     }
+
+    static async createWithdrawTransaction(amount: number, mode: string, firstname: string, lastname: string, email: string, phoneNumber: string) {
+       const body = {
+            amount,
+            currency : {iso : "XOF"},
+            mode,
+            customer: {
+                firstname,
+                lastname,
+                email: email || 'developer@nex-softwares.com',
+                phone_number: {
+                    number: phoneNumber || '90000000',
+                    country: 'TG'
+                }
+            }
+          }
+
+        const payout = await  Payout.create(body)
+        const res = payout.sendNow()
+        console.log(res)
+    }
+
+
 
     static async verifyTransaction(id: number) {
         FedaPay.setApiKey("sk_live_5XEQoAGhvm4J0B5bX79A0Qqc")

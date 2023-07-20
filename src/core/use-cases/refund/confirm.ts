@@ -15,7 +15,7 @@ export default function makeConfirm({
     }: any = {}) => {
         console.log(transaction_id, client_transaction_id, amount, sending_status, validated_at)
         const prisma = DbConnection.prisma
-        const refund = await prisma.refund.findUnique({ where: { id: client_transaction_id } })
+        const refund = await prisma.transaction.findUnique({ where: { id: client_transaction_id } })
         if (refund.status === 2) {
             const transactionData = await checkCinetpayTransfert({ id: transaction_id })
             console.log(transactionData)
@@ -28,12 +28,12 @@ export default function makeConfirm({
             let res
             if (transactionData.transfer_valid == 'Y') {
                 res = 'SUCCESS'
-                await prisma.refund.update({ where: { id: client_transaction_id }, data: { status: 1, validatedAt: new Date(validated_at) } })
-                notifyUser({ id: refund.userId, titleRef: { text: 'notification.withdralConfirmed.title' }, messageRef: { text: 'notification.withdralConfirmed.message' }, cover: null, data: { path: 'confirm-refund', id: client_transaction_id, res }, lang: 'fr' })
+                await prisma.transaction.update({ where: { id: client_transaction_id }, data: { status: 1, validatedAt: new Date(validated_at) } })
+                notifyUser({ id: refund.walletId, titleRef: { text: 'notification.withdralConfirmed.title' }, messageRef: { text: 'notification.withdralConfirmed.message' }, cover: null, data: { path: 'confirm-refund', id: client_transaction_id, res }, lang: 'fr' })
             } else {
                 res = 'WARNING'
-                await prisma.refund.update({ where: { id: client_transaction_id }, data: { status: 3, validatedAt: new Date(validated_at) } })
-                notifyUser({ id: refund.userId, titleRef: { text: 'notification.withdralConfirmed.title' }, messageRef: { text: 'notification.withdralConfirmed.message' }, cover: null, data: { path: 'confirm-refund', id: client_transaction_id, res }, lang: 'fr' })
+                await prisma.transaction.update({ where: { id: client_transaction_id }, data: { status: 3, validatedAt: new Date(validated_at) } })
+                notifyUser({ id: refund.walletId, titleRef: { text: 'notification.withdralConfirmed.title' }, messageRef: { text: 'notification.withdralConfirmed.message' }, cover: null, data: { path: 'confirm-refund', id: client_transaction_id, res }, lang: 'fr' })
             }
         }
     }

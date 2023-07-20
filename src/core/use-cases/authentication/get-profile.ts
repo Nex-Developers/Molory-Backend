@@ -135,7 +135,14 @@ export default function makeGetProfile({
             stats: res._count,
             reviews
         }
-        if (res.role === 'driver') data.wallet = await walletDb.findFirst({
+        // if (res.role === 'driver') data.wallet = await walletDb.findFirst({
+        //     where: { id: res.userId },
+        //     select: {
+        //         balance: true,
+        //         currency: true
+        //     }
+        // })
+        data.wallet = await walletDb.findFirst({
             where: { id: res.userId },
             select: {
                 balance: true,

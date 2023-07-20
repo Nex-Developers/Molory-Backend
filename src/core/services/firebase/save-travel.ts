@@ -12,7 +12,7 @@ export default function makeSaveNotification({
 
     return  async (id: number) => {
         const prisma = DbConnection.prisma
-        const travel = await prisma.travel.findUnique({ where: { id }, 
+        const travel: any = await prisma.travel.findUnique({ where: { id }, 
             select: {
                 id: true,
                 seats: true,
@@ -99,7 +99,7 @@ export default function makeSaveNotification({
                         }
                     }
                 },
-                refund: true,
+                transactions: true,
                 user: {
                     select: {
                         id: true,
@@ -152,7 +152,7 @@ export default function makeSaveNotification({
             driver: user,
             user: travel.user,
             vehicle,
-            refund: travel.refund,
+            transactions: travel.transactions,
             reports: travel.reports
         }
         return await setInCollection('users', travel.user.id.toString(), 'travels', id.toString() , data)

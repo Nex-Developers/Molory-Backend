@@ -1,4 +1,4 @@
-import { PaymentDb, RouteDb, TravelDb } from "../../../db"
+import { RouteDb, TravelDb } from "../../../db"
 import { saveProfile, saveTravel, saveTrip } from "../../services/firebase"
 import { notifyUser } from "../../services/notifications"
 // import { DbConnection } from "../../../utils/helpers"
@@ -18,14 +18,13 @@ import makeConfirmEnd from "./confirm-end"
 import makeSelfConfirmEnd from "./self-confirm-end"
 import { addTask } from "../../services/task"
 import makeReport from "./report"
-import { pay } from "../../services/payment"
+import { saveTransaction } from "../../services/transaction"
 
 const travelDb = new TravelDb()
 const routeDb = new RouteDb()
-const paymentDb = new PaymentDb()
 
 
-const addTravel = makeAdd({ travelDb, routeDb, paymentDb, pay })
+const addTravel = makeAdd({ travelDb, routeDb, saveTransaction })
 const editTravel = makeEdit({ travelDb })
 const listTravels = makeListItems({ travelDb })
 const listTravelInfos = makeListItemInfos({ travelDb })

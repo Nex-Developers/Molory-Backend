@@ -123,7 +123,7 @@ export default function makeListItems({
                         phoneNumber: true,
                     }
                 },
-                refund: true,
+                transactions: true,
                 createdAt: true,
                 reports: {
                     select: {
@@ -173,7 +173,7 @@ export default function makeListItems({
                 driver: user,
                 user: item.user,
                 vehicle,
-                refund: item.refund,
+                transactions: item.transactions,
                 reports: item.reports
             })
         })

@@ -72,12 +72,10 @@ model User {
   sendedNotifications           Publication[]
   receivedNotifications         Notification[]
   devices                       Device[]
-  payments                      Payment[]
-  refunds                       Refund[]
+  // transactions                  Transaction[]
   passengerReviews              PassengerReview[]
   driverReviews                 DriverReview[]
   country                       Country?          @relation(fields: [countryId], references: [id])
-  transfers                     Transfer[]
   reports                       TravelReport[]
 }
 
@@ -106,13 +104,13 @@ model Device {
 }
 
 model Wallet {
-  id          Int          @id
-  currency    String       @default("XOF")
-  balance     Int          @default(0)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime?    @updatedAt
+  id          Int           @id
+  currency    String        @default("XOF")
+  balance     Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime?     @updatedAt
   deletedAt   DateTime?
-  withdrawals Withdrawal[]
+  trsanctions Transaction[]
 }
 
 model Pricing {
@@ -221,7 +219,7 @@ model Trip {
   cancelReason     String?
   startedAt        DateTime?
   finishedAt       DateTime?
-  promotionId       Int?
+  promotionId      Int?
 
   // stops Stop[]
   routes           Route[]
@@ -229,10 +227,9 @@ model Trip {
   vehicle          Vehicle?          @relation(fields: [vehicleId], references: [id])
   driverReviews    DriverReview[]
   passengerReviews PassengerReview[]
-  payments         Payment[]
-  transfer         Transfer?
+  transaction      Transaction?
   reports          TripReport[]
-  promotion         Promotion?  @relation(fields: [promotionId], references: [id])
+  promotion        Promotion?        @relation(fields: [promotionId], references: [id])
 }
 
 model Stop {
@@ -288,16 +285,20 @@ model Travel {
   cancelReason     String?
   notStartedReason String?
   notEndedReason   String?
-  // driverRating    Int?
-  // passengerRating Int?
+  driverRating    Int?
+  passengerRating Int?
   rating           Float?
   user             User             @relation(fields: [userId], references: [id])
   route            Route            @relation(fields: [routeId], references: [id])
-  payment          Payment?
-  refund           Refund?
+  // payment          Payment?
+  // refund           Refund?
+  // payment          Payment?
   passengerReview  PassengerReview?
   driverReview     DriverReview?
   reports          TravelReport[]
+  Promotion        Promotion?       @relation(fields: [promotionId], references: [id])
+  promotionId      Int?
+  transactions      Transaction[]
 }
 
 model TravelReport {
@@ -356,77 +357,105 @@ model DriverReview {
   user      User      @relation(fields: [userId], references: [id])
 }
 
-model Transfer {
-  tripId     Int       @id
-  userId     Int
-  amount     Int
-  commission Int
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime?
-  deletedAt  DateTime?
-  trip       Trip      @relation(fields: [tripId], references: [id])
-  user       User      @relation(fields: [userId], references: [id])
-}
+// model Payment {
+//   id             String     @id
+//   promotionId    Int?
+//   travelId       Int        @unique
+//   tripId         Int
+//   userId         Int
+//   method         String?
+//   amount         Int
+//   receivedAmount Int?
+//   reference      String?
+//   accessNumber   String?
+//   createdAt      DateTime   @default(now())
+//   deletedAt      DateTime?
+//   validatedAt    DateTime?
+//   status         Int        @default(2) //2-wating 1-success 0-canceled
+//   travel         Travel     @relation(fields: [travelId], references: [id])
+//   user           User       @relation(fields: [userId], references: [id])
+//   trip           Trip       @relation(fields: [tripId], references: [id])
+//   promotion      Promotion? @relation(fields: [promotionId], references: [id])
+// }
 
-model Payment {
-  id             String     @id
-  promotionId    Int?
-  travelId       Int        @unique
-  tripId         Int
-  userId         Int
-  method         String?
-  amount         Int
-  receivedAmount Int?
-  reference      String?
-  accessNumber   String?
-  createdAt      DateTime   @default(now())
-  deletedAt      DateTime?
-  validatedAt    DateTime?
-  status         Int        @default(2) //2-wating 1-success 0-canceled
-  travel         Travel     @relation(fields: [travelId], references: [id])
-  user           User       @relation(fields: [userId], references: [id])
-  trip           Trip       @relation(fields: [tripId], references: [id])
-  promotion      Promotion? @relation(fields: [promotionId], references: [id])
-}
+// model Withdrawal {
+//   id            String      @id
+//   accessNumber  String?
+//   transactionId String      @unique
+//   transaction   Transaction @relation(fields: [transactionId], references: [id])
+// }
 
-model Withdrawal {
-  id            String    @id
-  walletId      Int
-  method        String?
-  transactionId String?
-  amount        Int
-  accessNumber  String?
-  createdAt     DateTime  @default(now())
-  validatedAt   DateTime?
-  deletedAt     DateTime?
-  status        Int       @default(3) //2-wating 1-success 0-canceled
-  wallet        Wallet    @relation(fields: [walletId], references: [id])
-}
+// model Recharge {
+//   id            String      @id
+//   accessNumber  String?
+//   transactionId String      @unique
+//   transaction   Transaction @relation(fields: [transactionId], references: [id])
+// }
 
-model Refund {
-  id            String    @id
-  travelId      Int       @unique
-  userId        Int
-  method        String?
-  transactionId String?
-  amount        Int
-  accessNumber  String?
-  createdAt     DateTime  @default(now())
-  validatedAt   DateTime?
-  deletedAt     DateTime?
-  status        Int       @default(4) //available   //3-waiting 2-In process 1-success 0-canceled
-  user          User      @relation(fields: [userId], references: [id])
-  travel        Travel    @relation(fields: [travelId], references: [id])
-}
+// model Payment {
+//   id            String      @id
+//   transactionId String      @unique
+//   travelId      Int         @unique
+//   promotionId   Int
+//   transfertId   String?
+//   transaction   Transaction @relation(fields: [transactionId], references: [id])
+//   travel        Travel      @relation(fields: [travelId], references: [id])
+//   User          User?       @relation(fields: [userId], references: [id])
+//   userId        Int?
+//   Promotion     Promotion   @relation(fields: [promotionId], references: [id])
+// }
 
-model Status {
-  number      Int       @id
-  value       String
-  description String
+// model Refund {
+//   id            String      @id
+//   transactionId String      @unique
+//   travelId      Int         @unique
+//   transaction   Transaction @relation(fields: [transactionId], references: [id])
+//   travel        Travel      @relation(fields: [travelId], references: [id])
+//   User          User?       @relation(fields: [userId], references: [id])
+//   userId        Int?
+// }
+
+// model Transfer {
+//   id          String     @id
+//   tripId      Int        @unique
+//   promotionId Int
+//   commission  Int        @default(0)
+//   trip        Trip       @relation(fields: [tripId], references: [id])
+//   promotion   Promotion? @relation(fields: [promotionId], references: [id])
+//   User        User?      @relation(fields: [userId], references: [id])
+//   userId      Int?
+// }
+
+model Transaction {
+  id          String    @id
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
+  validatedAt DateTime?
   deletedAt   DateTime?
+  method      String?
+  status      Int       @default(2) // 2-Pending 1-success 0-canceled
+  amount      Int
+  walletId    Int
+  type        String
+  ref         String    @unique
+  tripId      Int?      @unique
+  travelId    Int?      @unique
+  wallet      Wallet    @relation(fields: [walletId], references: [id])
+  trip        Trip?     @relation(fields: [tripId], references: [id])
+  travel      Travel?   @relation(fields: [travelId], references: [id])
+  // Withdrawal  Withdrawal?
+  // Recharge    Recharge?
+  // Payment     Payment?
+  // Refund      Refund?
 }
+
+// model Status {
+//   number      Int       @id
+//   value       String
+//   description String
+//   createdAt   DateTime  @default(now())
+//   updatedAt   DateTime? @updatedAt
+//   deletedAt   DateTime?
+// }
 
 model Historic {
   id        Int      @id @default(autoincrement())
@@ -489,13 +518,15 @@ model Promotion {
   discount    Float
   description String?
   limit       Int?
-  isForDriver Boolean? @default(false)
+  isForDriver Boolean?  @default(false)
   startAt     DateTime  @default(now())
   endAt       DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
   deletedAt   DateTime?
   status      Int       @default(1)
-  payments    Payment[]
+  travel      Travel[]
   trips       Trip[]
+  // payments    Payment[]
+  // transfert   Transfer[]
 }

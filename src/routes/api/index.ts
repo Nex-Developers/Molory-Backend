@@ -4,11 +4,11 @@ import configuration from "./configuration"
 import logs from "./logs"
 import newsletter from "./newsletter"
 import notification from "./notification"
-import payment from "./payment"
 import preference from "./preference"
 import pricing from "./pricing"
 import promotion from "./promotion"
 import question from "./question"
+import recharge from "./recharge"
 import refund from "./refund"
 import route from "./route"
 import travel from "./travel"
@@ -16,7 +16,7 @@ import trip from "./trip"
 import user from "./user"
 import vehicle from "./vehicle"
 import vehicleType from "./vehicle-type"
-import withdrawal from "./withdrawal"
+import withdraw from "./withdraw"
 
 export default (router) => {
     router.use(logs())
@@ -34,9 +34,10 @@ export default (router) => {
     router.use(question())
     router.use(answer())
     router.use(notification())
-    router.use(withdrawal())
-    router.use(payment())
     router.use(refund())
     router.use(promotion())
+    router.use(withdraw())
+    router.use(recharge())
+
     return router
 }
