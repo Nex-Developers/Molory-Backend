@@ -44,6 +44,7 @@ function makeConfirmOtp({ getOtp, generateToken, saveToken, removeOtp, removeTmp
                 yield saveToken({ token: authToken });
                 yield removeOtp({ phoneNumber });
                 yield removeTmpToken({ token });
+                yield prisma.wallet.create({ data: { id: id } });
                 saveProfile(id);
                 return { token: authToken, data: { id, avatar, firstName, lastName, phoneNumber, email, birthDay, createdAt, signUpMethod }, message };
             }

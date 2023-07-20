@@ -53,6 +53,7 @@ export default function makeConfirmOtp({
             await saveToken({ token: authToken })
             await removeOtp({ phoneNumber })
             await removeTmpToken({ token })
+            await prisma.wallet.create({data: { id: id }})
             saveProfile(id)
             return { token: authToken, data: { id, avatar, firstName, lastName, phoneNumber, email, birthDay, createdAt, signUpMethod }, message }
         } else {
