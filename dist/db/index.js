@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PublicationDb = exports.NotificationDb = exports.AnswerDb = exports.QuestionDb = exports.WalletDb = exports.WithdrawalDb = exports.PaymentDb = exports.NewsletterDb = exports.PricingDb = exports.TravelDb = exports.RouteDb = exports.StopDb = exports.TripDb = exports.VehicleDb = exports.VehicleTypeDb = exports.PreferenceDb = exports.DeviceDb = exports.UserDb = void 0;
+exports.PublicationDb = exports.NotificationDb = exports.AnswerDb = exports.QuestionDb = exports.WalletDb = exports.NewsletterDb = exports.PricingDb = exports.TravelDb = exports.RouteDb = exports.StopDb = exports.TripDb = exports.VehicleDb = exports.VehicleTypeDb = exports.PreferenceDb = exports.DeviceDb = exports.UserDb = void 0;
 const tslib_1 = require("tslib");
 const answer_db_1 = (0, tslib_1.__importDefault)(require("./answer-db"));
 exports.AnswerDb = answer_db_1.default;
@@ -10,8 +10,6 @@ const newsletter_db_1 = (0, tslib_1.__importDefault)(require("./newsletter-db"))
 exports.NewsletterDb = newsletter_db_1.default;
 const notification_db_1 = (0, tslib_1.__importDefault)(require("./notification-db"));
 exports.NotificationDb = notification_db_1.default;
-const payment_db_1 = (0, tslib_1.__importDefault)(require("./payment-db"));
-exports.PaymentDb = payment_db_1.default;
 const preference_db_1 = (0, tslib_1.__importDefault)(require("./preference-db"));
 exports.PreferenceDb = preference_db_1.default;
 const pricing_db_1 = (0, tslib_1.__importDefault)(require("./pricing-db"));
@@ -36,6 +34,4 @@ const vehicle_type_db_1 = (0, tslib_1.__importDefault)(require("./vehicle-type-d
 exports.VehicleTypeDb = vehicle_type_db_1.default;
 const wallet_db_1 = (0, tslib_1.__importDefault)(require("./wallet-db"));
 exports.WalletDb = wallet_db_1.default;
-const withdrawal_db_1 = (0, tslib_1.__importDefault)(require("./withdrawal-db"));
-exports.WithdrawalDb = withdrawal_db_1.default;
 //# sourceMappingURL=index.js.map

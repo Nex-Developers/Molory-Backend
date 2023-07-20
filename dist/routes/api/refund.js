@@ -8,7 +8,6 @@ const refund_1 = require("../../controllers/refund");
 exports.default = () => {
     const router = express_1.default.Router();
     router.route('/refund')
-        .get(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(refund_1.getRefundsController))
         .post(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(refund_1.postRefundcontroller));
     router.route('/refund-confirmation')
         .get((req, res) => res.send('success'))

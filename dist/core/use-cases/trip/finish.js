@@ -33,7 +33,6 @@ exports.default = ({ notifyUser, saveTrip, saveProfile, saveTravel }) => {
                 incomes += incomes * discount;
             }
             if (incomes) {
-                yield prisma.transfer.create({ data: { tripId: id, userId, amount: incomes, commission } });
                 yield prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: incomes } } });
             }
             console.log(`------> Trip ${id} finished with incomes for the driver of ${incomes} and a commission for the company of ${commission}.`);

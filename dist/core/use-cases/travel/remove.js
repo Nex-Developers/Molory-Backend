@@ -16,7 +16,7 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
         if (!cancelReason)
             throw new errors_1.MissingParamError('cancelReason');
         return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            const { userId, user, route, seats, payment, status, canceledAt } = yield prisma.travel.findUnique({ where: { id },
+            const { userId, user, route, seats, status, canceledAt } = yield prisma.travel.findUnique({ where: { id },
                 select: {
                     userId: true,
                     status: true,
@@ -35,7 +35,7 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
                             trip: { select: { id: true, userId: true } }
                         } },
                     seats: true,
-                    payment: true,
+                    transactions: true,
                     canceledAt: true
                 } });
             if (status === 0)
@@ -46,16 +46,10 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
             yield prisma.route.update({ where: { id: route.id }, data: { remainingSeats: { increment: seats } } });
             if (route.principal)
                 yield prisma.trip.update({ where: { id: route.trip.id }, data: { remainingSeats: { increment: seats } } });
-            const payedAmount = payment.amount;
-            let amount = payedAmount;
             const departure = new Date(route.departureDate + ' ' + route.departureTime);
             const delay = getLast48hours(departure);
             if (new Date < delay) {
-                amount = Math.ceil((payedAmount * 0.15) / 5) * 5;
-                yield prisma.wallet.update({ where: { id: route.trip.userId }, data: { balance: { increment: payedAmount - amount } } });
             }
-            yield prisma.refund.create({ data: { id: payment.id, amount, user: { connect: { id: userId } }, travel: { connect: { id } } } });
-            yield prisma.payment.update({ where: { id: payment.id }, data: { status: 0 } });
             saveTravel(id);
             saveTrip(route.trip.id);
             notifyUser({ id: userId, titleRef: { text: 'notification.cancelTravel.title' }, messageRef: { text: 'notification.cancelTravel.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime } }, cover: null, data: { path: 'cancel-travel', id: id.toString(), res: 'DANGER' }, lang: 'fr', type: 'travel' });

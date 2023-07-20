@@ -29,6 +29,7 @@ function makeSignUp({ askToConfirmEmail, isValidEmail, hashPassword, generateTok
                 let user;
                 try {
                     user = yield prisma.user.create({ data: { firstName, lastName, phoneNumber, email, password, birthDay, role: 'user', language, signUpMethod: "email", gender, profileCompletedAt: new Date(), status: 3 } });
+                    yield prisma.wallet.create({ data: { id: user.id } });
                 }
                 catch (err) {
                     console.log(err.message);

@@ -41,6 +41,27 @@ class FedapayManager {
             }
         });
     }
+    static createWithdrawTransaction(amount, mode, firstname, lastname, email, phoneNumber) {
+        return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            const body = {
+                amount,
+                currency: { iso: "XOF" },
+                mode,
+                customer: {
+                    firstname,
+                    lastname,
+                    email: email || 'developer@nex-softwares.com',
+                    phone_number: {
+                        number: phoneNumber || '90000000',
+                        country: 'TG'
+                    }
+                }
+            };
+            const payout = yield fedapay_1.Payout.create(body);
+            const res = payout.sendNow();
+            console.log(res);
+        });
+    }
     static verifyTransaction(id) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             fedapay_1.FedaPay.setApiKey("sk_live_5XEQoAGhvm4J0B5bX79A0Qqc");

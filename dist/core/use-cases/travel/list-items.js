@@ -122,7 +122,7 @@ function makeListItems({ travelDb } = {}) {
                         phoneNumber: true,
                     }
                 },
-                refund: true,
+                transactions: true,
                 createdAt: true,
                 reports: {
                     select: {
@@ -170,7 +170,7 @@ function makeListItems({ travelDb } = {}) {
                 driver: user,
                 user: item.user,
                 vehicle,
-                refund: item.refund,
+                transactions: item.transactions,
                 reports: item.reports
             });
         });

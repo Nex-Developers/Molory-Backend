@@ -135,14 +135,13 @@ function makeGetProfile({ userDb, walletDb } = {}) {
                 stats: res._count,
                 reviews
             };
-            if (res.role === 'driver')
-                data.wallet = yield walletDb.findFirst({
-                    where: { id: res.userId },
-                    select: {
-                        balance: true,
-                        currency: true
-                    }
-                });
+            data.wallet = yield walletDb.findFirst({
+                where: { id: res.userId },
+                select: {
+                    balance: true,
+                    currency: true
+                }
+            });
             return { data };
         });
     };

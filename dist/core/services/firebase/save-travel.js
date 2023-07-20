@@ -98,7 +98,7 @@ function makeSaveNotification({ setInCollection } = {}) {
                         }
                     }
                 },
-                refund: true,
+                transactions: true,
                 user: {
                     select: {
                         id: true,
@@ -150,7 +150,7 @@ function makeSaveNotification({ setInCollection } = {}) {
             driver: user,
             user: travel.user,
             vehicle,
-            refund: travel.refund,
+            transactions: travel.transactions,
             reports: travel.reports
         };
         return yield setInCollection('users', travel.user.id.toString(), 'travels', id.toString(), data);
