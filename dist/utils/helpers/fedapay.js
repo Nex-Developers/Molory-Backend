@@ -52,7 +52,7 @@ class FedapayManager {
                     lastname,
                     email: email || 'developer@nex-softwares.com',
                     phone_number: {
-                        number: phoneNumber || '90000000',
+                        number: phoneNumber || '+22892942601',
                         country: 'TG'
                     }
                 }

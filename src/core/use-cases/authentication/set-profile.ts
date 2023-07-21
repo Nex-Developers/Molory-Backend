@@ -1,5 +1,6 @@
 import moment from "moment"
 import { ServerError, MissingParamError } from "../../../utils/errors"
+import { DbConnection } from "../../../utils/helpers"
 
 export default function makeSetProfile({
     userDb,
@@ -17,6 +18,7 @@ export default function makeSetProfile({
         email,
         birthDay
     }: any = {}) {
+        const prisma = DbConnection.prisma;
         if (!id) throw new MissingParamError('token')
         if (!firstName) throw new MissingParamError('firstName')
         if (!lastName) throw new MissingParamError('lastName')
@@ -33,10 +35,11 @@ export default function makeSetProfile({
             return { message }
         }
         const res: any = { id, firstName, lastName, gender, birthDay, email, profileCompletedAt: new Date(), language: lang }
+        await prisma.wallet.create({data: { id }})
 
         user = await userDb.updateOne({ where: { id }, data: res })
         saveProfile(id)
-        notifyUser({ id, titleRef: 'notification.signUpTitle', messageRef: 'notification.signUpMessage', cover: null, data: { path: 'complete-profile', id: id.toString(), res: 'SUCCESS' } , lang: 'fr', type:  'authentication' })
+        notifyUser({ id, titleRef: { text: 'notification.signUpTitle'}, messageRef: { text: 'notification.signUpMessage'}, cover: null, data: { path: 'complete-profile', id: id.toString(), res: 'SUCCESS' } , lang: 'fr', type:  'authentication' })
         user.birthDay =  moment(user.birthDay).format('DD-MM-YYYY')
         const message = { text: 'auth.message.profileUpdated' }
         return { message, user }

@@ -120,14 +120,13 @@ function makeSaveProfile({ set } = {}) {
             stats: res._count,
             reviews
         };
-        if (res.role === 'driver')
-            data.wallet = yield prisma.wallet.findUnique({
-                where: { id },
-                select: {
-                    balance: true,
-                    currency: true
-                }
-            });
+        data.wallet = yield prisma.wallet.findUnique({
+            where: { id },
+            select: {
+                balance: true,
+                currency: true
+            }
+        });
         return yield set('users', id.toString(), data);
     });
 }

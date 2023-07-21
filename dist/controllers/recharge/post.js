@@ -20,7 +20,7 @@ function makePostController({ requestRecharge }) {
                 description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.REQUEST} recharge `
             };
             try {
-                const lang = request.lang, body = request.body, data = yield requestRecharge(body);
+                const lang = request.lang, body = request.body, data = yield requestRecharge(Object.assign({ userId: request.ref.id }, body));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 reqLog.modelId = data.id;
                 reqLog.description += data.id;

@@ -17,6 +17,7 @@ export default function makeRequest({
         userId
     }: any = {}) => {
         console.log(amount, userId);
+        if (!userId) throw new MissingParamError('userId')
         if (!amount) throw new MissingParamError('amount')
         const prisma = DbConnection.prisma
         const { firstName, lastName, email, phoneNumber } = await prisma.user.findUnique({ where: { id: userId } })

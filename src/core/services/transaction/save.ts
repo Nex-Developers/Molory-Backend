@@ -30,7 +30,7 @@ export default function makeSave({
         const data: any = { firstName, lastName, email, phoneNumber, amount, ref: id, transactionId: id, type, status: 2, ...params }
         if(type === 'recharge'){
             operation = await createTransaction(amount, firstName, lastName, email, phoneNumber)
-            transactionId = 'trans-' + operation.id
+            transactionId = 'trans-' + operation.transactionId
             data.ref = operation.transactionId
             data.url = operation.url
         } else if(type === 'withdraw') {
@@ -42,7 +42,7 @@ export default function makeSave({
             // return cando
         } else if (type === 'payment' && method !== 'wallet') {
             operation = await createTransaction(amount, firstName, lastName, email, phoneNumber)
-            transactionId = 'trans-' + operation.id
+            transactionId = 'trans-' + operation.transactionId
             data.ref = operation.transactionId
             data.url = operation.url
         }

@@ -119,7 +119,7 @@ export default function makeSaveProfile({
             stats: res._count,
             reviews
         }
-        if (res.role === 'driver') data.wallet = await prisma.wallet.findUnique({
+       data.wallet = await prisma.wallet.findUnique({
             where: { id },
             select: {
                 balance: true,

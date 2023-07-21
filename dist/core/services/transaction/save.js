@@ -25,7 +25,7 @@ function makeSave({ createTransaction, createWithdrawTransaction, set } = {}) {
         const data = Object.assign({ firstName, lastName, email, phoneNumber, amount, ref: id, transactionId: id, type, status: 2 }, params);
         if (type === 'recharge') {
             operation = yield createTransaction(amount, firstName, lastName, email, phoneNumber);
-            transactionId = 'trans-' + operation.id;
+            transactionId = 'trans-' + operation.transactionId;
             data.ref = operation.transactionId;
             data.url = operation.url;
         }
@@ -38,7 +38,7 @@ function makeSave({ createTransaction, createWithdrawTransaction, set } = {}) {
         }
         else if (type === 'payment' && method !== 'wallet') {
             operation = yield createTransaction(amount, firstName, lastName, email, phoneNumber);
-            transactionId = 'trans-' + operation.id;
+            transactionId = 'trans-' + operation.transactionId;
             data.ref = operation.transactionId;
             data.url = operation.url;
         }

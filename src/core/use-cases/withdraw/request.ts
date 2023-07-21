@@ -14,13 +14,15 @@ export default function makeRequest({
 
     return async ({
         amount,
+        phoneNumber,
         userId
     }: any = {}) => {
         console.log(amount, userId);
+        if (!userId) throw new MissingParamError('userId')
+        if (!phoneNumber) throw new MissingParamError('phoneNumber')
         if (!amount) throw new MissingParamError('amount')
         const prisma = DbConnection.prisma
-        const { firstName, lastName, email, phoneNumber } =  await prisma.user.findUnique({ where: { id: userId }})
-        console.log(firstName, lastName, email, phoneNumber);
+        const { firstName, lastName, email } =  await prisma.user.findUnique({ where: { id: userId }})
         const id = await generateUid()
         const res = await saveTransaction({ id, amount, firstName, lastName, email, phoneNumber, type: 'withdraw' })
         const message = { text: "response.add", res}

@@ -13,6 +13,8 @@ function makeRequest({ saveTransaction } = {}) {
     });
     return ({ amount, userId } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         console.log(amount, userId);
+        if (!userId)
+            throw new errors_1.MissingParamError('userId');
         if (!amount)
             throw new errors_1.MissingParamError('amount');
         const prisma = helpers_1.DbConnection.prisma;
