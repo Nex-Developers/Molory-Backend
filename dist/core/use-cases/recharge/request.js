@@ -22,7 +22,7 @@ function makeRequest({ saveTransaction } = {}) {
         console.log(firstName, lastName, email, phoneNumber);
         const id = yield generateUid();
         const res = yield saveTransaction({ id, amount, firstName, lastName, email, phoneNumber, type: 'recharge' });
-        yield prisma.transaction.create({ data: { id, amount, type: 'recharge', ref: res.transactionId, wallet: { connect: { id: userId } } } });
+        yield prisma.transaction.create({ data: { id, amount, type: 'recharge', ref: 'trans-' + res.transactionId, wallet: { connect: { id: userId } } } });
         const message = { text: "response.add", res };
         return { message, res };
     });

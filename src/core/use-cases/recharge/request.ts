@@ -24,7 +24,7 @@ export default function makeRequest({
         console.log(firstName, lastName, email, phoneNumber);
         const id = await generateUid()
         const res = await saveTransaction({ id, amount, firstName, lastName, email, phoneNumber, type: 'recharge' })
-        await prisma.transaction.create({ data: { id, amount, type: 'recharge', ref: res.transactionId, wallet: { connect: { id: userId } } } })
+        await prisma.transaction.create({ data: { id, amount, type: 'recharge', ref: 'trans-' + res.transactionId, wallet: { connect: { id: userId } } } })
         const message = { text: "response.add", res }
         return { message, res }
     }
