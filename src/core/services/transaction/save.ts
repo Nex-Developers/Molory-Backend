@@ -47,7 +47,7 @@ export default function makeSave({
             data.url = operation.url
         }
         await set('transactions', transactionId, data)
-        return { url: data.url, transactionId: data.transactionId }
+        return { url: data.url, transactionId: data.ref }
     
     }
    

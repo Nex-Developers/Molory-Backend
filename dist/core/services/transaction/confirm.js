@@ -10,7 +10,7 @@ function makeUpdate({ update } = {}) {
             throw new errors_1.MissingParamError("id");
         if (!status)
             throw new errors_1.InvalidParamError("status");
-        yield update('transactions', 'trans-' + id, { params });
+        yield update('transactions', 'trans-' + id, Object.assign(Object.assign({}, params), { status }));
         return;
     });
 }

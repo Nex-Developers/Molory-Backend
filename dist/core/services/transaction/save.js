@@ -43,7 +43,7 @@ function makeSave({ createTransaction, createWithdrawTransaction, set } = {}) {
             data.url = operation.url;
         }
         yield set('transactions', transactionId, data);
-        return { url: data.url, transactionId: data.transactionId };
+        return { url: data.url, transactionId: data.ref };
     });
 }
 exports.default = makeSave;

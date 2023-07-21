@@ -11,7 +11,7 @@ export default function makeUpdate({
     }) => {
         if (!id) throw new MissingParamError("id")
         if (!status) throw new InvalidParamError("status")
-        await update('transactions', 'trans-' + id, { params })
+        await update('transactions', 'trans-' + id, { ...params, status })
         // switch (type) {
         //     case 'withdraw':
         //         await update('withdraws', 'withdraw-' + res.transactionId, { firstName, lastName, email, phoneNumber, amount, url: res.url, ref: res.transactionId, transactionId: id, withdrawId: typeId, status: 2 })
