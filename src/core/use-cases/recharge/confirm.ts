@@ -1,5 +1,6 @@
 import { AlreadyDoneError, MissingParamError, ServerError } from "../../../utils/errors"
 import { DbConnection } from "../../../utils/helpers"
+import { confirmPayment } from "../travel"
 
 export default function makeConfirm({
     updateTransaction,
@@ -24,7 +25,15 @@ export default function makeConfirm({
         console.log('transaction', transaction);
         if (transaction.status !== 2) throw new AlreadyDoneError(transaction.createdAt.toString())
         if (status === 1) {
-            await prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { increment: transaction.amount } } })
+          if (transaction.type ==="recharge")  await prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { increment: transaction.amount } } })
+        else if(transaction.type === 'payment') await confirmPayment({
+            id: transaction.id,
+            status,
+            reference: transaction.ref,
+            amount: transaction.amount,
+            method: transaction.method,
+            validatedAt: new Date()
+        }) 
         }
         await prisma.transaction.update({ where: { id: transaction.id }, data: { status } })
         await updateTransaction({ id: entity.id, status, params: {} })

@@ -4,9 +4,11 @@ import { CacheManager, DbConnection } from "../../../utils/helpers"
 export default function makeAdd({
     travelDb,
     routeDb,
-    saveTransaction
+    saveTransaction,
+    confirmPayment,
+    updateTransaction
 }: any = {}) {
-    if (!travelDb || !routeDb || !saveTransaction) throw new ServerError()
+    if (!travelDb || !routeDb || !saveTransaction ||!confirmPayment) throw new ServerError()
     const generateUid = async () => {
         const uid = v4()
         const payment = await DbConnection.prisma.transaction.findUnique({ where: { id: uid } })
@@ -52,11 +54,14 @@ export default function makeAdd({
         const amount = (price + fees) * seats * applyDiscount
         const createdAt = new Date()
         const { firstName, lastName, email, phoneNumber } = await prisma.user.findUnique({ where: { id: userId } })
-        const res = await saveTransaction({ id, amount: 100, firstName, lastName, email, phoneNumber, type: 'payment', method: 'recharge' })
         await CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }))
+        const res = await saveTransaction({ id, amount: 100, firstName, lastName, email, phoneNumber, type: 'payment', method, params: { userId } })
+        if (method === 'wallet') {
+            updateTransaction({id, status: 1 })
+            await confirmPayment({ id, status: 1, amount, method, reference: res.transactionId, validatedAt: new  Date()})
+        }
         const message = { text: "response.add" }
         return { message, payment: { id, amount, createdAt, ...res } }
     }
-
 
 }

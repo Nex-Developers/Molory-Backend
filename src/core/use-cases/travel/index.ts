@@ -18,18 +18,18 @@ import makeConfirmEnd from "./confirm-end"
 import makeSelfConfirmEnd from "./self-confirm-end"
 import { addTask } from "../../services/task"
 import makeReport from "./report"
-import { saveTransaction } from "../../services/transaction"
+import { saveTransaction, updateTransaction } from "../../services/transaction"
 
 const travelDb = new TravelDb()
 const routeDb = new RouteDb()
 
 
-const addTravel = makeAdd({ travelDb, routeDb, saveTransaction })
 const editTravel = makeEdit({ travelDb })
 const listTravels = makeListItems({ travelDb })
 const listTravelInfos = makeListItemInfos({ travelDb })
 const removeTravel = makeRemove({ travelDb, notifyUser, saveTrip, saveTravel })
 const confirmPayment = makeConfirmPayment({ addTask, saveProfile, notifyUser, saveTravel, saveTrip })
+const addTravel = makeAdd({ travelDb, routeDb, saveTransaction, updateTransaction, confirmPayment})
 const rateDriver = makeRateDriver({ saveProfile, notifyUser, saveTravel, saveTrip })
 const ratePassenger = makeRatePassenger({ saveProfile, notifyUser, saveTravel, saveTrip })
 const askToStart = makeAskToStart({ notifyUser, saveTravel})
