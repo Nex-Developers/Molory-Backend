@@ -46,7 +46,7 @@ function makeSave({ createTransaction, createWithdrawTransaction, set } = {}) {
         else if (type === 'payment' && method !== 'wallet') {
             operation = yield createTransaction(amount, firstName, lastName, email, phoneNumber);
             transactionId = 'trans-' + operation.transactionId;
-            data.ref = operation.transactionId.toString();
+            data.ref = id;
             data.url = operation.url;
         }
         yield set('transactions', transactionId, data);
