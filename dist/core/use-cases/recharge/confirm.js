@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
+const travel_1 = require("../travel");
 function makeConfirm({ updateTransaction, saveProfile } = {}) {
     if (!updateTransaction || !saveProfile)
         throw new errors_1.ServerError();
@@ -22,11 +23,23 @@ function makeConfirm({ updateTransaction, saveProfile } = {}) {
         console.log('transaction', transaction);
         if (transaction.status !== 2)
             throw new errors_1.AlreadyDoneError(transaction.createdAt.toString());
+        const params = {};
         if (status === 1) {
-            yield prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { increment: transaction.amount } } });
+            if (transaction.type === "recharge")
+                yield prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { increment: transaction.amount } } });
+            else if (transaction.type === 'payment')
+                yield (0, travel_1.confirmPayment)({
+                    id: transaction.id,
+                    status,
+                    reference: transaction.ref,
+                    amount: transaction.amount,
+                    method: transaction.method,
+                    validatedAt: new Date()
+                });
+            params.bookingStatus = status;
         }
         yield prisma.transaction.update({ where: { id: transaction.id }, data: { status } });
-        yield updateTransaction({ id: entity.id, status, params: {} });
+        yield updateTransaction({ id: entity.id, status, params });
         yield saveProfile(transaction.walletId);
         return { recieved: true };
     });

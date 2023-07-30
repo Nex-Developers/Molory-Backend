@@ -37,21 +37,6 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
             throw new errors_1.InvalidParamError('Unvailable seats');
         if (data.seats > remainingSeats)
             throw new errors_1.InvalidParamError('Missing ' + (data.seats - remainingSeats) + ' seats');
-        const payment = {
-            create: {
-                id,
-                amount: data.amount,
-                ref: reference,
-                validatedAt,
-                type: 'payment',
-                method,
-                status: 1,
-                user: { connect: { id: data.userId } },
-                trip: { connect: { id: trip.id } },
-            }
-        };
-        if (data.promotionId)
-            payment.create.promotion = { connect: { id: data.promotionId } };
         const travel = yield prisma.travel.create({
             data: {
                 seats: data.seats,
@@ -60,9 +45,6 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
                 arrivalAddress,
                 departureDate,
                 departureTime,
-                transactions: {
-                    create: payment
-                },
                 route: {
                     connect: { id: data.routeId }
                 },
@@ -72,6 +54,22 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
             },
             include: { route: true, user: true }
         });
+        const payment = {
+            id,
+            amount: data.amount,
+            ref: reference,
+            validatedAt,
+            type: 'payment',
+            method,
+            status: 1,
+            walletId: data.userId,
+            travelId: travel.id,
+        };
+        if (data.promotionId)
+            payment.create.promotion = { connect: { id: data.promotionId } };
+        yield prisma.transaction.create({ data: payment });
+        if (method === 'wallet')
+            yield prisma.wallet.update({ where: { id: data.userId }, data: { balance: { decrement: amount } } });
         if (principal) {
             yield prisma.route.update({ where: { id: data.routeId }, data: { remainingSeats: { decrement: data.seats, } } });
             yield prisma.trip.update({ where: { id: trip.id }, data: { remainingSeats: { decrement: data.seats, } } });

@@ -4,8 +4,8 @@ const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const uuid_1 = require("uuid");
 const helpers_1 = require("../../../utils/helpers");
-function makeAdd({ travelDb, routeDb, saveTransaction } = {}) {
-    if (!travelDb || !routeDb || !saveTransaction)
+function makeAdd({ travelDb, routeDb, saveTransaction, confirmPayment, updateTransaction } = {}) {
+    if (!travelDb || !routeDb || !saveTransaction || !confirmPayment)
         throw new errors_1.ServerError();
     const generateUid = () => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const uid = (0, uuid_1.v4)();
@@ -48,8 +48,12 @@ function makeAdd({ travelDb, routeDb, saveTransaction } = {}) {
         const amount = (price + fees) * seats * applyDiscount;
         const createdAt = new Date();
         const { firstName, lastName, email, phoneNumber } = yield prisma.user.findUnique({ where: { id: userId } });
-        const res = yield saveTransaction({ id, amount: 100, firstName, lastName, email, phoneNumber, type: 'payment', method: 'recharge' });
         yield helpers_1.CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }));
+        const res = yield saveTransaction({ id, amount: 100, firstName, lastName, email, phoneNumber, type: 'payment', method, params: { userId, bookingStatus: 2 } });
+        if (method === 'wallet') {
+            updateTransaction({ id, status: 1 });
+            yield confirmPayment({ id, status: 1, amount, method, reference: res.transactionId, validatedAt: new Date() });
+        }
         const message = { text: "response.add" };
         return { message, payment: Object.assign({ id, amount, createdAt }, res) };
     });
