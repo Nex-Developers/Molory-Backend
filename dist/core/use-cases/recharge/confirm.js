@@ -21,26 +21,36 @@ function makeConfirm({ updateTransaction, saveProfile } = {}) {
         const status = (entity.status === 'canceled' || entity.status === 'declined') ? 0 : entity.status === 'approved' ? 1 : -1;
         const transaction = yield prisma.transaction.findFirst({ where: { ref: 'trans-' + entity.id } });
         console.log('transaction', transaction);
-        if (transaction.status !== 2)
-            throw new errors_1.AlreadyDoneError(transaction.createdAt.toString());
-        const params = {};
-        if (status === 1) {
-            if (transaction.type === "recharge")
-                yield prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { increment: transaction.amount } } });
-            else if (transaction.type === 'payment')
+        if (!transaction) {
+            const params = {};
+            const ref = 'trans-' + entity.id;
+            const transaction = yield helpers_1.FirestoreDb.getByDoc('transactions', ref);
+            if (transaction.status === 2) {
                 yield (0, travel_1.confirmPayment)({
                     id: transaction.id,
                     status,
-                    reference: transaction.ref,
+                    reference: ref,
                     amount: transaction.amount,
                     method: transaction.method,
                     validatedAt: new Date()
                 });
-            params.bookingStatus = status;
+                params.bookingStatus = status;
+                yield updateTransaction({ id: entity.id, status, params });
+                yield saveProfile(transaction.walletId);
+            }
         }
-        yield prisma.transaction.update({ where: { id: transaction.id }, data: { status } });
-        yield updateTransaction({ id: entity.id, status, params });
-        yield saveProfile(transaction.walletId);
+        else {
+            if (transaction.status !== 2)
+                throw new errors_1.AlreadyDoneError(transaction.createdAt.toString());
+            const params = {};
+            if (status === 1) {
+                if (transaction.type === "recharge")
+                    yield prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { increment: transaction.amount } } });
+            }
+            yield prisma.transaction.update({ where: { id: transaction.id }, data: { status } });
+            yield updateTransaction({ id: entity.id, status, params });
+            yield saveProfile(transaction.walletId);
+        }
         return { recieved: true };
     });
 }

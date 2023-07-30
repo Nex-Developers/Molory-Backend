@@ -1,5 +1,5 @@
 import { AlreadyDoneError, MissingParamError, ServerError } from "../../../utils/errors"
-import { DbConnection } from "../../../utils/helpers"
+import { DbConnection, FirestoreDb } from "../../../utils/helpers"
 import { confirmPayment } from "../travel"
 
 export default function makeConfirm({
@@ -23,23 +23,33 @@ export default function makeConfirm({
         // Update the satus
         const transaction = await prisma.transaction.findFirst({ where: { ref: 'trans-' + entity.id } })
         console.log('transaction', transaction);
-        if (transaction.status !== 2) throw new AlreadyDoneError(transaction.createdAt.toString())
-        const params: any = {}
-        if (status === 1) {
-            if (transaction.type === "recharge") await prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { increment: transaction.amount } } })
-            else if (transaction.type === 'payment') await confirmPayment({
-                id: transaction.id,
-                status,
-                reference: transaction.ref,
-                amount: transaction.amount,
-                method: transaction.method,
-                validatedAt: new Date()
-            })
-            params.bookingStatus = status
+        if (!transaction) {
+            const params: any = {}
+            const ref = 'trans-' + entity.id
+            const transaction = await FirestoreDb.getByDoc('transactions', ref)
+            if (transaction.status === 2) {
+                await confirmPayment({
+                    id: transaction.id,
+                    status,
+                    reference: ref,
+                    amount: transaction.amount,
+                    method: transaction.method,
+                    validatedAt: new Date()
+                })
+                params.bookingStatus = status
+                await updateTransaction({ id: entity.id, status, params })
+                await saveProfile(transaction.walletId)
+            }
+        } else {
+            if (transaction.status !== 2) throw new AlreadyDoneError(transaction.createdAt.toString())
+            const params: any = {}
+            if (status === 1) {
+                if (transaction.type === "recharge") await prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { increment: transaction.amount } } })
+            }
+            await prisma.transaction.update({ where: { id: transaction.id }, data: { status } })
+            await updateTransaction({ id: entity.id, status, params })
+            await saveProfile(transaction.walletId)
         }
-        await prisma.transaction.update({ where: { id: transaction.id }, data: { status } })
-        await updateTransaction({ id: entity.id, status, params })
-        await saveProfile(transaction.walletId)
         return { recieved: true }
     }
 }
