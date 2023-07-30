@@ -23,15 +23,15 @@ export default function makeConfirm({
         // Update the satus
         const transaction = await prisma.transaction.findFirst({ where: { ref: 'trans-' + entity.id } })
         console.log('transaction', transaction);
-        if (!transaction) {
+        if (!transaction) { 
             const params: any = {}
             const ref = 'trans-' + entity.id
-            const transaction = await FirestoreDb.getByDoc('transactions', ref)
             if (transaction.status === 2) {
+                const transaction = await FirestoreDb.getByDoc('transactions', ref)
                 await confirmPayment({
                     id: transaction.id,
                     status,
-                    reference: ref,
+                    reference: transaction.ref,
                     amount: transaction.amount,
                     method: transaction.method,
                     validatedAt: new Date()

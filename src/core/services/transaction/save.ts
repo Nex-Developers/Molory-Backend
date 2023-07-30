@@ -49,7 +49,7 @@ export default function makeSave({
         } else if (type === 'payment' && method !== 'wallet') {
             operation = await createTransaction(amount, firstName, lastName, email, phoneNumber)
             transactionId = 'trans-' + operation.transactionId
-            data.ref = operation.transactionId.toString()
+            data.ref = id
             data.url = operation.url
         }
         await set('transactions', transactionId, data)
