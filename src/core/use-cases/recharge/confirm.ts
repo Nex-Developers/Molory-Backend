@@ -25,9 +25,9 @@ export default function makeConfirm({
         console.log('transaction', transaction);
         if (!transaction) { 
             const params: any = {}
-            const ref = 'trans-' + entity.id
+            // const ref = 'trans-' + entity.id
             if (transaction.status === 2) {
-                const transaction = await FirestoreDb.getByDoc('transactions', ref)
+                const transaction = await FirestoreDb.getByDoc('transactions', entity.id)
                 await confirmPayment({
                     id: transaction.id,
                     status,

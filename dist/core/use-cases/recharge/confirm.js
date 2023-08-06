@@ -23,9 +23,8 @@ function makeConfirm({ updateTransaction, saveProfile } = {}) {
         console.log('transaction', transaction);
         if (!transaction) {
             const params = {};
-            const ref = 'trans-' + entity.id;
             if (transaction.status === 2) {
-                const transaction = yield helpers_1.FirestoreDb.getByDoc('transactions', ref);
+                const transaction = yield helpers_1.FirestoreDb.getByDoc('transactions', entity.id);
                 yield (0, travel_1.confirmPayment)({
                     id: transaction.id,
                     status,
