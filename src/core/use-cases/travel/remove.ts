@@ -6,9 +6,10 @@ export default function makeRemove({
     travelDb,
     notifyUser,
     saveTrip,
-    saveTravel
+    saveTravel,
+    saveProfile
 }: any = {}) {
-    if (!travelDb || !saveTravel || !saveTrip ||  !notifyUser) throw new ServerError()
+    if (!travelDb || !saveTravel || !saveTrip ||  !notifyUser || !saveProfile) throw new ServerError()
     const getLast48hours = (date) => {
 
         return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
@@ -66,18 +67,20 @@ export default function makeRemove({
             let amount = payedAmount
             const departure = new Date(route.departureDate + ' ' + route.departureTime)
             const delay = getLast48hours(departure)
-            if(new Date < delay) {
-                 amount = Math.ceil((payedAmount * 0.15) / 5) * 5
-                await prisma.wallet.update({ where: {id: route.trip.userId}, data: { balance: { increment: payedAmount - amount}}})
+            if(new Date() < delay) {
+                 amount = payedAmount - Math.ceil((payedAmount * 0.15) / 5) * 5
             }
+
             // return money
             const transactionId = v4()
             await prisma.transaction.create({ data: { id: transactionId, amount,  type: 'refund', ref: transactionId, walletId: userId ,  status: 1 } })
             await prisma.transaction.update({ where: {id: payment.id}, data: { status: 0 }})
+            await prisma.wallet.update({ where: {id: userId}, data: { balance: { increment: amount}}})
             
             // Notify driver
             saveTravel(id)
             saveTrip(route.trip.id)
+            saveProfile(userId)
             notifyUser({ id: userId, titleRef: { text: 'notification.cancelTravel.title'}, messageRef: { text: 'notification.cancelTravel.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime }}, cover: null, data: { path: 'cancel-travel', id: id.toString(), res:'DANGER'}, lang: 'fr', type: 'travel' })
             notifyUser({ id: route.trip.userId, titleRef: { text: 'notification.removeTrip.title'}, messageRef: { text: 'notification.removeTrip.message', params: { name: user.firstName, departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime }}, cover: null, data: { path: 'cancel-travel', id: id.toString(), res:'DANGER'}, lang: 'fr', type: 'travel' })
             const message = { text: 'response.remove' }

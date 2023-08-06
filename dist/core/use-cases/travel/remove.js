@@ -4,8 +4,8 @@ const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
 const uuid_1 = require("uuid");
-function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
-    if (!travelDb || !saveTravel || !saveTrip || !notifyUser)
+function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel, saveProfile } = {}) {
+    if (!travelDb || !saveTravel || !saveTrip || !notifyUser || !saveProfile)
         throw new errors_1.ServerError();
     const getLast48hours = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
@@ -52,15 +52,16 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
             let amount = payedAmount;
             const departure = new Date(route.departureDate + ' ' + route.departureTime);
             const delay = getLast48hours(departure);
-            if (new Date < delay) {
-                amount = Math.ceil((payedAmount * 0.15) / 5) * 5;
-                yield prisma.wallet.update({ where: { id: route.trip.userId }, data: { balance: { increment: payedAmount - amount } } });
+            if (new Date() < delay) {
+                amount = payedAmount - Math.ceil((payedAmount * 0.15) / 5) * 5;
             }
             const transactionId = (0, uuid_1.v4)();
             yield prisma.transaction.create({ data: { id: transactionId, amount, type: 'refund', ref: transactionId, walletId: userId, status: 1 } });
             yield prisma.transaction.update({ where: { id: payment.id }, data: { status: 0 } });
+            yield prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: amount } } });
             saveTravel(id);
             saveTrip(route.trip.id);
+            saveProfile(userId);
             notifyUser({ id: userId, titleRef: { text: 'notification.cancelTravel.title' }, messageRef: { text: 'notification.cancelTravel.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime } }, cover: null, data: { path: 'cancel-travel', id: id.toString(), res: 'DANGER' }, lang: 'fr', type: 'travel' });
             notifyUser({ id: route.trip.userId, titleRef: { text: 'notification.removeTrip.title' }, messageRef: { text: 'notification.removeTrip.message', params: { name: user.firstName, departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime } }, cover: null, data: { path: 'cancel-travel', id: id.toString(), res: 'DANGER' }, lang: 'fr', type: 'travel' });
             const message = { text: 'response.remove' };
