@@ -57,7 +57,7 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
                 yield prisma.wallet.update({ where: { id: route.trip.userId }, data: { balance: { increment: payedAmount - amount } } });
             }
             const transactionId = (0, uuid_1.v4)();
-            yield prisma.transaction.create({ data: { id: transactionId, amount, type: 'refund', ref: payment.ref, walletId: userId, travelId: id, status: 1 } });
+            yield prisma.transaction.create({ data: { id: transactionId, amount, type: 'refund', ref: transactionId, walletId: userId, travelId: id, status: 1 } });
             yield prisma.transaction.update({ where: { id: payment.id }, data: { status: 0 } });
             saveTravel(id);
             saveTrip(route.trip.id);
