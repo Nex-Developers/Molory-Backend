@@ -26,7 +26,7 @@ export default function makeConfirm({
         if (!transaction) { 
             const params: any = {}
             // const ref = 'trans-' + entity.id
-            if (transaction.status === 2) {
+            // if (transaction.status === 2) {
                 const transaction = await FirestoreDb.getByDoc('transactions', entity.id)
                 await confirmPayment({
                     id: transaction.id,
@@ -39,7 +39,7 @@ export default function makeConfirm({
                 params.bookingStatus = status
                 await updateTransaction({ id: entity.id, status, params })
                 await saveProfile(transaction.walletId)
-            }
+            // }
         } else {
             if (transaction.status !== 2) throw new AlreadyDoneError(transaction.createdAt.toString())
             const params: any = {}

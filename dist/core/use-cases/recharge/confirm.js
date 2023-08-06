@@ -23,20 +23,18 @@ function makeConfirm({ updateTransaction, saveProfile } = {}) {
         console.log('transaction', transaction);
         if (!transaction) {
             const params = {};
-            if (transaction.status === 2) {
-                const transaction = yield helpers_1.FirestoreDb.getByDoc('transactions', entity.id);
-                yield (0, travel_1.confirmPayment)({
-                    id: transaction.id,
-                    status,
-                    reference: transaction.ref,
-                    amount: transaction.amount,
-                    method: transaction.method,
-                    validatedAt: new Date()
-                });
-                params.bookingStatus = status;
-                yield updateTransaction({ id: entity.id, status, params });
-                yield saveProfile(transaction.walletId);
-            }
+            const transaction = yield helpers_1.FirestoreDb.getByDoc('transactions', entity.id);
+            yield (0, travel_1.confirmPayment)({
+                id: transaction.id,
+                status,
+                reference: transaction.ref,
+                amount: transaction.amount,
+                method: transaction.method,
+                validatedAt: new Date()
+            });
+            params.bookingStatus = status;
+            yield updateTransaction({ id: entity.id, status, params });
+            yield saveProfile(transaction.walletId);
         }
         else {
             if (transaction.status !== 2)
