@@ -1,5 +1,6 @@
 import { AlreadyDoneError, MissingParamError, ServerError, UnauthorizedError } from "../../../utils/errors"
 import {  DbConnection } from "../../../utils/helpers"
+import { v4 } from 'uuid'
 
 export default function makeRemove({
     travelDb,
@@ -12,6 +13,7 @@ export default function makeRemove({
 
         return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
     }
+  
     return async ({
         id,
         cancelReason
@@ -69,7 +71,8 @@ export default function makeRemove({
                 await prisma.wallet.update({ where: {id: route.trip.userId}, data: { balance: { increment: payedAmount - amount}}})
             }
             // return money
-            await prisma.transaction.create({ data: { id: payment.id, amount,  type: 'refund', ref: payment.ref, walletId: userId , travelId:  id } })
+            const transactionId = v4()
+            await prisma.transaction.create({ data: { id: transactionId, amount,  type: 'refund', ref: payment.ref, walletId: userId , travelId:  id, status: 1 } })
             await prisma.transaction.update({ where: {id: payment.id}, data: { status: 0 }})
             
             // Notify driver

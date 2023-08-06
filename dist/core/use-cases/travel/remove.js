@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
+const uuid_1 = require("uuid");
 function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
     if (!travelDb || !saveTravel || !saveTrip || !notifyUser)
         throw new errors_1.ServerError();
@@ -55,7 +56,8 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
                 amount = Math.ceil((payedAmount * 0.15) / 5) * 5;
                 yield prisma.wallet.update({ where: { id: route.trip.userId }, data: { balance: { increment: payedAmount - amount } } });
             }
-            yield prisma.transaction.create({ data: { id: payment.id, amount, type: 'refund', ref: payment.ref, walletId: userId, travelId: id } });
+            const transactionId = (0, uuid_1.v4)();
+            yield prisma.transaction.create({ data: { id: transactionId, amount, type: 'refund', ref: payment.ref, walletId: userId, travelId: id, status: 1 } });
             yield prisma.transaction.update({ where: { id: payment.id }, data: { status: 0 } });
             saveTravel(id);
             saveTrip(route.trip.id);

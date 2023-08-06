@@ -4,6 +4,7 @@ const tslib_1 = require("tslib");
 const unauthorized_error_1 = require("./../../../utils/errors/unauthorized-error");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
+const uuid_1 = require("uuid");
 function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
     if (!tripDb || !notifyUser || !saveTrip || !saveTravel)
         throw new errors_1.ServerError();
@@ -81,7 +82,8 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
                         const payment = yield prisma.transaction.findFirst({ where: { travelId: travel.id, status: 1 } });
                         if (payment.status === 1) {
                             yield prisma.transaction.update({ where: { id: payment.id }, data: { status: 0 } });
-                            yield prisma.transaction.create({ data: { id: payment.id, amount: payment.amount, type: 'refund', ref: payment.ref, walletId: travel.userId, travelId: travel.id } });
+                            const transactionId = (0, uuid_1.v4)();
+                            yield prisma.transaction.create({ data: { id: transactionId, amount: payment.amount, type: 'refund', ref: payment.ref, walletId: travel.userId, travelId: travel.id, status: 1 } });
                             notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTrip.title' }, messageRef: { text: 'notification.removeTrip.message' }, cover: null, data: { path: 'cancel-trip', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' });
                             saveTravel(travel.id);
                         }
