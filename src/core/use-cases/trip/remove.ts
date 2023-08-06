@@ -85,7 +85,7 @@ export default function makeRemove({
                                 await prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement:  sanction} } })
                                 // Notify the driver
                             } else console.log('sanction false')
-                            await prisma.transaction.create({ data: { id: transactionId, amount: payment.amount,  type: 'refund', ref: payment.ref, walletId: travel.userId , travelId:  travel.id, status: 1 } })
+                            await prisma.transaction.create({ data: { id: transactionId, amount: payment.amount,  type: 'refund', ref: payment.ref, walletId: travel.userId ,  status: 1 } })
                             // notify the user
                             notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTrip.title'}, messageRef: { text: 'notification.removeTrip.message'}, cover: null,  data: { path: 'cancel-trip', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'trip' })
                             saveTravel(travel.id)

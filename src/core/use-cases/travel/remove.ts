@@ -72,7 +72,7 @@ export default function makeRemove({
             }
             // return money
             const transactionId = v4()
-            await prisma.transaction.create({ data: { id: transactionId, amount,  type: 'refund', ref: transactionId, walletId: userId , travelId:  id, status: 1 } })
+            await prisma.transaction.create({ data: { id: transactionId, amount,  type: 'refund', ref: transactionId, walletId: userId ,  status: 1 } })
             await prisma.transaction.update({ where: {id: payment.id}, data: { status: 0 }})
             
             // Notify driver
