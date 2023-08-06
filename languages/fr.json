@@ -180,6 +180,10 @@
     "selfConfirmTravelEnded": {
       "title": "Voyage terminé",
       "message": "Suite a aucun signalement constaté 6h après rapport á l'heure de fin du trajet :departure - :arrival du :date de :time, Molory a validé votre reservation."
+    },
+    "rechargeWallet": {
+      "title": "Transaction reussie",
+      "message": "Vous avez reussi une transaction"
     }
 
   }

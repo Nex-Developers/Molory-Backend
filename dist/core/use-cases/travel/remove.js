@@ -46,10 +46,17 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel } = {}) {
             yield prisma.route.update({ where: { id: route.id }, data: { remainingSeats: { increment: seats } } });
             if (route.principal)
                 yield prisma.trip.update({ where: { id: route.trip.id }, data: { remainingSeats: { increment: seats } } });
+            const payment = yield prisma.transaction.findFirst({ where: { travelId: id, status: 1 } });
+            const payedAmount = payment.amount;
+            let amount = payedAmount;
             const departure = new Date(route.departureDate + ' ' + route.departureTime);
             const delay = getLast48hours(departure);
             if (new Date < delay) {
+                amount = Math.ceil((payedAmount * 0.15) / 5) * 5;
+                yield prisma.wallet.update({ where: { id: route.trip.userId }, data: { balance: { increment: payedAmount - amount } } });
             }
+            yield prisma.transaction.create({ data: { id: payment.id, amount, type: 'refund', ref: payment.ref, walletId: userId, travelId: id } });
+            yield prisma.transaction.update({ where: { id: payment.id }, data: { status: 0 } });
             saveTravel(id);
             saveTrip(route.trip.id);
             notifyUser({ id: userId, titleRef: { text: 'notification.cancelTravel.title' }, messageRef: { text: 'notification.cancelTravel.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime } }, cover: null, data: { path: 'cancel-travel', id: id.toString(), res: 'DANGER' }, lang: 'fr', type: 'travel' });
