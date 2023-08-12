@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
+const uuid_1 = require("uuid");
 exports.default = ({ notifyUser, saveTrip, saveProfile, saveTravel }) => {
     if (!notifyUser || !saveTrip || !saveTravel)
         throw new errors_1.ServerError();
@@ -10,7 +11,7 @@ exports.default = ({ notifyUser, saveTrip, saveProfile, saveTravel }) => {
         const prisma = helpers_1.DbConnection.prisma;
         return yield prisma.$transaction(() => (0, tslib_1.__awaiter)(void 0, void 0, void 0, function* () {
             console.log(' Finish trip', +id);
-            const { userId, status, startedAt, departureAddress, arrivalAddress, departureDate, departureTime, routes, promotionId } = yield prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureAddress: true, arrivalAddress: true, departureDate: true, departureTime: true, promotionId: true, routes: { select: { id: true, fees: true, price: true, travels: { select: { id: true, userId: true, seats: true, status: true } } } } } });
+            const { userId, status, startedAt, departureAddress, arrivalAddress, departureDate, departureTime, routes, promotionId } = yield prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureAddress: true, arrivalAddress: true, departureDate: true, departureTime: true, promotionId: true, routes: { select: { id: true, fees: true, price: true, commission: true, travels: { select: { id: true, userId: true, seats: true, status: true } } } } } });
             if (status === 0)
                 throw new errors_1.UnauthorizedError();
             if (status === 1)
@@ -21,7 +22,7 @@ exports.default = ({ notifyUser, saveTrip, saveProfile, saveTravel }) => {
                 const promises2 = route.travels.map(travel => {
                     if (travel.status == 2 || travel.status == 1) {
                         incomes += route.price * travel.seats;
-                        commission += route.fees * travel.seats;
+                        commission += route.commission * travel.seats;
                     }
                 });
                 return yield Promise.all(promises2);
@@ -33,6 +34,8 @@ exports.default = ({ notifyUser, saveTrip, saveProfile, saveTravel }) => {
                 incomes += incomes * discount;
             }
             if (incomes) {
+                const ref = (0, uuid_1.v4)();
+                yield prisma.transaction.create({ data: { id: ref, walletId: userId, amount: incomes, type: 'transfert', ref } });
                 yield prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: incomes } } });
             }
             console.log(`------> Trip ${id} finished with incomes for the driver of ${incomes} and a commission for the company of ${commission}.`);

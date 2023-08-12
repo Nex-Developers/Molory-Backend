@@ -30,6 +30,7 @@ export default function makeAdd({
         date,
         time,
         price,
+        commission,
         fees,
         stops,
         description,
@@ -38,6 +39,7 @@ export default function makeAdd({
         if (!userId) throw new MissingParamError('userId')
         if (!vehicleId) throw new MissingParamError('vehicleId')
         if (!price) throw new MissingParamError('price')
+        // if (!commission) throw new MissingParamError('commission')
         if (!fees) throw new MissingParamError('fees')
         if (!seats) throw new MissingParamError('seats')
         if (!date) throw new MissingParamError('date')
@@ -105,6 +107,8 @@ export default function makeAdd({
                         departureDate = calDepartureDate
                         departureTime = calDepartureTime
                     }
+                    const commission = fees
+                    fees = 0.05 * (price + commission)
                     routes.push(
                         {
                             departureDate,
@@ -115,6 +119,7 @@ export default function makeAdd({
                             duration,
                             price,
                             fees,
+                            commission,
                             principal,
                             remainingSeats: seats,
                             stops: {

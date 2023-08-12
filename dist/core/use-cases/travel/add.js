@@ -28,9 +28,9 @@ function makeAdd({ travelDb, routeDb, saveTransaction, confirmPayment, updateTra
             description = null;
         if (!method)
             method === 'wallet';
-        const { price, fees, remainingSeats } = yield routeDb.findFirst({
+        const { price, fees, commission, remainingSeats } = yield routeDb.findFirst({
             where: { id: routeId },
-            select: { price: true, fees: true, remainingSeats: true }
+            select: { price: true, fees: true, commission: true, remainingSeats: true }
         });
         if (!remainingSeats)
             throw new Error('Unvailable Resource');
@@ -41,11 +41,11 @@ function makeAdd({ travelDb, routeDb, saveTransaction, confirmPayment, updateTra
             const { discount, isForDriver } = yield prisma.promotion.findUnique({ where: { id: promotionId } });
             if (isForDriver)
                 throw new errors_1.InvalidParamError(promotionId);
-            applyDiscount = discount;
+            applyDiscount = 1 - discount;
         }
         const id = yield generateUid();
         console.log(id);
-        const amount = (price + fees) * seats * applyDiscount;
+        const amount = (price + fees + commission) * seats * applyDiscount;
         const createdAt = new Date();
         const { firstName, lastName, email, phoneNumber } = yield prisma.user.findUnique({ where: { id: userId } });
         yield helpers_1.CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }));

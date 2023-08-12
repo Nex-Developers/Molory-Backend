@@ -13,7 +13,7 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
     const getDayPlusQuater = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
     };
-    return ({ userId, vehicleId, seats, date, time, price, fees, stops, description, promotionId } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ userId, vehicleId, seats, date, time, price, commission, fees, stops, description, promotionId } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!userId)
             throw new errors_1.MissingParamError('userId');
         if (!vehicleId)
@@ -84,6 +84,8 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
                         departureDate = calDepartureDate;
                         departureTime = calDepartureTime;
                     }
+                    const commission = fees;
+                    fees = 0.05 * (price + commission);
                     routes.push({
                         departureDate,
                         departureTime,
@@ -93,6 +95,7 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
                         duration,
                         price,
                         fees,
+                        commission,
                         principal,
                         remainingSeats: seats,
                         stops: {

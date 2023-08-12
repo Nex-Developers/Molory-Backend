@@ -1,5 +1,6 @@
 import { AlreadyDoneError, ServerError, UnauthorizedError } from "../../../utils/errors"
 import { DbConnection } from "../../../utils/helpers"
+import { v4 } from 'uuid'
 
 export default ({
     notifyUser,
@@ -14,7 +15,7 @@ export default ({
         const prisma = DbConnection.prisma
         return await prisma.$transaction( async () => {
             console.log(' Finish trip', + id)
-            const {  userId, status, startedAt, departureAddress, arrivalAddress, departureDate, departureTime, routes, promotionId } = await prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureAddress: true, arrivalAddress: true, departureDate: true, departureTime: true,  promotionId: true, routes: { select: { id: true, fees: true, price: true, travels: { select: { id: true, userId: true, seats: true, status: true}}}} }})
+            const {  userId, status, startedAt, departureAddress, arrivalAddress, departureDate, departureTime, routes, promotionId } = await prisma.trip.findUnique({ where: { id }, select: { userId: true, status: true, startedAt: true, departureAddress: true, arrivalAddress: true, departureDate: true, departureTime: true,  promotionId: true, routes: { select: { id: true, fees: true, price: true, commission: true, travels: { select: { id: true, userId: true, seats: true, status: true}}}} }})
             if (status === 0) throw new UnauthorizedError()
             if (status === 1) throw new AlreadyDoneError(startedAt.toString())
             await prisma.trip.update({ where: { id }, data: { status: 1, finishedAt: new Date() }})
@@ -29,7 +30,7 @@ export default ({
                 const promises2 = route.travels.map(  travel => {
                   if(travel.status == 2 || travel.status == 1)   {
                     incomes += route.price * travel.seats 
-                    commission += route.fees * travel.seats
+                    commission += route.commission * travel.seats
                   }
                 })
                 return await Promise.all(promises2)
@@ -43,7 +44,8 @@ export default ({
             // notifyAdmin
          
             if (incomes) {
-            // await prisma.transaction.create({ data: { tripId: id, walletId: userId, amount: incomes, commission }})
+                const ref = v4()
+            await prisma.transaction.create({ data: { id: ref,  walletId: userId, amount: incomes, type: 'transfert', ref }})
             await prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: incomes }}})
            }
            console.log(`------> Trip ${id} finished with incomes for the driver of ${incomes} and a commission for the company of ${commission}.`)

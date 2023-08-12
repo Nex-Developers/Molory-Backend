@@ -20,6 +20,7 @@ export default function makeListItemInfos() {
                 duration: true,
                 price: true,
                 fees: true,
+                commission: true,
                 principal: true,
                 remainingSeats: true,
                 stops: {
@@ -101,7 +102,7 @@ export default function makeListItemInfos() {
             departureTime: res.departureTime,
             distance: res.distance,
             duration: res.duration,
-            price: res.price + res.fees,
+            price: res.price + res.fees + res.commission,
             stops: res.stops,
             driver: res.trip.user,
             vehicle: res.trip.vehicle

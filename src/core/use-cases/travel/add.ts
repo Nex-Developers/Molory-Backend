@@ -34,9 +34,9 @@ export default function makeAdd({
         // avoid buying self ticket
         // const { driverId } = await routeDb({ where: { } })
 
-        const { price, fees, remainingSeats } = await routeDb.findFirst({
+        const { price, fees, commission, remainingSeats } = await routeDb.findFirst({
             where: { id: routeId },
-            select: { price: true, fees: true, remainingSeats: true }
+            select: { price: true, fees: true, commission: true, remainingSeats: true }
         })
 
 
@@ -47,11 +47,11 @@ export default function makeAdd({
         if (promotionId) {
             const { discount, isForDriver } = await prisma.promotion.findUnique({ where: { id: promotionId } })
             if (isForDriver) throw new InvalidParamError(promotionId)
-            applyDiscount = discount;
+            applyDiscount = 1 - discount;
         }
         const id = await generateUid()
         console.log(id)
-        const amount = (price + fees) * seats * applyDiscount
+        const amount = (price + fees + commission) * seats * applyDiscount
         const createdAt = new Date()
         const { firstName, lastName, email, phoneNumber } = await prisma.user.findUnique({ where: { id: userId } })
         await CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }))

@@ -34,6 +34,7 @@ function makeSaveNotification({ setInCollection } = {}) {
                         id: true,
                         price: true,
                         fees: true,
+                        commission: true,
                         distance: true,
                         duration: true,
                         departureDate: true,

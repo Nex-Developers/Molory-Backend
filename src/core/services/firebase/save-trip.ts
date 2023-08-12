@@ -48,6 +48,7 @@ export default function makeSaveNotification({
                         duration: true,
                         price: true,
                         fees: true,
+                        commission: true,
                         principal: true,
                         departureDate: true,
                         departureTime: true,

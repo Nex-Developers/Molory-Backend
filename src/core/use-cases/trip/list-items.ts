@@ -60,6 +60,7 @@ export default function makeListItems({
                         distance: true,
                         duration: true,
                         price: true,
+                        commission: true,
                         fees: true,
                         stops: {
                             select: {

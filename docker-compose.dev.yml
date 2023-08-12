@@ -18,7 +18,7 @@ services:
       - ./.env.dev
     # environment:
     #   - NODE_ENV=development
-    command: sh -c "npx prisma db push && npm run dev"
+    command: sh -c "npm i && npx prisma migrate dev && npm run dev"
 networks:
   default:
     name: utils_default

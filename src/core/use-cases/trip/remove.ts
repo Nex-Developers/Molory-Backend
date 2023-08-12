@@ -34,6 +34,7 @@ export default function makeRemove({
                             principal: true,
                             price: true,
                             fees: true,
+                            commission: true,
                             travels: {
                                 select: {
                                     id: true,
@@ -80,12 +81,12 @@ export default function makeRemove({
                             await prisma.transaction.update({ where: {id: payment.id}, data: { status: 0 }})
                             const transactionId = v4()
                             if (delay < new Date()) {
-                                const sanction = Math.ceil((0.15 * (principal.price + principal.fees))/5) * 5
+                                const sanction = Math.ceil((0.5 * (principal.price + principal.fees))/5) * 5
                                 console.log('sanction ', userId, sanction)
                                 await prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement:  sanction} } })
                                 // Notify the driver
                             } else console.log('sanction false')
-                            await prisma.wallet.update({ where: { id: userId }, data: { balance: { increment:  (principal.price + principal.fees)} } })
+                            await prisma.wallet.update({ where: { id: userId }, data: { balance: { increment:  (principal.price + principal.commission)} } })
                             await prisma.transaction.create({ data: { id: transactionId, amount: payment.amount,  type: 'refund', ref: payment.ref, walletId: travel.userId ,  status: 1 } })
                             // notify the user
                             notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTrip.title'}, messageRef: { text: 'notification.removeTrip.message'}, cover: null,  data: { path: 'cancel-trip', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'trip' })
@@ -106,8 +107,7 @@ export default function makeRemove({
                 // Remettre l'argent au passager?
                 const message = { text: 'response.remove' }
                 return { message }
-            }
-            else {
+            } else {
                 // unknown status
                 const message = { text: 'response.remove' }
                 return { message }

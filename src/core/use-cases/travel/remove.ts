@@ -68,7 +68,7 @@ export default function makeRemove({
             const departure = new Date(route.departureDate + ' ' + route.departureTime)
             const delay = getLast48hours(departure)
             if(new Date() < delay) {
-                 amount = payedAmount - Math.ceil((payedAmount * 0.15) / 5) * 5
+                 amount = payedAmount - Math.ceil((payedAmount * 0.10) / 5) * 5
             }
 
             // return money

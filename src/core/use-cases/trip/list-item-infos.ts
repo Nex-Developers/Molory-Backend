@@ -50,6 +50,7 @@ export default function makeListItemInfos({
                         duration: true,
                         price: true,
                         fees: true,
+                        commission: true,
                         principal: true,
                         departureDate: true,
                         departureTime: true,

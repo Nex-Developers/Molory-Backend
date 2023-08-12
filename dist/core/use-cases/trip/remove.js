@@ -31,6 +31,7 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
                             principal: true,
                             price: true,
                             fees: true,
+                            commission: true,
                             travels: {
                                 select: {
                                     id: true,
@@ -77,13 +78,13 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
                             yield prisma.transaction.update({ where: { id: payment.id }, data: { status: 0 } });
                             const transactionId = (0, uuid_1.v4)();
                             if (delay < new Date()) {
-                                const sanction = Math.ceil((0.15 * (principal.price + principal.fees)) / 5) * 5;
+                                const sanction = Math.ceil((0.5 * (principal.price + principal.fees)) / 5) * 5;
                                 console.log('sanction ', userId, sanction);
                                 yield prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: sanction } } });
                             }
                             else
                                 console.log('sanction false');
-                            yield prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: (principal.price + principal.fees) } } });
+                            yield prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: (principal.price + principal.commission) } } });
                             yield prisma.transaction.create({ data: { id: transactionId, amount: payment.amount, type: 'refund', ref: payment.ref, walletId: travel.userId, status: 1 } });
                             notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTrip.title' }, messageRef: { text: 'notification.removeTrip.message' }, cover: null, data: { path: 'cancel-trip', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' });
                             saveTravel(travel.id);

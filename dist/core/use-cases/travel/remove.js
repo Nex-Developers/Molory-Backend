@@ -53,7 +53,7 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel, saveProfile } 
             const departure = new Date(route.departureDate + ' ' + route.departureTime);
             const delay = getLast48hours(departure);
             if (new Date() < delay) {
-                amount = payedAmount - Math.ceil((payedAmount * 0.15) / 5) * 5;
+                amount = payedAmount - Math.ceil((payedAmount * 0.10) / 5) * 5;
             }
             const transactionId = (0, uuid_1.v4)();
             yield prisma.transaction.create({ data: { id: transactionId, amount, type: 'refund', ref: transactionId, walletId: userId, status: 1 } });

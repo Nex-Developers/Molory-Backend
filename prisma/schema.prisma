@@ -256,7 +256,8 @@ model Route {
   distance         Int
   duration         Int
   price            Int
-  fees             Int
+  fees             Int @default(0)
+  commission       Int? @default(0)
   principal        Boolean   @default(false)
   remainingSeats   Int?
   deletedAt        DateTime?
