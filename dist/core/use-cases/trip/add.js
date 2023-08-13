@@ -58,6 +58,7 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
                 throw new errors_1.MissingParamError('arrival');
             const routes = [];
             let departureAddress, arrivalAddress;
+            console.log('routes');
             for (const departure of departures) {
                 const routeDepartureAddress = departure.address.substring(0, departure.address.indexOf(","));
                 if (departure.principal) {
@@ -84,8 +85,10 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
                         departureDate = calDepartureDate;
                         departureTime = calDepartureTime;
                     }
+                    console.log('called before');
                     const commission = fees;
-                    fees = 0.05 * (price + commission);
+                    fees = Math.ceil((0.05 * (price + commission)) / 5) * 5;
+                    console.log('called', commission, fees);
                     routes.push({
                         departureDate,
                         departureTime,

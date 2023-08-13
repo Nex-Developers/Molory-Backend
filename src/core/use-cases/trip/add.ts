@@ -78,6 +78,7 @@ export default function makeAdd({
             // const pricing = await pricingDb.findMany({ where: { vehicleTypeName: vehicle.type }, select: { lowerDistance: true, upperDistance: true, unitPrice: true}})
             const routes = []
             let departureAddress, arrivalAddress
+            console.log('routes')
             for (const departure of departures) {
                 const routeDepartureAddress = departure.address.substring(0, departure.address.indexOf(","))
                 if (departure.principal) {
@@ -106,8 +107,12 @@ export default function makeAdd({
                         departureDate = calDepartureDate
                         departureTime = calDepartureTime
                     }
+                    console.log('called before')
+
                     const commission = fees
-                    fees = 0.05 * (price + commission)
+                    fees =  Math.ceil((0.05 * (price + commission))/5) *5
+                    console.log('called', commission, fees)
+
                     routes.push(
                         {
                             departureDate,
