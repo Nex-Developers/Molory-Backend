@@ -30,7 +30,6 @@ export default function makeAdd({
         date,
         time,
         price,
-        commission,
         fees,
         stops,
         description,
