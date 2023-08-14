@@ -195,6 +195,7 @@ export default function makeAdd({
                             remainingSeats: true,
                             price: true,
                             fees: true,
+                            commission: true,
                             stops: true
                         }
                     }

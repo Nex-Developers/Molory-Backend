@@ -134,8 +134,6 @@ function makeSaveNotification({ setInCollection } = {}) {
         const allReviews = user.passengerReviews.concat(user.driverReviews);
         user.reviews = allReviews.sort((a, b) => b.createdAt - a.createdAt);
         user.preferences = orderPreferences(user.preferences);
-        route.price += route.fees;
-        delete route.fees;
         delete user.driverReviews;
         delete user.passengerReviews;
         const data = {

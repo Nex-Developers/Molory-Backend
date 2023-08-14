@@ -109,6 +109,7 @@ function makeSaveNotification({ setInCollection } = {}) {
                 departureTime: item.departureTime,
                 price: item.price,
                 fees: item.fees,
+                commission: item.commission,
                 stops: item.stops,
             };
             const promises = item.travels.map(booking => {

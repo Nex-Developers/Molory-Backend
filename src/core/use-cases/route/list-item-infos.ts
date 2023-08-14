@@ -102,7 +102,9 @@ export default function makeListItemInfos() {
             departureTime: res.departureTime,
             distance: res.distance,
             duration: res.duration,
-            price: res.price + res.fees + res.commission,
+            price: res.price,
+            commission: res.commission,
+            fees: res.fees,
             stops: res.stops,
             driver: res.trip.user,
             vehicle: res.trip.vehicle

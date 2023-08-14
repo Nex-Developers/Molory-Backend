@@ -135,8 +135,8 @@ export default function makeSaveNotification({
         const allReviews: any[] = user.passengerReviews.concat(user.driverReviews)
         user.reviews = allReviews.sort((a, b) =>  b.createdAt - a.createdAt)
         user.preferences =  orderPreferences(user.preferences)
-        route.price += route.fees
-        delete route.fees
+        // route.price += route.fees
+        // delete route.fees
         delete user.driverReviews
         delete user.passengerReviews
 

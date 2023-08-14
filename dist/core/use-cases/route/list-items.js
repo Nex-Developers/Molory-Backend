@@ -25,6 +25,7 @@ function makeListItemInfos({ routeDb } = {}) {
                 duration: true,
                 price: true,
                 fees: true,
+                commission: true,
                 principal: true,
                 remainingSeats: true,
                 stops: {
@@ -41,12 +42,7 @@ function makeListItemInfos({ routeDb } = {}) {
             }
         });
         const data = routes.filter(route => route.stops.find(stop => stop.address.toLowerCase().includes(departure.toLowerCase()) && stop.type == 'departure')
-            && route.stops.find(stop => stop.address.toLowerCase().includes(arrival.toLowerCase()) && stop.type == 'arrival'))
-            .map(route => {
-            route.price = route.price + route.fees;
-            delete route.fees;
-            return route;
-        });
+            && route.stops.find(stop => stop.address.toLowerCase().includes(arrival.toLowerCase()) && stop.type == 'arrival'));
         return { data };
     });
 }

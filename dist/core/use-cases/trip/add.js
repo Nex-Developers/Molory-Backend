@@ -164,6 +164,7 @@ function makeAdd({ calculMatrix, addTask, notifyUser, saveProfile, saveTrip } = 
                             remainingSeats: true,
                             price: true,
                             fees: true,
+                            commission: true,
                             stops: true
                         }
                     }
