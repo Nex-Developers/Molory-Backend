@@ -9,7 +9,10 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
     if (!tripDb || !notifyUser || !saveTrip || !saveTravel)
         throw new errors_1.ServerError();
     const getLast48hours = (date) => {
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2, date.getHours(), date.getMinutes());
+        const maintenant = new Date();
+        const limite = new Date();
+        limite.setHours(maintenant.getHours() - 48);
+        return date < limite;
     };
     return ({ id, cancelReason } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
@@ -57,7 +60,7 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
             if (status === 3) {
                 yield prisma.trip.update({ where: { id }, data: { status: 0, canceledAt: new Date(), cancelReason } });
                 const departureDateTime = new Date(departureDate + ' ' + departureTime);
-                const delay = getLast48hours(departureDateTime);
+                const delay = getLast48hours(new Date(departureDateTime));
                 const principal = routes.find(route => route.principal);
                 console.log(departureDateTime, delay, new Date());
                 const promises = routes.map((route) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -78,7 +81,7 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
                             yield prisma.transaction.update({ where: { id: payment.id }, data: { status: 0 } });
                             const transactionId = (0, uuid_1.v4)();
                             console.log(delay, new Date());
-                            if (delay < new Date()) {
+                            if (delay) {
                                 const sanction = Math.ceil((0.5 * (principal.price)) / 5) * 5;
                                 console.log('sanction ', userId, sanction);
                                 yield prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: sanction } } });

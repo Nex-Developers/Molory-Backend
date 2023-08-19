@@ -11,8 +11,13 @@ export default function makeRemove({
 }: any = {}) {
     if (!tripDb || !notifyUser || !saveTrip || !saveTravel) throw new ServerError()
     const getLast48hours = (date: Date) => {
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2, date.getHours(), date.getMinutes());
+        const maintenant = new Date();
+        const limite = new Date();
+        limite.setHours(maintenant.getHours() - 48);
+    
+        return date < limite;
     }
+
     return async ({
         id,
         cancelReason
@@ -59,7 +64,7 @@ export default function makeRemove({
                 await prisma.trip.update({ where: { id }, data: { status: 0, canceledAt: new Date(), cancelReason } })
                 // penalities
                 const departureDateTime = new Date(departureDate + ' ' + departureTime)
-                const delay = getLast48hours(departureDateTime)
+                const delay = getLast48hours(new Date(departureDateTime))
                 const principal = routes.find(route => route.principal)
                 console.log(departureDateTime, delay, new Date())
                
@@ -81,7 +86,7 @@ export default function makeRemove({
                             await prisma.transaction.update({ where: {id: payment.id}, data: { status: 0 }})
                             const transactionId = v4()
                             console.log(delay, new Date())
-                            if (delay < new Date()) {
+                            if (delay) {
                                 const sanction = Math.ceil((0.5 * (principal.price))/5) * 5
                                 console.log('sanction ', userId, sanction)
                                 await prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement:  sanction} } })

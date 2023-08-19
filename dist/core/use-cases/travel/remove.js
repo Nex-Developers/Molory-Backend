@@ -8,7 +8,10 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel, saveProfile } 
     if (!travelDb || !saveTravel || !saveTrip || !notifyUser || !saveProfile)
         throw new errors_1.ServerError();
     const getLast48hours = (date) => {
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
+        const maintenant = new Date();
+        const limite = new Date();
+        limite.setHours(maintenant.getHours() - 48);
+        return date < limite;
     };
     return ({ id, cancelReason } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
@@ -56,7 +59,7 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel, saveProfile } 
             const departure = new Date(route.departureDate + ' ' + route.departureTime);
             const delay = getLast48hours(departure);
             console.log(new Date(), delay);
-            if (new Date() < delay) {
+            if (delay) {
                 amount = route.price + route.commission;
                 console.log('Sanction');
             }

@@ -10,9 +10,12 @@ export default function makeRemove({
     saveProfile
 }: any = {}) {
     if (!travelDb || !saveTravel || !saveTrip ||  !notifyUser || !saveProfile) throw new ServerError()
-    const getLast48hours = (date) => {
-
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 2);
+    const getLast48hours = (date: Date) => {
+        const maintenant = new Date();
+        const limite = new Date();
+        limite.setHours(maintenant.getHours() - 48);
+    
+        return date < limite;
     }
   
     return async ({
@@ -71,7 +74,7 @@ export default function makeRemove({
             const departure = new Date(route.departureDate + ' ' + route.departureTime)
             const delay = getLast48hours(departure)
             console.log(new Date(), delay)
-            if(new Date() < delay) {
+            if(delay) {
                  amount = route.price + route.commission
                  console.log('Sanction')
             }
