@@ -48,6 +48,9 @@ export default function makeRemove({
                         departureTime: true,
                         departureAddress: true,
                         arrivalAddress: true,
+                        price: true,
+                        fees: true,
+                        commission: true,
                         trip: { select: { id: true, userId: true } }
                     }},
                     seats: true,
@@ -68,7 +71,7 @@ export default function makeRemove({
             const departure = new Date(route.departureDate + ' ' + route.departureTime)
             const delay = getLast48hours(departure)
             if(new Date() < delay) {
-                 amount = payedAmount - Math.ceil((payedAmount * 0.10) / 5) * 5
+                 amount = route.price + route.commission
             }
 
             // return money
