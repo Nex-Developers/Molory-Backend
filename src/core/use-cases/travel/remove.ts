@@ -13,9 +13,8 @@ export default function makeRemove({
     const getLast48hours = (date: Date) => {
         const maintenant = new Date();
         const limite = new Date();
-        limite.setHours(maintenant.getHours() - 48);
-    
-        return date < limite;
+        limite.setHours(maintenant.getHours() + 48);
+        return date > limite;
     }
   
     return async ({

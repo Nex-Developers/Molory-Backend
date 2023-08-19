@@ -10,8 +10,8 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel, saveProfile } 
     const getLast48hours = (date) => {
         const maintenant = new Date();
         const limite = new Date();
-        limite.setHours(maintenant.getHours() - 48);
-        return date < limite;
+        limite.setHours(maintenant.getHours() + 48);
+        return date > limite;
     };
     return ({ id, cancelReason } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;

@@ -15,12 +15,11 @@ export default function makeRemove({
         const limite = new Date();
         limite.setHours(maintenant.getHours() - 48);
     
-        return date < limite;
+        return date > limite;
     }
 
     return async ({
-        id,
-        cancelReason
+        id,        cancelReason
     }: any = {}) => {
         const prisma = DbConnection.prisma
         if (!id) throw new MissingParamError('id')

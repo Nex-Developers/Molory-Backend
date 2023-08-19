@@ -12,7 +12,7 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
         const maintenant = new Date();
         const limite = new Date();
         limite.setHours(maintenant.getHours() - 48);
-        return date < limite;
+        return date > limite;
     };
     return ({ id, cancelReason } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
