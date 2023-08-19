@@ -33,6 +33,9 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel, saveProfile } 
                             departureTime: true,
                             departureAddress: true,
                             arrivalAddress: true,
+                            price: true,
+                            fees: true,
+                            commission: true,
                             trip: { select: { id: true, userId: true } }
                         } },
                     seats: true,
@@ -52,8 +55,10 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel, saveProfile } 
             let amount = payedAmount;
             const departure = new Date(route.departureDate + ' ' + route.departureTime);
             const delay = getLast48hours(departure);
+            console.log(new Date(), delay);
             if (new Date() < delay) {
-                amount = payedAmount - Math.ceil((payedAmount * 0.10) / 5) * 5;
+                amount = route.price + route.commission;
+                console.log('Sanction');
             }
             const transactionId = (0, uuid_1.v4)();
             yield prisma.transaction.create({ data: { id: transactionId, amount, type: 'refund', ref: transactionId, walletId: userId, status: 1 } });
