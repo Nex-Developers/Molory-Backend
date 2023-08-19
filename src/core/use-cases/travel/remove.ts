@@ -12,9 +12,9 @@ export default function makeRemove({
     if (!travelDb || !saveTravel || !saveTrip ||  !notifyUser || !saveProfile) throw new ServerError()
     const getLast48hours = (date: Date) => {
         const maintenant = new Date();
-        const limite = new Date();
-        limite.setHours(maintenant.getHours() + 48);
-        return date > limite;
+        const differenceEnMillisecondes = date.getTime() - maintenant.getTime();
+        const differenceEnHeures = differenceEnMillisecondes / (1000 * 60 * 60);
+        return differenceEnHeures < 48;
     }
   
     return async ({

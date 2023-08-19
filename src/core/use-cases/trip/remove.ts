@@ -12,14 +12,13 @@ export default function makeRemove({
     if (!tripDb || !notifyUser || !saveTrip || !saveTravel) throw new ServerError()
     const getLast48hours = (date: Date) => {
         const maintenant = new Date();
-        const limite = new Date();
-        limite.setHours(maintenant.getHours() - 48);
-    
-        return date > limite;
+        const differenceEnMillisecondes = date.getTime() - maintenant.getTime();
+        const differenceEnHeures = differenceEnMillisecondes / (1000 * 60 * 60);
+        return differenceEnHeures < 48;
     }
 
     return async ({
-        id,        cancelReason
+        id, cancelReason
     }: any = {}) => {
         const prisma = DbConnection.prisma
         if (!id) throw new MissingParamError('id')
@@ -66,7 +65,7 @@ export default function makeRemove({
                 const delay = getLast48hours(new Date(departureDateTime))
                 const principal = routes.find(route => route.principal)
                 console.log(departureDateTime, delay, new Date())
-               
+
                 const promises = routes.map(async (route) => {
                     const travelsIds = route.travels.map(travel => travel.id)
                     await prisma.travel.updateMany({
@@ -80,21 +79,21 @@ export default function makeRemove({
                     })
                     const promises2 = await route.travels.map(async travel => {
                         console.log(travel);
-                        const payment  = await prisma.transaction.findFirst({ where: { travelId: travel.id, status: 1}})
+                        const payment = await prisma.transaction.findFirst({ where: { travelId: travel.id, status: 1 } })
                         if (payment.status === 1) {
-                            await prisma.transaction.update({ where: {id: payment.id}, data: { status: 0 }})
+                            await prisma.transaction.update({ where: { id: payment.id }, data: { status: 0 } })
                             const transactionId = v4()
                             console.log(delay, new Date())
                             if (delay) {
-                                const sanction = Math.ceil((0.5 * (principal.price))/5) * 5
+                                const sanction = Math.ceil((0.5 * (principal.price)) / 5) * 5
                                 console.log('sanction ', userId, sanction)
-                                await prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement:  sanction} } })
+                                await prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: sanction } } })
                                 // Notify the driver
                             } else console.log('sanction false')
-                            await prisma.wallet.update({ where: { id: userId }, data: { balance: { increment:  (principal.price + principal.commission + principal.fees)} } })
-                            await prisma.transaction.create({ data: { id: transactionId, amount: payment.amount,  type: 'refund', ref: transactionId, walletId: travel.userId ,  status: 1 } })
+                            await prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: (principal.price + principal.commission + principal.fees) } } })
+                            await prisma.transaction.create({ data: { id: transactionId, amount: payment.amount, type: 'refund', ref: transactionId, walletId: travel.userId, status: 1 } })
                             // notify the user
-                            notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTrip.title'}, messageRef: { text: 'notification.removeTrip.message'}, cover: null,  data: { path: 'cancel-trip', id: id.toString(), res:'INFOS'}, lang: 'fr', type: 'trip' })
+                            notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTrip.title' }, messageRef: { text: 'notification.removeTrip.message' }, cover: null, data: { path: 'cancel-trip', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' })
                             saveTravel(travel.id)
                         }
                         return true
