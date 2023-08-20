@@ -84,7 +84,7 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
                         if (payment && payment.status === 1) {
                             yield prisma.transaction.update({ where: { id: payment.id }, data: { status: 0 } });
                             if (delay) {
-                                const sanction = Math.ceil((0.5 * principal.commission) / 5) * 5;
+                                const sanction = Math.ceil((0.05 * principal.price) / 5) * 5;
                                 console.log('sanction ', userId, sanction);
                                 const transactionId = (0, uuid_1.v4)();
                                 yield prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: sanction } } });

@@ -89,7 +89,7 @@ export default function makeRemove({
                             await prisma.transaction.update({ where: { id: payment.id }, data: { status: 0 } })
                             // console.log(delay, new Date())
                             if (delay) {
-                                const sanction = Math.ceil((0.5 * principal.commission) / 5) * 5
+                                const sanction = Math.ceil((0.05 * principal.price) / 5) * 5
                                 console.log('sanction ', userId, sanction)
                                 const transactionId = v4()
                                 await prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: sanction } } })
