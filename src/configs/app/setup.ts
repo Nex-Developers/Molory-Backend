@@ -15,6 +15,7 @@ export default app => {
   app.use(urlEncodeParser)
   app.use(contentType)
   app.use(express.static('public'))
+  
   app.engine ('.html', ejs.renderFile);
   app.set ('view engine', 'ejs');
   app.set('views', path.join(__dirname, '../../../views/'))
