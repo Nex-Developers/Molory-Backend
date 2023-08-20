@@ -7,10 +7,14 @@ const uuid_1 = require("uuid");
 function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel, saveProfile } = {}) {
     if (!travelDb || !saveTravel || !saveTrip || !notifyUser || !saveProfile)
         throw new errors_1.ServerError();
+    const reformateDate = (date) => {
+        return date.split("-").reverse().join("-");
+    };
     const getLast48hours = (date) => {
         const maintenant = new Date();
         const differenceEnMillisecondes = date.getTime() - maintenant.getTime();
         const differenceEnHeures = differenceEnMillisecondes / (1000 * 60 * 60);
+        console.log('date: ' + date, 'now : ' + maintenant, 'diff: ' + differenceEnHeures);
         return differenceEnHeures < 48;
     };
     return ({ id, cancelReason } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
@@ -56,7 +60,7 @@ function makeRemove({ travelDb, notifyUser, saveTrip, saveTravel, saveProfile } 
             const payment = yield prisma.transaction.findFirst({ where: { travelId: id, status: 1 } });
             const payedAmount = payment.amount;
             let amount = payedAmount;
-            const departure = new Date(route.departureDate + ' ' + route.departureTime);
+            const departure = new Date(reformateDate(route.departureDate) + ' ' + route.departureTime + ':00');
             const delay = getLast48hours(departure);
             console.log(new Date(), delay);
             if (delay) {

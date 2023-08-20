@@ -10,10 +10,16 @@ export default function makeRemove({
     saveProfile
 }: any = {}) {
     if (!travelDb || !saveTravel || !saveTrip ||  !notifyUser || !saveProfile) throw new ServerError()
+    const reformateDate = (date: string) => {
+        return date.split("-").reverse().join("-")
+    }
+    
     const getLast48hours = (date: Date) => {
         const maintenant = new Date();
+        // console.log('date: ' + date, 'now : ' + maintenant)
         const differenceEnMillisecondes = date.getTime() - maintenant.getTime();
         const differenceEnHeures = differenceEnMillisecondes / (1000 * 60 * 60);
+        console.log('date: ' + date, 'now : ' + maintenant, 'diff: '+ differenceEnHeures)
         return differenceEnHeures < 48;
     }
   
@@ -70,7 +76,8 @@ export default function makeRemove({
             const payment  = await prisma.transaction.findFirst({ where: { travelId: id, status: 1}})
             const payedAmount = payment.amount
             let amount = payedAmount
-            const departure = new Date(route.departureDate + ' ' + route.departureTime)
+            const departure = new Date(reformateDate(route.departureDate) + ' ' + route.departureTime + ':00')
+            // console.log('date: ', route.departureDate, 'time: ', route.departureTime  , 'departure date: ' + departure)
             const delay = getLast48hours(departure)
             console.log(new Date(), delay)
             if(delay) {

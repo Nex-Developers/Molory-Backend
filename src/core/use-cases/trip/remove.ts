@@ -2,6 +2,7 @@ import { UnauthorizedError } from './../../../utils/errors/unauthorized-error';
 import { AlreadyDoneError, MissingParamError, ServerError } from "../../../utils/errors"
 import { DbConnection } from "../../../utils/helpers";
 import { v4 } from 'uuid'
+import { saveProfile } from '../../services/firebase';
 
 export default function makeRemove({
     tripDb,
@@ -10,6 +11,10 @@ export default function makeRemove({
     saveTravel
 }: any = {}) {
     if (!tripDb || !notifyUser || !saveTrip || !saveTravel) throw new ServerError()
+    const reformateDate = (date: string) => {
+        return date.split("-").reverse().join("-")
+    }
+
     const getLast48hours = (date: Date) => {
         const maintenant = new Date();
         const differenceEnMillisecondes = date.getTime() - maintenant.getTime();
@@ -61,7 +66,7 @@ export default function makeRemove({
             if (status === 3) {
                 await prisma.trip.update({ where: { id }, data: { status: 0, canceledAt: new Date(), cancelReason } })
                 // penalities
-                const departureDateTime = new Date(departureDate + ' ' + departureTime)
+                const departureDateTime = new Date(reformateDate(departureDate) + ' ' + departureTime)
                 const delay = getLast48hours(new Date(departureDateTime))
                 const principal = routes.find(route => route.principal)
                 console.log(departureDateTime, delay, new Date())
@@ -78,23 +83,26 @@ export default function makeRemove({
                         },
                     })
                     const promises2 = await route.travels.map(async travel => {
-                        console.log(travel);
                         const payment = await prisma.transaction.findFirst({ where: { travelId: travel.id, status: 1 } })
-                        if (payment.status === 1) {
+                        console.log('payment ', payment)
+                        if (payment && payment.status === 1) {
                             await prisma.transaction.update({ where: { id: payment.id }, data: { status: 0 } })
-                            const transactionId = v4()
-                            console.log(delay, new Date())
+                            // console.log(delay, new Date())
                             if (delay) {
-                                const sanction = Math.ceil((0.5 * (principal.price)) / 5) * 5
+                                const sanction = Math.ceil((0.5 * principal.commission) / 5) * 5
                                 console.log('sanction ', userId, sanction)
+                                const transactionId = v4()
                                 await prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: sanction } } })
+                                await prisma.transaction.create({ data: { id: transactionId, amount: payment.amount, type: 'refund', ref: transactionId, walletId: travel.userId, status: 1 } })
                                 // Notify the driver
                             } else console.log('sanction false')
-                            await prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: (principal.price + principal.commission + principal.fees) } } })
+                            const transactionId = v4()
+                            await prisma.wallet.update({ where: { id: travel.userId }, data: { balance: { increment: (principal.price + principal.commission + principal.fees) } } })
                             await prisma.transaction.create({ data: { id: transactionId, amount: payment.amount, type: 'refund', ref: transactionId, walletId: travel.userId, status: 1 } })
                             // notify the user
                             notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTrip.title' }, messageRef: { text: 'notification.removeTrip.message' }, cover: null, data: { path: 'cancel-trip', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' })
                             saveTravel(travel.id)
+                            saveProfile(travel.userId)
                         }
                         return true
                     });
@@ -102,6 +110,7 @@ export default function makeRemove({
                 })
                 return Promise.all(promises).then(() => {
                     saveTrip(id)
+                    saveProfile(userId)
                     const message = { text: 'response.remove' }
                     return { message }
                 })

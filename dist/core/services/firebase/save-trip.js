@@ -75,6 +75,7 @@ function makeSaveNotification({ setInCollection } = {}) {
                                 },
                                 status: true,
                                 createdAt: true,
+                                deletedAt: true,
                                 user: {
                                     select: {
                                         id: true,
@@ -113,6 +114,8 @@ function makeSaveNotification({ setInCollection } = {}) {
                 stops: item.stops,
             };
             const promises = item.travels.map(booking => {
+                if (booking.deletedAt)
+                    return null;
                 const user = booking.user;
                 const travel = {
                     id: booking.id, route, seats: booking.seats,
