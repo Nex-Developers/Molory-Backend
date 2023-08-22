@@ -80,8 +80,10 @@ export default function makeRemove({
             // console.log('date: ', route.departureDate, 'time: ', route.departureTime  , 'departure date: ' + departure)
             const delay = getLast48hours(departure)
             console.log(new Date(), delay)
+            let sanction = 0
             if(delay) {
                  amount = route.price + route.commission
+                 sanction = route.fees
                  console.log('Sanction')
             }
 
@@ -95,7 +97,8 @@ export default function makeRemove({
             saveTravel(id)
             saveTrip(route.trip.id)
             saveProfile(userId)
-            notifyUser({ id: userId, titleRef: { text: 'notification.cancelTravel.title'}, messageRef: { text: 'notification.cancelTravel.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime }}, cover: null, data: { path: 'cancel-travel', id: id.toString(), res:'DANGER'}, lang: 'fr', type: 'travel' })
+            const text = !delay?'notification.cancelTravel.message':'notification.cancelTravel.messageWithSanction'
+            notifyUser({ id: userId, titleRef: { text: 'notification.cancelTravel.title'}, messageRef: { text, params: { sanction, departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime }}, cover: null, data: { path: 'cancel-travel', id: id.toString(), res:'DANGER'}, lang: 'fr', type: 'travel' })
             notifyUser({ id: route.trip.userId, titleRef: { text: 'notification.removeTrip.title'}, messageRef: { text: 'notification.removeTrip.message', params: { name: user.firstName, departure: route.departureAddress, arrival: route.arrivalAddress, date: route.departureDate, time: route.departureTime }}, cover: null, data: { path: 'cancel-travel', id: id.toString(), res:'DANGER'}, lang: 'fr', type: 'travel' })
             const message = { text: 'response.remove' }
             return { message }

@@ -95,7 +95,8 @@
     },
     "cancelTrip": {
       "title": "Trajet annulé!",
-      "message": "Votre trajet :departure - :arrival pour le :date à :time a été annulé avec succès."
+      "message": "Votre trajet :departure - :arrival pour le :date à :time a été annulé avec succès et sans aucune pénalité",
+      "messageWithSanction": "Votre trajet :departure - :arrival pour le :date à :time a été annulé avec succès mais avec une pénalité de :sanction FCFA."
     },
     "removeTrip": {
       "title": "Réservation annulée!",
@@ -143,7 +144,8 @@
     },
     "cancelTravel": {
       "title": "Réservation annulée!",
-      "message": "Vous avez annulé votre réservation pour le trajet :departure - :arrival du :date à :time.  Votre portefeuille a été crédité."
+      "message": "Vous avez annulé votre réservation pour le trajet :departure - :arrival du :date à :time.  Vous avez été remboursé sans pénalité.",
+      "messageWithSanction": "Vous avez annulé votre réservation pour le trajet :departure - :arrival du :date à :time. Vous avez été remboursé avec une pénalité de :sanction FCFA." 
     },
     "withdrawal": {
         "title": "Retrait en cours",
@@ -155,7 +157,7 @@
     },
     "refund": {
         "title": "Retrait en cours",
-        "message": "Vous venez d'initié un retrait. Nous vous notifirions quand cela sera effectué."
+        "message": "Vous venez d'initié un retrait. Nous vous notifierions quand cela sera effectué."
     },
     "refundConfirmed": {
         "title": "Retrait Confirmé",

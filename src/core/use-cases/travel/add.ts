@@ -55,7 +55,7 @@ export default function makeAdd({
         const createdAt = new Date()
         const { firstName, lastName, email, phoneNumber } = await prisma.user.findUnique({ where: { id: userId } })
         await CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }))
-        const res = await saveTransaction({ id, amount: 100, firstName, lastName, email, phoneNumber, type: 'payment', method, params: { userId, bookingStatus: 2 } })
+        const res = await saveTransaction({ id, amount, firstName, lastName, email, phoneNumber, type: 'payment', method, params: { userId, bookingStatus: 2 } })
         if (method === 'wallet') {
             updateTransaction({id, status: 1 })
             await confirmPayment({ id, status: 1, amount, method, reference: res.transactionId, validatedAt: new  Date()})

@@ -49,7 +49,7 @@ function makeAdd({ travelDb, routeDb, saveTransaction, confirmPayment, updateTra
         const createdAt = new Date();
         const { firstName, lastName, email, phoneNumber } = yield prisma.user.findUnique({ where: { id: userId } });
         yield helpers_1.CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }));
-        const res = yield saveTransaction({ id, amount: 100, firstName, lastName, email, phoneNumber, type: 'payment', method, params: { userId, bookingStatus: 2 } });
+        const res = yield saveTransaction({ id, amount, firstName, lastName, email, phoneNumber, type: 'payment', method, params: { userId, bookingStatus: 2 } });
         if (method === 'wallet') {
             updateTransaction({ id, status: 1 });
             yield confirmPayment({ id, status: 1, amount, method, reference: res.transactionId, validatedAt: new Date() });

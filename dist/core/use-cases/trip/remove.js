@@ -38,6 +38,8 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
                             principal: true,
                             price: true,
                             fees: true,
+                            departureAddress: true,
+                            arrivalAddress: true,
                             commission: true,
                             travels: {
                                 select: {
@@ -67,6 +69,7 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
                 const delay = getLast48hours(new Date(departureDateTime));
                 const principal = routes.find(route => route.principal);
                 console.log(departureDateTime, delay, new Date());
+                let sanctionAmount = 0;
                 const promises = routes.map((route) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
                     const travelsIds = route.travels.map(travel => travel.id);
                     yield prisma.travel.updateMany({
@@ -85,6 +88,7 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
                             yield prisma.transaction.update({ where: { id: payment.id }, data: { status: 0 } });
                             if (delay) {
                                 const sanction = Math.ceil((0.05 * principal.price) / 5) * 5;
+                                sanctionAmount += sanction;
                                 console.log('sanction ', userId, sanction);
                                 const transactionId = (0, uuid_1.v4)();
                                 yield prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: sanction } } });
@@ -95,7 +99,7 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
                             const transactionId = (0, uuid_1.v4)();
                             yield prisma.wallet.update({ where: { id: travel.userId }, data: { balance: { increment: (principal.price + principal.commission + principal.fees) } } });
                             yield prisma.transaction.create({ data: { id: transactionId, amount: payment.amount, type: 'refund', ref: transactionId, walletId: travel.userId, status: 1 } });
-                            notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTrip.title' }, messageRef: { text: 'notification.removeTrip.message' }, cover: null, data: { path: 'cancel-trip', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' });
+                            notifyUser({ id: travel.userId, titleRef: { text: 'notification.removeTravel.title' }, messageRef: { text: 'notification.removeTravel.message', params: { departure: route.departureAddress, arrival: route.arrivalAddress, date: departureDate, time: departureTime } }, cover: null, data: { path: 'cancel-trip', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' });
                             saveTravel(travel.id);
                             (0, firebase_1.saveProfile)(travel.userId);
                         }
@@ -106,6 +110,8 @@ function makeRemove({ tripDb, notifyUser, saveTrip, saveTravel } = {}) {
                 return Promise.all(promises).then(() => {
                     saveTrip(id);
                     (0, firebase_1.saveProfile)(userId);
+                    const text = sanctionAmount === 0 ? 'notification.cancelTrip.message' : 'notification.cancelTrip.messageWithSanction';
+                    notifyUser({ id: userId, titleRef: { text: 'notification.cancelTrip.title' }, messageRef: { text, params: { sanction: sanctionAmount, departure: principal.departureAddress, arrival: principal.arrivalAddress, date: departureDate, time: departureTime } }, cover: null, data: { path: 'cancel-trip', id: id.toString(), res: 'INFOS' }, lang: 'fr', type: 'trip' });
                     const message = { text: 'response.remove' };
                     return { message };
                 });
