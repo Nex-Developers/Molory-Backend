@@ -15,6 +15,8 @@ function makeRequest({ saveTransaction } = {}) {
         const { firstName, lastName, email } = yield prisma.user.findUnique({ where: { id: userId } });
         const { balance } = yield prisma.wallet.findUnique({ where: { id: userId } });
         console.log(balance);
+        if (balance < 100)
+            throw new errors_1.InvalidParamError("balance");
         const res = yield saveTransaction({ firstName, lastName, email, phoneNumber, amount: 100, type: 'withdraw' });
         yield prisma.transaction.create({ data: { id: res.id, ref: res.transactionId, amount: balance, type: 'withdraw', wallet: { connect: { id: userId } } } });
         const message = { text: "response.add" };

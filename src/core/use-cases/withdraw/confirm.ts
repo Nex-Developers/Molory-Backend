@@ -24,7 +24,7 @@ export default function makeConfirm({
             await prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { increment: -transaction.amount } } })
         }
         await prisma.transaction.update({ where: { id: transaction.id }, data: { status, method: entity.mode, validatedAt: new Date() } })
-        await updateTransaction(entity.id, status, { method: entity.mode})
+        await updateTransaction({id: entity.id, status, params: { method: entity.mode} })
         await saveProfile(transaction.walletId)
 
         return { recieved: true }

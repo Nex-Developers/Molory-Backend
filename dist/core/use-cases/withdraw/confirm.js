@@ -6,9 +6,7 @@ const helpers_1 = require("../../../utils/helpers");
 function makeConfirm({ updateTransaction, saveProfile } = {}) {
     if (!updateTransaction || !saveProfile)
         throw new errors_1.ServerError();
-    return ({ token, body } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-        if (!token)
-            throw new errors_1.MissingParamError('token');
+    return ({ body } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!body)
             throw new errors_1.MissingParamError('body');
         const prisma = helpers_1.DbConnection.prisma;
@@ -25,7 +23,7 @@ function makeConfirm({ updateTransaction, saveProfile } = {}) {
             yield prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { increment: -transaction.amount } } });
         }
         yield prisma.transaction.update({ where: { id: transaction.id }, data: { status, method: entity.mode, validatedAt: new Date() } });
-        yield updateTransaction(entity.id, status, { method: entity.mode });
+        yield updateTransaction({ id: entity.id, status, params: { method: entity.mode } });
         yield saveProfile(transaction.walletId);
         return { recieved: true };
     });

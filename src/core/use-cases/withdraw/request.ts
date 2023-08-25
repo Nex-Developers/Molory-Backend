@@ -1,4 +1,4 @@
-import { MissingParamError, ServerError } from "../../../utils/errors"
+import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
 import { DbConnection } from "../../../utils/helpers"
 // import { v4 } from 'uuid'
 
@@ -26,6 +26,7 @@ export default function makeRequest({
         const { balance } = await prisma.wallet.findUnique({ where: { id: userId }})
         // const id = await generateUid()
         console.log(balance)
+        if (balance < 100) throw new InvalidParamError("balance") 
         const res = await saveTransaction({ firstName, lastName, email, phoneNumber, amount: 100, type: 'withdraw' })
         await prisma.transaction.create({ data: { id: res.id, ref: res.transactionId, amount: balance, type: 'withdraw',  wallet: { connect: { id: userId } }}})
         const message = { text: "response.add"}
