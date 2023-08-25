@@ -22,7 +22,7 @@ export default function makePostController({
         try {
             const lang = request.lang,
                 body = request.body,
-                data = await requestWithdraw({userId: request.ref.id ,...body})
+                data = await requestWithdraw({...body, userId: request.ref.id})
                 reqLog.status = LogStatus.SUCCEEDED
                 reqLog.modelId = data.id
                 reqLog.description += data.id

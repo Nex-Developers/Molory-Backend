@@ -1,4 +1,4 @@
-import { InvalidParamError, MissingParamError, ServerError } from "../../../utils/errors"
+import {  MissingParamError, ServerError } from "../../../utils/errors"
 
 export default function makeUpdate({
    update
@@ -10,7 +10,7 @@ export default function makeUpdate({
         params
     }) => {
         if (!id) throw new MissingParamError("id")
-        if (!status) throw new InvalidParamError("status")
+        // if (!status) throw new InvalidParamError("status")
         await update('transactions', 'trans-' + id, { ...params, status })
         // switch (type) {
         //     case 'withdraw':

@@ -41,25 +41,34 @@ class FedapayManager {
             }
         });
     }
-    static createWithdrawTransaction(amount, mode, firstname, lastname, email, phoneNumber) {
+    static createWithdrawTransaction(amount, firstname, lastname, phoneNumber) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            const body = {
-                amount,
-                currency: { iso: "XOF" },
-                mode,
-                customer: {
-                    firstname,
-                    lastname,
-                    email: email || 'developer@nex-softwares.com',
-                    phone_number: {
-                        number: phoneNumber || '+22892942601',
-                        country: 'TG'
+            try {
+                fedapay_1.FedaPay.setApiKey("sk_live_5XEQoAGhvm4J0B5bX79A0Qqc");
+                fedapay_1.FedaPay.setEnvironment("live");
+                const mode = 'togocel';
+                console.log(amount, mode, firstname, lastname, phoneNumber);
+                const body = {
+                    amount,
+                    currency: { iso: "XOF" },
+                    customer: {
+                        firstname,
+                        lastname,
+                        email: 'developer@nex-softwares.com',
+                        phone_number: {
+                            number: phoneNumber || '+22892942601',
+                            country: 'TG'
+                        }
                     }
-                }
-            };
-            const payout = yield fedapay_1.Payout.create(body);
-            const res = payout.sendNow();
-            console.log(res);
+                };
+                const payout = yield fedapay_1.Payout.create(body);
+                const res = yield payout.sendNow();
+                return res;
+            }
+            catch (err) {
+                console.log(err.message);
+                return null;
+            }
         });
     }
     static verifyTransaction(id) {

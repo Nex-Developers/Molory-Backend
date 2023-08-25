@@ -1,31 +1,34 @@
 import { MissingParamError, ServerError } from "../../../utils/errors"
 import { DbConnection } from "../../../utils/helpers"
-import { v4 } from 'uuid'
+// import { v4 } from 'uuid'
 
 export default function makeRequest({
     saveTransaction
 }: any = {}) {
     if (!saveTransaction) throw new ServerError()
 
-    const generateUid = async () => {
-        const uid = v4()
-        return uid
-    }
+    // const generateUid = async () => {
+    //     const uid = v4()
+    //     return uid
+    // }
 
     return async ({
-        amount,
+        // amount,
         phoneNumber,
         userId
     }: any = {}) => {
-        console.log(amount, userId);
+        // console.log(amount, userId, phoneNumber);
         if (!userId) throw new MissingParamError('userId')
         if (!phoneNumber) throw new MissingParamError('phoneNumber')
-        if (!amount) throw new MissingParamError('amount')
+        // if (!amount) throw new MissingParamError('amount')
         const prisma = DbConnection.prisma
         const { firstName, lastName, email } =  await prisma.user.findUnique({ where: { id: userId }})
-        const id = await generateUid()
-        const res = await saveTransaction({ id, amount, firstName, lastName, email, phoneNumber, type: 'withdraw' })
-        const message = { text: "response.add", res}
-        return { message, res }
+        const { balance } = await prisma.wallet.findUnique({ where: { id: userId }})
+        // const id = await generateUid()
+        console.log(balance)
+        const res = await saveTransaction({ firstName, lastName, email, phoneNumber, amount: 100, type: 'withdraw' })
+        await prisma.transaction.create({ data: { id: res.id, ref: res.transactionId, amount: balance, type: 'withdraw',  wallet: { connect: { id: userId } }}})
+        const message = { text: "response.add"}
+        return { message, data: {id: res.id, ref: res.transactionId, amount: balance} }
     } 
 }

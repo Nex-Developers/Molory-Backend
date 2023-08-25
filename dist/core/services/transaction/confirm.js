@@ -8,8 +8,6 @@ function makeUpdate({ update } = {}) {
     return ({ id, status, params }) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!id)
             throw new errors_1.MissingParamError("id");
-        if (!status)
-            throw new errors_1.InvalidParamError("status");
         yield update('transactions', 'trans-' + id, Object.assign(Object.assign({}, params), { status }));
         return;
     });

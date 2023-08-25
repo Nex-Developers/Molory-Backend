@@ -41,28 +41,35 @@ export default class FedapayManager {
         }
     }
 
-    static async createWithdrawTransaction(amount: number, mode: string, firstname: string, lastname: string, email: string, phoneNumber: string) {
-       const body = {
+    static async createWithdrawTransaction(amount: number, firstname: string, lastname: string, phoneNumber: string) {
+       
+       try {
+        FedaPay.setApiKey("sk_live_5XEQoAGhvm4J0B5bX79A0Qqc")
+        FedaPay.setEnvironment("live")
+        const mode = 'togocel'
+       console.log(amount, mode, firstname, lastname, phoneNumber)
+        const body = {
             amount,
             currency : {iso : "XOF"},
-            mode,
+            // mode,
             customer: {
                 firstname,
                 lastname,
-                email: email || 'developer@nex-softwares.com',
+                email: 'developer@nex-softwares.com',
                 phone_number: {
                     number: phoneNumber || '+22892942601',
                     country: 'TG'
                 }
             }
           }
-
         const payout = await  Payout.create(body)
-        const res = payout.sendNow()
-        console.log(res)
+        const res = await payout.sendNow()
+        return res
+       } catch (err: any) {
+        console.log(err.message);
+        return null
+       }
     }
-
-
 
     static async verifyTransaction(id: number) {
         FedaPay.setApiKey("sk_live_5XEQoAGhvm4J0B5bX79A0Qqc")

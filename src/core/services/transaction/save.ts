@@ -18,7 +18,7 @@ export default function makeSave({
         method,
         params
     }) => {
-        if (!id) throw new MissingParamError("id")
+        // if (!id) throw new MissingParamError("id")
         if (!type) throw new InvalidParamError("type")
         if (!firstName) throw new MissingParamError("firstName")
         if (!lastName) throw new MissingParamError("lastName")
@@ -35,9 +35,14 @@ export default function makeSave({
             data.ref = operation.transactionId.toString()
             data.url = operation.url
         } else if(type === 'withdraw') {
-            operation = await createWithdrawTransaction(amount, firstName, lastName, email, phoneNumber);
-            transactionId = 'trans-' + operation.id
-            data.ref = operation.transactionId.toString()
+            operation = await createWithdrawTransaction(amount, firstName, lastName, phoneNumber);
+            console.log('operation', operation)
+            if (operation) {
+                transactionId = 'trans-' + operation.id
+                data.transactionId = transactionId
+                data.ref = operation.reference
+            }
+         
         } else if (type === 'payment' && method === 'wallet') {
             // check balance
             const  prisma = DbConnection.prisma
@@ -47,13 +52,14 @@ export default function makeSave({
             transactionId = 'trans-'+ id
             // return cando
         } else if (type === 'payment' && method !== 'wallet') {
+            if (!phoneNumber) throw new InvalidParamError('Missing phone number')
             operation = await createTransaction(amount, firstName, lastName, email, phoneNumber)
             transactionId = 'trans-' + operation.transactionId
             data.ref = id
             data.url = operation.url
         }
         await set('transactions', transactionId, data)
-        return { url: data.url, transactionId: data.ref }
+        return { url: data.url, transactionId: data.ref, id: transactionId}
     
     }
    

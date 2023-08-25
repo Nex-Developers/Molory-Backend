@@ -17,14 +17,13 @@ function makeConfirm({ updateTransaction, saveProfile } = {}) {
         if (!entity && !entity.id)
             return { recieved: false };
         console.log('status', entity.status);
-        const status = (entity.status === 'canceled' || entity.status === 'declined') ? 0 : entity.status === 'approved' ? 1 : -1;
-        const transaction = yield prisma.transaction.findUnique({ where: { id: entity.id } });
+        const status = entity.status === 'sent' ? 1 : 0;
+        const transaction = yield prisma.transaction.findUnique({ where: { id: 'trans-' + entity.id } });
         if (transaction.status !== 2)
             throw new errors_1.AlreadyDoneError(transaction.createdAt.toString());
-        yield prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { increment: transaction.amount } } });
-        if (status === 1)
-            yield prisma.transaction.update({ where: { id: transaction.id }, data: { status } });
-        yield updateTransaction(entity.id);
+        yield prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { decrement: transaction.amount } } });
+        yield prisma.transaction.update({ where: { id: transaction.id }, data: { status, method: entity.mode } });
+        yield updateTransaction(entity.id, status, { method: entity.mode });
         yield saveProfile(transaction.walletId);
         return { recieved: true };
     });

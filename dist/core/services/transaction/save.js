@@ -7,8 +7,6 @@ function makeSave({ createTransaction, createWithdrawTransaction, set } = {}) {
     if (!createTransaction || !set)
         throw new errors_1.ServerError();
     return ({ id, amount, firstName, lastName, email = "", phoneNumber = "", type, method, params }) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-        if (!id)
-            throw new errors_1.MissingParamError("id");
         if (!type)
             throw new errors_1.InvalidParamError("type");
         if (!firstName)
@@ -31,9 +29,13 @@ function makeSave({ createTransaction, createWithdrawTransaction, set } = {}) {
             data.url = operation.url;
         }
         else if (type === 'withdraw') {
-            operation = yield createWithdrawTransaction(amount, firstName, lastName, email, phoneNumber);
-            transactionId = 'trans-' + operation.id;
-            data.ref = operation.transactionId.toString();
+            operation = yield createWithdrawTransaction(amount, firstName, lastName, phoneNumber);
+            console.log('operation', operation);
+            if (operation) {
+                transactionId = 'trans-' + operation.id;
+                data.transactionId = transactionId;
+                data.ref = operation.reference;
+            }
         }
         else if (type === 'payment' && method === 'wallet') {
             const prisma = helpers_1.DbConnection.prisma;
@@ -44,13 +46,15 @@ function makeSave({ createTransaction, createWithdrawTransaction, set } = {}) {
                 transactionId = 'trans-' + id;
         }
         else if (type === 'payment' && method !== 'wallet') {
+            if (!phoneNumber)
+                throw new errors_1.InvalidParamError('Missing phone number');
             operation = yield createTransaction(amount, firstName, lastName, email, phoneNumber);
             transactionId = 'trans-' + operation.transactionId;
             data.ref = id;
             data.url = operation.url;
         }
         yield set('transactions', transactionId, data);
-        return { url: data.url, transactionId: data.ref };
+        return { url: data.url, transactionId: data.ref, id: transactionId };
     });
 }
 exports.default = makeSave;

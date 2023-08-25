@@ -20,7 +20,7 @@ function makePostController({ requestWithdraw }) {
                 description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.REQUEST} withdraw `
             };
             try {
-                const lang = request.lang, body = request.body, data = yield requestWithdraw(Object.assign({ userId: request.ref.id }, body));
+                const lang = request.lang, body = request.body, data = yield requestWithdraw(Object.assign(Object.assign({}, body), { userId: request.ref.id }));
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 reqLog.modelId = data.id;
                 reqLog.description += data.id;

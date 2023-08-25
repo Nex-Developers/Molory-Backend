@@ -17,14 +17,14 @@ export default function makeConfirm({
         console.log(name)
         if (!entity && !entity.id) return { recieved: false }
         console.log('status', entity.status)
-        const status = (entity.status === 'canceled' || entity.status === 'declined') ? 0 : entity.status === 'approved' ? 1 : -1
+        const status = entity.status === 'sent' ? 1 : 0
 
         // Update the satus
-        const transaction = await prisma.transaction.findUnique({ where: { id: entity.id } })
+        const transaction = await prisma.transaction.findUnique({ where: { id: 'trans-'+ entity.id } })
         if (transaction.status !== 2) throw new AlreadyDoneError(transaction.createdAt.toString())
-        await prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { increment: transaction.amount } } })
-        if (status === 1) await prisma.transaction.update({ where: { id: transaction.id }, data: { status } })
-        await updateTransaction(entity.id)
+        await prisma.wallet.update({ where: { id: transaction.walletId }, data: { balance: { decrement: transaction.amount } } })
+        await prisma.transaction.update({ where: { id: transaction.id }, data: { status, method: entity.mode } })
+        await updateTransaction(entity.id, status, { method: entity.mode})
         await saveProfile(transaction.walletId)
 
         return { recieved: true }
