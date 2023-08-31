@@ -4,6 +4,7 @@ const tslib_1 = require("tslib");
 const answer_1 = (0, tslib_1.__importDefault)(require("./answer"));
 const authentication_1 = (0, tslib_1.__importDefault)(require("./authentication"));
 const configuration_1 = (0, tslib_1.__importDefault)(require("./configuration"));
+const global_1 = (0, tslib_1.__importDefault)(require("./global"));
 const logs_1 = (0, tslib_1.__importDefault)(require("./logs"));
 const newsletter_1 = (0, tslib_1.__importDefault)(require("./newsletter"));
 const notification_1 = (0, tslib_1.__importDefault)(require("./notification"));
@@ -40,6 +41,7 @@ exports.default = (router) => {
     router.use((0, promotion_1.default)());
     router.use((0, withdraw_1.default)());
     router.use((0, recharge_1.default)());
+    router.use((0, global_1.default)());
     return router;
 };
 //# sourceMappingURL=index.js.map

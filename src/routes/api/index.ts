@@ -1,6 +1,7 @@
 import answer from "./answer"
 import authentication from "./authentication"
 import configuration from "./configuration"
+import global from "./global"
 import logs from "./logs"
 import newsletter from "./newsletter"
 import notification from "./notification"
@@ -38,6 +39,6 @@ export default (router) => {
     router.use(promotion())
     router.use(withdraw())
     router.use(recharge())
-
+    router.use(global())
     return router
 }

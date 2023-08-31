@@ -24,5 +24,3 @@ try {
 } finally {
     DbConnection.disconnect()
 }
-
-
