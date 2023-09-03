@@ -78,6 +78,7 @@ export default function makeSaveNotification({
                                 status: true,
                                 createdAt: true,
                                 deletedAt: true,
+                                canceledAt: true,
                                 user: {
                                     select: {
                                         id: true,
@@ -117,7 +118,7 @@ export default function makeSaveNotification({
                 stops: item.stops,
             }
             const promises = item.travels.map(booking => {
-                if (booking.deletedAt) return null;
+                if (booking.canceledAt) return null;
                 const user = booking.user
                 const travel = {    
                     id: booking.id, route, seats: booking.seats,

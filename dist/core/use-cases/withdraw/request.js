@@ -17,7 +17,7 @@ function makeRequest({ saveTransaction } = {}) {
         console.log(balance);
         if (balance < 100)
             throw new errors_1.InvalidParamError("balance");
-        const res = yield saveTransaction({ firstName, lastName, email, phoneNumber, amount: 100, type: 'withdraw' });
+        const res = yield saveTransaction({ firstName, lastName, email, phoneNumber, amount: 100, type: 'withdraw', params: { userId } });
         yield prisma.transaction.create({ data: { id: res.id, ref: res.transactionId, amount: balance, type: 'withdraw', wallet: { connect: { id: userId } } } });
         const message = { text: "response.add" };
         return { message, data: { id: res.id, ref: res.transactionId, amount: balance } };

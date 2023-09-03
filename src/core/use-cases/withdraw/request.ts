@@ -27,7 +27,7 @@ export default function makeRequest({
         // const id = await generateUid()
         console.log(balance)
         if (balance < 100) throw new InvalidParamError("balance") 
-        const res = await saveTransaction({ firstName, lastName, email, phoneNumber, amount: 100, type: 'withdraw' })
+        const res = await saveTransaction({ firstName, lastName, email, phoneNumber, amount: 100, type: 'withdraw', params: { userId } })
         await prisma.transaction.create({ data: { id: res.id, ref: res.transactionId, amount: balance, type: 'withdraw',  wallet: { connect: { id: userId } }}})
         const message = { text: "response.add"}
         return { message, data: {id: res.id, ref: res.transactionId, amount: balance} }
