@@ -51,7 +51,7 @@ export default function makeAdd({
         }
         const id = await generateUid()
         console.log(id)
-        const amount = (price + fees + commission) * seats * applyDiscount
+        const amount = Math.ceil(((price + fees + commission) * seats * applyDiscount)/5) * 5
         const createdAt = new Date()
         const { firstName, lastName, email, phoneNumber } = await prisma.user.findUnique({ where: { id: userId } })
         await CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }))

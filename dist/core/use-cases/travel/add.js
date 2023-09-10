@@ -45,7 +45,7 @@ function makeAdd({ travelDb, routeDb, saveTransaction, confirmPayment, updateTra
         }
         const id = yield generateUid();
         console.log(id);
-        const amount = (price + fees + commission) * seats * applyDiscount;
+        const amount = Math.ceil(((price + fees + commission) * seats * applyDiscount) / 5) * 5;
         const createdAt = new Date();
         const { firstName, lastName, email, phoneNumber } = yield prisma.user.findUnique({ where: { id: userId } });
         yield helpers_1.CacheManager.set(id, JSON.stringify({ userId, routeId, seats, description, amount, createdAt, promotionId }));
