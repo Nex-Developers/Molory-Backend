@@ -84,7 +84,7 @@ export default function makeConfirmPayment({
             walletId: data.userId,
             travelId: travel.id,
         }
-        if (data.promotionId) payment.create.promotion = { connect: { id: data.promotionId } }
+        // if (data.promotionId) payment.create = { promotion:  { connect: { id: data.promotionId } }}
         await prisma.transaction.create({ data: payment })
         if (method === 'wallet') await prisma.wallet.update({ where: { id: data.userId }, data: { balance: { decrement: amount } } })
 
