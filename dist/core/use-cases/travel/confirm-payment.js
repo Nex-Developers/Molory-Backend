@@ -65,8 +65,6 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
             walletId: data.userId,
             travelId: travel.id,
         };
-        if (data.promotionId)
-            payment.create.promotion = { connect: { id: data.promotionId } };
         yield prisma.transaction.create({ data: payment });
         if (method === 'wallet')
             yield prisma.wallet.update({ where: { id: data.userId }, data: { balance: { decrement: amount } } });
