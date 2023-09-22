@@ -20,6 +20,7 @@ function makeSaveNotification({ setInCollection } = {}) {
                 departureDate: true,
                 departureTime: true,
                 description: true,
+                promotion: true,
                 user: {
                     select: {
                         id: true,
@@ -142,7 +143,8 @@ function makeSaveNotification({ setInCollection } = {}) {
             route,
             vehicle: res.vehicle,
             passengers,
-            reports: res.reports
+            reports: res.reports,
+            promotion: res.promotion
         };
         return yield setInCollection('users', res.user.id.toString(), 'trips', id.toString(), data);
     });

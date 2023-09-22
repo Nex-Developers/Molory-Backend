@@ -20,6 +20,7 @@ export default function makeSaveNotification({
                 departureDate: true,
                 departureTime: true,
                 description: true,
+                promotion: true,
                 // driverReviews: true,
                 // passengerReviews: true,
                 user: {
@@ -144,7 +145,8 @@ export default function makeSaveNotification({
             route,
             vehicle: res.vehicle,
             passengers,
-            reports: res.reports
+            reports: res.reports,
+            promotion: res.promotion
         }
         return await setInCollection('users', res.user.id.toString(), 'trips', id.toString(), data)
 

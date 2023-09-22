@@ -22,6 +22,7 @@ export default function makeListItemInfos({
                 departureDate: true,
                 departureTime: true,
                 description: true,
+                promotion: true,
                 // driverReviews: true,
                 // passengerReviews: true,
                 user: {

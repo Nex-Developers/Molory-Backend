@@ -35,6 +35,7 @@ export default function makeListItems({
                 departureDate: true,
                 departureTime: true,
                 description: true,
+                promotion: true,
                 user: {
                     select: {
                         id: true,
