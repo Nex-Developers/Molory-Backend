@@ -139,7 +139,8 @@ function makeListItems({ travelDb } = {}) {
                             }
                         }
                     }
-                }
+                },
+                promotion: true,
             }
         });
         const data = [];
@@ -171,7 +172,8 @@ function makeListItems({ travelDb } = {}) {
                 user: item.user,
                 vehicle,
                 transactions: item.transactions,
-                reports: item.reports
+                reports: item.reports,
+                promotion: item.promotion
             });
         });
         return { data };

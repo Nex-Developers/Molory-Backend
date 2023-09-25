@@ -127,7 +127,8 @@ export default function makeSaveNotification({
                             }
                         }
                     }
-                }
+                },
+                promotion: true,
             }
         })
         const { trip, ...route } = travel.route
@@ -154,7 +155,8 @@ export default function makeSaveNotification({
             user: travel.user,
             vehicle,
             transactions: travel.transactions,
-            reports: travel.reports
+            reports: travel.reports,
+            promotion: travel.promotion
         }
         return await setInCollection('users', travel.user.id.toString(), 'travels', id.toString() , data)
     }

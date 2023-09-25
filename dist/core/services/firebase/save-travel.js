@@ -126,7 +126,8 @@ function makeSaveNotification({ setInCollection } = {}) {
                             }
                         }
                     }
-                }
+                },
+                promotion: true,
             }
         });
         const _a = travel.route, { trip } = _a, route = (0, tslib_1.__rest)(_a, ["trip"]);
@@ -150,7 +151,8 @@ function makeSaveNotification({ setInCollection } = {}) {
             user: travel.user,
             vehicle,
             transactions: travel.transactions,
-            reports: travel.reports
+            reports: travel.reports,
+            promotion: travel.promotion
         };
         return yield setInCollection('users', travel.user.id.toString(), 'travels', id.toString(), data);
     });

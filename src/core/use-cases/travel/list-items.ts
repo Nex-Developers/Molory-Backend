@@ -140,7 +140,8 @@ export default function makeListItems({
                             }
                         }
                     }
-                }
+                },
+                promotion: true,
             }
         })
         const data = [];
@@ -174,7 +175,8 @@ export default function makeListItems({
                 user: item.user,
                 vehicle,
                 transactions: item.transactions,
-                reports: item.reports
+                reports: item.reports,
+                promotion: item.promotion
             })
         })
 

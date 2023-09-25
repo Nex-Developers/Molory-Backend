@@ -29,7 +29,7 @@ export default function makeConfirmPayment({
         amount,
         method,
         reference,
-        validatedAt
+        validatedAt,
     }: any = {}) => {
         const prisma = DbConnection.prisma
         console.log('Confirm-payment called with ', id, status, amount, reference)
@@ -55,22 +55,24 @@ export default function makeConfirmPayment({
         if (!trip.remainingSeats) throw new InvalidParamError('Unvailable seats')
         if (data.seats > remainingSeats) throw new InvalidParamError('Missing ' + (data.seats - remainingSeats) + ' seats')
         // update travel status
-
-        const travel = await prisma.travel.create({
-            data: {
-                seats: data.seats,
-                description: data.description,
-                departureAddress,
-                arrivalAddress,
-                departureDate,
-                departureTime,
-                route: {
-                    connect: { id: data.routeId }
-                },
-                user: {
-                    connect: { id: data.userId }
-                }
+        const req: any = {
+            seats: data.seats,
+            description: data.description,
+            departureAddress,
+            arrivalAddress,
+            departureDate,
+            departureTime,
+            route: {
+                connect: { id: data.routeId }
             },
+            user: {
+                connect: { id: data.userId }
+            }
+        }
+
+        if (data.promotionId) req.promotion =  { connect: { id: data.promotionId}}
+        const travel = await prisma.travel.create({
+            data: req,
             include: { route: true, user: true }
         })
         const payment: any = {

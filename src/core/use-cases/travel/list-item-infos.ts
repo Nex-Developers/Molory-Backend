@@ -22,6 +22,7 @@ export default function makeListItemInfos({
                 passengerRating: true,
                 driverRating: true,
                 payment: true,
+                promotion: true,
                 createdAt: true
             }
         })

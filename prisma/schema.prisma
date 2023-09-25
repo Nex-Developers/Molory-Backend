@@ -297,7 +297,7 @@ model Travel {
   passengerReview  PassengerReview?
   driverReview     DriverReview?
   reports          TravelReport[]
-  Promotion        Promotion?       @relation(fields: [promotionId], references: [id])
+  promotion        Promotion?       @relation(fields: [promotionId], references: [id])
   promotionId      Int?
   transactions      Transaction[]
 }

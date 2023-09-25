@@ -12,7 +12,7 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
     const getDatePlusQuater = (date) => {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
     };
-    return ({ id, status, amount, method, reference, validatedAt } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+    return ({ id, status, amount, method, reference, validatedAt, } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         const prisma = helpers_1.DbConnection.prisma;
         console.log('Confirm-payment called with ', id, status, amount, reference);
         if (!status) {
@@ -37,21 +37,24 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
             throw new errors_1.InvalidParamError('Unvailable seats');
         if (data.seats > remainingSeats)
             throw new errors_1.InvalidParamError('Missing ' + (data.seats - remainingSeats) + ' seats');
-        const travel = yield prisma.travel.create({
-            data: {
-                seats: data.seats,
-                description: data.description,
-                departureAddress,
-                arrivalAddress,
-                departureDate,
-                departureTime,
-                route: {
-                    connect: { id: data.routeId }
-                },
-                user: {
-                    connect: { id: data.userId }
-                }
+        const req = {
+            seats: data.seats,
+            description: data.description,
+            departureAddress,
+            arrivalAddress,
+            departureDate,
+            departureTime,
+            route: {
+                connect: { id: data.routeId }
             },
+            user: {
+                connect: { id: data.userId }
+            }
+        };
+        if (data.promotionId)
+            req.promotion = { connect: { id: data.promotionId } };
+        const travel = yield prisma.travel.create({
+            data: req,
             include: { route: true, user: true }
         });
         const payment = {
