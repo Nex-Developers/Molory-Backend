@@ -185,8 +185,11 @@
     },
     "rechargeWallet": {
       "title": "Transaction reussie",
-      "message": "Vous avez reussi une transaction"
+      "message": "Vous avez rechargé votre portefeuille de :amount f sur votre ortefeuille."
+    },
+    "withdrawWallet": {
+      "title": "Transaction reussie",
+      "message": "Vous avez effectué un retrait de :amount f de votre portefeuille."
     }
-
   }
 }

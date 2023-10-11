@@ -4,9 +4,10 @@ import { confirmPayment } from "../travel"
 
 export default function makeConfirm({
     updateTransaction,
-    saveProfile
+    saveProfile,
+    notifyUser,
 }: any = {}) {
-    if (!updateTransaction || !saveProfile) throw new ServerError()
+    if (!updateTransaction || !saveProfile || !notifyUser) throw new ServerError()
     return async ({
         token,
         body
@@ -49,6 +50,7 @@ export default function makeConfirm({
             await prisma.transaction.update({ where: { id: transaction.id }, data: { status } })
             await updateTransaction({ id: entity.id, status, params })
             await saveProfile(transaction.walletId)
+            notifyUser({ id: transaction.walletId, titleRef: { text: 'notification.rechargeWallet.title' }, messageRef: { text: 'notification.rechargeWallet.message', params: { amount: transaction.amount, method: transaction.method }}, lang: 'fr', type: 'wallet' })
         }
         return { recieved: true }
     }

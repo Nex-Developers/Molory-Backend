@@ -1,28 +1,37 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const messagebird_1 = (0, tslib_1.__importDefault)(require("messagebird"));
+const axios_1 = (0, tslib_1.__importDefault)(require("axios"));
 const environment_1 = require("../../configs/environment");
-const util_1 = require("util");
 class SmsServer {
     static send(phoneNumbers, message) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            console.log(environment_1.env.sms.key);
-            const messaging = messagebird_1.default.initClient(environment_1.env.sms.key);
-            const params = {
-                'originator': environment_1.env.sms.sender,
-                'recipients': phoneNumbers,
-                'body': message
-            };
-            const makeAsync = (0, util_1.promisify)(messaging.messages.create).bind(messaging.messages);
-            try {
-                return makeAsync(params);
+            console.log(' production ', environment_1.env.production);
+            if (environment_1.env.production) {
+                try {
+                    const { data } = yield axios_1.default.post(SmsServer.apiUrl, {
+                        SenderId: SmsServer.sender,
+                        ApiKey: SmsServer.apiKey,
+                        ClientId: SmsServer.apiToken,
+                        MobileNumbers: phoneNumbers[0],
+                        Message: message,
+                    });
+                    return data;
+                }
+                catch (e) {
+                    console.log(e.message);
+                    return;
+                }
             }
-            catch (err) {
-                console.log('Message bird error: ', err.message);
+            else {
+                console.log(message);
             }
         });
     }
 }
 exports.default = SmsServer;
+SmsServer.apiUrl = environment_1.env.sms.url;
+SmsServer.apiKey = environment_1.env.sms.key;
+SmsServer.apiToken = environment_1.env.sms.token;
+SmsServer.sender = environment_1.env.sms.sender;
 //# sourceMappingURL=sms-server.js.map

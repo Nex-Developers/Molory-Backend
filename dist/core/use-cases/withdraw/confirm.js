@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-function makeConfirm({ updateTransaction, saveProfile } = {}) {
-    if (!updateTransaction || !saveProfile)
+function makeConfirm({ updateTransaction, saveProfile, notifyUser } = {}) {
+    if (!updateTransaction || !saveProfile || !notifyUser)
         throw new errors_1.ServerError();
     return ({ body } = {}) => (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
         if (!body)
@@ -25,6 +25,7 @@ function makeConfirm({ updateTransaction, saveProfile } = {}) {
         yield prisma.transaction.update({ where: { id: transaction.id }, data: { status, method: entity.mode, validatedAt: new Date() } });
         yield updateTransaction({ id: entity.id, status, params: { method: entity.mode } });
         yield saveProfile(transaction.walletId);
+        notifyUser({ id: transaction.walletId, titleRef: { text: 'notification.withdrawWallet.title' }, messageRef: { text: 'notification.withdrawWallet.message', params: { amount: transaction.amount, method: transaction.method } }, lang: 'fr', type: 'wallet' });
         return { recieved: true };
     });
 }
