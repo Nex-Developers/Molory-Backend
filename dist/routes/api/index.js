@@ -20,6 +20,7 @@ const trip_1 = (0, tslib_1.__importDefault)(require("./trip"));
 const user_1 = (0, tslib_1.__importDefault)(require("./user"));
 const vehicle_1 = (0, tslib_1.__importDefault)(require("./vehicle"));
 const vehicle_type_1 = (0, tslib_1.__importDefault)(require("./vehicle-type"));
+const wallet_1 = (0, tslib_1.__importDefault)(require("./wallet"));
 const withdraw_1 = (0, tslib_1.__importDefault)(require("./withdraw"));
 exports.default = (router) => {
     router.use((0, logs_1.default)());
@@ -42,6 +43,7 @@ exports.default = (router) => {
     router.use((0, withdraw_1.default)());
     router.use((0, recharge_1.default)());
     router.use((0, global_1.default)());
+    router.use((0, wallet_1.default)());
     return router;
 };
 //# sourceMappingURL=index.js.map

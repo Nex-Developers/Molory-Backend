@@ -17,6 +17,7 @@ import trip from "./trip"
 import user from "./user"
 import vehicle from "./vehicle"
 import vehicleType from "./vehicle-type"
+import wallet from "./wallet"
 import withdraw from "./withdraw"
 
 export default (router) => {
@@ -40,5 +41,6 @@ export default (router) => {
     router.use(withdraw())
     router.use(recharge())
     router.use(global())
+    router.use(wallet())
     return router
 }
