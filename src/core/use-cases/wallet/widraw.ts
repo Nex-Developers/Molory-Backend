@@ -26,6 +26,7 @@ const makeWithdraw = ({
         await prisma.wallet.update({ where: { id: userId }, data: { balance: { decrement: amount } } })
         await prisma.transaction.update({ where: { id: trans.id }, data: { status: 1 } })
         await setTransaction({ id: trans.id, data: { id, amount, firstName, lastName, email, phoneNumber, type: 'recharge', userId  } })
+        saveProfile(userId)
         notifyUser({ id: userId, titleRef: { text: 'notification.withdrawWallet.title' }, messageRef: { text: 'notification.withdrawWallet.message', params: { amount: amount, method: 'Molory' }}, lang: 'fr', type: 'wallet' })
         const message = { text: "response.add", id }
         return { message, id }

@@ -27,6 +27,7 @@ const makeRecharge = ({
         await prisma.wallet.update({ where: { id: userId }, data: { balance: { increment: amount } } })
         await prisma.transaction.update({ where: { id: trans.id }, data: { status: 1 } })
         await setTransaction({ id: trans.id, data: { id, amount, firstName, lastName, email, phoneNumber, type: 'recharge',userId  } })
+        await saveProfile(userId)
         notifyUser({ id: userId, titleRef: { text: 'notification.rechargeWallet.title' }, messageRef: { text: 'notification.rechargeWallet.message', params: { amount: amount, method: 'Molory' } }, lang: 'fr', type: 'wallet' })
         const message = { text: "response.add" }
         return { message, id }
