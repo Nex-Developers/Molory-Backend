@@ -16,6 +16,7 @@ import ApiCaller from "./api-caller"
 import FirebaseAdmin from "./firebase-admin"
 import FirestoreDb from "./firestore-db"
 import FedapayManager from "./fedapay"
+import SlackMessaging from "./slack-messaging"
 
 export {
     Encrypter,
@@ -35,5 +36,6 @@ export {
     ApiCaller,
     FirebaseAdmin,
     FirestoreDb,
-    FedapayManager
+    FedapayManager,
+    SlackMessaging
 }

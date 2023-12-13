@@ -21,6 +21,10 @@ const resetPasswordView = (0, reset_password_view_1.default)({ ejsToHtml: helper
 exports.resetPasswordView = resetPasswordView;
 const isValidEmail = (0, is_valid_email_1.default)({ emailValidator: helpers_1.ParamValidator.isEmail });
 exports.isValidEmail = isValidEmail;
-const notifyDocumentSubmission = (0, notify_document_submission_1.default)({ sendMail: helpers_1.Mailer.send, ejsToHtml: helpers_1.DataFormatter.ejsToHtml });
+const notifyDocumentSubmission = (0, notify_document_submission_1.default)({
+    sendMail: helpers_1.Mailer.send,
+    ejsToHtml: helpers_1.DataFormatter.ejsToHtml,
+    sendSlackMessage: helpers_1.SlackMessaging.sendMessage
+});
 exports.notifyDocumentSubmission = notifyDocumentSubmission;
 //# sourceMappingURL=index.js.map

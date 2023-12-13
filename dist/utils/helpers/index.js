@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FedapayManager = exports.FirestoreDb = exports.FirebaseAdmin = exports.ApiCaller = exports.GoogleMap = exports.LogManager = exports.DataFormatter = exports.LanguageManager = exports.FileManager = exports.ParamValidator = exports.HttpResponse = exports.DbConnection = exports.SmsServer = exports.CacheManager = exports.RandomChar = exports.Mailer = exports.TokenManager = exports.Encrypter = void 0;
+exports.SlackMessaging = exports.FedapayManager = exports.FirestoreDb = exports.FirebaseAdmin = exports.ApiCaller = exports.GoogleMap = exports.LogManager = exports.DataFormatter = exports.LanguageManager = exports.FileManager = exports.ParamValidator = exports.HttpResponse = exports.DbConnection = exports.SmsServer = exports.CacheManager = exports.RandomChar = exports.Mailer = exports.TokenManager = exports.Encrypter = void 0;
 const tslib_1 = require("tslib");
 const cache_manager_1 = (0, tslib_1.__importDefault)(require("./cache-manager"));
 exports.CacheManager = cache_manager_1.default;
@@ -38,4 +38,6 @@ const firestore_db_1 = (0, tslib_1.__importDefault)(require("./firestore-db"));
 exports.FirestoreDb = firestore_db_1.default;
 const fedapay_1 = (0, tslib_1.__importDefault)(require("./fedapay"));
 exports.FedapayManager = fedapay_1.default;
+const slack_messaging_1 = (0, tslib_1.__importDefault)(require("./slack-messaging"));
+exports.SlackMessaging = slack_messaging_1.default;
 //# sourceMappingURL=index.js.map
