@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import { PublicationDb, UserDb, WalletDb } from "../../../db"
-import { askToConfirmEmail, askToResetPassword, emailConfirmationView, isValidEmail } from "../../services/email"
+import { askToConfirmEmail, askToResetPassword, emailConfirmationView, isValidEmail, notifyDocumentSubmission } from "../../services/email"
 import { generateOtp, getOtp, removeOtp, saveOtp, sendOtp } from "../../services/otp"
 import { comparePasswords, hashPassword } from "../../services/password"
 import { generateToken, removeTmpToken, removeToken, saveTmpToken, saveToken, verifyToken } from "../../services/token"
@@ -51,8 +51,8 @@ const setProfile = makeSetProfile({ userDb, notifyUser, publicationDb, saveProfi
 const getProfile = makeGetProfile({ userDb, walletDb })
 const updateProfile = makeUpdateProfile({ userDb, saveProfile })
 const updateAvatar = makeUpdateAvatar({ saveProfile, userDb, deleteAvatarFile})
-const updateIdCard = makeUpdateIdCard({ saveProfile, userDb })
-const updateDriverLicense = makeUpdateDriverLicense({ saveProfile, userDb })
+const updateIdCard = makeUpdateIdCard({ saveProfile, userDb, notifyDocumentSubmission })
+const updateDriverLicense = makeUpdateDriverLicense({ saveProfile, userDb, notifyDocumentSubmission })
 const recoverPassword = makeRecoverPassword({ userDb, generateToken, saveTmpToken, askToResetPassword, generateOtp, saveOtp })
 const removePassword = makeRemovePassword({ getOtp, verifyToken, userDb, generateToken, saveTmpToken, removeTmpToken })
 const setPassword = makeSetPassword({ verifyToken, generateToken, saveToken, removeOtp, removeTmpToken, hashPassword, comparePasswords, getOtp })

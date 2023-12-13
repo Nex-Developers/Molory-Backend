@@ -3,10 +3,11 @@ import { AlreadyDoneError, InvalidParamError, MissingParamError, ServerError } f
 
 export default function makeUpdateIdCard ({
     userDb,
-    saveProfile
+    saveProfile,
+    notifyDocumentSubmission
     // deleteAvatarFile
 }: any = {}) {
-    if (!userDb || !saveProfile) throw new ServerError()
+    if (!userDb || !saveProfile || !notifyDocumentSubmission) throw new ServerError()
     return async function ({
          id,
         files
@@ -26,6 +27,7 @@ export default function makeUpdateIdCard ({
         // console.log(idCardFront, idCardBack)
         await userDb.updateOne({ where: { id },  data: { idCardBack, idCardFront, idCardStatus: 2, idCardUploadedAt: new Date() } })
         saveProfile(id)
+        notifyDocumentSubmission({ name: user.firstName + " " + user.lastName})
         const message = { text: 'response.update' }
         return { message, data: { idCardFront, idCardBack }}
     }

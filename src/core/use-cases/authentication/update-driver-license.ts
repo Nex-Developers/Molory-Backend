@@ -3,10 +3,11 @@ import { AlreadyDoneError, InvalidParamError, MissingParamError, ServerError } f
 
 export default function makeUpdateDriverLicense ({
     userDb,
-    saveProfile
+    saveProfile,
+    notifyDocumentSubmission
     // deleteAvatarFile
 }: any = {}) {
-    if (!userDb || !saveProfile ) throw new ServerError()
+    if (!userDb || !saveProfile || !notifyDocumentSubmission) throw new ServerError()
     return async function ({
          id,
         files
@@ -26,6 +27,7 @@ export default function makeUpdateDriverLicense ({
         console.log(driverLicenseFront, driverLicenseBack)
         await userDb.updateOne({ where: { id },  data: { driverLicenseFront, driverLicenseBack, driverLicenseStatus: 2, driverLicenseUploadedAt: new Date() } })
         saveProfile(id)
+        notifyDocumentSubmission({ name: user.firstName + " " + user.lastName})
         const message = { text: 'response.update' }
         return { message, data: { driverLicenseFront, driverLicenseBack }}
     }
