@@ -11,7 +11,7 @@ function makeUpdateIdCard({ userDb, saveProfile, notifyDocumentSubmission } = {}
             if (!files || files.length == 0)
                 throw new errors_1.MissingParamError('files');
             console.log('files', files);
-            const user = yield userDb.findFirst({ where: { id }, select: { idCardStatus: true } });
+            const user = yield userDb.findFirst({ where: { id }, select: { idCardStatus: true, firstName: true, lastName: true } });
             if (!user)
                 throw new errors_1.InvalidParamError('token');
             if (user.idCardStatus == 2)

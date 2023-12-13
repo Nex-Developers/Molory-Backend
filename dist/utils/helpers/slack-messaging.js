@@ -24,5 +24,5 @@ class SlackMessaging {
 }
 exports.default = SlackMessaging;
 SlackMessaging.options = {};
-SlackMessaging.web = new WebClient(process.env.SLACK_TOKEN || 'xoxb-6323062419703-6340703978260-qsz8odwH8WSQb8wjNkNBU3S7', SlackMessaging.options);
+SlackMessaging.web = new WebClient(process.env.SLACK_TOKEN || 'xoxb-6323062419703-6340703978260-K1UwT0VfJCbgMwR6d7AsFQjO', SlackMessaging.options);
 //# sourceMappingURL=slack-messaging.js.map

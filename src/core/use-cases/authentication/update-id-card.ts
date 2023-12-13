@@ -15,7 +15,7 @@ export default function makeUpdateIdCard ({
         if (!files || files.length == 0) throw new MissingParamError('files')
         console.log('files', files)
         // remove public/ in the avatar name
-        const user = await userDb.findFirst({ where: { id }, select: { idCardStatus: true}})
+        const user = await userDb.findFirst({ where: { id }, select: { idCardStatus: true, firstName: true, lastName: true}})
         if (!user) throw new InvalidParamError('token')
         if (user.idCardStatus == 2 ) throw new AlreadyDoneError('before')
         // if (user.idCard) deleteAvatarFile(user.idCard)
