@@ -11,7 +11,7 @@ function makeUpdateDriverLicense({ userDb, saveProfile, notifyDocumentSubmission
             if (!files || files.length == 0)
                 throw new errors_1.MissingParamError('files');
             console.log('files', files);
-            const user = yield userDb.findFirst({ where: { id }, select: { driverLicenseStatus: true } });
+            const user = yield userDb.findFirst({ where: { id }, select: { driverLicenseStatus: true, firstName: true, lastName: true } });
             if (!user)
                 throw new errors_1.InvalidParamError('token');
             if (user.driverLicenseStatus == 2)

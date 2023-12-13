@@ -5,12 +5,13 @@ const { WebClient } = require('@slack/web-api');
 class SlackMessaging {
     static sendMessage(message, channel) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
+            const web = new WebClient('xoxb-6323062419703-6340703978260-4VpQLD1RTKVUe6yOoDRjzaF3', {});
             return new Promise((resolve, reject) => {
                 const channelId = channel || process.env.SLACK_CHANNEL_ID;
                 try {
-                    return SlackMessaging.web.conversations.join({
+                    return web.conversations.join({
                         channel: channel,
-                    }).then(() => SlackMessaging.web.chat.postMessage({
+                    }).then(() => web.chat.postMessage({
                         blocks: message,
                         channel: channelId,
                     }).then(() => resolve(true)));
@@ -23,6 +24,4 @@ class SlackMessaging {
     }
 }
 exports.default = SlackMessaging;
-SlackMessaging.options = {};
-SlackMessaging.web = new WebClient(process.env.SLACK_TOKEN || 'xoxb-6323062419703-6340703978260-K1UwT0VfJCbgMwR6d7AsFQjO', SlackMessaging.options);
 //# sourceMappingURL=slack-messaging.js.map

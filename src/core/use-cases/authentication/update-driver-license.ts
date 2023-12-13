@@ -15,7 +15,7 @@ export default function makeUpdateDriverLicense ({
         if (!files || files.length == 0) throw new MissingParamError('files')
         console.log('files', files)
         // remove public/ in the avatar name
-        const user = await userDb.findFirst({ where: { id }, select: {  driverLicenseStatus: true}})
+        const user = await userDb.findFirst({ where: { id }, select: {  driverLicenseStatus: true, firstName: true, lastName: true}})
         if (!user) throw new InvalidParamError('token')
         if (user.driverLicenseStatus == 2 ) throw new AlreadyDoneError('before')
         // if (user.idCard) deleteAvatarFile(user.idCard)
