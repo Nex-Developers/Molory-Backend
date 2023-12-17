@@ -6,12 +6,11 @@ const helpers_1 = require("../../../utils/helpers");
 function makeNotifyUser({ sendNotification, addInCollection, translate } = {}) {
     if (!sendNotification || !addInCollection || !translate)
         throw new errors_1.ServerError();
-    return function notifyUser({ id, titleRef, messageRef, cover, data, lang, type } = {}) {
+    return function notifyUser({ id, titleRef, messageRef, cover, data, lang, type, title, message } = {}) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            if (!titleRef || !messageRef)
-                throw new errors_1.ServerError();
-            const title = translate(lang, titleRef.text, titleRef.params);
-            const body = translate(lang, messageRef.text, messageRef.params);
+            if (!title)
+                title = translate(lang, titleRef.text, titleRef.params);
+            const body = message ? message : translate(lang, messageRef.text, messageRef.params);
             try {
                 const prisma = helpers_1.DbConnection.prisma;
                 const devices = yield prisma.device.findMany({ where: { userId: id }, select: { token: true } });

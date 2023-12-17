@@ -14,11 +14,13 @@ export default function makeNotifyUser({
         cover,
         data,
         lang,
-        type
+        type,
+        title,
+        message
     }: any = {}) {
-        if (!titleRef || !messageRef) throw new ServerError()
-        const title = translate(lang, titleRef.text, titleRef.params)
-        const body = translate(lang, messageRef.text, messageRef.params)
+        // if (!titleRef || !messageRef) throw new ServerError()
+        if (!title) title = translate(lang, titleRef.text, titleRef.params)
+        const body = message?message:translate(lang, messageRef.text, messageRef.params)
         // data = JSON.stringify(data)
         try {
             const prisma = DbConnection.prisma

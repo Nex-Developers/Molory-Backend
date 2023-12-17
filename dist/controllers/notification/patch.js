@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const conventions_1 = require("../../core/conventions");
 const helpers_1 = require("../../utils/helpers");
-function makePostController({ publishNotifications }) {
+function makePatchController({ setAsSeen }) {
     return function (request) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const reqLog = {
@@ -17,10 +17,10 @@ function makePostController({ publishNotifications }) {
                 modelId: request.body.id,
                 action: conventions_1.Action.WRITE,
                 status: conventions_1.LogStatus.FAILED,
-                description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.WRITE} notification. `
+                description: `${request.ref.lastName}  ${request.ref.firstName}  ${conventions_1.Action.EDIT} notification ${request.ref.id} as seen. `
             };
             try {
-                const lang = request.lang, title = request.body.title, body = request.body.message, userId = request.ref.id, data = yield publishNotifications({ userId, title, body });
+                const lang = request.lang, id = request.body.id, userId = request.ref.id, data = yield setAsSeen({ id, userId });
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 helpers_1.LogManager.save(reqLog);
                 return helpers_1.HttpResponse.ok(data, lang);
@@ -34,5 +34,5 @@ function makePostController({ publishNotifications }) {
         });
     };
 }
-exports.default = makePostController;
-//# sourceMappingURL=post.js.map
+exports.default = makePatchController;
+//# sourceMappingURL=patch.js.map

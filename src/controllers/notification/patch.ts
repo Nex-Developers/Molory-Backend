@@ -1,8 +1,8 @@
 import { Action, IHttpRequest, IHttpResponse, Log, LogStatus } from "../../core/conventions";
 import { HttpResponse, LogManager } from "../../utils/helpers";
 
-export default function makePostController({
-    publishNotifications
+export default function makePatchController({
+    setAsSeen
 }) {
     // use translations
     return async function(request: IHttpRequest): Promise<IHttpResponse> {
@@ -17,14 +17,13 @@ export default function makePostController({
             modelId: request.body.id,
             action: Action.WRITE,
             status: LogStatus.FAILED,
-            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.WRITE} notification. `
+            description: `${request.ref.lastName}  ${request.ref.firstName}  ${Action.EDIT} notification ${request.ref.id } as seen. `
         } 
         try {
             const lang = request.lang,
-                title = request.body.title,
-                body = request.body.message,
+                id = request.body.id,
                 userId = request.ref.id,
-                data = await publishNotifications({ userId, title, body })
+                data = await setAsSeen({ id, userId })
                 reqLog.status = LogStatus.SUCCEEDED
                 LogManager.save(reqLog)
             return HttpResponse.ok(data, lang)
