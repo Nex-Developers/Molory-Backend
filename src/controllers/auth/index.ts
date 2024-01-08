@@ -21,14 +21,18 @@ import {
     updateIdCard,
     updateDriverLicense,
     validateAccount,
-    setPassword
+    setPassword,
+    updateIdCardImg,
+    updateDriverLicenseImg
 } from "../../core/use-cases/authentication"
 import makeCompleteInfosController from "./complete-infos"
 import makeConfirmEmailController from "./confirm-email"
 import makeDeleteAccountController from "./delete-account"
 import makeEditAvatarController from "./edit-avatar"
 import makeEditDriverLicenseController from "./edit-driver-license"
+import makeEditDriverLicenseImgController from "./edit-driver-license-img"
 import makeEditIdCardController from "./edit-id-card"
+import makeEditIdCardImgController from "./edit-id-card-img"
 import makeEditProfileController from "./edit-profile"
 import makeEnableEmailAuthController from "./enable-email-auth"
 import makeForgotPasswordController from "./forgot-password"
@@ -64,7 +68,9 @@ const newPasswordController = makeNewPasswordController({ changePassword })
 const editProfileController = makeEditProfileController({ updateProfile })
 const editAvatarController = makeEditAvatarController({ updateAvatar })
 const editIdCardController = makeEditIdCardController({ updateIdCard })
-const editDriverLicense = makeEditDriverLicenseController({ updateDriverLicense })
+const editDriverLicenseController = makeEditDriverLicenseController({ updateDriverLicense })
+const editIdCardImgController = makeEditIdCardImgController({ updateIdCardImg })
+const editDriverLicenseImgController = makeEditDriverLicenseImgController({ updateDriverLicenseImg })
 const forgotPasswordController = makeForgotPasswordController({ recoverPassword })
 const resetPasswordController = makeResetPasswordController({ removePassword })
 const setPasswordController = makeSetPasswordController({ setPassword })
@@ -88,7 +94,9 @@ export {
     editProfileController,
     editAvatarController,
     editIdCardController,
-    editDriverLicense,
+    editDriverLicenseController,
+    editIdCardImgController,
+    editDriverLicenseImgController,
     forgotPasswordController,
     setPasswordController,
     resetPasswordController,

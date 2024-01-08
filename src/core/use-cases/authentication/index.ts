@@ -31,6 +31,8 @@ import makeValidateAccount from "./validate-acount"
 import makeSetPassword from "./set-password"
 import { saveProfile } from "../../services/firebase"
 import { notifyUser } from "../../services/notifications"
+import makeUpdateIdCardImg from "./update-id-card-img"
+import makeUpdateDriverLicenseImg from "./update-driver-license-img"
 
 const prisma = new PrismaClient()
 const userDb = new UserDb()
@@ -53,6 +55,9 @@ const updateProfile = makeUpdateProfile({ userDb, saveProfile })
 const updateAvatar = makeUpdateAvatar({ saveProfile, userDb, deleteAvatarFile})
 const updateIdCard = makeUpdateIdCard({ saveProfile, userDb, notifyDocumentSubmission })
 const updateDriverLicense = makeUpdateDriverLicense({ saveProfile, userDb, notifyDocumentSubmission })
+const updateIdCardImg = makeUpdateIdCardImg({ saveProfile, userDb, notifyDocumentSubmission })
+const updateDriverLicenseImg = makeUpdateDriverLicenseImg({ saveProfile, userDb, notifyDocumentSubmission })
+
 const recoverPassword = makeRecoverPassword({ userDb, generateToken, saveTmpToken, askToResetPassword, generateOtp, saveOtp })
 const removePassword = makeRemovePassword({ getOtp, verifyToken, userDb, generateToken, saveTmpToken, removeTmpToken })
 const setPassword = makeSetPassword({ verifyToken, generateToken, saveToken, removeOtp, removeTmpToken, hashPassword, comparePasswords, getOtp })
@@ -77,6 +82,8 @@ export {
     updateAvatar,
     updateIdCard,
     updateDriverLicense,
+    updateIdCardImg,
+    updateDriverLicenseImg,
     recoverPassword,
     setPassword,
     signOut,

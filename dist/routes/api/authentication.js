@@ -26,7 +26,9 @@ exports.default = () => {
     router.post('/edit-profile', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.editProfileController));
     router.post('/edit-avatar', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.single('avatar'), (0, adapters_1.expressRouterAdapter)(auth_1.editAvatarController));
     router.post('/id-card', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.array('idCard', 2), (0, adapters_1.expressRouterAdapter)(auth_1.editIdCardController));
-    router.post('/driver-license', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.array('driverLicense', 2), (0, adapters_1.expressRouterAdapter)(auth_1.editDriverLicense));
+    router.post('/driver-license', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.array('driverLicense', 2), (0, adapters_1.expressRouterAdapter)(auth_1.editDriverLicenseController));
+    router.post('/id-card-img', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.editIdCardImgController));
+    router.post('/driver-license-img', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.editDriverLicenseImgController));
     router.post('/upload-document', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.fileUpload.fields([{ name: 'idCard', maxCount: 2 }, { name: 'driverLicense', maxCount: 2 }]), (0, adapters_1.expressRouterAdapter)(auth_1.uploadDocumentController));
     router.post('/new-email', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.newEmailController));
     router.post('/new-phonenumber', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(auth_1.newPhoneNumberController));

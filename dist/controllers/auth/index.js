@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadDocumentController = exports.enableEmailAuthController = exports.deleteAccountController = exports.newPhoneNumberController = exports.newEmailController = exports.resetPasswordController = exports.setPasswordController = exports.forgotPasswordController = exports.editDriverLicense = exports.editIdCardController = exports.editAvatarController = exports.editProfileController = exports.newPasswordController = exports.profileController = exports.logoutController = exports.verifyAccountController = exports.registerController = exports.loginController = exports.verifyPasswordController = exports.verifyEmailController = exports.confirmEmailController = exports.completeInfosController = exports.verifyOtpController = exports.sendOtpController = void 0;
+exports.uploadDocumentController = exports.enableEmailAuthController = exports.deleteAccountController = exports.newPhoneNumberController = exports.newEmailController = exports.resetPasswordController = exports.setPasswordController = exports.forgotPasswordController = exports.editDriverLicenseImgController = exports.editIdCardImgController = exports.editDriverLicenseController = exports.editIdCardController = exports.editAvatarController = exports.editProfileController = exports.newPasswordController = exports.profileController = exports.logoutController = exports.verifyAccountController = exports.registerController = exports.loginController = exports.verifyPasswordController = exports.verifyEmailController = exports.confirmEmailController = exports.completeInfosController = exports.verifyOtpController = exports.sendOtpController = void 0;
 const tslib_1 = require("tslib");
 const authentication_1 = require("../../core/use-cases/authentication");
 const complete_infos_1 = (0, tslib_1.__importDefault)(require("./complete-infos"));
@@ -8,7 +8,9 @@ const confirm_email_1 = (0, tslib_1.__importDefault)(require("./confirm-email"))
 const delete_account_1 = (0, tslib_1.__importDefault)(require("./delete-account"));
 const edit_avatar_1 = (0, tslib_1.__importDefault)(require("./edit-avatar"));
 const edit_driver_license_1 = (0, tslib_1.__importDefault)(require("./edit-driver-license"));
+const edit_driver_license_img_1 = (0, tslib_1.__importDefault)(require("./edit-driver-license-img"));
 const edit_id_card_1 = (0, tslib_1.__importDefault)(require("./edit-id-card"));
+const edit_id_card_img_1 = (0, tslib_1.__importDefault)(require("./edit-id-card-img"));
 const edit_profile_1 = (0, tslib_1.__importDefault)(require("./edit-profile"));
 const enable_email_auth_1 = (0, tslib_1.__importDefault)(require("./enable-email-auth"));
 const forgot_password_1 = (0, tslib_1.__importDefault)(require("./forgot-password"));
@@ -59,8 +61,12 @@ const editAvatarController = (0, edit_avatar_1.default)({ updateAvatar: authenti
 exports.editAvatarController = editAvatarController;
 const editIdCardController = (0, edit_id_card_1.default)({ updateIdCard: authentication_1.updateIdCard });
 exports.editIdCardController = editIdCardController;
-const editDriverLicense = (0, edit_driver_license_1.default)({ updateDriverLicense: authentication_1.updateDriverLicense });
-exports.editDriverLicense = editDriverLicense;
+const editDriverLicenseController = (0, edit_driver_license_1.default)({ updateDriverLicense: authentication_1.updateDriverLicense });
+exports.editDriverLicenseController = editDriverLicenseController;
+const editIdCardImgController = (0, edit_id_card_img_1.default)({ updateIdCardImg: authentication_1.updateIdCardImg });
+exports.editIdCardImgController = editIdCardImgController;
+const editDriverLicenseImgController = (0, edit_driver_license_img_1.default)({ updateDriverLicenseImg: authentication_1.updateDriverLicenseImg });
+exports.editDriverLicenseImgController = editDriverLicenseImgController;
 const forgotPasswordController = (0, forgot_password_1.default)({ recoverPassword: authentication_1.recoverPassword });
 exports.forgotPasswordController = forgotPasswordController;
 const resetPasswordController = (0, reset_password_1.default)({ removePassword: authentication_1.removePassword });

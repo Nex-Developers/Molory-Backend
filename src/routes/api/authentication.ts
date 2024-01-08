@@ -12,8 +12,10 @@ import {
     confirmEmailController,
     deleteAccountController,
     editAvatarController,
-    editDriverLicense,
+    editDriverLicenseController,
+    editDriverLicenseImgController,
     editIdCardController,
+    editIdCardImgController,
     editProfileController,
     enableEmailAuthController,
     forgotPasswordController,
@@ -55,7 +57,9 @@ export default () => {
     router.post('/edit-profile', langCheck, authCheck, expressRouterAdapter(editProfileController))
     router.post('/edit-avatar', langCheck, authCheck, fileUpload.single('avatar'), expressRouterAdapter(editAvatarController))
     router.post('/id-card', langCheck, authCheck, fileUpload.array('idCard', 2), expressRouterAdapter(editIdCardController))
-    router.post('/driver-license', langCheck, authCheck, fileUpload.array('driverLicense', 2), expressRouterAdapter(editDriverLicense))
+    router.post('/driver-license', langCheck, authCheck, fileUpload.array('driverLicense', 2), expressRouterAdapter(editDriverLicenseController))
+    router.post('/id-card-img', langCheck, authCheck, expressRouterAdapter(editIdCardImgController))
+    router.post('/driver-license-img', langCheck, authCheck, expressRouterAdapter(editDriverLicenseImgController))
     router.post('/upload-document',langCheck, authCheck, fileUpload.fields([{ name: 'idCard', maxCount: 2}, { name: 'driverLicense', maxCount: 2}]), expressRouterAdapter(uploadDocumentController))
     router.post('/new-email', langCheck, authCheck, expressRouterAdapter(newEmailController))
     router.post('/new-phonenumber', langCheck, authCheck, expressRouterAdapter(newPhoneNumberController))

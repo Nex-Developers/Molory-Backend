@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkPassword = exports.checkEmail = exports.changePhoneNumber = exports.changeEmail = exports.removeAccount = exports.signOut = exports.setPassword = exports.recoverPassword = exports.updateDriverLicense = exports.updateIdCard = exports.updateAvatar = exports.updateProfile = exports.getProfile = exports.setProfile = exports.changePassword = exports.removePassword = exports.confirmEmail = exports.validateAccount = exports.signUp = exports.confirmOtp = exports.signInWithPhoneNumber = exports.signInWithEmailAndPassword = exports.addEmailAuth = void 0;
+exports.checkPassword = exports.checkEmail = exports.changePhoneNumber = exports.changeEmail = exports.removeAccount = exports.signOut = exports.setPassword = exports.recoverPassword = exports.updateDriverLicenseImg = exports.updateIdCardImg = exports.updateDriverLicense = exports.updateIdCard = exports.updateAvatar = exports.updateProfile = exports.getProfile = exports.setProfile = exports.changePassword = exports.removePassword = exports.confirmEmail = exports.validateAccount = exports.signUp = exports.confirmOtp = exports.signInWithPhoneNumber = exports.signInWithEmailAndPassword = exports.addEmailAuth = void 0;
 const tslib_1 = require("tslib");
 const client_1 = require("@prisma/client");
 const db_1 = require("../../../db");
@@ -34,6 +34,8 @@ const validate_acount_1 = (0, tslib_1.__importDefault)(require("./validate-acoun
 const set_password_1 = (0, tslib_1.__importDefault)(require("./set-password"));
 const firebase_1 = require("../../services/firebase");
 const notifications_1 = require("../../services/notifications");
+const update_id_card_img_1 = (0, tslib_1.__importDefault)(require("./update-id-card-img"));
+const update_driver_license_img_1 = (0, tslib_1.__importDefault)(require("./update-driver-license-img"));
 const prisma = new client_1.PrismaClient();
 const userDb = new db_1.UserDb();
 const walletDb = new db_1.WalletDb();
@@ -70,6 +72,10 @@ const updateIdCard = (0, update_id_card_1.default)({ saveProfile: firebase_1.sav
 exports.updateIdCard = updateIdCard;
 const updateDriverLicense = (0, update_driver_license_1.default)({ saveProfile: firebase_1.saveProfile, userDb, notifyDocumentSubmission: email_1.notifyDocumentSubmission });
 exports.updateDriverLicense = updateDriverLicense;
+const updateIdCardImg = (0, update_id_card_img_1.default)({ saveProfile: firebase_1.saveProfile, userDb, notifyDocumentSubmission: email_1.notifyDocumentSubmission });
+exports.updateIdCardImg = updateIdCardImg;
+const updateDriverLicenseImg = (0, update_driver_license_img_1.default)({ saveProfile: firebase_1.saveProfile, userDb, notifyDocumentSubmission: email_1.notifyDocumentSubmission });
+exports.updateDriverLicenseImg = updateDriverLicenseImg;
 const recoverPassword = (0, recover_password_1.default)({ userDb, generateToken: token_1.generateToken, saveTmpToken: token_1.saveTmpToken, askToResetPassword: email_1.askToResetPassword, generateOtp: otp_1.generateOtp, saveOtp: otp_1.saveOtp });
 exports.recoverPassword = recoverPassword;
 const removePassword = (0, remove_password_1.default)({ getOtp: otp_1.getOtp, verifyToken: token_1.verifyToken, userDb, generateToken: token_1.generateToken, saveTmpToken: token_1.saveTmpToken, removeTmpToken: token_1.removeTmpToken });
