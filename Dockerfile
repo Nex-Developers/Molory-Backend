@@ -3,8 +3,8 @@ WORKDIR /app
 COPY package.json .
 ARG NODE_ENV \
     PORT
-ENV NODE_ENV $NODE_ENV
+# ENV NODE_ENV $NODE_ENV
 RUN npm install
 COPY . ./
 EXPOSE $PORT
-CMD npm build && node dist/index
+CMD npm run build && node dist/index
