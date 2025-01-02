@@ -49,7 +49,8 @@
     "deploy": "sudo docker compose -f docker-compose.dev.yml -p 'molory' up  --build -d",
     "deploy:prod": "npm run build && sudo docker compose -f docker-compose.prod.yml -p 'molory' up --build -d",
     "docker:build": "sudo docker compose docker-compose.prod.yml build api",
-    "push": "sudo docker compose docker-compose.prod.yml push api"
+    "push": "sudo docker compose docker-compose.prod.yml push api",
+    "railway": "npm run model & npm run start"
   },
   "author": "Kode Sonik <k0d3.s0n1k@gmail.com>",
   "license": "Apache-2.0",
