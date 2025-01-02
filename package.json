@@ -43,14 +43,14 @@
     "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info",
     "initdb:dev": "npx prisma migrate dev --name init",
     "migrate:dev": "npx prisma migrate dev",
-    "migrate:prod": "npx prisma migrate resolve",
+    "migrate:prod": "npx prisma migrate deploy",
     "model": "npx prisma db push",
     "pre-deploy": "sudo docker compose -f docker-compose.yml -p 'molory' up --build -d",
     "deploy": "sudo docker compose -f docker-compose.dev.yml -p 'molory' up  --build -d",
     "deploy:prod": "npm run build && sudo docker compose -f docker-compose.prod.yml -p 'molory' up --build -d",
     "docker:build": "sudo docker compose docker-compose.prod.yml build api",
     "push": "sudo docker compose docker-compose.prod.yml push api",
-    "railway": "npm run initdb:dev && npm run migrate:dev && npm run start"
+    "railway": "npm run initdb:dev && npm run migrate:prod && npm run start"
   },
   "author": "Kode Sonik <k0d3.s0n1k@gmail.com>",
   "license": "Apache-2.0",
