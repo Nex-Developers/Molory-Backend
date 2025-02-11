@@ -5,11 +5,12 @@ const conventions_1 = require("../../core/conventions");
 const helpers_1 = require("../../utils/helpers");
 function makePostValidatePaymentController({ confirmPayment }) {
     return function (request) {
+        var _a;
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
             const reqLog = {
                 date: new Date().toDateString(),
                 time: new Date().toTimeString(),
-                userId: request.ref.id,
+                userId: ((_a = request === null || request === void 0 ? void 0 : request.ref) === null || _a === void 0 ? void 0 : _a.id) || 'userId',
                 lastName: 'External',
                 firstName: 'CinetPay',
                 model: 'Payment',

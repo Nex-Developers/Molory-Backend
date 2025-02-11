@@ -9,7 +9,7 @@ export default function makePostValidatePaymentController({
         const reqLog: Log = {
             date: new Date().toDateString(), 
             time: new Date().toTimeString(),
-            userId: request.ref.id, 
+            userId: request?.ref?.id || 'userId', 
             lastName: 'External',
             firstName: 'CinetPay',
             model: 'Payment',
