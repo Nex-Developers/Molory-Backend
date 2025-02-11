@@ -14,6 +14,7 @@ exports.default = () => {
         .patch(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(travel_1.patchTravelController))
         .delete(middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(travel_1.deleteTravelController));
     router.post('/confirm-payment', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(travel_1.postNotifyController));
+    router.post('/validate-payment', middlewares_1.langCheck, middlewares_1.fedapayQueryParser, (0, adapters_1.expressRouterAdapter)(travel_1.postValidatePaymentController));
     router.post('/rate-driver', middlewares_1.langCheck, middlewares_1.authCheck, (0, adapters_1.expressRouterAdapter)(travel_1.postRateDriverController));
     router.post('/rate-passenger', middlewares_1.langCheck, middlewares_1.authCheck, middlewares_1.driverCheck, (0, adapters_1.expressRouterAdapter)(travel_1.postRatePassengerController));
     router.patch('/ask-to-start-travel', middlewares_1.langCheck, (0, adapters_1.expressRouterAdapter)(travel_1.postAskToStartController));

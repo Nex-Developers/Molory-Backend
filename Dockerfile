@@ -7,5 +7,5 @@ ARG NODE_ENV \
 RUN npm install
 COPY . ./
 EXPOSE $PORT
-RUN npm run build
+# RUN npm run build
 CMD npm run start
