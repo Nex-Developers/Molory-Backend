@@ -3,6 +3,7 @@ import { expressRouterAdapter } from "../../configs/adapters"
 import { 
     authCheck, 
     driverCheck, 
+    fedapayQueryParser, 
     langCheck, 
     queryParser
 } from "../../configs/middlewares"
@@ -22,6 +23,7 @@ import {
     postRatePassengerController,
     postTravelController,
     postTravelReportController,
+    postValidatePaymentController,
 } from "../../controllers/travel"
 
 export default () => {
@@ -33,6 +35,7 @@ export default () => {
     .patch(langCheck, authCheck, expressRouterAdapter(patchTravelController))
     .delete(langCheck, authCheck, expressRouterAdapter(deleteTravelController))
     router.post('/confirm-payment',langCheck, authCheck,expressRouterAdapter(postNotifyController))
+    router.post('/validate-payment',langCheck, fedapayQueryParser,expressRouterAdapter(postValidatePaymentController))
     router.post('/rate-driver',langCheck, authCheck,expressRouterAdapter(postRateDriverController))
     router.post('/rate-passenger',langCheck, authCheck, driverCheck,expressRouterAdapter(postRatePassengerController))
     router.patch('/ask-to-start-travel',langCheck,expressRouterAdapter(postAskToStartController))
