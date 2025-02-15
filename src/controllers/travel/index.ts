@@ -15,7 +15,7 @@ import makePostRatePassengerController from "./post-rate-passenger"
 import makePostSelfConfirmEndedController from "./post-self-confirm-ended"
 import makePostTravelReportController from "./post-travel-report"
 import makePostValidatePaymentController from "./post-validate-payment"
-
+import makePostConfirmPaymentController from "./post-confirm-payment"
 
 const getTravelsController = makeGetItemsController({ listTravels })
 const getTravelController = makeGetItemController({ listTravelInfos })
@@ -23,6 +23,7 @@ const postTravelController = makePostController({ addTravel })
 const patchTravelController = makePatchController({ editTravel })
 const deleteTravelController = makeDeleteController({ removeTravel })
 const postNotifyController = makePostNotifyController({ confirmPayment })
+const postConfirmPaymentController = makePostConfirmPaymentController({ confirmPayment })
 const postValidatePaymentController = makePostValidatePaymentController({ confirmPayment })
 const postRateDriverController =  makePostRateDriverController({rateDriver}) 
 const postRatePassengerController = makePostRatePassengerController({ ratePassenger })
@@ -48,5 +49,6 @@ export {
     postConfirmStarted,
     postConfirmEnded,
     postSelfConfirm,
-    postTravelReportController
+    postTravelReportController,
+    postConfirmPaymentController
 }

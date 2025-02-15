@@ -12,8 +12,9 @@ export default function makeConfirmPayment({
     saveTrip,
     notifyUser,
     addTask,
+    setTransaction
 }) {
-    if (!saveProfile || !saveTravel || !saveTrip || !notifyUser) throw new ServerError()
+    if (!saveProfile || !saveTravel || !saveTrip || !notifyUser || !setTransaction) throw new ServerError()
 
     const reformateDate = (date: string) => {
         return date.split("-").reverse().join("-")
@@ -37,7 +38,8 @@ export default function makeConfirmPayment({
             const message = { text: "response.delete" }
             return { message }
         }
-        const saved = await CacheManager.get(id)
+        const saved = await CacheManager.get('trans-' + id)
+        console.log('saved', saved)
         if (!saved) throw new ExpiredParamError('payement id')
         const data = JSON.parse(saved)
         // if (data.amount != amount) {
@@ -108,7 +110,8 @@ export default function makeConfirmPayment({
                 }
             }
         }
-        await CacheManager.remove(id)
+        await CacheManager.remove('trans-' + id)
+        setTransaction({ id, data: { bookingStatus: 1 } })
         saveProfile(travel.userId)
         saveTravel(travel.id)
         saveTrip(trip.id)
