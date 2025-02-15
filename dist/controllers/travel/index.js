@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postTravelReportController = exports.postSelfConfirm = exports.postConfirmEnded = exports.postConfirmStarted = exports.postAskToEndController = exports.postAskToStartController = exports.postRatePassengerController = exports.postRateDriverController = exports.postValidatePaymentController = exports.postNotifyController = exports.deleteTravelController = exports.patchTravelController = exports.postTravelController = exports.getTravelController = exports.getTravelsController = void 0;
+exports.postConfirmPaymentController = exports.postTravelReportController = exports.postSelfConfirm = exports.postConfirmEnded = exports.postConfirmStarted = exports.postAskToEndController = exports.postAskToStartController = exports.postRatePassengerController = exports.postRateDriverController = exports.postValidatePaymentController = exports.postNotifyController = exports.deleteTravelController = exports.patchTravelController = exports.postTravelController = exports.getTravelController = exports.getTravelsController = void 0;
 const tslib_1 = require("tslib");
 const travel_1 = require("../../core/use-cases/travel");
 const delete_1 = (0, tslib_1.__importDefault)(require("./delete"));
@@ -18,6 +18,7 @@ const post_rate_passenger_1 = (0, tslib_1.__importDefault)(require("./post-rate-
 const post_self_confirm_ended_1 = (0, tslib_1.__importDefault)(require("./post-self-confirm-ended"));
 const post_travel_report_1 = (0, tslib_1.__importDefault)(require("./post-travel-report"));
 const post_validate_payment_1 = (0, tslib_1.__importDefault)(require("./post-validate-payment"));
+const post_confirm_payment_1 = (0, tslib_1.__importDefault)(require("./post-confirm-payment"));
 const getTravelsController = (0, get_items_1.default)({ listTravels: travel_1.listTravels });
 exports.getTravelsController = getTravelsController;
 const getTravelController = (0, get_item_1.default)({ listTravelInfos: travel_1.listTravelInfos });
@@ -30,6 +31,8 @@ const deleteTravelController = (0, delete_1.default)({ removeTravel: travel_1.re
 exports.deleteTravelController = deleteTravelController;
 const postNotifyController = (0, post_notify_1.default)({ confirmPayment: travel_1.confirmPayment });
 exports.postNotifyController = postNotifyController;
+const postConfirmPaymentController = (0, post_confirm_payment_1.default)({ confirmPayment: travel_1.confirmPayment });
+exports.postConfirmPaymentController = postConfirmPaymentController;
 const postValidatePaymentController = (0, post_validate_payment_1.default)({ confirmPayment: travel_1.confirmPayment });
 exports.postValidatePaymentController = postValidatePaymentController;
 const postRateDriverController = (0, post_rate_driver_1.default)({ rateDriver: travel_1.rateDriver });

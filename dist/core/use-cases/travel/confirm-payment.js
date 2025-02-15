@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const errors_1 = require("../../../utils/errors");
 const helpers_1 = require("../../../utils/helpers");
-function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, addTask, }) {
-    if (!saveProfile || !saveTravel || !saveTrip || !notifyUser)
+function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, addTask, setTransaction }) {
+    if (!saveProfile || !saveTravel || !saveTrip || !notifyUser || !setTransaction)
         throw new errors_1.ServerError();
     const reformateDate = (date) => {
         return date.split("-").reverse().join("-");
@@ -19,7 +19,8 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
             const message = { text: "response.delete" };
             return { message };
         }
-        const saved = yield helpers_1.CacheManager.get(id);
+        const saved = yield helpers_1.CacheManager.get('trans-' + id);
+        console.log('saved', saved);
         if (!saved)
             throw new errors_1.ExpiredParamError('payement id');
         const data = JSON.parse(saved);
@@ -87,7 +88,8 @@ function makeConfirmPayment({ saveProfile, saveTravel, saveTrip, notifyUser, add
                 }
             }
         }
-        yield helpers_1.CacheManager.remove(id);
+        yield helpers_1.CacheManager.remove('trans-' + id);
+        setTransaction({ id, data: { bookingStatus: 1 } });
         saveProfile(travel.userId);
         saveTravel(travel.id);
         saveTrip(trip.id);
