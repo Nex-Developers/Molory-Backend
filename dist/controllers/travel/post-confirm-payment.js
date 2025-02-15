@@ -13,7 +13,7 @@ function makePostConfirmPaymentController({ confirmPayment }) {
                 lastName: 'External',
                 firstName: 'Fedapay',
                 model: 'Payment',
-                path: '/api/confirm-payment',
+                path: '/api/validate-payment',
                 modelId: '',
                 action: conventions_1.Action.WRITE,
                 status: conventions_1.LogStatus.FAILED,
@@ -21,13 +21,15 @@ function makePostConfirmPaymentController({ confirmPayment }) {
             };
             try {
                 const lang = request.lang, body = request.body;
-                const data = yield confirmPayment({
+                const reqData = {
                     id: body.entity.id.toString(),
                     reference: body.entity.reference,
                     amount: body.entity.amount,
                     status: body.entity.status === 'approved' ? 1 : 0,
                     validatedAt: body.entity.approved_at
-                });
+                };
+                console.log('reqData', reqData);
+                const data = yield confirmPayment(reqData);
                 reqLog.status = conventions_1.LogStatus.SUCCEEDED;
                 reqLog.modelId = data.id;
                 reqLog.description += data.id;

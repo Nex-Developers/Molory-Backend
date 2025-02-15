@@ -13,7 +13,7 @@ export default function makePostConfirmPaymentController({
             lastName: 'External',
             firstName: 'Fedapay',
             model: 'Payment',
-            path: '/api/confirm-payment',
+            path: '/api/validate-payment',
             modelId: '',
             action: Action.WRITE,
             status: LogStatus.FAILED,
@@ -23,14 +23,16 @@ export default function makePostConfirmPaymentController({
             
             const lang = request.lang,
                 body = request.body
-                
-                const data = await confirmPayment({
+
+                const reqData = {
                     id: body.entity.id.toString(),
                     reference: body.entity.reference, 
                     amount: body.entity.amount, 
                     status: body.entity.status === 'approved' ? 1 : 0,
                     validatedAt: body.entity.approved_at 
-                })
+                }
+                console.log('reqData', reqData)
+                const data = await confirmPayment(reqData)
                 // data = await confirmPayment({ ...body })
                 reqLog.status = LogStatus.SUCCEEDED
                 reqLog.modelId = data.id
