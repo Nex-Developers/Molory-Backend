@@ -25,9 +25,9 @@ export default function makePostConfirmPaymentController({
                 body = request.body
                 
                 const data = await confirmPayment({
-                    id: body.entity.id,
-                    ref: body.entity.reference, 
-                    receivedAmount: body.entity.amount, 
+                    id: body.entity.id.toString(),
+                    reference: body.entity.reference, 
+                    amount: body.entity.amount, 
                     status: body.entity.status === 'approved' ? 1 : 0,
                     validatedAt: body.entity.approved_at 
                 })
