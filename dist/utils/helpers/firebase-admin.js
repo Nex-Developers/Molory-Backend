@@ -17,22 +17,28 @@ class FirebaseAdmin {
     }
     static sendNotification(tokens, title, body, data, picture) {
         return (0, tslib_1.__awaiter)(this, void 0, void 0, function* () {
-            console.log(data);
-            const payload = {
-                notification: {
-                    title,
-                    body,
-                    sound: 'default',
-                    badge: '1',
-                },
-            };
-            if (data)
-                payload.data = data;
-            const options = {
-                priority: 'high',
-                timeToLive: 60 * 60 * 24
-            };
-            return yield (0, firebase_admin_1.messaging)(FirebaseAdmin.app).sendToDevice(tokens, payload, options);
+            try {
+                console.log('tokens', tokens);
+                const payload = {
+                    notification: {
+                        title,
+                        body,
+                        sound: 'default',
+                        badge: '1',
+                    },
+                };
+                if (data)
+                    payload.data = data;
+                const options = {
+                    priority: 'high',
+                    timeToLive: 60 * 60 * 24
+                };
+                return yield (0, firebase_admin_1.messaging)(FirebaseAdmin.app).sendToDevice(tokens, payload, options);
+            }
+            catch (err) {
+                console.log(err);
+                return null;
+            }
         });
     }
 }

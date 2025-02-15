@@ -14,7 +14,7 @@ function makeNotifyUser({ sendNotification, addInCollection, translate } = {}) {
             try {
                 const prisma = helpers_1.DbConnection.prisma;
                 const devices = yield prisma.device.findMany({ where: { userId: id }, select: { token: true } });
-                const deviceTokens = devices.map(device => device.token).filter(token => token);
+                const deviceTokens = devices.map(device => device.token).filter(token => token).filter(token => token);
                 if (data.id)
                     data.id = data.id.toString();
                 if (deviceTokens.length)

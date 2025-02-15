@@ -26,7 +26,8 @@ function makePostConfirmPaymentController({ confirmPayment }) {
                     reference: body.entity.reference,
                     amount: body.entity.amount,
                     status: body.entity.status === 'approved' ? 1 : 0,
-                    validatedAt: body.entity.approved_at
+                    validatedAt: body.entity.approved_at,
+                    method: 'mobile'
                 };
                 console.log('reqData', reqData);
                 const data = yield confirmPayment(reqData);

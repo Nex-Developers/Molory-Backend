@@ -25,7 +25,7 @@ export default function makeNotifyUser({
         try {
             const prisma = DbConnection.prisma
             const devices = await prisma.device.findMany({ where: { userId: id }, select: { token: true }})
-            const deviceTokens = devices.map(device => device.token).filter(token => token)
+            const deviceTokens = devices.map(device => device.token).filter(token => token).filter(token => token)
             if (data.id) data.id = data.id.toString()
             if (deviceTokens.length) sendNotification(deviceTokens, title, body, data, cover)
             addInCollection('users', id.toString(),'notifications', { type, title, message: body, data, picture:cover})

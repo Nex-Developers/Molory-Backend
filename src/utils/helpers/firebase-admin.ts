@@ -15,9 +15,10 @@ export default class FirebaseAdmin{
     }
 
     static async sendNotification(tokens, title, body, data, picture) {
-        console.log(data)
-        const payload: MessagingPayload = {
-            notification: {
+        try {
+            console.log('tokens', tokens)
+            const payload: MessagingPayload = {
+                notification: {
                 title,
                 body,
                 sound: 'default',
@@ -30,6 +31,10 @@ export default class FirebaseAdmin{
             timeToLive: 60 * 60 * 24
         }
         return await  messaging(FirebaseAdmin.app).sendToDevice(tokens, payload, options)
+        } catch (err) {
+            console.log(err)
+            return null
+        }
     }
 
 }
