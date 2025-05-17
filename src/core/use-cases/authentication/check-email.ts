@@ -32,7 +32,7 @@ export default function makeCheckEmail({
             await askToConfirmEmail({ email, otp, firstName: user.firstName, lastName: user.lastName, lang: 'fr' })
             } catch (err) {
                 console.log(err)
-               return { error: 'error.failedToSendEmail'}
+               throw new Error('error.failedToSendEmail')
             }
             const error = { text: 'error.notVerifiedCredential', params: { parameter: 'email' } }
             return { token, error }
