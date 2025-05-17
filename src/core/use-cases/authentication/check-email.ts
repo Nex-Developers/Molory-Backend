@@ -28,7 +28,12 @@ export default function makeCheckEmail({
             const otp = await generateOtp()
             await saveTmpToken({ token })
             await saveOtp({ phoneNumber:email, otp })
+            try {
             await askToConfirmEmail({ email, otp, firstName: user.firstName, lastName: user.lastName, lang: 'fr' })
+            } catch (err) {
+                console.log(err)
+               return { error: 'error.failedToSendEmail'}
+            }
             const error = { text: 'error.notVerifiedCredential', params: { parameter: 'email' } }
             return { token, error }
         }

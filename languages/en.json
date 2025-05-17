@@ -16,7 +16,8 @@
     "otpIncorrect": "The Otp you provided is incorrect",
     "notVerifiedCredential": "Your email is not confirmed. Check your email box to activate your account.",
     "unmatchedAuthMethod": "The credential you are trying to sign in with is not that one you use to sign up. Please use :parameter to sign in",
-    "notFound": ":parameter not found."
+    "notFound": ":parameter not found.",
+    "failedToSendEmail": "Failed to send email"
   },
   "response": {
     "add": "Added successfully!",

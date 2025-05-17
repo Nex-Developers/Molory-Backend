@@ -11,7 +11,8 @@
     "passwordIncorrect": "Le mot de passe est incorrect.",
     "otpIncorrect": "Le code que vous avez entré est incorrect.",
     "notVerifiedCredential": "Votre email n'est pas confirmé. Vérifiez votre boîte mail pour activer votre compte.",
-    "unmatchedAuthMethod": "L'identifiant avec lequel vous essayez de vous connecter n'est pas celui que vous utilisez pour vous inscrire. Veuillez utiliser :parameter pour vous connecter"
+    "unmatchedAuthMethod": "L'identifiant avec lequel vous essayez de vous connecter n'est pas celui que vous utilisez pour vous inscrire. Veuillez utiliser :parameter pour vous connecter",
+    "failedToSendEmail": "Erreur lors de l'envoi de l'email"
   },
   "response": {
     "add": "Ajouté avec succès!",
