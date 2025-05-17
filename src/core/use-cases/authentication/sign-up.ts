@@ -52,7 +52,7 @@ export default function makeSignUp({
                 await askToConfirmEmail({ email, otp, firstName, lastName, lang: language })
             } catch (err) {
                 console.log(err.message);
-                throw new InvalidParamError('email');
+                return { error: 'error.failedToSendEmail'}
             }
             const message = { text: 'auth.message.register', params: { email } }
             return { token, message }

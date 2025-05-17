@@ -45,7 +45,7 @@ function makeSignUp({ askToConfirmEmail, isValidEmail, hashPassword, generateTok
                 }
                 catch (err) {
                     console.log(err.message);
-                    throw new errors_1.InvalidParamError('email');
+                    return { error: 'error.failedToSendEmail' };
                 }
                 const message = { text: 'auth.message.register', params: { email } };
                 return { token, message };
